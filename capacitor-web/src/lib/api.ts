@@ -1,5 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import type { VerificationReport } from '../types';
+import { MlKitTranslation } from './mlKitTranslation';
 
 const nativeAndroid =
   Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
@@ -24,10 +25,14 @@ async function request<T>(path: string, body: Record<string, unknown>): Promise<
   return payload;
 }
 
-class LocalServerTranslationProvider implements TranslationProvider {
+class MlKitTranslationProvider implements TranslationProvider {
   async translate(text: string, sourceLanguage: string, targetLanguage: string): Promise<string> {
     return translateText('qwen3:4b', sourceLanguage, targetLanguage, text);
   }
+}
+
+export function isOnDeviceTranslationAvailable() {
+  return Capacitor.isNativePlatform();
 }
 
 export async function translateText(
@@ -36,6 +41,13 @@ export async function translateText(
   targetLanguage: string,
   text: string,
 ): Promise<string> {
+  if (isOnDeviceTranslationAvailable()) {
+    const result = await MlKitTranslation.translate({ text, sourceLanguage, targetLanguage });
+    if (!result.translation?.trim()) {
+      throw new Error('번역 결과가 비어 있습니다.');
+    }
+    return result.translation.trim();
+  }
   const result = await request<{ translation: string }>('/v1/translate', {
     model,
     source_language: sourceLanguage,
@@ -55,6 +67,14 @@ export async function translateTexts(
   items: { id: string; text: string }[],
   onItem: (id: string) => void,
 ): Promise<Record<string, string>> {
+  if (isOnDeviceTranslationAvailable()) {
+    const output: Record<string, string> = {};
+    for (const item of items) {
+      output[item.id] = await translateText(model, sourceLanguage, targetLanguage, item.text);
+      onItem(item.id);
+    }
+    return output;
+  }
   const output: Record<string, string> = {};
   for (const group of chunkItems(items)) {
     let translated: Record<string, string> | null = null;
@@ -125,7 +145,7 @@ function chunkItems(items: { id: string; text: string }[]) {
   return groups;
 }
 
-export const translationProvider: TranslationProvider = new LocalServerTranslationProvider();
+export const translationProvider: TranslationProvider = new MlKitTranslationProvider();
 
 export function verifyTranslation(
   model: string,

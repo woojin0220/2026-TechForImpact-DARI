@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { API_URL, verifyTranslation } from './lib/api';
+import { API_URL, isOnDeviceTranslationAvailable, verifyTranslation } from './lib/api';
 import { applicationSteps, type FormField } from './form/schema';
 import { localize } from './form/localize';
 import { buildReview, isVisible } from './form/model';
@@ -112,15 +112,18 @@ function App() {
         {['언어 선택', '문항 작성', '번역 검토', '검증'].map((label, index) => <span key={label} className={index <= stageIndex ? 'active' : ''}>{label}</span>)}
       </section>
 
-      {error && <p className="notice error" role="alert">{error} 로컬 서버 주소: {API_URL}</p>}
+      {error && <p className="notice error" role="alert">{error}{stage === 'redact' ? ` 검증 서버 주소: ${API_URL}` : ''}</p>}
 
       {stage === 'setup' && <section className="card">
         <p className="eyebrow">1단계 · 작성 언어와 검증 모델</p>
         <h1>신청서 문항을 모두 작성한 뒤 번역합니다.</h1>
         <p>문항은 선택한 언어로 보여 주고, 바로 아래에 서식의 영어를 둡니다. 답변도 그 언어로 적습니다. 작성이 끝나면 자유 서술을 한 번에 영어와 한국어로 번역하고, 그 원문과 영어본을 한 번에 검증합니다.</p>
         <p className="notice">접수번호처럼 공무원이 적는 칸과 자필 서명은 빠져 있습니다. 예·아니요와 날짜는 공식 표기를 쓰고, 번역 모델에는 보내지 않습니다. 법률 자문이나 신청 결과를 보장하지 않습니다.</p>
+        {isOnDeviceTranslationAvailable()
+          ? <p className="notice">번역은 기기에 받은 ML Kit으로 처리합니다. 아래 모델은 검증에만 사용합니다.</p>
+          : <p className="notice">브라우저 미리보기에서는 로컬 서버로 번역합니다. Android·iOS 앱에서는 ML Kit을 사용합니다.</p>}
         <label>답변 언어<select value={languageCode} onChange={(event) => setLanguageCode(event.target.value)}>{languages.map((item) => <option value={item.code} key={item.code}>{item.label} · {item.answerLabel}</option>)}</select></label>
-        <label>번역·검증 모델<select value={model} onChange={(event) => setModel(event.target.value)}>{models.map((item) => <option value={item.model} key={item.model}>{item.name} · {item.detail}</option>)}</select></label>
+        <label>{isOnDeviceTranslationAvailable() ? '검증 모델' : '번역·검증 모델'}<select value={model} onChange={(event) => setModel(event.target.value)}>{models.map((item) => <option value={item.model} key={item.model}>{item.name} · {item.detail}</option>)}</select></label>
         <button onClick={() => { setError(''); setStage('writing'); }}>문항 작성 시작</button>
       </section>}
 
@@ -192,7 +195,7 @@ function App() {
         {report.limitations?.length ? <ul>{report.limitations.map((item) => <li key={item}>{item}</li>)}</ul> : null}
         <button onClick={restart}>새 신청서 작성</button>
       </section>}
-      <footer>웹 기반 프로토타입 · 문항은 선택 언어로 보여주고, 아래 영어는 공식 서식 문면입니다. 선택 언어 번역은 전문가 검수 전입니다.</footer>
+      <footer>웹 기반 프로토타입 · 기기 번역은 ML Kit, 브라우저 미리보기와 검증은 로컬 서버를 사용합니다. 선택 언어 문항은 전문가 검수 전입니다.</footer>
     </main>
   );
 }
