@@ -1,7 +1,7 @@
 :root { color: #172522; background: #f4f7f4; font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-synthesis: none; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
-button, select, textarea { font: inherit; }
+button, select, textarea, input { font: inherit; }
 button { border: 0; border-radius: 12px; padding: 14px 18px; color: white; background: #087a70; font-weight: 750; cursor: pointer; }
 button:hover { background: #056158; }
 button:disabled { opacity: .45; cursor: not-allowed; }
@@ -13,8 +13,11 @@ button.secondary { color: #075e57; background: #e3f1ed; }
 .progress { display: flex; justify-content: space-between; gap: 5px; margin: 0 2px 18px; color: #82918d; font-size: .72rem; }.progress span { flex: 1; text-align: center; }.progress .active { color: #087a70; font-weight: 800; }
 .card { padding: 25px; border: 1px solid #dbe5e0; border-radius: 20px; background: #fff; box-shadow: 0 10px 25px rgba(19, 60, 51, .06); }
 .card h1 { margin: 5px 0 12px; color: #123936; font-size: clamp(1.35rem, 5vw, 1.9rem); line-height: 1.35; }.card > p { line-height: 1.65; color: #53645f; }
-.eyebrow { color: #087a70 !important; font-size: .8rem; font-weight: 800; letter-spacing: .03em; }.question-guide { border-left: 3px solid #acd7cd; padding-left: 12px; }
-label { display: grid; gap: 7px; margin: 18px 0; color: #38514b; font-size: .9rem; font-weight: 700; } select, textarea { width: 100%; border: 1px solid #bed0ca; border-radius: 10px; padding: 12px; background: #fff; color: #172522; } textarea { resize: vertical; line-height: 1.6; }
+.eyebrow { color: #087a70 !important; font-size: .8rem; font-weight: 800; letter-spacing: .03em; }.question-guide { border-left: 3px solid #acd7cd; padding-left: 12px; } .question-guide.align-end { text-align: right; border-left: 0; border-right: 3px solid #acd7cd; padding-left: 0; padding-right: 12px; } .align-end { text-align: right; }
+label { display: grid; gap: 7px; margin: 18px 0; color: #38514b; font-size: .9rem; font-weight: 700; } select, textarea, input { width: 100%; border: 1px solid #bed0ca; border-radius: 10px; padding: 12px; background: #fff; color: #172522; } textarea { resize: vertical; line-height: 1.6; }
+.field-block { margin: 22px 0; } .field-label { margin: 0 0 6px; color: #123936; font-weight: 800; line-height: 1.45; } .hint { margin: 8px 0 0; color: #795d18; font-size: .86rem; line-height: 1.5; }
+.choices { display: grid; gap: 8px; margin-top: 10px; } button.choice { width: 100%; padding: 12px 14px; text-align: left; color: #17332f; background: #fff; border: 1px solid #bed0ca; font-weight: 650; } button.choice.align-end { text-align: right; } button.choice small { display: block; margin-top: 3px; color: #61726e; font-weight: 550; line-height: 1.4; } button.choice:hover, button.tiny:hover, button.secondary:hover { background: #f3faf8; } button.choice.on { color: #075e57; background: #e7f4f2; border-color: #087a70; }
+button.tiny { width: auto; margin-top: 8px; padding: 8px 12px; color: #075e57; background: #e3f1ed; } .table-row { margin: 12px 0; padding: 12px; border: 1px solid #dbe5e0; border-radius: 14px; background: #fbfefd; } .table-row-top { display: flex; justify-content: space-between; align-items: center; } .table-row label { margin: 12px 0; } .table-row label small { color: #61726e; font-weight: 550; } .actions.sticky { position: sticky; bottom: 0; margin: 8px -25px -25px; padding: 12px 25px 16px; background: linear-gradient(#fff0, #fff 28%); }
 .card > button { width: 100%; margin-top: 4px; }.actions { display: flex; gap: 10px; margin-top: 22px; }.actions button { flex: 1; }
 .draft { margin: 18px 0; overflow: hidden; border: 1px solid #dbe5e0; border-radius: 14px; }.draft h2 { margin: 0; padding: 13px; color: #184944; background: #edf7f4; font-size: 1rem; }.draft div { padding: 13px 14px; border-top: 1px solid #e9efec; }.draft b { color: #087a70; font-size: .78rem; }.draft p { margin: 7px 0 0; line-height: 1.6; white-space: pre-wrap; }
 .notice { padding: 12px 14px; border-radius: 11px; background: #fff8e7; color: #795d18 !important; font-size: .88rem; }.error { margin: 0 0 16px; background: #fff0ee; color: #a04031 !important; }.centered { text-align: center; padding: 52px 25px; }.spinner { width: 35px; height: 35px; margin: 0 auto 18px; border: 4px solid #d8ebe5; border-top-color: #087a70; border-radius: 50%; animation: spin .8s linear infinite; }@keyframes spin { to { transform: rotate(360deg); } }

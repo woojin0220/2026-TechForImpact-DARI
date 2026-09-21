@@ -1,14 +1,8 @@
-export type ApplicationQuestion = {
-  number: string;
-  korean: string;
-  prompt: string;
-};
-
 export type LanguageOption = {
   code: string;
   label: string;
   answerLabel: string;
-  questions: ApplicationQuestion[];
+  notApplicable: string;
 };
 
 export type VerificationModel = {
@@ -23,7 +17,14 @@ export type DraftEntry = {
   source: string;
   english: string;
   korean: string;
+  verify: boolean;
 };
+
+export type ChoiceAnswer = { kind: 'choice'; values: string[] };
+export type TextAnswer = { kind: 'text'; text: string };
+export type TableAnswer = { kind: 'table'; rows: Record<string, string>[] };
+export type FieldAnswer = ChoiceAnswer | TextAnswer | TableAnswer;
+export type Answers = Record<string, FieldAnswer>;
 
 export type DistortionItem = {
   type: string;
