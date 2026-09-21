@@ -27,7 +27,9 @@ async function request<T>(path: string, body: Record<string, unknown>): Promise<
 class LocalServerTranslationProvider implements TranslationProvider {
   async translate(text: string, sourceLanguage: string, targetLanguage: string): Promise<string> {
     const result = await request<{ translation: string }>('/v1/translate', {
-      model: 'qwen3:4b',
+      // Qwen3 4B is retained as a verification option. Llama is currently
+      // more reliable for the structured translation response in this MVP.
+      model: 'llama3.2:3b',
       source_language: sourceLanguage,
       target_language: targetLanguage,
       text,
