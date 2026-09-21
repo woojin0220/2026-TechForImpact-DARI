@@ -2,6 +2,9 @@
 
 난민인정신청서 문항에 모국어로 답한 뒤 영어·한국어 번역본을 확인하고, 전체 작성이 끝난 후 번역 왜곡 여부를 검증하는 Android 네이티브 프로토타입입니다.
 
+- [현재 구현 문서](docs/IMPLEMENTATION.md)
+- [향후 논의·결정 사항](docs/OPEN_DECISIONS.md)
+
 ## Mac 로컬 LLM 검증 테스트
 
 에뮬레이터는 `10.0.2.2:8765`를 통해 이 Mac에만 연결합니다. `local_verification_server.py`는 `127.0.0.1`에만 열리므로 LAN이나 인터넷에 공개되지 않습니다.
@@ -33,7 +36,7 @@ python3 local_verification_server.py
 
 ## 실행
 
-Android Studio에서 `DARI-MVP` 폴더를 열고 Android 기기 또는 API 23 이상 에뮬레이터에서 실행합니다. 첫 실행 시 러시아어·영어 번역 모델을 Wi-Fi로 내려받아야 합니다.
+Android Studio에서 `DARI-MVP` 폴더를 열고 Android 기기 또는 API 23 이상 에뮬레이터에서 실행합니다. 첫 실행 시 선택 언어→영어와 영어→한국어 번역 모델을 Wi-Fi로 내려받아야 합니다.
 
 ## 확인해야 할 사항
 
