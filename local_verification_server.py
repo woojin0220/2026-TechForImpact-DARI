@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Local-only bridge: Android emulator -> this Mac -> Ollama.
+"""Development-only loopback bridge for DARI clients and Ollama.
 
-It listens only on 127.0.0.1. Android Emulator reaches the host loopback at
-10.0.2.2, so no LAN or public server is exposed.
+It listens only on 127.0.0.1. The Android emulator can reach the host at
+10.0.2.2; a browser on the same computer uses localhost. Do not expose this
+server to a LAN or the public internet with real refugee statements.
 """
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -11,6 +12,48 @@ from urllib.error import URLError, HTTPError
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 ALLOWED_MODELS = {"qwen3:4b", "llama3.2:3b"}
+ALLOWED_ORIGINS = {
+    "http://localhost:5173", "http://localhost:4173", "http://localhost",
+    "https://localhost", "capacitor://localhost",
+}
+
+
+def parse_model_json(model_response):
+    return json.loads(model_response.get("response") or model_response.get("thinking") or "{}")
+
+
+def call_ollama(model, prompt):
+    if model not in ALLOWED_MODELS:
+        raise ValueError("허용되지 않은 모델입니다.")
+    request_body = json.dumps({
+        "model": model, "prompt": prompt, "stream": False,
+        "format": "json", "options": {"temperature": 0},
+    }).encode()
+    request = Request(OLLAMA_URL, data=request_body, headers={"Content-Type": "application/json"}, method="POST")
+    with urlopen(request, timeout=120) as response:
+        return parse_model_json(json.load(response))
+
+
+def translate(payload):
+    model = payload.get("model", "qwen3:4b")
+    source_language = str(payload.get("source_language", "unknown"))
+    target_language = str(payload.get("target_language", ""))
+    text = str(payload.get("text", "")).strip()
+    if not text or len(text) > 12000:
+        raise ValueError("번역할 텍스트 길이를 확인해 주세요.")
+    if target_language not in {"en", "ko"}:
+        raise ValueError("영어 또는 한국어 번역만 지원합니다.")
+    prompt = f'''You are a translation engine. Translate the input from {source_language} to {target_language}.
+Preserve every fact, name, number, date, uncertainty, negation, tone, and paragraph break. Do not add, omit, explain, summarize, or give legal advice.
+Return JSON only: {{"translation":"translated text"}}.
+
+Input:
+{text}'''
+    result = call_ollama(model, prompt)
+    translation = str(result.get("translation", "")).strip()
+    if not translation:
+        raise ValueError("모델이 번역 결과를 반환하지 않았습니다.")
+    return {"translation": translation}
 
 
 def ask_model(payload):
@@ -43,12 +86,7 @@ Source statement:
 English translation:
 {payload.get("translation_text", "")}
 '''
-    request_body = json.dumps({"model": model, "prompt": prompt, "stream": False, "format": "json", "options": {"temperature": 0}}).encode()
-    request = Request(OLLAMA_URL, data=request_body, headers={"Content-Type": "application/json"}, method="POST")
-    with urlopen(request, timeout=120) as response:
-        model_response = json.load(response)
-    # Qwen3 may emit its structured answer in `thinking`; other models use `response`.
-    result = json.loads(model_response.get("response") or model_response.get("thinking") or "{}")
+    result = call_ollama(model, prompt)
     distortions = result.get("distortions", [])
     if not isinstance(distortions, list):
         distortions = []
@@ -60,24 +98,47 @@ English translation:
 
 
 class Handler(BaseHTTPRequestHandler):
+    def send_json(self, status, result):
+        body = json.dumps(result, ensure_ascii=False).encode()
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        origin = self.headers.get("Origin")
+        if origin in ALLOWED_ORIGINS:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        origin = self.headers.get("Origin")
+        if origin in ALLOWED_ORIGINS:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Vary", "Origin")
+        self.end_headers()
+
     def do_POST(self):
-        if self.path != "/v1/translation/verify":
-            self.send_error(404)
-            return
         try:
             length = int(self.headers.get("Content-Length", 0))
             payload = json.loads(self.rfile.read(length))
-            result = ask_model(payload)
-            body = json.dumps(result, ensure_ascii=False).encode()
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
+            if self.path == "/v1/translation/verify":
+                # Accept both the original Android contract and the web-client contract.
+                payload["source_text"] = payload.get("source_text", payload.get("source", ""))
+                payload["translation_text"] = payload.get("translation_text", payload.get("translation", ""))
+                result = ask_model(payload)
+            elif self.path == "/v1/translate":
+                result = translate(payload)
+            else:
+                self.send_json(404, {"error": "존재하지 않는 API 경로입니다."})
+                return
+            self.send_json(200, result)
         except (ValueError, KeyError, json.JSONDecodeError) as error:
-            self.send_error(400, str(error))
+            self.send_json(400, {"error": str(error)})
         except (URLError, HTTPError, TimeoutError) as error:
-            self.send_error(502, f"Ollama 오류: {error}")
+            self.send_json(502, {"error": f"Ollama 오류: {error}"})
 
     def log_message(self, format, *args):
         print("DARI local server:", format % args)

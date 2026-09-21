@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DARI</string>
+    <string name="title_activity_main">DARI</string>
+    <string name="package_name">org.dari.app</string>
+    <string name="custom_url_scheme">org.dari.app</string>
+</resources>
