@@ -120,6 +120,17 @@ class Handler(BaseHTTPRequestHandler):
             self.send_header("Vary", "Origin")
         self.end_headers()
 
+    def do_GET(self):
+        if self.path not in {"/", "/health"}:
+            self.send_json(404, {"error": "존재하지 않는 API 경로입니다."})
+            return
+        self.send_json(200, {
+            "status": "ok",
+            "service": "DARI local translation and verification server",
+            "endpoints": ["POST /v1/translate", "POST /v1/translation/verify"],
+            "note": "개발 컴퓨터에서만 사용하는 로컬 서버입니다.",
+        })
+
     def do_POST(self):
         try:
             length = int(self.headers.get("Content-Length", 0))
