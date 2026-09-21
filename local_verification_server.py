@@ -14,7 +14,7 @@ OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 ALLOWED_MODELS = {"qwen3:4b", "llama3.2:3b"}
 ALLOWED_ORIGINS = {
     "http://localhost:5173", "http://localhost:4173", "http://localhost",
-    "https://localhost", "capacitor://localhost",
+    "http://127.0.0.1:5188", "https://localhost", "capacitor://localhost",
 }
 
 

@@ -3,7 +3,8 @@ import type { VerificationReport } from '../types';
 
 const nativeAndroid =
   Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
-const defaultApiUrl = nativeAndroid ? 'http://10.0.2.2:8765' : 'http://localhost:8765';
+const browserHost = window.location.hostname === '127.0.0.1' ? '127.0.0.1' : 'localhost';
+const defaultApiUrl = nativeAndroid ? 'http://10.0.2.2:8765' : `http://${browserHost}:8765`;
 const API_URL = (import.meta.env.VITE_DARI_API_URL ?? defaultApiUrl).replace(/\/$/, '');
 
 export interface TranslationProvider {
