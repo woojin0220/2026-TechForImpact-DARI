@@ -14,7 +14,7 @@ DARI는 난민인정신청자가 공식 문항을 모국어로 이해하고 답�
 
 새 기능은 [`capacitor-web/`](capacitor-web/)의 React·TypeScript·Capacitor 앱을 기준으로 개발합니다. 하나의 웹 화면을 Android와 iOS 네이티브 래퍼에서 함께 사용하기 위한 전환입니다. 기존 루트의 Kotlin Android 앱은 ML Kit 온디바이스 번역을 실험한 참고 구현으로 남아 있으며 삭제하지 않았습니다.
 
-웹 MVP는 현재 개발용 로컬 Ollama 서버로 번역과 검증을 수행합니다. 온디바이스 번역은 `TranslationProvider`를 통해 이후 교체할 계획입니다. 자세한 실행 및 전환 절차는 [Capacitor 웹 기반 전환 안내](docs/CAPACITOR_MIGRATION.md)를 확인해 주세요.
+Capacitor 앱의 번역은 Android·iOS 기기에서 ML Kit으로 처리하며, 로컬 Ollama 서버는 최종 왜곡 검증에만 사용합니다. 브라우저는 UI 미리보기만 가능하고 ML Kit 번역은 실행하지 않습니다. 자세한 실행 및 전환 절차는 [Capacitor 웹 기반 전환 안내](docs/CAPACITOR_MIGRATION.md)를 확인해 주세요.
 
 ## 주요 기능
 

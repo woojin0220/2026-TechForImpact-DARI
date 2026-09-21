@@ -1,0 +1,6 @@
+platform :ios, '15.5'
+
+target 'App' do
+  # ML Kit Translation is distributed for iOS through CocoaPods.
+  pod 'GoogleMLKit/Translate', '8.0.0'
+end

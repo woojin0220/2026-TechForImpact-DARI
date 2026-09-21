@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { API_URL, translationProvider, verifyTranslation } from './lib/api';
+import { API_URL, isOnDeviceTranslationAvailable, translationProvider, verifyTranslation } from './lib/api';
 import type { DraftEntry, LanguageOption, VerificationModel, VerificationReport } from './types';
 
 const languages: LanguageOption[] = [
@@ -116,15 +116,16 @@ function App() {
         {['언어 선택', '모국어 작성', '번역 검토', '검증'].map((label, index) => <span key={label} className={index <= (stage === 'setup' ? 0 : stage === 'writing' || stage === 'translating' ? 1 : stage === 'review' ? 2 : 3) ? 'active' : ''}>{label}</span>)}
       </section>
 
-      {error && <p className="notice error" role="alert">{error} 로컬 서버 주소: {API_URL}</p>}
+      {error && <p className="notice error" role="alert">{error}{stage === 'redact' ? ` 검증 서버 주소: ${API_URL}` : ''}</p>}
 
       {stage === 'setup' && <section className="card">
         <p className="eyebrow">1단계 · 작성 언어와 검증 모델</p>
         <h1>신청자의 언어로 답변을 작성해 주세요.</h1>
-        <p>공식 문항을 선택한 언어로 제시하고, 답변을 영어와 한국어 초안으로 정리합니다. 법률 자문이나 신청 결과를 보장하지 않습니다.</p>
+        <p>공식 문항을 선택한 언어로 제시하고, 답변을 영어와 한국어 초안으로 정리합니다. 번역은 기기에 내려받은 ML Kit 언어 모델로 처리합니다. 법률 자문이나 신청 결과를 보장하지 않습니다.</p>
+        {!isOnDeviceTranslationAvailable() && <p className="notice">현재 브라우저 미리보기에서는 온디바이스 ML Kit 번역을 실행할 수 없습니다. Android 또는 iOS Capacitor 앱에서 테스트해 주세요.</p>}
         <label>답변 언어<select value={languageCode} onChange={(event) => setLanguageCode(event.target.value)}>{languages.map((item) => <option value={item.code} key={item.code}>{item.label} · {item.answerLabel}</option>)}</select></label>
         <label>검증 모델<select value={model} onChange={(event) => setModel(event.target.value)}>{models.map((item) => <option value={item.model} key={item.model}>{item.name} · {item.detail}</option>)}</select></label>
-        <button onClick={() => setStage('writing')}>문항 작성 시작</button>
+        <button disabled={!isOnDeviceTranslationAvailable()} onClick={() => setStage('writing')}>문항 작성 시작</button>
       </section>}
 
       {stage === 'writing' && <section className="card">
@@ -149,7 +150,7 @@ function App() {
       {stage === 'verifying' && <section className="card centered"><div className="spinner" /><h1>번역 왜곡을 검토하고 있습니다.</h1><p>유리·불리한 왜곡, 사실 추가·생략, 강도 변화, 불확실성 변화 등을 구분합니다.</p></section>}
 
       {stage === 'report' && report && <section className="card"><p className="eyebrow">검증 결과</p><h1>{report.hasDistortion ? '확인이 필요한 번역 차이가 있습니다.' : '명확한 왜곡 신호가 발견되지 않았습니다.'}</h1><p>{report.summary}</p>{report.items.length > 0 ? <div className="findings">{report.items.map((item, index) => <article className="finding" key={`${item.type}-${index}`}><div className="finding-top"><strong>{item.type}</strong><span>{item.direction} · {item.severity}</span></div>{item.questionNumber && <small>문항 {item.questionNumber}</small>}<p><b>원문:</b> {item.sourceExcerpt}</p><p><b>영어 초안:</b> {item.translationExcerpt}</p><p>{item.explanation}</p></article>)}</div> : <p className="notice">모델이 판단하지 못한 차이가 있을 수 있으므로 원문과 번역문을 직접 검토해 주세요.</p>}{report.limitations?.length ? <ul>{report.limitations.map((item) => <li key={item}>{item}</li>)}</ul> : null}<button onClick={restart}>새 신청서 작성</button></section>}
-      <footer>웹 기반 프로토타입 · 현재 번역·검증은 개발용 로컬 서버를 사용합니다. 온디바이스 번역은 다음 단계에서 교체합니다.</footer>
+      <footer>웹 기반 프로토타입 · 번역은 기기 내 ML Kit 모델로 처리합니다. 검증만 개발용 로컬 서버를 사용합니다.</footer>
     </main>
   );
 }

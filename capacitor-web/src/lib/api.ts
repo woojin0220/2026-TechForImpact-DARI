@@ -1,5 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import type { VerificationReport } from '../types';
+import { MlKitTranslation } from './mlKitTranslation';
 
 const nativeAndroid =
   Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
@@ -24,15 +25,12 @@ async function request<T>(path: string, body: Record<string, unknown>): Promise<
   return payload;
 }
 
-class LocalServerTranslationProvider implements TranslationProvider {
+class MlKitTranslationProvider implements TranslationProvider {
   async translate(text: string, sourceLanguage: string, targetLanguage: string): Promise<string> {
-    const result = await request<{ translation: string }>('/v1/translate', {
-      // Qwen3 4B is retained as a verification option. Llama is currently
-      // more reliable for the structured translation response in this MVP.
-      model: 'llama3.2:3b',
-      source_language: sourceLanguage,
-      target_language: targetLanguage,
+    const result = await MlKitTranslation.translate({
       text,
+      sourceLanguage,
+      targetLanguage,
     });
     if (!result.translation?.trim()) {
       throw new Error('번역 결과가 비어 있습니다.');
@@ -41,7 +39,11 @@ class LocalServerTranslationProvider implements TranslationProvider {
   }
 }
 
-export const translationProvider: TranslationProvider = new LocalServerTranslationProvider();
+export const translationProvider: TranslationProvider = new MlKitTranslationProvider();
+
+export function isOnDeviceTranslationAvailable() {
+  return Capacitor.isNativePlatform();
+}
 
 export function verifyTranslation(
   model: string,

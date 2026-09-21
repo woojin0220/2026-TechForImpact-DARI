@@ -7,7 +7,7 @@
 ```text
 Capacitor 웹 화면
   ├─ 선택 언어로 공식 문항 표시 및 답변 입력
-  ├─ 로컬 Ollama 번역: 선택 언어 → 영어 → 한국어
+  ├─ 기기 내 ML Kit 번역: 선택 언어 → 영어 → 한국어
   ├─ 원문·영어·한국어 병기 검토
   └─ 원문·영어본의 왜곡 후보 검증
                          │
@@ -18,11 +18,13 @@ Capacitor 웹 화면
                        Ollama
 ```
 
-현재 번역과 검증은 모두 개발 컴퓨터의 `local_verification_server.py`와 Ollama를 사용합니다. 번역 기본 모델은 구조화된 응답이 비교적 안정적인 Llama 3.2 3B이며, Qwen3 4B와 Llama 3.2 3B는 검증 모델로 선택할 수 있습니다. 서버는 `127.0.0.1`에만 열리므로 같은 컴퓨터의 브라우저·에뮬레이터만 접근할 수 있습니다. 실제 신청자 진술을 다룰 때 이 서버를 인터넷이나 LAN에 그대로 공개해서는 안 됩니다.
+번역은 Android·iOS 기기의 Google ML Kit 언어 모델을 사용합니다. 선택 언어→영어와 영어→한국어 모델은 최초 사용 전에 기기에 내려받으며, 번역할 진술은 외부 번역 서버로 전송하지 않습니다. 로컬 Ollama 서버는 전체 번역 완료 후의 왜곡 검증에만 사용합니다. 서버는 `127.0.0.1`에만 열리므로 같은 컴퓨터의 브라우저·에뮬레이터만 접근할 수 있습니다. 실제 신청자 진술을 다룰 때 이 서버를 인터넷이나 LAN에 그대로 공개해서는 안 됩니다.
 
 ## 실행
 
-터미널 1에서 Ollama와 로컬 서버를 실행합니다.
+번역은 브라우저가 아닌 Capacitor Android·iOS 앱에서만 실행합니다. 브라우저 개발 서버는 화면 확인용이며, ML Kit은 웹 브라우저 API가 아닙니다.
+
+번역 왜곡 검증까지 테스트하려면 터미널 1에서 Ollama와 로컬 서버를 실행합니다.
 
 ```bash
 ollama serve
@@ -37,7 +39,7 @@ npm install
 npm run dev
 ```
 
-브라우저 개발 서버는 기본적으로 `http://localhost:5173`에서 열립니다. Android 에뮬레이터에서 Capacitor 앱을 실행하면 기본 서버 주소는 `http://10.0.2.2:8765`이고, 브라우저에서는 `http://localhost:8765`입니다. 각 주소는 해당 개발자가 실행한 자신의 컴퓨터를 뜻합니다.
+브라우저 개발 서버는 화면 확인용입니다. Android 에뮬레이터에서 검증을 실행하면 기본 서버 주소는 `http://10.0.2.2:8765`입니다. 이 주소는 해당 개발자가 실행한 자신의 컴퓨터를 뜻합니다.
 
 ## Android·iOS 프로젝트 생성
 
@@ -53,17 +55,16 @@ npx cap sync
 
 생성된 Android와 iOS 폴더는 Capacitor가 관리하는 플랫폼 프로젝트입니다. 웹 화면이나 의존성을 바꾼 뒤에는 `npm run build`와 `npx cap sync`를 다시 실행합니다.
 
-## 온디바이스 번역으로 바꾸는 방법
+## ML Kit 플러그인 구성
 
-웹 앱의 `src/lib/api.ts`에는 `TranslationProvider` 인터페이스가 있습니다. 현재 `LocalServerTranslationProvider`가 이를 구현합니다. 향후 다음 절차로 교체합니다.
+`src/lib/mlKitTranslation.ts`가 웹 코드와 네이티브 플러그인을 연결하며, `src/lib/api.ts`의 `MlKitTranslationProvider`가 이를 사용합니다.
 
-1. Android·iOS 모두를 지원하는 온디바이스 번역 Capacitor 플러그인을 선택하거나 자체 플러그인을 구현합니다.
-2. 플러그인이 언어 모델 다운로드 동의, 언어쌍 지원 여부, 오프라인 실패 상태를 반환하도록 설계합니다.
-3. `OnDeviceTranslationProvider`를 추가하고, 플랫폼에서 가능할 때 해당 구현을 선택합니다.
-4. 지원하지 않는 언어 또는 모델 미설치 상태의 대체 흐름을 정합니다. 민감한 진술을 외부 서버로 자동 전송하지 않습니다.
-5. 실제 난민 진술과 무관한 평가셋으로 언어쌍별 충실도와 오류 유형을 측정합니다.
+1. Android 구현: `android/app/src/main/java/org/dari/app/MlKitTranslationPlugin.java`
+2. iOS 구현: `ios/App/App/MlKitTranslationPlugin.swift`
+3. Android는 `com.google.mlkit:translate:17.0.3`을 사용합니다.
+4. iOS는 ML Kit이 CocoaPods로 제공되므로 `ios/App/Podfile`의 `GoogleMLKit/Translate`를 설치해야 합니다.
 
-따라서 현재 로컬 서버 번역은 개발용 대체 수단이며, 온디바이스 번역 완료를 의미하지 않습니다.
+이 프로젝트 환경에는 CocoaPods가 설치되어 있지 않아 iOS 의존성 설치와 Xcode 빌드는 아직 실행하지 못했습니다. iOS에서 처음 실행하기 전 `cd capacitor-web/ios/App && pod install`을 실행한 뒤 생성된 `App.xcworkspace`를 Xcode로 열어야 합니다. ML Kit 번역 모델은 약 30MB 수준이므로 언어별 다운로드 동의와 저장 공간 정책을 실제 서비스 전에 확정해야 합니다.
 
 ## 검증과 개인정보의 한계
 
