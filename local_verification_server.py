@@ -7,6 +7,7 @@ server to a LAN or the public internet with real refugee statements.
 """
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import re
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
@@ -19,7 +20,16 @@ ALLOWED_ORIGINS = {
 
 
 def parse_model_json(model_response):
-    return json.loads(model_response.get("response") or model_response.get("thinking") or "{}")
+    raw = model_response.get("response") or model_response.get("thinking") or "{}"
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # Small local models occasionally emit a literal or incomplete `\u`
+        # escape inside an otherwise valid JSON string. Keep it as text rather
+        # than rejecting the complete verification response.
+        repaired = re.sub(r"\\u(?![0-9a-fA-F]{4})", r"\\\\u", raw)
+        repaired = re.sub(r'\\(?!["\\/bfnrtu])', r"\\\\", repaired)
+        return json.loads(repaired)
 
 
 def call_ollama(model, prompt, timeout=120, num_predict=None):
