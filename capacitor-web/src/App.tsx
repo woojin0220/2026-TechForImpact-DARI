@@ -4,6 +4,7 @@ import { applicationSteps, type FormField } from './form/schema';
 import { localize } from './form/localize';
 import { buildReview, isVisible } from './form/model';
 import { translateAnswers } from './form/translateAnswers';
+import { createRussianDemoAnswers, demoScenarioNotice } from './form/demoAnswers';
 import type { Answers, DraftEntry, FieldAnswer, LanguageOption, VerificationModel, VerificationReport } from './types';
 
 const languages: LanguageOption[] = [
@@ -59,15 +60,20 @@ function App() {
     setAnswers((current) => ({ ...current, [fieldId]: answer }));
   }
 
-  async function finishWriting() {
+  async function finishWriting(
+    answersToTranslate = answers,
+    sourceLanguage = language.code,
+    notApplicable = language.notApplicable,
+    translationModel = model,
+  ) {
     setError('');
     setStage('translating');
     setProgress({ done: 0, total: 0, label: '' });
     try {
-      const rendered = await translateAnswers(model, language.code, language.notApplicable, answers, (done, total, label) => {
+      const rendered = await translateAnswers(translationModel, sourceLanguage, notApplicable, answersToTranslate, (done, total, label) => {
         setProgress({ done, total, label });
       });
-      const nextDrafts = buildReview(answers, rendered);
+      const nextDrafts = buildReview(answersToTranslate, rendered);
       setDrafts(nextDrafts);
       const prose = nextDrafts.filter((item) => item.verify);
       setSourceText(redactForPrototype(prose.map((item) => `[${item.questionNumber}]\n${item.source}`).join('\n\n')));
@@ -77,6 +83,17 @@ function App() {
       setError(caught instanceof Error ? caught.message : '번역 중 오류가 발생했습니다.');
       setStage('writing');
     }
+  }
+
+  function startRussianDemo() {
+    const demoAnswers = createRussianDemoAnswers();
+    const demoModel = 'llama3.2:3b';
+    setLanguageCode('ru');
+    setModel(demoModel);
+    setAnswers(demoAnswers);
+    setStepId(applicationSteps[0].id);
+    setReport(null);
+    void finishWriting(demoAnswers, 'ru', languages[0].notApplicable, demoModel);
   }
 
   async function runVerification() {
@@ -125,6 +142,8 @@ function App() {
         <label>답변 언어<select value={languageCode} onChange={(event) => setLanguageCode(event.target.value)}>{languages.map((item) => <option value={item.code} key={item.code}>{item.label} · {item.answerLabel}</option>)}</select></label>
         <label>{isOnDeviceTranslationAvailable() ? '검증 모델' : '번역·검증 모델'}<select value={model} onChange={(event) => setModel(event.target.value)}>{models.map((item) => <option value={item.model} key={item.model}>{item.name} · {item.detail}</option>)}</select></label>
         <button onClick={() => { setError(''); setStage('writing'); }}>문항 작성 시작</button>
+        <button className="secondary" onClick={startRussianDemo}>러시아어 예시로 채우고 번역</button>
+        <p className="hint">{demoScenarioNotice} 모든 기본 문항을 채우고, 조건부 문항은 하나의 일관된 예시 경로로 채웁니다.</p>
       </section>}
 
       {stage === 'writing' && <section className="card">
@@ -147,7 +166,7 @@ function App() {
           <button className="secondary" disabled={stepIndex === 0} onClick={() => setStepId(applicationSteps[stepIndex - 1].id)}>이전</button>
           {stepIndex < applicationSteps.length - 1
             ? <button onClick={() => setStepId(applicationSteps[stepIndex + 1].id)}>다음 문항</button>
-            : <button onClick={finishWriting}>작성 완료 후 한 번에 번역</button>}
+            : <button onClick={() => void finishWriting()}>작성 완료 후 한 번에 번역</button>}
         </div>
       </section>}
 

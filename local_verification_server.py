@@ -56,6 +56,45 @@ Input:
     return {"translation": translation}
 
 
+def translate_batch(payload):
+    model = payload.get("model", "qwen3:4b")
+    source_language = str(payload.get("source_language", "unknown"))
+    target_language = str(payload.get("target_language", ""))
+    items = payload.get("items", [])
+    if target_language not in {"en", "ko"}:
+        raise ValueError("영어 또는 한국어 번역만 지원합니다.")
+    if not isinstance(items, list) or not 1 <= len(items) <= 4:
+        raise ValueError("묶음 번역은 1~4개 항목만 지원합니다.")
+    normalized = []
+    for item in items:
+        identifier = str(item.get("id", "")).strip()
+        text = str(item.get("text", "")).strip()
+        if not identifier or not text or len(text) > 3500:
+            raise ValueError("묶음 번역 항목을 확인해 주세요.")
+        normalized.append({"id": identifier, "text": text})
+    prompt = f'''You are a translation engine. Translate every item from {source_language} to {target_language}.
+Preserve every fact, name, number, date, uncertainty, negation, and paragraph break. Do not add, omit, explain, summarize, or give legal advice.
+Return JSON only in this exact shape: {{"items":[{{"id":"original id","translation":"translated text"}}]}}.
+Keep every id exactly unchanged and return one item for each input item.
+
+Input:
+{json.dumps(normalized, ensure_ascii=False)}'''
+    result = call_ollama(model, prompt)
+    translated = result.get("items", [])
+    if not isinstance(translated, list):
+        raise ValueError("모델이 묶음 번역 결과를 반환하지 않았습니다.")
+    output = []
+    expected = {item["id"] for item in normalized}
+    for item in translated:
+        identifier = str(item.get("id", "")).strip()
+        text = str(item.get("translation", "")).strip()
+        if identifier in expected and text:
+            output.append({"id": identifier, "translation": text})
+    if {item["id"] for item in output} != expected:
+        raise ValueError("모델이 묶음 번역의 일부 항목을 반환하지 않았습니다.")
+    return {"items": output}
+
+
 def ask_model(payload):
     model = payload.get("model")
     if model not in ALLOWED_MODELS:
@@ -127,7 +166,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(200, {
             "status": "ok",
             "service": "DARI local translation and verification server",
-            "endpoints": ["POST /v1/translate", "POST /v1/translation/verify"],
+            "endpoints": ["POST /v1/translate", "POST /v1/translate/batch", "POST /v1/translation/verify"],
             "note": "개발 컴퓨터에서만 사용하는 로컬 서버입니다.",
         })
 
@@ -142,6 +181,8 @@ class Handler(BaseHTTPRequestHandler):
                 result = ask_model(payload)
             elif self.path == "/v1/translate":
                 result = translate(payload)
+            elif self.path == "/v1/translate/batch":
+                result = translate_batch(payload)
             else:
                 self.send_json(404, {"error": "존재하지 않는 API 경로입니다."})
                 return
