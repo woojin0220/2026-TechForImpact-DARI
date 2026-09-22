@@ -198,4 +198,4 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     print("DARI local verification server: http://127.0.0.1:8765")
-    ThreadingHTTPServer(("127.0.0.1", 8765), Handler).serve_forever()
+    ThreadingHTTPServer(("0.0.0.0", 8765), Handler).serve_forever()
