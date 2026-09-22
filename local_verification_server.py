@@ -22,15 +22,18 @@ def parse_model_json(model_response):
     return json.loads(model_response.get("response") or model_response.get("thinking") or "{}")
 
 
-def call_ollama(model, prompt):
+def call_ollama(model, prompt, timeout=120, num_predict=None):
     if model not in ALLOWED_MODELS:
         raise ValueError("허용되지 않은 모델입니다.")
+    options = {"temperature": 0}
+    if num_predict is not None:
+        options["num_predict"] = num_predict
     request_body = json.dumps({
         "model": model, "prompt": prompt, "stream": False,
-        "format": "json", "options": {"temperature": 0},
+        "format": "json", "options": options,
     }).encode()
     request = Request(OLLAMA_URL, data=request_body, headers={"Content-Type": "application/json"}, method="POST")
-    with urlopen(request, timeout=120) as response:
+    with urlopen(request, timeout=timeout) as response:
         return parse_model_json(json.load(response))
 
 
@@ -125,7 +128,9 @@ Source statement:
 English translation:
 {payload.get("translation_text", "")}
 '''
-    result = call_ollama(model, prompt)
+    # Verification has a larger prompt than translation. Limit the report size
+    # and allow the local model additional time to finish the structured result.
+    result = call_ollama(model, prompt, timeout=300, num_predict=900)
     distortions = result.get("distortions", [])
     if not isinstance(distortions, list):
         distortions = []
