@@ -1,9 +1,11 @@
 import { Capacitor } from '@capacitor/core';
 import type { VerificationReport } from '../types';
 import { MlKitTranslation } from './mlKitTranslation';
+import { demoVerificationReport, translateDemoText } from './demoData';
 
-const nativeAndroid =
-  Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
+const nativePlatform = Capacitor.isNativePlatform();
+const nativeAndroid = nativePlatform && Capacitor.getPlatform() === 'android';
+const demoMode = !nativePlatform && import.meta.env.VITE_DARI_DEMO_MODE !== 'false';
 const browserHost = window.location.hostname === '127.0.0.1' ? '127.0.0.1' : 'localhost';
 const defaultApiUrl = nativeAndroid ? 'http://10.0.2.2:8765' : `http://${browserHost}:8765`;
 const API_URL = (import.meta.env.VITE_DARI_API_URL ?? defaultApiUrl).replace(/\/$/, '');
@@ -39,10 +41,23 @@ class MlKitTranslationProvider implements TranslationProvider {
   }
 }
 
-export const translationProvider: TranslationProvider = new MlKitTranslationProvider();
+class DemoTranslationProvider implements TranslationProvider {
+  async translate(text: string, _sourceLanguage: string, targetLanguage: string): Promise<string> {
+    await new Promise((resolve) => window.setTimeout(resolve, 450));
+    return translateDemoText(text, targetLanguage);
+  }
+}
+
+export const translationProvider: TranslationProvider = demoMode
+  ? new DemoTranslationProvider()
+  : new MlKitTranslationProvider();
 
 export function isOnDeviceTranslationAvailable() {
-  return Capacitor.isNativePlatform();
+  return nativePlatform;
+}
+
+export function isDemoMode() {
+  return demoMode;
 }
 
 export function verifyTranslation(
@@ -51,6 +66,9 @@ export function verifyTranslation(
   source: string,
   translation: string,
 ): Promise<VerificationReport> {
+  if (demoMode) {
+    return new Promise((resolve) => window.setTimeout(() => resolve(demoVerificationReport), 700));
+  }
   return request<{ distortion_found: boolean; summary: string; distortions: VerificationReport['items'] }>('/v1/translation/verify', {
     model,
     source_language: sourceLanguage,

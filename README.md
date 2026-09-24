@@ -61,6 +61,19 @@ Android Studio를 사용해도 되고 Gradle Wrapper로 명령줄에서 빌드�
 
 ## 처음 실행하기
 
+### Vercel 피드백 데모
+
+`capacitor-web/`을 Vercel의 Root Directory로 지정하면 브라우저용 피드백 데모가 빌드됩니다. 이 모드는 외부 API를 호출하지 않으며, 미리 준비한 가상 사례로 번역·마스킹·검증 흐름을 보여 줍니다. 실제 개인정보나 실제 난민 진술을 입력하는 용도가 아닙니다.
+
+```text
+Framework Preset: Vite
+Root Directory: capacitor-web
+Build Command: npm run build
+Output Directory: dist
+```
+
+Preview 배포에서는 별도 환경 변수가 필요하지 않습니다. 브라우저에서 로컬 API를 직접 연결해 개발하려면 `VITE_DARI_DEMO_MODE=false`를 설정해야 합니다.
+
 ### 1. 저장소 받기
 
 ```bash
