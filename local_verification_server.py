@@ -7,16 +7,69 @@ server to a LAN or the public internet with real refugee statements.
 """
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import os
 import re
+import threading
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 ALLOWED_MODELS = {"qwen3:4b", "llama3.2:3b"}
+INTAKE_MODELS = {"gemma4:e4b", "gemma3n:e4b", "qwen3:4b", "llama3.2:3b"}
+INTAKE_LOCK = threading.Lock()
+TRANSLATION_TARGETS = {"en", "ko", "ru", "ar", "fr", "fa"}
+LANGUAGE_NAMES = {"en": "English", "ko": "Korean", "ru": "Russian", "ar": "Arabic", "fr": "French", "fa": "Persian"}
 ALLOWED_ORIGINS = {
     "http://localhost:5173", "http://localhost:4173", "http://localhost",
     "http://127.0.0.1:5188", "https://localhost", "capacitor://localhost",
+    "http://localhost:5188", "http://127.0.0.1:5173",
 }
+
+
+def intake_status():
+    with urlopen("http://127.0.0.1:11434/api/tags", timeout=5) as response:
+        models = json.load(response).get("models", [])
+    return {"mode": "local-preview", "models": [item["name"] for item in models
+            if item.get("name") in INTAKE_MODELS], "busy": INTAKE_LOCK.locked()}
+
+
+def generate_intake(payload):
+    """Development browser adapter. Mobile clients use their native plugin instead."""
+    model = payload.get("model", "gemma4:e4b")
+    task = payload.get("task")
+    system = payload.get("system")
+    prompt = payload.get("prompt")
+    if model not in INTAKE_MODELS or task not in {"intake", "draft"}:
+        raise ValueError("지원하지 않는 모델 또는 작성 작업입니다.")
+    if not isinstance(system, str) or not isinstance(prompt, str) or not prompt.strip():
+        raise ValueError("작성 요청의 지침과 입력을 확인해 주세요.")
+    if len(system) + len(prompt) > 80000:
+        raise ValueError("대화 입력이 너무 깁니다. 문항 범위를 나누어 주세요.")
+    schema = payload.get("responseSchema")
+    if schema is not None and (not isinstance(schema, dict) or len(json.dumps(schema)) > 40000):
+        raise ValueError("응답 형식 정의를 확인해 주세요.")
+    if not INTAKE_LOCK.acquire(blocking=False):
+        raise ValueError("이전 모델 요청을 처리하고 있습니다. 잠시 후 다시 시도해 주세요.")
+    try:
+        body = {"model": model, "stream": False, "format": schema or "json",
+                "messages": [{"role": "system", "content": system},
+                             {"role": "user", "content": prompt}],
+                "options": {"temperature": 0.1, "num_ctx": 16384,
+                            "num_predict": 4096 if task == "draft" else 3072}}
+        if model.startswith(("qwen3", "gemma4")):
+            body["think"] = False
+        request = Request("http://127.0.0.1:11434/api/chat", data=json.dumps(body).encode(),
+                          headers={"Content-Type": "application/json"}, method="POST")
+        with urlopen(request, timeout=300) as response:
+            result = json.load(response)
+        if result.get("done_reason") == "length":
+            raise ValueError("모델 응답이 길이 제한에 도달했습니다. 범위를 좁혀 다시 시도해 주세요.")
+        text = result.get("message", {}).get("content", "").strip()
+        if not text:
+            raise ValueError("모델이 작성 결과를 반환하지 않았습니다.")
+        return {"text": text, "model": model, "mode": "local-preview"}
+    finally:
+        INTAKE_LOCK.release()
 
 
 def parse_model_json(model_response):
@@ -32,16 +85,19 @@ def parse_model_json(model_response):
         return json.loads(repaired)
 
 
-def call_ollama(model, prompt, timeout=120, num_predict=None):
+def call_ollama(model, prompt, timeout=120, num_predict=None, think=None):
     if model not in ALLOWED_MODELS:
         raise ValueError("허용되지 않은 모델입니다.")
     options = {"temperature": 0}
     if num_predict is not None:
         options["num_predict"] = num_predict
-    request_body = json.dumps({
+    body = {
         "model": model, "prompt": prompt, "stream": False,
         "format": "json", "options": options,
-    }).encode()
+    }
+    if think is not None:
+        body["think"] = think
+    request_body = json.dumps(body).encode()
     request = Request(OLLAMA_URL, data=request_body, headers={"Content-Type": "application/json"}, method="POST")
     with urlopen(request, timeout=timeout) as response:
         return parse_model_json(json.load(response))
@@ -54,15 +110,13 @@ def translate(payload):
     text = str(payload.get("text", "")).strip()
     if not text or len(text) > 12000:
         raise ValueError("번역할 텍스트 길이를 확인해 주세요.")
-    if target_language not in {"en", "ko"}:
-        raise ValueError("영어 또는 한국어 번역만 지원합니다.")
-    prompt = f'''You are a translation engine. Translate the input from {source_language} to {target_language}.
-Preserve every fact, name, number, date, uncertainty, negation, tone, and paragraph break. Do not add, omit, explain, summarize, or give legal advice.
-Return JSON only: {{"translation":"translated text"}}.
-
-Input:
-{text}'''
-    result = call_ollama(model, prompt)
+    if target_language not in TRANSLATION_TARGETS:
+        raise ValueError("지원하지 않는 번역 대상 언어입니다.")
+    prompt = (f'Translate {text} from {LANGUAGE_NAMES.get(source_language, source_language)} '
+              f'to {LANGUAGE_NAMES[target_language]}. Preserve names, dates, uncertainty, '
+              'and negation; do not add or omit facts. '
+              'Return JSON only: {"translation":"..."}.')
+    result = call_ollama(model, prompt, think=False)
     translation = str(result.get("translation", "")).strip()
     if not translation:
         raise ValueError("모델이 번역 결과를 반환하지 않았습니다.")
@@ -74,8 +128,8 @@ def translate_batch(payload):
     source_language = str(payload.get("source_language", "unknown"))
     target_language = str(payload.get("target_language", ""))
     items = payload.get("items", [])
-    if target_language not in {"en", "ko"}:
-        raise ValueError("영어 또는 한국어 번역만 지원합니다.")
+    if target_language not in TRANSLATION_TARGETS:
+        raise ValueError("지원하지 않는 번역 대상 언어입니다.")
     if not isinstance(items, list) or not 1 <= len(items) <= 4:
         raise ValueError("묶음 번역은 1~4개 항목만 지원합니다.")
     normalized = []
@@ -92,7 +146,7 @@ Keep every id exactly unchanged and return one item for each input item.
 
 Input:
 {json.dumps(normalized, ensure_ascii=False)}'''
-    result = call_ollama(model, prompt)
+    result = call_ollama(model, prompt, think=False)
     translated = result.get("items", [])
     if not isinstance(translated, list):
         raise ValueError("모델이 묶음 번역 결과를 반환하지 않았습니다.")
@@ -175,6 +229,12 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        if self.path == "/v1/intake/status":
+            try:
+                self.send_json(200, intake_status())
+            except (URLError, HTTPError, TimeoutError) as error:
+                self.send_json(502, {"error": f"Ollama 연결 실패: {error}"})
+            return
         if self.path not in {"/", "/health"}:
             self.send_json(404, {"error": "존재하지 않는 API 경로입니다."})
             return
@@ -188,8 +248,14 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             length = int(self.headers.get("Content-Length", 0))
+            if length <= 0 or length > 1000000:
+                raise ValueError("요청 크기를 확인해 주세요.")
             payload = json.loads(self.rfile.read(length))
-            if self.path == "/v1/translation/verify":
+            if not isinstance(payload, dict):
+                raise ValueError("JSON 객체를 보내 주세요.")
+            if self.path == "/v1/intake/generate":
+                result = generate_intake(payload)
+            elif self.path == "/v1/translation/verify":
                 # Accept both the original Android contract and the web-client contract.
                 payload["source_text"] = payload.get("source_text", payload.get("source", ""))
                 payload["translation_text"] = payload.get("translation_text", payload.get("translation", ""))
@@ -212,5 +278,6 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    print("DARI local verification server: http://127.0.0.1:8765")
-    ThreadingHTTPServer(("0.0.0.0", 8765), Handler).serve_forever()
+    host = os.environ.get("DARI_BIND_HOST", "127.0.0.1")
+    print(f"DARI development server: http://{host}:8765")
+    ThreadingHTTPServer((host, 8765), Handler).serve_forever()

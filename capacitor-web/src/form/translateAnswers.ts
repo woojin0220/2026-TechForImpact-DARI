@@ -17,7 +17,7 @@ export async function translateAnswers(
     rendered[unit.id] = fixed;
     return false;
   });
-  const total = pending.length * 2;
+  const total = pending.length * (sourceLanguage === 'ko' ? 1 : 2);
   let done = 0;
   onProgress(done, total, '');
   if (!pending.length) return rendered;
@@ -26,16 +26,18 @@ export async function translateAnswers(
     done += 1;
     onProgress(done, total, units.find((unit) => unit.id === id)?.label ?? '');
   });
-  const korean = await translateTexts(
-    model,
-    'en',
-    'ko',
-    pending.map((unit) => ({ id: unit.id, text: english[unit.id] })),
-    (id) => {
-      done += 1;
-      onProgress(done, total, units.find((unit) => unit.id === id)?.label ?? '');
-    },
-  );
+  const korean = sourceLanguage === 'ko'
+    ? Object.fromEntries(pending.map((unit) => [unit.id, unit.text]))
+    : await translateTexts(
+      model,
+      'en',
+      'ko',
+      pending.map((unit) => ({ id: unit.id, text: english[unit.id] })),
+      (id) => {
+        done += 1;
+        onProgress(done, total, units.find((unit) => unit.id === id)?.label ?? '');
+      },
+    );
   for (const unit of pending) {
     rendered[unit.id] = { english: english[unit.id], korean: korean[unit.id], machine: true };
   }

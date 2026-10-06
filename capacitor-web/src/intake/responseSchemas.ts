@@ -1,0 +1,52 @@
+const nonempty = { type: 'string', minLength: 1 };
+const strings = { type: 'array', minItems: 1, items: nonempty };
+const strictObject = (properties: Record<string, unknown>, required = Object.keys(properties)) => ({
+  type: 'object', additionalProperties: false, properties, required,
+});
+
+export function intakeResponseSchema(requirementIds: string[], sources: { id: string; content: string }[], activeFactIds: string[]): Record<string, unknown> {
+  const quoteSchemas = sources.map(source => {
+    const sentences = source.content.match(/[^.!?。！？\n]+[.!?。！？]?/g)?.map(sentence => sentence.trim()).filter(Boolean) ?? [];
+    return strictObject({
+      sourceId: { type: 'string', enum: [source.id] },
+      quote: { type: 'string', enum: [...new Set([...sentences, source.content])] },
+    });
+  });
+  return strictObject({
+    reply: nonempty,
+    facts: {
+      type: 'array', maxItems: 60,
+      items: strictObject({
+        requirementId: { type: 'string', enum: requirementIds },
+        value: { anyOf: [nonempty, strings] },
+        status: { type: 'string', enum: ['answered', 'unknown', 'skipped', 'not_applicable', 'conflict'] },
+        certainty: { type: 'string', enum: ['exact', 'approximate', 'uncertain'] },
+        knowledge: { type: 'string', enum: ['direct', 'heard', 'inferred', 'unspecified'] },
+        sourceIds: { type: 'array', minItems: 1, items: { type: 'string', enum: sources.map(source => source.id) } },
+        sourceQuotes: { type: 'array', minItems: 1, items: { anyOf: quoteSchemas } },
+        eventId: nonempty,
+        supersedes: activeFactIds.length
+          ? { type: 'array', items: { type: 'string', enum: activeFactIds } }
+          : { type: 'array', maxItems: 0, items: nonempty },
+      }, ['requirementId', 'value', 'status', 'certainty', 'knowledge', 'sourceIds', 'sourceQuotes', 'eventId', 'supersedes']),
+    },
+  });
+}
+
+export function routingResponseSchema(requirementIds: string[]): Record<string, unknown> {
+  return strictObject({ requirementIds: { type: 'array', minItems: 1, maxItems: 6, items: { type: 'string', enum: requirementIds } } });
+}
+
+export function draftResponseSchema(questionId: string, factIds: string[], sourceIds: string[]): Record<string, unknown> {
+  return strictObject({ sections: {
+    type: 'array', minItems: 1, maxItems: 1,
+    items: strictObject({
+      questionId: { type: 'string', enum: [questionId] },
+      sentences: { type: 'array', minItems: 1, maxItems: 100, items: strictObject({
+        text: nonempty,
+        factIds: { type: 'array', minItems: 1, items: { type: 'string', enum: factIds } },
+        sourceIds: { type: 'array', minItems: 1, items: { type: 'string', enum: sourceIds } },
+      }) },
+    }),
+  } });
+}
