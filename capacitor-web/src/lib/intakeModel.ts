@@ -7,6 +7,7 @@ export type IntakeRuntimeStatus = {
   available: boolean;
   modelReady: boolean;
   modelName?: string;
+  backend?: string;
   busy?: boolean;
   reason?: string;
   models?: string[];
@@ -57,6 +58,23 @@ export async function cancelIntakeGeneration(): Promise<void> {
   if (Capacitor.isNativePlatform()) await native.cancel();
 }
 
+const pause = (ms: number, signal?: AbortSignal) => new Promise<void>((resolve, reject) => {
+  const timer = setTimeout(resolve, ms);
+  signal?.addEventListener('abort', () => { clearTimeout(timer); reject(new DOMException('요청을 취소했습니다.', 'AbortError')); }, { once: true });
+});
+
+/** A request that timed out on this side may still be running in the model.
+ * Wait until it finishes (up to ~5.5 minutes) instead of failing with "busy". */
+async function waitUntilIdle(isBusy: () => Promise<boolean>, signal?: AbortSignal) {
+  const until = Date.now() + 330000;
+  while (Date.now() < until) {
+    if (!(await isBusy().catch(() => false))) return;
+    await pause(2000, signal);
+  }
+}
+const serverBusy = async () => (await (await fetch(`${INTAKE_API_URL}/v1/intake/status`, { signal: AbortSignal.timeout(7000) })).json()).busy === true;
+const isBusyError = (error: unknown) => /이전 모델 요청|BUSY|작업 중/.test(error instanceof Error ? `${error.message} ${(error as { code?: string }).code ?? ''}` : String(error));
+
 export async function generateIntakeModel(request: {
   task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown>;
 }): Promise<string> {
@@ -65,14 +83,29 @@ export async function generateIntakeModel(request: {
     const cancel = () => { void native.cancel().catch(() => {}); };
     request.signal?.addEventListener('abort', cancel, { once: true });
     try {
-      const result = await native.generate({ system: request.system, prompt: request.prompt,
-        maxTokens: request.task === 'draft' ? 4096 : 3072, temperature: 0.1 });
+      const options = { system: request.system, prompt: request.prompt, maxTokens: request.task === 'draft' ? 4096 : 3072, temperature: 0.1 };
+      let result: { text: string };
+      try { result = await native.generate(options); }
+      catch (error) {
+        if (!isBusyError(error)) throw error;
+        await waitUntilIdle(async () => (await native.getStatus()).busy === true, request.signal);
+        result = await native.generate(options);
+      }
       if (request.signal?.aborted) throw new DOMException('요청을 취소했습니다.', 'AbortError');
       if (!result.text?.trim()) throw new Error('기기 모델이 빈 응답을 반환했습니다.');
       return result.text;
     } finally { request.signal?.removeEventListener('abort', cancel); }
   }
   if (activeController) throw new Error('이전 요청을 처리하고 있습니다.');
+  try { return await previewGenerate(request); }
+  catch (error) {
+    if (!isBusyError(error) || request.signal?.aborted) throw error;
+    await waitUntilIdle(serverBusy, request.signal);
+    return previewGenerate(request);
+  }
+}
+
+async function previewGenerate(request: { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown> }): Promise<string> {
   const controller = new AbortController();
   activeController = controller;
   const cancel = () => controller.abort();

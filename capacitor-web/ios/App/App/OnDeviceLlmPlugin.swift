@@ -34,6 +34,7 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
          "modelReady": FileManager.default.fileExists(atPath: modelURL.path),
          "modelPath": modelURL.path,
          "modelName": UserDefaults.standard.string(forKey: "dari.modelName") ?? "",
+         "backend": UserDefaults.standard.string(forKey: "dari.backend") ?? "",
          "busy": withLock { busy }]
     }
     @objc func getStatus(_ call: CAPPluginCall) { call.resolve(status()) }
@@ -103,11 +104,21 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
             defer { self.withLock { self.activeConversation = nil; self.busy = false } }
             do {
                 if self.engine == nil {
-                    let config = try EngineConfig(modelPath: self.modelURL.path, backend: .gpu,
-                                                  maxNumTokens: 16384, cacheDir: NSTemporaryDirectory())
-                    let candidate = Engine(engineConfig: config)
-                    try await candidate.initialize()
-                    self.engine = candidate
+                    // The iOS Metal accelerator may be unavailable in this runtime build;
+                    // fall back to CPU instead of failing outright.
+                    var lastError: Error?
+                    for backend in [Backend.gpu, Backend.cpu()] {
+                        do {
+                            let config = try EngineConfig(modelPath: self.modelURL.path, backend: backend,
+                                                          maxNumTokens: 16384, cacheDir: NSTemporaryDirectory())
+                            let candidate = Engine(engineConfig: config)
+                            try await candidate.initialize()
+                            self.engine = candidate
+                            UserDefaults.standard.set(backend.rawValue, forKey: "dari.backend")
+                            break
+                        } catch { lastError = error }
+                    }
+                    if self.engine == nil { throw lastError ?? CancellationError() }
                 }
                 guard !self.withLock({ self.cancelled }) else { throw CancellationError() }
                 let sampler = try SamplerConfig(topK: 40, topP: 0.95,

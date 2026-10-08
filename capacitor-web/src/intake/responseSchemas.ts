@@ -42,8 +42,9 @@ export function draftResponseSchema(questionId: string, factIds: string[], sourc
     type: 'array', minItems: 1, maxItems: 1,
     items: strictObject({
       questionId: { type: 'string', enum: [questionId] },
-      sentences: { type: 'array', minItems: 1, maxItems: 100, items: strictObject({
-        text: nonempty,
+      // Bounded so a small model cannot loop on sentences until the output limit.
+      sentences: { type: 'array', minItems: 1, maxItems: 20, items: strictObject({
+        text: { type: 'string', minLength: 1, maxLength: 400 },
         factIds: { type: 'array', minItems: 1, items: { type: 'string', enum: factIds } },
         sourceIds: { type: 'array', minItems: 1, items: { type: 'string', enum: sourceIds } },
       }) },

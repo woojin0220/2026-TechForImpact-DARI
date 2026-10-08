@@ -6,6 +6,7 @@ export interface OnDeviceLlmStatus {
   modelReady: boolean
   modelName?: string
   modelPath?: string
+  backend?: string
   busy?: boolean
   reason?: string
 }

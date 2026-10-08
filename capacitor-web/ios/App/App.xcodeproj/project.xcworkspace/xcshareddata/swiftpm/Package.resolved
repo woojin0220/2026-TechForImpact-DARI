@@ -1,0 +1,24 @@
+{
+  "originHash" : "450928d68e98089e979c1022eb76ad1e5481082ebfc42cd618e99d743ecc5d5f",
+  "pins" : [
+    {
+      "identity" : "capacitor-swift-pm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ionic-team/capacitor-swift-pm.git",
+      "state" : {
+        "revision" : "0b6882e9a3288342aacf36348e5a94e4f1dd7b13",
+        "version" : "8.5.2"
+      }
+    },
+    {
+      "identity" : "litert-lm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google-ai-edge/LiteRT-LM",
+      "state" : {
+        "revision" : "5e58e9a0aef7abf7091207a8b1d1063a1c800f08",
+        "version" : "0.17.1"
+      }
+    }
+  ],
+  "version" : 3
+}

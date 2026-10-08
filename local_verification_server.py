@@ -7,7 +7,6 @@ server to a LAN or the public internet with real refugee statements.
 """
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
-import os
 import re
 import threading
 from urllib.request import Request, urlopen
@@ -278,6 +277,5 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    host = os.environ.get("DARI_BIND_HOST", "127.0.0.1")
-    print(f"DARI development server: http://{host}:8765")
-    ThreadingHTTPServer((host, 8765), Handler).serve_forever()
+    print("DARI development server: http://127.0.0.1:8765")
+    ThreadingHTTPServer(("127.0.0.1", 8765), Handler).serve_forever()
