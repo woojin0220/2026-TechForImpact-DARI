@@ -1,5 +1,5 @@
 import { applicationSteps, type FormField, type FormStep } from '../form/schema.ts';
-import { calculateCoverage, getActiveFacts } from './index.ts';
+import { calculateCoverage, getActiveFacts, invalidateDraft, nextFactId } from './index.ts';
 import { isFormSection, requirementsById } from './catalog.ts';
 import type { FactStatus, IntakeFact, IntakeSession } from './types.ts';
 
@@ -99,7 +99,7 @@ export function applyFormAnswers(session: IntakeSession, answers: FormAnswers): 
     const existing = current.get(key(item.requirementId, item.eventId));
     if (existing && existing.status === item.status && JSON.stringify(existing.value) === JSON.stringify(item.value)) { kept.add(existing.id); continue; }
     added.push({
-      id: `fact-${session.facts.length + added.length + 1}`, requirementId: item.requirementId, value: item.value,
+      id: nextFactId([...session.facts, ...added]), requirementId: item.requirementId, value: item.value,
       sourceIds: [FORM_SOURCE_ID], sourceQuotes: [{ sourceId: FORM_SOURCE_ID, quote: item.quote }],
       status: item.status, certainty: 'exact', knowledge: 'unspecified',
       eventId: requirementsById.get(item.requirementId)?.repeatable ? item.eventId : undefined,
@@ -108,7 +108,7 @@ export function applyFormAnswers(session: IntakeSession, answers: FormAnswers): 
     if (existing) kept.add(existing.id);
   }
   const withdrawn = active.filter(fact => !kept.has(fact.id)).map(fact => fact.id);
-  const next = { ...session, form: answers, facts: [...session.facts, ...added], withdrawnFacts: [...session.withdrawnFacts, ...withdrawn], updatedAt: new Date().toISOString() };
+  const next = { ...(added.length || withdrawn.length ? invalidateDraft(session) : session), form: answers, facts: [...session.facts, ...added], withdrawnFacts: [...session.withdrawnFacts, ...withdrawn], updatedAt: new Date().toISOString() };
   return { ...next, coverage: calculateCoverage(next) };
 }
 

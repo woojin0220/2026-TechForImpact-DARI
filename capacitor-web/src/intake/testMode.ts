@@ -1,0 +1,3 @@
+/** Deliberately short, synthetic workflow; never a complete application. */
+export const testOpening = 'Please tell me, in your own words, what led you to seek protection and what you are worried about. You do not need to follow a form or remember every detail. I may ask a short follow-up about information that is missing.';
+export const testStory = 'This is a fictional account for testing. After I attended a peaceful demonstration, two people wearing police uniforms came to my home and told me not to attend again. I was not assaulted or detained. I fear they may threaten me again if I return, but I do not know which organization they belonged to.';

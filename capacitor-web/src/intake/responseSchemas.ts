@@ -37,7 +37,7 @@ export function routingResponseSchema(requirementIds: string[]): Record<string, 
   return strictObject({ requirementIds: { type: 'array', minItems: 1, maxItems: 6, items: { type: 'string', enum: requirementIds } } });
 }
 
-export function draftResponseSchema(questionId: string, factIds: string[], sourceIds: string[]): Record<string, unknown> {
+export function draftResponseSchema(questionId: string, factIds: string[]): Record<string, unknown> {
   return strictObject({ sections: {
     type: 'array', minItems: 1, maxItems: 1,
     items: strictObject({
@@ -46,7 +46,6 @@ export function draftResponseSchema(questionId: string, factIds: string[], sourc
       sentences: { type: 'array', minItems: 1, maxItems: 20, items: strictObject({
         text: { type: 'string', minLength: 1, maxLength: 400 },
         factIds: { type: 'array', minItems: 1, items: { type: 'string', enum: factIds } },
-        sourceIds: { type: 'array', minItems: 1, items: { type: 'string', enum: sourceIds } },
       }) },
     }),
   } });

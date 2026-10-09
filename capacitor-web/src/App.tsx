@@ -4,6 +4,14 @@ import { cancelIntakeGeneration, generateIntakeModel, getIntakeRuntimeStatus, ge
 import { intakeCopies, intakeFieldLabels, intakeLanguages, intakeProcessCopy, scriptedCopy } from './intakeCopy';
 import { hasQuestionPhrase, localize } from './form/localize';
 import { FieldInput, FormStage, formPageOf } from './FormStage';
+import { invalidateDraft } from './intake';
+import { EnglishMeaning } from './revision/EnglishMeaning';
+import { SentenceReview } from './revision/SentenceReview';
+import { EditorModal } from './revision/EditorModal';
+import { saveDraftReview } from './revision/pipeline';
+import { testOpening } from './intake/testMode';
+import { exampleAnswerRequest, parseExampleAnswer } from './intake/exampleAnswer';
+import { generateReviewModel } from './revision/queue';
 
 type Stage = 'language' | 'basics' | 'form' | 'conversation' | 'facts' | 'draft';
 type Output = 'draft' | 'source' | 'metadata';
@@ -32,15 +40,17 @@ export default function App() {
   const [input, setInput] = useState('');
   const [picked, setPicked] = useState<string[]>([]);
   const [busy, setBusy] = useState<'intake' | 'draft' | null>(null);
+  const [generatingExample, setGeneratingExample] = useState(false);
   const [elapsed, setElapsed] = useState(0);
   const [error, setError] = useState('');
   const [retryTask, setRetryTask] = useState<'intake' | 'draft' | null>(null);
   const [runtime, setRuntime] = useState<IntakeRuntimeStatus | null>(null);
   const [model, setModel] = useState(getPreviewModel());
-  const [scope, setScope] = useState<'priority' | 'full'>('full');
+  const [scope, setScope] = useState<'priority' | 'full' | 'test'>('full');
   const [demo, setDemo] = useState(false);
   const [reviewed, setReviewed] = useState(false);
   const [output, setOutput] = useState<Output>('draft');
+  const [editingField, setEditingField] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [sourceIds, setSourceIds] = useState<string[]>([]);
   const [importing, setImporting] = useState(false);
@@ -67,10 +77,11 @@ export default function App() {
   // Question 14 boxes are derived from metadata; other undrafted facts are shown as entered.
   const formFacts = facts.filter(fact => fact.status !== 'conflict' && !draftedQuestions.has(requirementsById.get(fact.requirementId)?.questionId ?? '') && !requirementsById.get(fact.requirementId)?.questionId.startsWith('14'));
   const derived14 = deriveQuestion14(session);
-  const steps: { id: Stage; label: string }[] = [{ id: 'basics', label: copy.basics }, { id: 'form', label: sc.formStep }, { id: 'conversation', label: copy.conversation }, { id: 'facts', label: copy.facts }, { id: 'draft', label: copy.draft }];
+  const steps: { id: Stage; label: string }[] = [{ id: 'basics', label: copy.basics }, ...(session.scope === 'test' ? [] : [{ id: 'form' as Stage, label: sc.formStep }]), { id: 'conversation', label: copy.conversation }, { id: 'facts', label: copy.facts }, { id: 'draft', label: copy.draft }];
   const stepIndex = Math.max(0, steps.findIndex(item => item.id === stage));
 
   useEffect(() => { document.documentElement.lang = language; document.documentElement.dir = direction; }, [language, direction]);
+  useEffect(() => { if (session.scope === 'test' && language !== 'en') setLanguage('en'); }, [session.scope, language]);
   useEffect(() => { void refreshRuntime(); }, []);
   // Guided question 14 conversation: when the next topic needs a question, ask the model once.
   const guidedAt = useRef(-1);
@@ -182,10 +193,10 @@ export default function App() {
   const answers14 = session.question14 ?? {};
   const sectionsByField = new Map(session.draft.map(section => [narrativeFieldFor(section.questionId, answers14), section]));
   function updateQuestion14(id: string, value: FormValue | undefined) {
-    setSession(current => { const next = { ...(current.question14 ?? {}) }; if (value) next[id] = value; else delete next[id]; return { ...current, question14: next }; });
+    setSession(current => { const next = { ...(current.question14 ?? {}) }; if (value) next[id] = value; else delete next[id]; const reviews = { ...current.draftReviews }; delete reviews[id]; return { ...current, question14: next, draftReviews: reviews }; });
   }
   function question14Text() {
-    return question14Steps.flatMap(step => step.fields.filter(field => isFieldVisible(field, answers14) && answers14[field.id])
+    return (session.scope === 'test' ? 'Conversation test only — not for submission.\n\n' : '') + question14Steps.flatMap(step => step.fields.filter(field => isFieldVisible(field, answers14) && answers14[field.id])
       .map(field => `${field.id} ${field.ko}\n${formatFormAnswer(field, answers14[field.id])}`)).join('\n\n');
   }
   function formValuesText() {
@@ -204,7 +215,7 @@ export default function App() {
   function selectLanguage(code: string) {
     setLanguage(code);
     if (!session.messages.some(item => item.role === 'user')) setSession(createSession(code, scope));
-    else setSession(current => ({ ...current, language: code }));
+    else setSession(current => ({ ...current, language: current.scope === 'test' ? 'en' : code }));
     setStage('basics');
   }
   async function run(next: IntakeSession, task: 'intake' | 'draft') {
@@ -217,6 +228,7 @@ export default function App() {
         : await generateDraft(next, generateIntakeModel, abort.signal);
       if (abort.signal.aborted) return;
       setSession(task === 'intake' ? sync(result) : result);
+      if (task === 'intake' && result.scope === 'test' && nextStep(result).kind === 'done') setStageRaw('facts');
       if (task === 'draft') { setOutput('draft'); setStage('draft'); }
     } catch (failure) {
       if (failure instanceof IntakeError) setSession(failure.session);
@@ -248,6 +260,21 @@ export default function App() {
     } catch (failure) { setError(failure instanceof Error ? failure.message : String(failure)); }
   }
   function start() { setStage(scope === 'full' ? 'form' : 'conversation'); }
+  function startQuickTest() {
+    setLanguage('en'); setScope('test'); setDemo(false); setReviewed(false); setInput(''); setError(''); setRetryTask(null);
+    setSession(appendAssistantMessage(createSession('en', 'test'), testOpening, { kind: 'narrative' })); setStageRaw('conversation');
+  }
+  async function generateExample() {
+    if (busy || controller.current || input.trim() || session.scope !== 'test') return;
+    const abort = new AbortController(); controller.current = abort;
+    setBusy('intake'); setGeneratingExample(true); setError(''); setRetryTask(null);
+    try {
+      const answer = parseExampleAnswer(await generateReviewModel({ ...exampleAnswerRequest(session), signal: abort.signal }));
+      if (!abort.signal.aborted) { setInput(answer); setDemo(true); }
+    } catch (failure) {
+      if (!abort.signal.aborted) setError('Could not generate an example answer. ' + String(failure));
+    } finally { controller.current = null; setBusy(null); setGeneratingExample(false); }
+  }
   async function stop() {
     controller.current?.abort();
     try { await cancelIntakeGeneration(); } catch (failure) { setError(String(failure)); }
@@ -276,6 +303,7 @@ export default function App() {
 
   if (stage === 'language') return <div className="language-entry"><div className="language-entry-content">
     <h1 className="entry-logo" lang="en" dir="ltr">DARI</h1>
+    {!started && !Object.keys(session.form).length && <button className="secondary" onClick={startQuickTest}>Conversation test · English → Korean</button>}
     <nav className="language-scroll" aria-label="Language / 언어">{intakeLanguages.map(item => <button className="language-option" lang={item.code} dir="auto" key={item.code} onClick={() => selectLanguage(item.code)}>{item.name}</button>)}</nav>
   </div></div>;
 
@@ -288,14 +316,15 @@ export default function App() {
         <p className="eyebrow">{String(stepIndex + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')} · {steps[stepIndex].label}</p>
         <h1>{stage === 'form' ? sc.formTitle : stage === 'basics' ? copy.startTitle : stage === 'conversation' ? copy.chatTitle : stage === 'facts' ? copy.factsTitle : copy.draftTitle}</h1>
         <p className="intro">{stage === 'form' ? sc.formIntro : stage === 'basics' ? copy.startIntro : stage === 'conversation' ? copy.chatIntro : stage === 'facts' ? copy.factsIntro : copy.draftIntro}</p>
-        {demo && <div className="notice"><b>{copy.demo}</b> · {copy.demoNotice}</div>}
-        {busy && <div className="notice busy-notice"><p role="status">{processCopy[busy]}</p><small aria-live="off">{processCopy.elapsed} · <span dir="ltr">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span></small></div>}
+        {stage === 'basics' && !started && !Object.keys(session.form).length && <button className="secondary" onClick={startQuickTest}>Try a short conversation</button>}
+        {stage === 'conversation' && session.scope === 'test' && <div className="actions test-actions"><span>Short test</span><button className="secondary" disabled={!!busy || !!input.trim() || session.messages.at(-1)?.role !== 'assistant' || session.messages.at(-1)?.ask?.kind === 'done'} onClick={() => void generateExample()}>{generatingExample ? 'Generating a fictional answer…' : 'Generate an example'}</button><button className="secondary" disabled={!!busy} onClick={() => { setSession(current => finishNarrative({ ...current, narrativeDone: true })); setStage('facts'); }}>Finish</button></div>}
+        {busy && <div className="notice busy-notice"><p role="status">{generatingExample ? 'Generating a fictional example. It will be placed in the input box, not sent automatically.' : processCopy[busy]}</p><small aria-live="off">{processCopy.elapsed} · <span dir="ltr">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')}</span></small></div>}
         {error && <div className="notice error" role="alert"><p>{error}</p>{retryTask && <div className="actions"><button className="secondary" disabled={!!busy} onClick={() => void run(session, retryTask)}>{copy.retry}</button></div>}</div>}
         {runtime && (!runtime.available || !runtime.modelReady) && (narrativeOpened || stage === 'facts') && <div className="notice"><p>{copy.unavailable}</p><button className="quiet" onClick={openOperator}>Operator / 운영자</button></div>}
         {stage === 'basics' && <div className="content-grid"><section className="start-panel">{started && <p className="micro">{copy.factsIntro}</p>}<div className="actions" style={started ? undefined : { marginTop: 0 }}><button className="primary full" onClick={start}>{started ? copy.continue : copy.start}<span aria-hidden="true">{direction === 'rtl' ? '←' : '→'}</span></button></div></section><aside className="support-card"><h2>{copy.pace}</h2><p>{copy.chatIntro}</p><p className="micro">{copy.memory}</p></aside></div>}
         {stage === 'form' && <FormStage language={language} answers={session.form} page={formPage} copy={sc} back={copy.back} next={copy.continue}
-          onChange={form => setSession(current => ({ ...current, form }))} onPage={setFormPage} onDone={() => setStage('conversation')} />}
-        {stage === 'conversation' && <div className="content-grid"><div><section className="panel chat-panel"><div className="chat-toolbar"><button className="chat-chip" disabled={!!busy} onClick={() => setStage('facts')}>{copy.review} <span dir="ltr">{progress.answered}/{progress.total}</span></button>{inNarrative && session.narrativeDone && !busy && <button className="chat-chip" onClick={() => setSession(sync(finishNarrative(session)))}>{sc.finishTopic}</button>}</div><div className="chat-thread" ref={thread} role="log" aria-label={copy.conversation} aria-live="polite">{session.messages.map(message => <article className={`chat-message ${message.role}`} key={message.id}><small className="sr-only">{message.role === 'assistant' ? 'DARI' : copy.input}</small><p dir="auto">{message.content}</p></article>)}{busy && <div className="chat-message pending" role="status"><span className="spinner" />{busy === 'draft' ? copy.drafting : copy.thinking}</div>}</div>{ask && (ask.kind !== 'field' || askRequirement?.options) && <div className="answer-choices">
+          onChange={form => { setReviewed(false); setSession(current => ({ ...invalidateDraft(current), form })); }} onPage={setFormPage} onDone={() => setStage('conversation')} />}
+        {stage === 'conversation' && <div className="content-grid"><div><section className="panel chat-panel"><div className="chat-toolbar"><button className="chat-chip" disabled={!!busy} onClick={() => setStage('facts')}>{copy.review} <span dir="ltr">{progress.answered}/{progress.total}</span></button>{inNarrative && session.narrativeDone && !busy && <button className="chat-chip" onClick={() => setSession(sync(finishNarrative(session)))}>{sc.finishTopic}</button>}</div><div className="chat-thread" ref={thread} role="log" aria-label={copy.conversation} aria-live="polite">{session.messages.map(message => <article className={`chat-message ${message.role}`} key={message.id}><small className="sr-only">{message.role === 'assistant' ? 'DARI' : copy.input}</small><p dir="auto">{message.content}</p></article>)}{busy && <div className="chat-message pending" role="status"><span className="spinner" />{generatingExample ? 'Generating a fictional answer for this question…' : busy === 'draft' ? copy.drafting : copy.thinking}</div>}</div>{ask && (ask.kind !== 'field' || askRequirement?.options) && <div className="answer-choices">
                   {ask.kind === 'table' && <><button className="secondary" disabled={!!busy} onClick={() => answer({ text: sc.have, status: 'answered' })}>{sc.have}</button><button className="secondary" disabled={!!busy} onClick={() => answer({ text: sc.none, status: 'not_applicable' })}>{sc.none}</button></>}
                   {ask.kind === 'more' && <><button className="secondary" disabled={!!busy} onClick={() => answer({ text: sc.yes, status: 'answered', value: 'yes' })}>{sc.yes}</button><button className="secondary" disabled={!!busy} onClick={() => answer({ text: sc.no, status: 'answered', value: 'no' })}>{sc.no}</button></>}
                   {ask.kind === 'field' && askRequirement?.type === 'single' && askRequirement.options?.map(option => <button key={option.value} className="secondary" disabled={!!busy} onClick={() => answer({ text: optionLabel(option), status: 'answered', value: option.value })}>{optionLabel(option)}</button>)}
@@ -330,17 +359,26 @@ export default function App() {
         {stage === 'draft' && <>
           <div className="notice">{copy.draftNote}</div>
           <div className="output-tabs" aria-label={copy.draft}>{(['draft', 'source', 'metadata'] as Output[]).map(item => <button key={item} aria-pressed={output === item} onClick={() => setOutput(item)}>{item === 'draft' ? copy.draft : item === 'source' ? copy.original : copy.metadata}</button>)}</div>
-          {output === 'draft' && <section className="panel q14-draft" lang="ko" dir="ltr">
-            <div className="section-title"><h2>14. 난민인정 신청 사유</h2><span className="small-tag">직접 수정 가능</span></div>
-            <p className="micro">대화에서 수집한 내용으로 채운 초안입니다. 선택, 표, 문장을 직접 고칠 수 있으며 고친 내용은 수집한 원문과 따로 저장됩니다.</p>
-            {question14Steps.map(step => { const visible = step.fields.filter(field => isFieldVisible(field, answers14)); return visible.length > 0 && <div className="q14-step" key={step.id}>
-              <h3>{step.titleKo}</h3>
+          {output === 'draft' && <section className="panel q14-draft" lang={language === 'en' ? 'en' : 'ko'} dir="ltr">
+            <div className="section-title"><h2>{language === 'en' ? '14. Reasons for seeking protection' : '14. 난민인정 신청 사유'}</h2><span className="small-tag">{language === 'en' ? 'Editable Korean draft' : '직접 수정 가능'}</span></div>
+            <p className="micro">{language === 'en' ? 'This Korean draft uses the information you shared. Your edits are stored separately from your original answers. You can discuss a sentence in English; replacement text remains Korean.' : '대화에서 수집한 내용으로 채운 초안입니다. 선택, 표, 문장을 직접 고칠 수 있으며 고친 내용은 수집한 원문과 따로 저장됩니다.'}</p>
+            {question14Steps.map(step => { const visible = step.fields.filter(field => isFieldVisible(field, answers14) && (session.scope !== 'test' || /^14\.[123](?:-|$)/.test(field.id))); return visible.length > 0 && <div className="q14-step" key={step.id}>
+              <h3>{language === 'en' ? step.titleEn : step.titleKo}</h3>
               {visible.map(field => { const section = sectionsByField.get(field.id); const derived = derived14.find(item => item.id === field.id); return <div className="q14-field" key={field.id}>
-                <small className="q14-id">{field.id}</small>
-                {derived?.needsReview && <p className="draft-missing">다시 확인 필요: {derived.value}</p>}
+                <h4 className="q14-id">{field.id} · {language === 'en' ? field.en : field.ko}</h4>
+                {derived?.needsReview && <p className="draft-missing">{language === 'en' ? 'Needs your review: ' : '다시 확인 필요: '}{derived.value}</p>}
                 {!!section?.missingFactIds?.length && <p className="draft-missing">초안에 빠진 확인 내용: {section.missingFactIds.map(id => { const fact = session.facts.find(item => item.id === id); return fact ? `${requirementsById.get(fact.requirementId)?.label} — ${factValue(fact.requirementId, fact.value)}` : id; }).join(' · ')}. 직접 보완해 주세요.</p>}
                 {!!section?.staleValues?.length && <p className="draft-missing">정정하기 전 내용이 남아 있습니다: {section.staleValues.join(' · ')}. 직접 고쳐 주세요.</p>}
-                <FieldInput field={field} language="ko" value={answers14[field.id]} copy={scriptedCopy.ko} onChange={value => updateQuestion14(field.id, value)} />
+                {language === 'en' && answers14[field.id]?.kind === 'text' && <EnglishMeaning text={(answers14[field.id] as { text: string }).text} />}
+                <FieldInput field={field} language={language === 'en' ? 'en' : 'ko'} value={answers14[field.id]} copy={sc} onChange={value => updateQuestion14(field.id, value)} />
+                {answers14[field.id]?.kind === 'text' && (answers14[field.id] as { text: string }).text.trim() && <>
+                  <button className="secondary" onClick={() => setEditingField(editingField === field.id ? null : field.id)}>{editingField === field.id ? (language === 'en' ? 'Close sentence editor' : '문장 수정 닫기') : (language === 'en' ? 'Discuss and refine this text' : '문장별 대화로 다듬기')}</button>
+                  {editingField === field.id && <EditorModal title={language === 'en' ? 'Sentence editor' : '문장 수정'} closeLabel={language === 'en' ? 'Close' : '닫기'} onClose={() => setEditingField(null)}><SentenceReview uiLanguage={language} key={`${session.id}-${session.draftRevision}-${field.id}`} text={(answers14[field.id] as { text: string }).text} saved={session.draftReviews?.[field.id]} onChange={(doc, expected) => setSession(current => {
+                    const answer = current.question14?.[field.id];
+                    if (!current.draftRevision || answer?.kind !== 'text' || answer.text !== expected) return current;
+                    return saveDraftReview(current, field.id, expected, doc);
+                  })} /></EditorModal>}
+                </>}
                 {section && <details className="fact-more"><summary>{copy.evidence}</summary>{section.sentences.map((sentence, index) => <div key={index}><p>{sentence.text}</p><button className="quiet" onClick={() => setSourceIds(sentence.sourceIds)}>{copy.source} ↗</button></div>)}<p className="micro">근거는 자동 작성 당시의 문장에 연결되어 있으며, 직접 고친 문장에는 자동으로 다시 연결되지 않습니다.</p></details>}
               </div>; })}
             </div>; })}
@@ -358,7 +396,7 @@ export default function App() {
           {runtime?.mode !== 'on-device' && <><code>{INTAKE_API_URL}</code><label>미리보기 모델<select value={model} disabled={!!busy} onChange={event => { setModel(event.target.value); setPreviewModel(event.target.value); void refreshRuntime(); }}>{previewModels.map(item => <option key={item}>{item}</option>)}</select></label><small>브라우저에서는 원문과 수집 정보를 위 서버에 보내 연산합니다. 모바일 앱은 네이티브 모델을 사용하며 서버로 자동 전환하지 않습니다.</small></>}
           {runtime?.reason && <p className="status-line">{runtime.reason}</p>}
           <div className="actions" style={{ marginTop: 0 }}><button className="secondary" disabled={!!busy || importing} onClick={() => void refreshRuntime()}>상태 새로고침</button>{runtime?.mode === 'on-device' && <button className="secondary" disabled={!!busy || importing} onClick={async () => { setImporting(true); try { setRuntime(await importIntakeModel()); } catch (failure) { setError(String(failure)); } finally { setImporting(false); } }}>{importing ? '모델 가져오는 중…' : '.litertlm 모델 가져오기'}</button>}</div>
-          <label>새 대화의 수집 범위<select value={scope} disabled={!!busy || session.messages.some(item => item.role === 'user')} onChange={event => { const value = event.target.value as 'priority' | 'full'; setScope(value); setSession(stage === 'conversation' ? sync(createSession(language, value)) : createSession(language, value)); }}><option value="full">신청서 전체</option><option value="priority">14.1~14.3 우선 테스트</option></select></label>
+          <label>새 대화의 수집 범위<select value={scope} disabled={!!busy || session.messages.some(item => item.role === 'user')} onChange={event => { const value = event.target.value as 'priority' | 'full' | 'test'; setScope(value); setSession(stage === 'conversation' ? sync(createSession(language, value)) : createSession(language, value)); }}><option value="test">핵심 메타데이터 대화 테스트</option><option value="full">신청서 전체</option><option value="priority">14.1~14.3 우선 테스트</option></select></label>
           <button className="secondary" disabled={!!busy || session.messages.some(item => item.role === 'user')} onClick={() => void startDemo()}>한국어 가상 예시로 LLM 대화 테스트</button>
           <small>이 버튼은 14.1~14.3의 가상 원문을 실제 모델에 보냅니다. 정해진 응답을 재생하지 않습니다. 현재 대화가 있으면 새로고침 후 테스트해 주세요.</small>
           {session.messages.some(item => item.role === 'user') && <button className="secondary" onClick={exportAll} disabled={!!busy}>현재 원문·메타데이터·초안 JSON 내보내기</button>}

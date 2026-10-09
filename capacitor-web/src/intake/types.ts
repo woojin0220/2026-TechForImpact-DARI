@@ -1,5 +1,6 @@
 import type { IntakeScope } from './catalog.ts';
 import type { FormAnswers } from './form.ts';
+import type { TxtDocument } from '../revision/state.mjs';
 
 export type FactStatus = 'answered' | 'unknown' | 'skipped' | 'not_applicable' | 'conflict';
 export type CoverageStatus = FactStatus | 'missing' | 'blocked';
@@ -50,6 +51,8 @@ export type IntakeSession = {
   guidedDone: boolean;
   /** Editable question 14 answers built from metadata and the draft; the applicant's edits live here. */
   question14?: FormAnswers;
+  /** Applicant-approved wording edits, separate from source and extracted facts. */
+  draftReviews?: Record<string, TxtDocument>;
   updatedAt: string;
 };
 export type ModelRequest = { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown> };
