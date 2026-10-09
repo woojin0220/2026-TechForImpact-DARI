@@ -26,10 +26,7 @@ export function EnglishMeaning({ text, compact = false }: { text: string; compac
   }, [text, attempt]);
   if (!text.trim()) return null;
   return <div className={compact ? 'selected-meaning' : 'english-meaning'} lang="en">
-    {!compact && <><h4>What this Korean text says in English</h4>
-    <p className="micro">This is an AI back-translation, not a verified translation. Check whether it reflects your intent, especially who did what, uncertainty, and information you heard from others.</p></>}
-    {result?.source === text && !busy && !error ? <p className="meaning-text">{result.english}</p> : !error && <p role="status">Preparing the English meaning automatically… Sections are processed in order.</p>}
+    {result?.source === text && !busy && !error ? <p className="meaning-text">{result.english}</p> : !error && <p role="status">Loading…</p>}
     {error && <div role="alert"><p>{error}</p><button className="secondary" onClick={() => setAttempt(value => value + 1)}>Retry English meaning</button></div>}
-    {compact && <small>AI back-translation of the selected Korean sentence · please check the meaning.</small>}
   </div>;
 }
