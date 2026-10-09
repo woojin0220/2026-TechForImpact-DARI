@@ -13,14 +13,14 @@
 
 ## 팀원용 로컬 실행 안내
 
-현재 개발 브랜치는 `feat/q14-metadata-intake`입니다. 아래는 각자 컴퓨터에서 웹 화면과 모델을 실행하는 방법입니다. Android Studio, 에뮬레이터, Tailscale은 필요하지 않습니다. 휴대폰 온디바이스 실행이 아니라 컴퓨터의 Ollama로 기능을 테스트합니다.
+팀원 테스트는 `main` 브랜치를 기준으로 합니다. 아래는 각자 컴퓨터에서 웹 화면과 모델을 실행하는 방법입니다. Android Studio, 에뮬레이터, Tailscale은 필요하지 않습니다. 휴대폰 온디바이스 실행이 아니라 컴퓨터의 Ollama로 기능을 테스트합니다.
 
 ### 1. 준비 및 코드 받기
 
 Git, Node.js 22 이상(npm 포함), Python 3, [Ollama](https://ollama.com/)를 설치합니다.
 
 ```sh
-git clone -b feat/q14-metadata-intake https://github.com/woojin0220/2026-TechForImpact-DARI.git
+git clone -b main https://github.com/woojin0220/2026-TechForImpact-DARI.git
 cd 2026-TechForImpact-DARI
 ```
 
@@ -28,7 +28,7 @@ cd 2026-TechForImpact-DARI
 
 ```sh
 git fetch origin
-git switch feat/q14-metadata-intake
+git switch main
 git pull --ff-only
 ```
 
