@@ -66,6 +66,32 @@ test('explicit correction creates history; contradictory answer without correcti
   assert.equal(getActiveFacts(corrected)[0].value, '경찰이 아니었습니다.');
 });
 
+test('self-corrections and "I don\'t remember" are recognized in every candidate language', async () => {
+  const corrections = {
+    en: 'Earlier I said March, but that was wrong. It was April.',
+    fr: "Tout à l'heure j'ai dit mars, mais je me suis trompé. C'était en avril.",
+    ru: 'Я сказал раньше, что это был март, но ошибся. Это был апрель.',
+    ar: 'قلت قبل قليل مارس، لكنني أخطأت. كان ذلك في أبريل.',
+    fa: 'قبلاً گفتم مارس، اما اشتباه گفتم. آوریل بود.',
+  };
+  for (const [lang, text] of Object.entries(corrections)) {
+    const first = await advanceConversation(createSession(lang), 'March 2025.', async () => response([fact('grounds.summary', 'March 2025', 'March 2025')]));
+    // The model omitted supersedes: the applicant's own correction still replaces the old value.
+    const latest = fact('grounds.summary', 'April 2025', text, { sourceIds: ['message-4'], sourceQuotes: [{ sourceId: 'message-4', quote: text }] });
+    const corrected = await advanceConversation(first, text, async () => response([latest]));
+    assert.equal(corrected.coverage.find(item => item.requirementId === 'grounds.summary').status, 'answered', lang);
+    assert.deepEqual(getActiveFacts(corrected).map(item => item.value), ['April 2025'], lang);
+  }
+  const forgotten = {
+    en: "I don't remember exactly when it was.", fr: 'Je ne me souviens pas exactement quand.', ru: 'Я не помню, когда именно это было.',
+    ar: 'لا أتذكر متى كان ذلك بالضبط.', fa: 'دقیقاً یادم نیست کی بود.',
+  };
+  for (const [lang, text] of Object.entries(forgotten)) {
+    const session = await advanceConversation(createSession(lang), text, async () => response([fact('grounds.summary', text, text)]));
+    assert.equal(getActiveFacts(session)[0].status, 'unknown', lang);
+  }
+});
+
 test('repeated identical extraction does not inflate metadata', async () => {
   const first = await sessionWith([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]);
   const next = await advanceConversation(first, '네.', async () => response([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]));

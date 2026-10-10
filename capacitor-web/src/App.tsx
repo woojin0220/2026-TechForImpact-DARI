@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { applyFormAnswers, guideConversation, needsTopicQuestion, deriveQuestion14, formatFormAnswer, isFieldVisible, narrativeFieldFor, question14Steps, type FormValue, formSteps, isNarrative, metadataGroups, openTopic, answerScripted, appendAssistantMessage, isFormSection, appendUserMessage, calculateCoverage, confirmFacts, continueConversation, createSession, exportSession, finishNarrative, generateDraft, getActiveFacts, getProgress, IntakeError, narrativeOpening, nextStep, pendingAsk, reaskQuestion, requirementsById, tableRowIds, type IntakeFact, type IntakeSession, type ScriptedAnswer, type ScriptedAsk } from './intake';
 import { cancelIntakeGeneration, generateIntakeModel, getIntakeRuntimeStatus, getPreviewModel, importIntakeModel, INTAKE_API_URL, previewModels, setPreviewModel, type IntakeRuntimeStatus } from './lib/intakeModel';
 import { intakeCopies, intakeFieldLabels, intakeLanguages, intakeProcessCopy, scriptedCopy } from './intakeCopy';
 import { hasQuestionPhrase, localize } from './form/localize';
 import { FieldInput, FormStage, formPageOf } from './FormStage';
+
+// Benchmark tools ship only in development builds or builds made with VITE_DARI_BENCH=1.
+const BenchPanel = import.meta.env.DEV || import.meta.env.VITE_DARI_BENCH === '1' ? lazy(() => import('./bench/BenchPanel')) : null;
 
 type Stage = 'language' | 'basics' | 'form' | 'conversation' | 'facts' | 'draft';
 type Output = 'draft' | 'source' | 'metadata';
@@ -362,6 +365,7 @@ export default function App() {
           <button className="secondary" disabled={!!busy || session.messages.some(item => item.role === 'user')} onClick={() => void startDemo()}>한국어 가상 예시로 LLM 대화 테스트</button>
           <small>이 버튼은 14.1~14.3의 가상 원문을 실제 모델에 보냅니다. 정해진 응답을 재생하지 않습니다. 현재 대화가 있으면 새로고침 후 테스트해 주세요.</small>
           {session.messages.some(item => item.role === 'user') && <button className="secondary" onClick={exportAll} disabled={!!busy}>현재 원문·메타데이터·초안 JSON 내보내기</button>}
+          {BenchPanel && <Suspense fallback={null}><BenchPanel runtime={runtime} disabled={!!busy || importing} /></Suspense>}
         </div></section>}
     <footer className="site-footer"><span>{copy.tagline}</span><span>{copy.memory}</span></footer>
     <dialog ref={dialog} className="help-dialog" onCancel={closeDialog} onClose={closeDialog}><h2>{showHelp ? copy.help : copy.source}</h2>{showHelp ? <><p>{copy.helpBody}</p><p>{copy.memory}</p></> : session.messages.filter(item => sourceIds.includes(item.id)).map(item => <div key={item.id}><small>{item.id}</small><p dir="auto" style={{ whiteSpace: 'pre-wrap' }}>{item.content}</p></div>)}<div className="actions"><button className="primary" onClick={closeDialog}>{copy.close}</button></div></dialog>

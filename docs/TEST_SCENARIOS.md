@@ -15,15 +15,15 @@
 
 ### 자동 채점
 
-짧은 검사용 시나리오 10개는 `capacitor-web/scripts/intake-scenarios.mjs`에 대화와 기대 결과가 함께 들어 있습니다.
+짧은 검사용 시나리오 10개는 `capacitor-web/src/bench/scenarios.ts`에 대화와 기대 결과가 함께 들어 있습니다. 후보 언어 6개(ko, en, fr, ru, ar, fa)가 모두 들어 있으며, 한국어 외 문장은 원어민 검토 전 초안입니다.
 
 ```sh
 cd capacitor-web
-node --experimental-strip-types scripts/run-intake-scenarios.mjs              # 전체
-node --experimental-strip-types scripts/run-intake-scenarios.mjs correction   # 하나만
+node --experimental-strip-types scripts/run-intake-scenarios.mjs                         # 전체, 한국어
+node --experimental-strip-types scripts/run-intake-scenarios.mjs correction --lang all   # 하나를 6개 언어로
 ```
 
-검사 항목별 통과·실패와 실제 수집값이 출력되고, `basic`·`correction`·`unknown-and-refusal`은 한국어 초안까지 작성해 인과관계 강화, 정정 전 값 재사용, 불확실성 누락을 검사합니다. 서버가 이전 요청을 처리 중이면 끝날 때까지 기다렸다가 진행하며, 각 세션은 `capacitor-web/tmp/scenarios/`에 JSON으로 저장됩니다.
+검사 항목별 통과·실패와 실제 수집값이 출력됩니다. `basic`·`correction`·`unknown-and-refusal`은 한국어 초안까지 작성해 세 가지를 검사합니다: 인과관계를 강화하지 않았는지, 정정 전 값을 다시 쓰지 않았는지, 불확실성을 빠뜨리지 않았는지. 서버가 이전 요청을 처리 중이면 끝날 때까지 기다렸다가 진행합니다. 세션은 `capacitor-web/tmp/scenarios/`에, 호출별 지연·토큰 기록은 `capacitor-web/tmp/bench/`에 저장됩니다. 실행 옵션(Mac LiteRT-LM, 실기기, 반복 횟수)과 지표 정의는 [경량화 벤치마크](BENCHMARK.md)를 참고하세요.
 
 ---
 
@@ -111,7 +111,7 @@ node --experimental-strip-types scripts/run-intake-scenarios.mjs correction   # 
 
 ## 짧은 검사용 시나리오 (자동 채점)
 
-`scripts/intake-scenarios.mjs`의 10개 시나리오입니다. 화면에서도 같은 문장을 붙여 넣어 시험할 수 있습니다.
+`src/bench/scenarios.ts`의 10개 시나리오입니다. 화면에서도 같은 문장을 붙여 넣어 시험할 수 있습니다.
 
 | ID | 확인하는 것 |
 | --- | --- |

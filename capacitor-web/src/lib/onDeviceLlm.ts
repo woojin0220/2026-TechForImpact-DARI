@@ -1,4 +1,5 @@
 import { Capacitor, registerPlugin } from '@capacitor/core'
+import type { ModelStats } from '../bench/types'
 
 export interface OnDeviceLlmStatus {
   platform: string
@@ -9,17 +10,24 @@ export interface OnDeviceLlmStatus {
   backend?: string
   busy?: boolean
   reason?: string
+  /** Hardware identifiers for benchmark records (model, OS, total RAM). */
+  device?: Record<string, unknown>
 }
 export interface OnDeviceGenerateOptions {
   system: string
   prompt: string
   maxTokens?: number
   temperature?: number
+  /** Benchmark options: JSON-schema constrained decoding, engine context window and backend.
+   * A different context or backend reloads the engine. */
+  responseSchema?: Record<string, unknown>
+  maxNumTokens?: number
+  backend?: 'gpu' | 'cpu'
 }
 interface OnDeviceLlmPlugin {
   getStatus(): Promise<OnDeviceLlmStatus>
   importModel(): Promise<OnDeviceLlmStatus>
-  generate(options: OnDeviceGenerateOptions): Promise<{ text: string }>
+  generate(options: OnDeviceGenerateOptions): Promise<{ text: string; stats?: ModelStats }>
   cancel(): Promise<void>
 }
 

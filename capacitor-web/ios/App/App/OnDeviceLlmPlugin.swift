@@ -1,3 +1,5 @@
+import Darwin
+import os
 import Foundation
 import Capacitor
 import UniformTypeIdentifiers
@@ -18,6 +20,8 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
     private var cancelled = false
     private var activeConversation: Conversation?
     private var engine: Engine?
+    /// "backend/maxNumTokens" of the loaded engine; a benchmark asking for another config reloads it.
+    private var engineKey: String?
     private var pickerCall: CAPPluginCall?
     private var modelURL: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -35,7 +39,24 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
          "modelPath": modelURL.path,
          "modelName": UserDefaults.standard.string(forKey: "dari.modelName") ?? "",
          "backend": UserDefaults.standard.string(forKey: "dari.backend") ?? "",
-         "busy": withLock { busy }]
+         "busy": withLock { busy },
+         "device": deviceInfo()]
+    }
+    private func deviceInfo() -> [String: Any] {
+        var system = utsname(); uname(&system)
+        let machine = withUnsafeBytes(of: &system.machine) { String(decoding: $0.prefix(while: { $0 != 0 }), as: UTF8.self) }
+        return ["model": machine, "os": ProcessInfo.processInfo.operatingSystemVersionString,
+                "totalRamMB": ProcessInfo.processInfo.physicalMemory / 1_048_576]
+    }
+    /// Physical footprint (what jetsam limits) and its process-lifetime peak, in MB.
+    private func footprint() -> (current: Double, peak: Double)? {
+        var info = task_vm_info_data_t()
+        var count = mach_msg_type_number_t(MemoryLayout<task_vm_info_data_t>.size / MemoryLayout<natural_t>.size)
+        let result = withUnsafeMutablePointer(to: &info) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: Int(count)) { task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count) }
+        }
+        guard result == KERN_SUCCESS else { return nil }
+        return (Double(info.phys_footprint) / 1_048_576, Double(info.ledger_phys_footprint_peak) / 1_048_576)
     }
     @objc func getStatus(_ call: CAPPluginCall) { call.resolve(status()) }
 
@@ -78,7 +99,7 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
                 try fm.copyItem(at: source, to: temporary)
                 let size = try temporary.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
                 guard size > 0 else { throw NSError(domain: "DARI", code: 2, userInfo: [NSLocalizedDescriptionKey: "빈 모델 파일입니다."]) }
-                self.engine = nil
+                self.engine = nil; self.engineKey = nil
                 if fm.fileExists(atPath: self.modelURL.path) {
                     _ = try fm.replaceItemAt(self.modelURL, withItemAt: temporary)
                 } else { try fm.moveItem(at: temporary, to: self.modelURL) }
@@ -98,22 +119,37 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
         guard FileManager.default.fileExists(atPath: modelURL.path) else {
             call.reject("먼저 .litertlm 모델 파일을 가져와 주세요.", "MODEL_MISSING"); return
         }
+        // Benchmark options; the app's defaults are GPU with CPU fallback, 16k context and
+        // no constrained decoding.
+        let requestedBackend = call.getString("backend")
+        let maxNumTokens = min(32768, max(1024, call.getInt("maxNumTokens") ?? 16384))
+        let schema = call.getObject("responseSchema").map { $0 as [String: Any] }
         guard acquire() else { call.reject("모델이 작업 중입니다.", "BUSY"); return }
         // Initialize on the runtime's actor and keep native work off the UI thread.
         Task.detached(priority: .userInitiated) { [self] in
             defer { self.withLock { self.activeConversation = nil; self.busy = false } }
             do {
+                let started = Date()
+                var initMs: Double?
+                let key = "\(requestedBackend ?? "auto")/\(maxNumTokens)"
+                if self.engineKey != key { self.engine = nil; self.engineKey = nil }
                 if self.engine == nil {
+                    // Read only when an engine is created; it adds per-call timing counters.
+                    ExperimentalFlags.optIntoExperimentalAPIs()
+                    ExperimentalFlags.enableBenchmark = true
                     // The iOS Metal accelerator may be unavailable in this runtime build;
-                    // fall back to CPU instead of failing outright.
+                    // fall back to CPU instead of failing outright unless a backend was requested.
+                    let backends: [Backend] = requestedBackend == "cpu" ? [.cpu()] : requestedBackend == "gpu" ? [.gpu] : [.gpu, .cpu()]
                     var lastError: Error?
-                    for backend in [Backend.gpu, Backend.cpu()] {
+                    for backend in backends {
                         do {
                             let config = try EngineConfig(modelPath: self.modelURL.path, backend: backend,
-                                                          maxNumTokens: 16384, cacheDir: NSTemporaryDirectory())
+                                                          maxNumTokens: maxNumTokens, cacheDir: NSTemporaryDirectory())
                             let candidate = Engine(engineConfig: config)
                             try await candidate.initialize()
                             self.engine = candidate
+                            self.engineKey = key
+                            initMs = (Date().timeIntervalSince(started) * 1000).rounded()
                             UserDefaults.standard.set(backend.rawValue, forKey: "dari.backend")
                             break
                         } catch { lastError = error }
@@ -124,18 +160,39 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
                 let sampler = try SamplerConfig(topK: 40, topP: 0.95,
                     temperature: Float(min(2, max(0, call.getDouble("temperature") ?? 0.2))))
                 let config = ConversationConfig(systemMessage: Message(call.getString("system") ?? ""),
-                    samplerConfig: sampler, thinkingConfig: ThinkingConfig(enableThinking: false))
+                    samplerConfig: sampler, thinkingConfig: ThinkingConfig(enableThinking: false),
+                    enableResponseFormat: schema != nil)
                 guard let engine = self.engine else { throw CancellationError() }
                 let conversation = try await engine.createConversation(with: config)
                 self.withLock { self.activeConversation = conversation }
                 guard !self.withLock({ self.cancelled }) else { throw CancellationError() }
                 let response = try await conversation.sendMessage(Message(prompt),
-                    maxOutputTokens: min(4096, max(64, call.getInt("maxTokens") ?? 2048)))
+                    maxOutputTokens: min(4096, max(64, call.getInt("maxTokens") ?? 2048)),
+                    responseFormat: try schema.map { try ResponseFormat.json(schema: $0) })
+                let totalMs = (Date().timeIntervalSince(started) * 1000).rounded()
                 guard !self.withLock({ self.cancelled }) else { throw CancellationError() }
                 guard !response.toString.isEmpty else {
                     call.reject("모델이 결과를 반환하지 않았습니다."); return
                 }
-                call.resolve(["text": response.toString])
+                var stats: [String: Any] = [
+                    "runtime": "litertlm", "backend": UserDefaults.standard.string(forKey: "dari.backend") ?? "",
+                    "maxNumTokens": maxNumTokens, "constrained": schema != nil, "totalMs": totalMs,
+                    "availMemMB": (Double(os_proc_available_memory()) / 1_048_576).rounded(),
+                    "thermal": ["nominal", "fair", "serious", "critical"][min(3, ProcessInfo.processInfo.thermalState.rawValue)],
+                ]
+                if let initMs { stats["initMs"] = initMs }
+                if let info = try? conversation.getBenchmarkInfo() {
+                    stats["ttftMs"] = (info.timeToFirstTokenInSecond * 1000).rounded()
+                    stats["prefillTokens"] = info.lastPrefillTokenCount
+                    stats["decodeTokens"] = info.lastDecodeTokenCount
+                    stats["prefillTokPerSec"] = (info.lastPrefillTokensPerSecond * 10).rounded() / 10
+                    stats["decodeTokPerSec"] = (info.lastDecodeTokensPerSecond * 10).rounded() / 10
+                }
+                if let memory = self.footprint() {
+                    stats["footprintMB"] = memory.current.rounded()
+                    stats["peakFootprintMB"] = memory.peak.rounded()
+                }
+                call.resolve(["text": response.toString, "stats": stats])
             } catch { call.reject(error.localizedDescription) }
         }
     }

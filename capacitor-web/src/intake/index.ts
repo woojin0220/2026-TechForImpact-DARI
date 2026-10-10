@@ -16,8 +16,25 @@ const MAX_USER_LENGTH = 12000;
 const MAX_PROMPT_LENGTH = 26000;
 const MAX_OUTPUT_LENGTH = 64000;
 const NEGATION = /않|없|안\s|아니|못|\bno\b|\bnot\b|never|n't|\bне\b|нет|никогда|\bpas\b|jamais|\bnon\b|لا|لم|لن|ليس|نه|نمی|نکرد|نداشت/i;
-const CORRECTION = /아니라|아니고|잘못\s*(말|알)|정정|바로잡|틀렸|correction|I meant|actually/i;
-const UNCERTAIN = /기억\s*(이\s*)?(나지\s*않|안\s*나)|모르겠|모릅니다|모름|알\s*수\s*없|don'?t (know|remember)|not sure|unknown/i;
+// Self-corrections and "I don't know" in every candidate UI language (ko, en, fr, ru, ar, fa).
+// Phrases are specific to the speaker correcting themselves, so a story that merely
+// mentions a mistake ("arrested by mistake") is not read as a correction.
+const CORRECTION = new RegExp([
+  '아니라|아니고|잘못\\s*(말|알)|정정|바로잡|틀렸',
+  "correction|I meant|actually|that was wrong|I was wrong|my mistake|I made a mistake|let me correct",
+  "je me suis tromp|je me trompe|j'ai fait une erreur|je voulais dire|en fait|je corrige",
+  'ошибся|ошиблась|оговорил|точнее|вернее|на самом деле|имел в виду|имела в виду|поправлю|исправлю',
+  'أخطأت|كنت مخطئ|خطأ مني|أقصد|قصدت|في الحقيقة|بالأحرى|أصحح',
+  'اشتباه (کردم|گفتم)|منظورم|در واقع|درستش|تصحیح|بلکه',
+].join('|'), 'i');
+const UNCERTAIN = new RegExp([
+  '기억\\s*(이\\s*)?(나지\\s*않|안\\s*나)|모르겠|모릅니다|모름|알\\s*수\\s*없',
+  "don'?t (know|remember)|do not (know|remember)|can'?t remember|cannot remember|not sure|no idea|unknown",
+  "je ne sais (pas|plus)|je ne (me|m'en) souviens (pas|plus)|aucune idée|pas sûr|inconnu",
+  'не знаю|не помню|не уверен|понятия не имею|неизвестно',
+  'لا أعرف|لا أعلم|لا أتذكر|لا أذكر|لا أدري|لست متأكد|غير معروف',
+  'نمی[\\u200c ]?دانم|نمی[\\u200c ]?دونم|یادم نیست|یادم نمی[\\u200c ]?آید|به یاد ندارم|مطمئن نیستم|نامعلوم',
+].join('|'), 'i');
 const greetings: Record<string, string> = {
   ko: '신청서에 담고 싶은 이야기를 편하게 들려주세요. 어떤 이유로 본국을 떠나 보호를 신청하게 되셨나요? 기억나지 않거나 지금 말하기 어려운 내용은 그렇게 말씀해 주셔도 됩니다.',
   ru: 'Расскажите своими словами, почему вы покинули свою страну и просите защиты. Если вы чего-то не помните или пока не готовы обсуждать, об этом можно сказать.',
