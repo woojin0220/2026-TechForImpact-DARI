@@ -172,6 +172,41 @@ test('compact extraction cites sentences by ref and expands to the same validate
   } finally { setExtractionFormat('full'); }
 });
 
+test('hedged "I don\'t really know / I don\'t quite understand" is recognized as unknown', async () => {
+  for (const [lang, text] of [['en', "I don't really know why our village was attacked."], ['ru', 'Я не очень понимаю, почему напали на нашу деревню.']]) {
+    const session = await advanceConversation(fullSession(lang), text, withTopicCheck([fact('harm.reason', text, text, { eventId: 'harm-1' })]));
+    assert.equal(getActiveFacts(session)[0].status, 'unknown', lang);
+  }
+});
+
+test('a model rewrite that folds an earlier answer into a new one does not replace testimony', async () => {
+  const first = '2023년 겨울에 교회에서 경찰이 저를 체포했습니다.';
+  const second = '그리고 2024년 5월쯤에는 집 앞에서 모르는 남자 두 명이 저를 때렸습니다.';
+  const session = await advanceConversation(fullSession(), first, withTopicCheck([fact('harm.time', '2023년 겨울', first, { eventId: 'harm-1' })]));
+  const oldId = getActiveFacts(session)[0].id;
+  // The model merged both incidents into harm-1 and marked it as a correction of the first.
+  const merged = fact('harm.time', '2023년 겨울; 2024년 5월쯤', first, { eventId: 'harm-1', supersedes: [oldId],
+    sourceIds: ['message-2', 'message-4'], sourceQuotes: [{ sourceId: 'message-2', quote: first }, { sourceId: 'message-4', quote: second }] });
+  const next = await advanceConversation(session, second, withTopicCheck([merged]));
+  const times = getActiveFacts(next).filter(item => item.requirementId === 'harm.time');
+  assert.ok(times.some(item => item.id === oldId && item.value === '2023년 겨울'), 'the first answer is kept');
+  assert.ok(times.some(item => item.status === 'conflict'), 'the rewrite is flagged for review');
+  // A merged list of harm types is not folded into the first incident either.
+  const types = await advanceConversation(
+    await advanceConversation(fullSession(), first, withTopicCheck([fact('harm.type', ['arrest'], first, { eventId: 'harm-1' })])),
+    second, withTopicCheck([fact('harm.type', ['arrest', 'assault'], first, { eventId: 'harm-1',
+      sourceIds: ['message-2', 'message-4'], sourceQuotes: [{ sourceId: 'message-2', quote: first }, { sourceId: 'message-4', quote: second }] })]));
+  assert.ok(getActiveFacts(types).some(item => item.requirementId === 'harm.type' && item.status === 'answered' && item.value.join() === 'arrest'));
+  assert.ok(getActiveFacts(types).some(item => item.requirementId === 'harm.type' && item.status === 'conflict'));
+
+  // The same rewrite with the applicant's own correction is applied.
+  const fixed = '아까 말한 건 잘못 말했습니다. 2023년이 아니라 2022년 겨울이었습니다.';
+  const correction = fact('harm.time', '2022년 겨울', fixed, { eventId: 'harm-1', supersedes: [oldId],
+    sourceIds: ['message-2', 'message-4'], sourceQuotes: [{ sourceId: 'message-2', quote: first }, { sourceId: 'message-4', quote: fixed }] });
+  const corrected = await advanceConversation(session, fixed, withTopicCheck([correction]));
+  assert.deepEqual(getActiveFacts(corrected).filter(item => item.requirementId === 'harm.time').map(item => item.value), ['2022년 겨울']);
+});
+
 test('repeated identical extraction does not inflate metadata', async () => {
   const first = await sessionWith([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]);
   const next = await advanceConversation(first, '네.', async () => response([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]));

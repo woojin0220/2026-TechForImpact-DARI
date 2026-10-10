@@ -29,11 +29,11 @@ const CORRECTION = new RegExp([
 ].join('|'), 'i');
 const UNCERTAIN = new RegExp([
   '기억\\s*(이\\s*)?(나지\\s*않|안\\s*나)|모르겠|모릅니다|모름|알\\s*수\\s*없',
-  "don'?t (know|remember)|do not (know|remember)|can'?t remember|cannot remember|not sure|no idea|unknown",
-  "je ne sais (pas|plus)|je ne (me|m'en) souviens (pas|plus)|aucune idée|pas sûr|inconnu",
-  'не знаю|не помню|не уверен|понятия не имею|неизвестно',
-  'لا أعرف|لا أعلم|لا أتذكر|لا أذكر|لا أدري|لست متأكد|غير معروف',
-  'نمی[\\u200c ]?دانم|نمی[\\u200c ]?دونم|یادم نیست|یادم نمی[\\u200c ]?آید|به یاد ندارم|مطمئن نیستم|نامعلوم',
+  "don'?t (really |quite |even )?(know|remember|understand)|do not (really )?(know|remember|understand)|can'?t remember|cannot remember|not sure|no idea|unknown",
+  "je ne sais (pas|plus)|je ne (me|m'en) souviens (pas|plus)|je ne comprends pas|aucune idée|pas sûr|inconnu",
+  'не (очень |совсем |совсем не )?(знаю|помню|понимаю)|не уверен|понятия не имею|неизвестно',
+  'لا أعرف|لا أعلم|لا أتذكر|لا أذكر|لا أدري|لا أفهم|لست متأكد|غير معروف',
+  'نمی[\\u200c ]?دانم|نمی[\\u200c ]?دونم|نمی[\\u200c ]?فهمم|یادم نیست|یادم نمی[\\u200c ]?آید|به یاد ندارم|مطمئن نیستم|نامعلوم',
 ].join('|'), 'i');
 const greetings: Record<string, string> = {
   ko: '신청서에 담고 싶은 이야기를 편하게 들려주세요. 어떤 이유로 본국을 떠나 보호를 신청하게 되셨나요? 기억나지 않거나 지금 말하기 어려운 내용은 그렇게 말씀해 주셔도 됩니다.',
@@ -296,7 +296,12 @@ function parseFacts(raw: unknown, session: IntakeSession, focused: Requirement[]
     // A correction may only retire a current fact of the same field and incident,
     // grounded in the latest answer. An invalid link is dropped rather than failing
     // the turn; the new value then shows as a conflict for the applicant to resolve.
-    let supersedes = sourceIds.includes(session.messages.at(-1)!.id)
+    // A model that re-cites an earlier answer to rewrite its facts is merging, not correcting (e.g.
+    // two incidents folded into one "2023; 2024" entry). Without the applicant's own correction such
+    // a rewrite is not applied; it shows as a contradiction to review instead of replacing testimony.
+    const latestMessage = session.messages.at(-1)!;
+    const rewrite = sourceIds.some(id => id !== latestMessage.id) && !CORRECTION.test(latestMessage.content);
+    let supersedes = sourceIds.includes(latestMessage.id) && !rewrite
       ? claimed.filter(id => active.some(fact => fact.id === id && fact.requirementId === requirementId && fact.eventId === eventId))
       : [];
     // Additions to a multi-choice field (e.g. another harm type) and a more specific
@@ -308,13 +313,13 @@ function parseFacts(raw: unknown, session: IntakeSession, focused: Requirement[]
     if (!supersedes.length && status === 'answered' && corrected && requirement.type !== 'multi') supersedes = prior.filter(fact => active.includes(fact)).map(fact => fact.id);
     if (!supersedes.length && status === 'answered' && prior.length) {
       const sameTurn = prior.filter(fact => results.includes(fact));
-      if (requirement.type === 'multi') {
+      if (requirement.type === 'multi' && !rewrite) {
         const merged = [...new Set([...prior.flatMap(fact => Array.isArray(fact.value) ? fact.value : [fact.value]), ...(Array.isArray(value) ? value : [value])])];
         if (prior.some(fact => Array.isArray(fact.value) && fact.value.length === merged.length)) continue;
         value = merged;
         supersedes = prior.filter(fact => !sameTurn.includes(fact)).map(fact => fact.id);
         sameTurn.forEach(fact => results.splice(results.indexOf(fact), 1));
-      } else if (!requirement.options && typeof value === 'string' && prior.length === 1 && typeof prior[0].value === 'string') {
+      } else if (!rewrite && !requirement.options && typeof value === 'string' && prior.length === 1 && typeof prior[0].value === 'string') {
         const before = prior[0].value.replace(/\s+/g, ''), after = value.replace(/\s+/g, '');
         if (before.includes(after)) continue;
         if (after.includes(before)) {
