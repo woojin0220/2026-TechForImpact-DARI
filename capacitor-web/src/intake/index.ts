@@ -1,6 +1,6 @@
 import { isFormSection, isNarrative, requirementCatalog, requirementsById, requirementsForScope, type IntakeScope, type Requirement } from './catalog.ts';
 import { IntakeError, type CoverageEntry, type CoverageStatus, type DraftSection, type DraftSentence, type IntakeFact, type IntakeSession, type MessageAsk, type ModelAdapter, type ScriptedAsk, type SourceMessage } from './types.ts';
-import { intakeResponseSchema, draftResponseSchema } from './responseSchemas.ts';
+import { intakeResponseSchema, intakeCompactSchema, draftResponseSchema, sentencesOf } from './responseSchemas.ts';
 
 export * from './types.ts';
 export * from './catalog.ts';
@@ -198,6 +198,51 @@ A preferred name or nickname is not a legal family/given name. A country of orig
 Keep old facts unless the user EXPLICITLY corrects them; explicit corrections use supersedes with existing fact IDs for the same requirement/event. Conflicting claims without an explicit correction get status conflict and a neutral clarification question. Never claim all fields are complete: the app calculates coverage. Personal confirmations/signatures require a separate direct user action and MUST NOT be collected as facts here. If the person wants to pause, acknowledge and do not pressure them.
 Questions must be neutral and never accusatory: ask what happened TO the applicant or their family, never whether they harmed others. Do not quote the entire conversation in reply. Do not mention internal JSON or requirement IDs to the user. You cannot determine whether the person's account is true.`;
 
+/** Extraction output format. "compact" uses short keys, omits defaults and cites sentences by
+ * ref instead of copying them, which cuts the tokens a phone has to generate; the app expands it
+ * back to full facts before the same validation. Benchmarks compare it with "full". */
+export type ExtractionFormat = 'full' | 'compact';
+let extractionFormat: ExtractionFormat = 'full';
+export function setExtractionFormat(format: ExtractionFormat) { extractionFormat = format; }
+export function getExtractionFormat(): ExtractionFormat { return extractionFormat; }
+
+const fullJson = intakeSystem.slice(intakeSystem.indexOf('Return ONLY JSON: {"reply"'), intakeSystem.indexOf('\n', intakeSystem.indexOf('Return ONLY JSON: {"reply"')));
+const compactSystem = intakeSystem
+  .replace(fullJson, 'Return ONLY JSON: {"reply":"question or acknowledgement in the session language","facts":[{"r":"catalog id","v":"source-language fact or canonical option value; array for multi-select","s":"status code","c":"certainty code","k":"knowledge code","q":["N.i"],"e":"incident/row id","x":["fact-N"]}]}. Codes: s answered=a (default), unknown=u, skipped=k, not_applicable=n, conflict=c; c exact=e (default), approximate=a, uncertain=u; k direct=d, heard=h, inferred=i, unspecified=u (default). q lists refs "N.i" (sentence i of user message-N) of the USER sentences that support the fact. Omit a key to use its default; omit e for nonrepeating fields and x unless correcting. Below, value means v, status means s, eventId means e and supersedes means x.')
+  .replace('Every fact, including unknown/skipped/not_applicable, needs an exact quote from a USER message that supports it.', 'Every fact, including unknown/skipped/not_applicable, needs q citing the USER sentences that support it.')
+  .replace("For unknown/skipped/not_applicable, value is the applicant's verbatim statement of uncertainty/refusal/non-applicability.", "For unknown/skipped/not_applicable, v is the applicant's verbatim statement, or omit v to use the cited sentence.")
+  .replace('Every fact MUST contain eventId: use a stable incident/row ID for repeated fields, and "general" for nonrepeating fields. Every fact MUST contain supersedes: [] for new facts, and the OLD fact ID(s) for explicit corrections. For example if fact-5 recorded March and the person corrects that to April, the new time fact must include supersedes:["fact-5"].', 'Give repeated fields e, a stable incident/row ID. For explicit corrections x lists the OLD fact ID(s): if fact-5 recorded March and the person corrects that to April, the new time fact has x:["fact-5"].');
+
+type SentenceRef = { sourceId: string; quote: string };
+/** "N.i" refs for the sentences of the given user messages. */
+function sentenceRefs(messages: SourceMessage[]): Map<string, SentenceRef> {
+  return new Map(messages.filter(item => item.role === 'user').flatMap(item => sentencesOf(item.content)
+    .map((quote, index) => [`${item.id.replace('message-', '')}.${index + 1}`, { sourceId: item.id, quote }] as const)));
+}
+const pickCode = (codes: Record<string, string>, value: unknown, fallback: string) =>
+  typeof value === 'string' ? codes[value] ?? (Object.values(codes).includes(value) ? value : fallback) : fallback;
+/** Expands compact facts into the full shape parseFacts validates. A fact without a valid
+ * citation, or an answer without a value, stays a gap to ask again; it never fails the turn. */
+function expandCompactFacts(raw: unknown, refs: Map<string, SentenceRef>): unknown {
+  if (!Array.isArray(raw)) return raw;
+  return raw.flatMap(entry => {
+    const data = object(entry);
+    const cited = (Array.isArray(data.q) ? data.q : [data.q]).map(ref => refs.get(String(ref))).filter((item): item is SentenceRef => !!item);
+    const quotes = [...new Map(cited.map(item => [`${item.sourceId}|${item.quote}`, item])).values()];
+    if (!quotes.length) return [];
+    const status = pickCode({ a: 'answered', u: 'unknown', k: 'skipped', n: 'not_applicable', c: 'conflict' }, data.s, 'answered');
+    const value = data.v ?? (status === 'answered' ? undefined : quotes.map(item => item.quote).join(' '));
+    if (value === undefined) return [];
+    return [{
+      requirementId: data.r, value, status,
+      certainty: pickCode({ e: 'exact', a: 'approximate', u: 'uncertain' }, data.c, 'exact'),
+      knowledge: pickCode({ d: 'direct', h: 'heard', i: 'inferred', u: 'unspecified' }, data.k, 'unspecified'),
+      sourceIds: [...new Set(quotes.map(item => item.sourceId))], sourceQuotes: quotes,
+      eventId: data.e ?? 'general', supersedes: data.x ?? [],
+    }];
+  });
+}
+
 function parseFacts(raw: unknown, session: IntakeSession, focused: Requirement[]): IntakeFact[] {
   if (!Array.isArray(raw) || raw.length > 60) throw new Error('수집된 사실 목록 형식이 올바르지 않습니다.');
   const allowed = new Set(focused.map(item => item.id));
@@ -329,6 +374,7 @@ async function mentionedGroups(session: IntakeSession, groups: string[], adapter
 /** One extraction call over the given metadata; returns the parsed JSON object. */
 async function extract(session: IntakeSession, focused: Requirement[], adapter: ModelAdapter, signal?: AbortSignal, pass?: string): Promise<Record<string, unknown>> {
   const focusedIds = new Set(focused.map(item => item.id));
+  const compact = extractionFormat === 'compact';
   const prompt = boundedPrompt({
     language: session.language,
     // Compact: "harm" is a yes/no gate and "harm.*" its details; options are listed by value.
@@ -338,8 +384,15 @@ async function extract(session: IntakeSession, focused: Requirement[], adapter: 
     })),
     stillMissing: calculateCoverage(session).filter(item => focusedIds.has(item.requirementId) && item.status === 'missing').map(item => item.requirementId),
     activeFacts: getActiveFacts(session).filter(item => focusedIds.has(item.requirementId)).map(({ id, requirementId, eventId, value, status }) => ({ id, requirementId, eventId, value, status })),
-    recentMessages: session.messages.slice(-6),
-    note: 'Earlier exact source quotes are retained in activeFacts; use only supplied user quotes as evidence. Do not overwrite unseen conversation.',
+    ...(compact ? {
+      recentMessages: session.messages.slice(-6).map(item => item.role === 'user'
+        ? { id: item.id, role: item.role, sentences: sentencesOf(item.content).map((text, index) => ({ ref: `${item.id.replace('message-', '')}.${index + 1}`, text })) }
+        : { id: item.id, role: item.role, content: item.content }),
+      note: 'Cite only the supplied user sentence refs. Earlier evidence is retained in activeFacts. Do not overwrite unseen conversation.',
+    } : {
+      recentMessages: session.messages.slice(-6),
+      note: 'Earlier exact source quotes are retained in activeFacts; use only supplied user quotes as evidence. Do not overwrite unseen conversation.',
+    }),
     ...(session.narrativeDone ? { focusTopic: `${session.narrativeFocus ? `The last question asked about ${session.narrativeFocus}. ` : ''}Extract anything the answer says (any topic). In reply, only acknowledge what they said in one short, warm sentence with NO question; the next question is asked separately.` } : {}),
     ...(pass ? { pass } : {}),
   });
@@ -347,8 +400,15 @@ async function extract(session: IntakeSession, focused: Requirement[], adapter: 
     ...session.messages.slice(-6).filter(item => item.role === 'user').map(item => item.id),
     ...getActiveFacts(session).filter(item => focusedIds.has(item.requirementId)).flatMap(item => item.sourceIds),
   ]);
+  const activeIds = getActiveFacts(session).map(item => item.id);
+  if (compact) {
+    const refs = sentenceRefs(session.messages.slice(-6));
+    const data = parseObject(await adapter({ task: 'intake', system: compactSystem, prompt, signal,
+      responseSchema: intakeCompactSchema([...focusedIds], [...refs.keys()], activeIds) }));
+    return { ...data, facts: expandCompactFacts(data.facts, refs) };
+  }
   return parseObject(await adapter({ task: 'intake', system: intakeSystem, prompt, signal,
-    responseSchema: intakeResponseSchema([...focusedIds], session.messages.filter(item => item.role === 'user' && contextSourceIds.has(item.id)), getActiveFacts(session).map(item => item.id)),
+    responseSchema: intakeResponseSchema([...focusedIds], session.messages.filter(item => item.role === 'user' && contextSourceIds.has(item.id)), activeIds),
   }));
 }
 

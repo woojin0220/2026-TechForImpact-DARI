@@ -4,9 +4,14 @@ const strictObject = (properties: Record<string, unknown>, required = Object.key
   type: 'object', additionalProperties: false, properties, required,
 });
 
+/** Sentences of a user message, as offered for quoting (and numbered "N.i" in the compact format). */
+export function sentencesOf(content: string): string[] {
+  return content.match(/[^.!?。！？؟\n]+[.!?。！？؟]?/g)?.map(sentence => sentence.trim()).filter(Boolean) ?? [];
+}
+
 export function intakeResponseSchema(requirementIds: string[], sources: { id: string; content: string }[], activeFactIds: string[]): Record<string, unknown> {
   const quoteSchemas = sources.map(source => {
-    const sentences = source.content.match(/[^.!?。！？\n]+[.!?。！？]?/g)?.map(sentence => sentence.trim()).filter(Boolean) ?? [];
+    const sentences = sentencesOf(source.content);
     return strictObject({
       sourceId: { type: 'string', enum: [source.id] },
       quote: { type: 'string', enum: [...new Set([...sentences, source.content])] },
@@ -31,6 +36,24 @@ export function intakeResponseSchema(requirementIds: string[], sources: { id: st
       }, ['requirementId', 'value', 'status', 'certainty', 'knowledge', 'sourceIds', 'sourceQuotes', 'eventId', 'supersedes']),
     },
   });
+}
+
+/** Compact extraction format: short keys, defaults omitted, sentences cited by ref ("N.i"). */
+export function intakeCompactSchema(requirementIds: string[], refs: string[], activeFactIds: string[]): Record<string, unknown> {
+  const fact = {
+    type: 'object', additionalProperties: false, required: ['r', 'q'],
+    properties: {
+      r: { type: 'string', enum: requirementIds },
+      v: { anyOf: [nonempty, strings] },
+      s: { type: 'string', enum: ['a', 'u', 'k', 'n', 'c'] },
+      c: { type: 'string', enum: ['e', 'a', 'u'] },
+      k: { type: 'string', enum: ['d', 'h', 'i', 'u'] },
+      q: { type: 'array', minItems: 1, items: { type: 'string', enum: refs } },
+      e: nonempty,
+      x: activeFactIds.length ? { type: 'array', items: { type: 'string', enum: activeFactIds } } : { type: 'array', maxItems: 0, items: nonempty },
+    },
+  };
+  return strictObject({ reply: nonempty, facts: { type: 'array', maxItems: 60, items: fact } });
 }
 
 export function routingResponseSchema(requirementIds: string[]): Record<string, unknown> {

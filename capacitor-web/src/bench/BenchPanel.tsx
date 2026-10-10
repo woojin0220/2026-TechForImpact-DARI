@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { generateIntakeModelWithStats, getPreviewModel, setBenchOptions, type IntakeRuntimeStatus } from '../lib/intakeModel';
+import { setExtractionFormat, type ExtractionFormat } from '../intake/index.ts';
 import { runScenario } from './run';
 import { benchLanguages, scenarios, type BenchLanguage } from './scenarios';
 import { summarize, summaryTable } from './summary';
@@ -15,6 +16,7 @@ export default function BenchPanel({ runtime, disabled }: { runtime: IntakeRunti
   const [ctx, setCtx] = useState(16384);
   const [backend, setBackend] = useState<'gpu' | 'cpu'>('gpu');
   const [format, setFormat] = useState<'schema' | 'json' | 'none'>('schema');
+  const [extract, setExtract] = useState<ExtractionFormat>('full');
   const [progress, setProgress] = useState('');
   const [rows, setRows] = useState<BenchRow[]>([]);
   const [running, setRunning] = useState(false);
@@ -27,9 +29,10 @@ export default function BenchPanel({ runtime, disabled }: { runtime: IntakeRunti
     setRunning(true);
     const collected: BenchRow[] = [];
     const write = (row: BenchRow) => { collected.push(row); console.info(`DARI_BENCH ${JSON.stringify(row)}`); setRows([...collected]); };
-    const config = onDevice ? { backend: 'device', model: runtime?.modelName, constrained, ctx, accel: backend } : { backend: 'preview', model: getPreviewModel(), format };
+    const config = onDevice ? { backend: 'device', model: runtime?.modelName, constrained, ctx, accel: backend, extract } : { backend: 'preview', model: getPreviewModel(), format, extract };
     const runId = `${new Date().toISOString().replace(/[:.]/g, '-')}-${Object.values(config).join('-').replace(/[^\w.-]+/g, '_')}`;
     setBenchOptions(onDevice ? { constrained, maxNumTokens: ctx, backend } : { previewFormat: format });
+    setExtractionFormat(extract);
     write({ type: 'meta', runId, startedAt: new Date().toISOString(), config: { ...config, langs, scenarios: scenarios.map(item => item.id), repeat },
       device: runtime?.device ?? { kind: 'browser', userAgent: navigator.userAgent } });
     let done = 0;
@@ -47,6 +50,7 @@ export default function BenchPanel({ runtime, disabled }: { runtime: IntakeRunti
       setProgress(`완료 ${done}/${total}`);
     } finally {
       setBenchOptions({});
+      setExtractionFormat('full');
       controller.current = null;
       setRunning(false);
     }
@@ -58,6 +62,7 @@ export default function BenchPanel({ runtime, disabled }: { runtime: IntakeRunti
     <fieldset disabled={running || disabled} style={{ border: 0, padding: 0, margin: 0, display: 'grid', gap: 8 }}>
       <div>{benchLanguages.map(lang => <label key={lang} style={{ marginInlineEnd: 10 }}><input type="checkbox" checked={langs.includes(lang)}
         onChange={event => setLangs(event.target.checked ? benchLanguages.filter(item => item === lang || langs.includes(item)) : langs.filter(item => item !== lang))} /> {lang}</label>)}</div>
+      <label>추출 형식<select value={extract} onChange={event => setExtract(event.target.value as ExtractionFormat)}><option value="full">full (앱 기본)</option><option value="compact">compact</option></select></label>
       <label>반복<select value={repeat} onChange={event => setRepeat(Number(event.target.value))}>{[1, 2, 3].map(item => <option key={item}>{item}</option>)}</select></label>
       {onDevice ? <>
         <label>JSON 스키마 강제<select value={String(constrained)} onChange={event => setConstrained(event.target.value === 'true')}><option value="false">끔 (앱 기본)</option><option value="true">켬</option></select></label>

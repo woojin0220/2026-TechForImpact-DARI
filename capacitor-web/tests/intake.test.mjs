@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { applicationSteps } from '../src/form/schema.ts';
-import { createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
+import { setExtractionFormat, createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
 
 function fact(requirementId, value, quote, overrides = {}) {
   return { requirementId, value, sourceIds: ['message-2'], sourceQuotes: [{ sourceId: 'message-2', quote }], status: 'answered', certainty: 'exact', knowledge: 'direct', ...overrides };
@@ -136,6 +136,40 @@ test('"I could not ask the police" never silently becomes a protection request, 
   const next = await advanceConversation(session, later, withTopicCheck([fact('protection.authority', '경찰서', later, { eventId: 'protection-1', sourceIds: ['message-4'], sourceQuotes: [{ sourceId: 'message-4', quote: later }] })]));
   assert.ok(getActiveFacts(next).some(item => item.requirementId === 'protection.authority'));
   assert.equal(deriveQuestion14(next).find(item => item.id === '14.5').needsReview, true);
+});
+
+test('compact extraction cites sentences by ref and expands to the same validated facts', async () => {
+  setExtractionFormat('compact');
+  try {
+    const text = 'In autumn 2024 the police came to my house. I do not know why they came.';
+    let seen;
+    const adapter = async request => {
+      if (request.system.startsWith('List every topic')) return '{"groups":[]}';
+      seen ??= request;
+      return JSON.stringify({ reply: 'What happened then?', facts: [
+        { r: 'harm', v: 'yes', q: ['2.1'] },
+        { r: 'harm.time', v: 'autumn 2024', c: 'a', q: ['2.1'], e: 'harm-1' },
+        { r: 'harm.reason', s: 'u', q: ['2.2'], e: 'harm-1' },
+        { r: 'harm.place', v: 'somewhere', q: ['9.9'], e: 'harm-1' },
+      ] });
+    };
+    const session = await advanceConversation(fullSession('en'), text, adapter);
+    assert.match(seen.system, /"q":\["N\.i"\]/);
+    assert.doesNotMatch(seen.system, /sourceQuotes|exact quote from a USER/);
+    assert.deepEqual(JSON.parse(seen.prompt).recentMessages.find(item => item.role === 'user').sentences,
+      [{ ref: '2.1', text: 'In autumn 2024 the police came to my house.' }, { ref: '2.2', text: 'I do not know why they came.' }]);
+    assert.deepEqual(Object.keys(seen.responseSchema.properties.facts.items.properties), ['r', 'v', 's', 'c', 'k', 'q', 'e', 'x']);
+    const facts = Object.fromEntries(getActiveFacts(session).map(item => [item.requirementId, item]));
+    assert.equal(facts['harm.time'].certainty, 'approximate');
+    assert.deepEqual(facts['harm.time'].sourceQuotes, [{ sourceId: 'message-2', quote: 'In autumn 2024 the police came to my house.' }]);
+    assert.equal(facts['harm.reason'].status, 'unknown');
+    assert.equal(facts['harm.reason'].value, 'I do not know why they came.', 'an omitted value is the cited sentence');
+    assert.equal(facts['harm.place'], undefined, 'an invalid ref leaves a gap instead of failing the turn');
+
+    const corrected = await advanceConversation(session, 'Sorry, I was wrong: it was spring 2024.', async request => request.system.startsWith('List every topic') ? '{"groups":[]}'
+      : JSON.stringify({ reply: 'Thank you.', facts: [{ r: 'harm.time', v: 'spring 2024', q: ['4.1'], e: 'harm-1', x: [facts['harm.time'].id] }] }));
+    assert.deepEqual(getActiveFacts(corrected).filter(item => item.requirementId === 'harm.time').map(item => item.value), ['spring 2024']);
+  } finally { setExtractionFormat('full'); }
 });
 
 test('repeated identical extraction does not inflate metadata', async () => {
