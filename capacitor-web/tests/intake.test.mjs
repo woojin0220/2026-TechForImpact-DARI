@@ -158,7 +158,12 @@ test('compact extraction cites sentences by ref and expands to the same validate
     assert.doesNotMatch(seen.system, /sourceQuotes|exact quote from a USER/);
     assert.deepEqual(JSON.parse(seen.prompt).recentMessages.find(item => item.role === 'user').sentences,
       [{ ref: '2.1', text: 'In autumn 2024 the police came to my house.' }, { ref: '2.2', text: 'I do not know why they came.' }]);
-    assert.deepEqual(Object.keys(seen.responseSchema.properties.facts.items.properties), ['r', 'v', 's', 'c', 'k', 'q', 'e', 'x']);
+    const variants = seen.responseSchema.properties.facts.items.anyOf;
+    assert.ok(variants.every(item => ['r', 'v', 'q'].every(key => item.required.includes(key))));
+    const gate = variants.find(item => item.properties.r.enum.includes('harm') && item.properties.v.enum);
+    assert.deepEqual(gate.properties.v.enum, ['yes', 'no'], 'a choice is limited to its option codes');
+    assert.ok(variants.some(item => item.properties.r.enum.includes('harm') && item.properties.s.enum.join() === 'u,k,n' && item.properties.v.type === 'string'),
+      'a choice may still be stated as unknown in the applicant\'s words');
     const facts = Object.fromEntries(getActiveFacts(session).map(item => [item.requirementId, item]));
     assert.equal(facts['harm.time'].certainty, 'approximate');
     assert.deepEqual(facts['harm.time'].sourceQuotes, [{ sourceId: 'message-2', quote: 'In autumn 2024 the police came to my house.' }]);

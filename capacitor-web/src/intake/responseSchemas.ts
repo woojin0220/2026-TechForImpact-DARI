@@ -38,23 +38,38 @@ export function intakeResponseSchema(requirementIds: string[], sources: { id: st
   });
 }
 
-/** Compact extraction format: short keys, defaults omitted, sentences cited by ref ("N.i"). */
-export function intakeCompactSchema(requirementIds: string[], refs: string[], activeFactIds: string[]): Record<string, unknown> {
-  const fact = {
-    // v is required: under constrained decoding an optional value was simply left out.
-    type: 'object', additionalProperties: false, required: ['r', 'v', 'q'],
-    properties: {
-      r: { type: 'string', enum: requirementIds },
-      v: { anyOf: [nonempty, strings] },
-      s: { type: 'string', enum: ['a', 'u', 'k', 'n', 'c'] },
-      c: { type: 'string', enum: ['e', 'a', 'u'] },
-      k: { type: 'string', enum: ['d', 'h', 'i', 'u'] },
-      q: { type: 'array', minItems: 1, items: { type: 'string', enum: refs } },
-      e: nonempty,
-      x: activeFactIds.length ? { type: 'array', items: { type: 'string', enum: activeFactIds } } : { type: 'array', maxItems: 0, items: nonempty },
-    },
+/** Compact extraction format: short keys, defaults omitted, sentences cited by ref ("N.i").
+ * A choice field's answer is limited to its option codes (ASCII, which LiteRT-LM's constrained
+ * decoding handles); stating it is unknown, skipped or not applicable keeps the applicant's words. */
+export function intakeCompactSchema(requirements: { id: string; type: string; options?: { value: string }[] }[], refs: string[], activeFactIds: string[]): Record<string, unknown> {
+  const common = {
+    c: { type: 'string', enum: ['e', 'a', 'u'] },
+    k: { type: 'string', enum: ['d', 'h', 'i', 'u'] },
+    q: { type: 'array', minItems: 1, items: { type: 'string', enum: refs } },
+    e: nonempty,
+    x: activeFactIds.length ? { type: 'array', items: { type: 'string', enum: activeFactIds } } : { type: 'array', maxItems: 0, items: nonempty },
   };
-  return strictObject({ reply: nonempty, facts: { type: 'array', maxItems: 60, items: fact } });
+  // v is required: under constrained decoding an optional value was simply left out.
+  const variant = (ids: string[], v: unknown, statuses: string[], required = ['r', 'v', 'q']) => ({
+    type: 'object', additionalProperties: false, required,
+    properties: { r: { type: 'string', enum: ids }, v, s: { type: 'string', enum: statuses }, ...common },
+  });
+  const text = requirements.filter(item => !item.options);
+  const choice = requirements.filter(item => item.options);
+  const groups = new Map<string, { ids: string[]; codes: string[]; multi: boolean }>();
+  for (const item of choice) {
+    const codes = item.options!.map(option => option.value);
+    const multi = item.type === 'multi';
+    const key = `${multi}|${codes.join(',')}`;
+    if (groups.has(key)) groups.get(key)!.ids.push(item.id); else groups.set(key, { ids: [item.id], codes, multi });
+  }
+  const variants = [
+    ...(text.length ? [variant(text.map(item => item.id), { anyOf: [nonempty, strings] }, ['a', 'u', 'k', 'n', 'c'])] : []),
+    ...[...groups.values()].map(group => variant(group.ids,
+      group.multi ? { type: 'array', minItems: 1, items: { type: 'string', enum: group.codes } } : { type: 'string', enum: group.codes }, ['a', 'c'])),
+    ...(choice.length ? [variant(choice.map(item => item.id), nonempty, ['u', 'k', 'n'], ['r', 'v', 's', 'q'])] : []),
+  ];
+  return strictObject({ reply: nonempty, facts: { type: 'array', maxItems: 60, items: variants.length === 1 ? variants[0] : { anyOf: variants } } });
 }
 
 export function routingResponseSchema(requirementIds: string[]): Record<string, unknown> {

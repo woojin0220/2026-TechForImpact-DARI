@@ -409,7 +409,7 @@ async function extract(session: IntakeSession, focused: Requirement[], adapter: 
   if (compact) {
     const refs = sentenceRefs(session.messages.slice(-6));
     const data = parseObject(await adapter({ task: 'intake', system: compactSystem, prompt, signal,
-      responseSchema: intakeCompactSchema([...focusedIds], [...refs.keys()], activeIds) }));
+      responseSchema: intakeCompactSchema(focused, [...refs.keys()], activeIds) }));
     return { ...data, facts: expandCompactFacts(data.facts, refs) };
   }
   return parseObject(await adapter({ task: 'intake', system: intakeSystem, prompt, signal,
