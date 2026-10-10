@@ -164,6 +164,8 @@ test('compact extraction cites sentences by ref and expands to the same validate
     assert.deepEqual(gate.properties.v.enum, ['yes', 'no'], 'a choice is limited to its option codes');
     assert.ok(variants.some(item => item.properties.r.enum.includes('harm') && item.properties.s.enum.join() === 'u,k,n' && item.properties.v.type === 'string'),
       'a choice may still be stated as unknown in the applicant\'s words');
+    assert.ok(variants.filter(item => item.properties.r.enum.includes('harm.time')).every(item => item.required.includes('e')), 'a per-incident detail needs its incident');
+    assert.ok(variants.filter(item => item.properties.r.enum.includes('harm')).every(item => !item.required.includes('e')), 'a gate does not');
     const facts = Object.fromEntries(getActiveFacts(session).map(item => [item.requirementId, item]));
     assert.equal(facts['harm.time'].certainty, 'approximate');
     assert.deepEqual(facts['harm.time'].sourceQuotes, [{ sourceId: 'message-2', quote: 'In autumn 2024 the police came to my house.' }]);
