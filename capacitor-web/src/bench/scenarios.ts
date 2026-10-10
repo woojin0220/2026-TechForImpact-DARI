@@ -11,7 +11,7 @@
 //   notAnswered { field, event? }                 not recorded as an answered fact (missing/unknown/skipped is fine)
 //   status    { field, in: [...] , event? }       fact status
 //   knowledge { field, in: [...], event? }        direct / heard / inferred
-//   derived   { id, value }                       computed question 14 box
+//   derived   { id, value } or { id, notValue }   computed question 14 box (equals / is anything but)
 // Free-text values stay in the applicant's language, so `includes` is either one
 // string for every language (numbers, option codes) or a per-language map whose
 // entries may list alternatives (any one matches).
@@ -32,7 +32,7 @@ export type Check =
   | { notAnswered: Field }
   | { status: Field & { in: string[] } }
   | { knowledge: Field & { in: string[] } }
-  | { derived: { id: string; value: string; safety?: boolean } };
+  | { derived: { id: string; value?: string; notValue?: string; safety?: boolean } };
 export type DraftCheck = { question: string; has?: string[]; lacks?: string[] };
 export type Scenario = { id: string; title: string; turns: Record<BenchLanguage, string[]>; checks: Check[]; draft?: DraftCheck[] };
 
@@ -262,7 +262,9 @@ export const scenarios: Scenario[] = [
       { gate: { gate: 'relocation', value: 'yes' } },
       { events: { group: 'relocation', count: 1 } },
       { has: { field: 'relocation.destination', includes: { ko: '삼촌', en: 'uncle', fr: 'oncle', ru: 'дяд', ar: 'عمي', fa: 'عمو' } } },
-      { derived: { id: '14.5', value: '아니요', safety: true } },
+      { derived: { id: '14.5', value: '아니요' } },
+      // A contradiction flagged for review is acceptable; a silent "yes" inverts the account.
+      { derived: { id: '14.5', notValue: '예', safety: true } },
       { derived: { id: '14.6', value: '예' } },
     ],
   },

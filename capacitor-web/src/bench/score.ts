@@ -51,6 +51,8 @@ export function scoreCheck(facts: IntakeFact[], session: IntakeSession, item: Ch
     case 'knowledge': return result(found.length > 0 && found.every(fact => (spec.in as string[]).includes(fact.knowledge)), `${at} 경위 ∈ ${spec.in}`, found.map(fact => fact.knowledge).join(', ') || '(없음)');
     case 'derived': {
       const box = deriveQuestion14(session).find(entry => entry.id === spec.id);
+      // notValue: anything but this answer, e.g. a flagged contradiction is not a silent "yes".
+      if (spec.notValue !== undefined) return result(box?.value !== spec.notValue, `${spec.id} ≠ ${spec.notValue}`, box?.value ?? '(없음)');
       return result(box?.value === spec.value, `${spec.id} = ${spec.value}`, box?.value ?? '(없음)');
     }
     default: return result(false, `알 수 없는 검사 ${kind}`, '');

@@ -92,6 +92,52 @@ test('self-corrections and "I don\'t remember" are recognized in every candidate
   }
 });
 
+function fullSession(lang = 'ko') {
+  return appendAssistantMessage(createSession(lang, 'full'), 'Tell me what happened.', { kind: 'narrative' });
+}
+const withTopicCheck = (facts) => async (request) => request.system.startsWith('List every topic') ? '{"groups":[]}' : response(facts);
+
+test('"I don\'t know who or why" is unknown at any length for who/why details, not for narratives', async () => {
+  const text = "I don't know who they were or why they did it. They beat me but I don't remember who was there.";
+  const session = await advanceConversation(fullSession('en'), text, withTopicCheck([
+    fact('harm.reason', "I don't know who they were or why they did it.", "I don't know who they were or why they did it.", { eventId: 'harm-1' }),
+    fact('harm.event', "They beat me but I don't remember who was there.", "They beat me but I don't remember who was there.", { eventId: 'harm-1' }),
+  ]));
+  const status = id => getActiveFacts(session).find(item => item.requirementId === id).status;
+  assert.equal(status('harm.reason'), 'unknown');
+  assert.equal(status('harm.event'), 'answered', 'a described event stays testimony');
+});
+
+test('"I could not ask the police" never silently becomes a protection request, and later testimony is kept', async () => {
+  const text = '경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다. 그래서 다른 도시의 삼촌 집으로 피신했습니다.';
+  const [noHelp, moved] = ['경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다.', '그래서 다른 도시의 삼촌 집으로 피신했습니다.'];
+  const session = await advanceConversation(fullSession(), text, withTopicCheck([
+    fact('protection.no_reason', noHelp, noHelp),
+    // The model mixed the move into the "yes" branch of protection.
+    fact('protection.place', '다른 도시의 삼촌 집', moved, { eventId: 'protection-1' }),
+    fact('protection.result', '삼촌 집으로 피신함', moved, { eventId: 'protection-1' }),
+    fact('relocation', 'yes', moved),
+    fact('relocation.destination', '다른 도시의 삼촌 집', moved, { eventId: 'relocation-1' }),
+  ]));
+  const active = getActiveFacts(session);
+  // The applicant's reason for not asking decides the yes/no; the mixed-in details stay for review.
+  assert.equal(active.find(item => item.requirementId === 'protection').value, 'no');
+  assert.ok(active.some(item => item.requirementId === 'protection.place'), 'testimony is never silently dropped');
+  assert.ok(active.some(item => item.requirementId === 'relocation.destination'));
+  const box = deriveQuestion14(session).find(item => item.id === '14.5');
+  assert.notEqual(box.value, '예');
+  assert.equal(box.needsReview, true);
+  // Without the mixed-in details the box is a plain "no", even with no explicit gate answer.
+  const clean = await advanceConversation(fullSession(), text, withTopicCheck([fact('protection.no_reason', noHelp, noHelp)]));
+  assert.equal(deriveQuestion14(clean).find(item => item.id === '14.5').value, '아니요');
+
+  // A "no" from an earlier answer does not silently drop testimony given later.
+  const later = '그 뒤에 경찰서에 가서 도움을 요청한 적이 한 번 있습니다.';
+  const next = await advanceConversation(session, later, withTopicCheck([fact('protection.authority', '경찰서', later, { eventId: 'protection-1', sourceIds: ['message-4'], sourceQuotes: [{ sourceId: 'message-4', quote: later }] })]));
+  assert.ok(getActiveFacts(next).some(item => item.requirementId === 'protection.authority'));
+  assert.equal(deriveQuestion14(next).find(item => item.id === '14.5').needsReview, true);
+});
+
 test('repeated identical extraction does not inflate metadata', async () => {
   const first = await sessionWith([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]);
   const next = await advanceConversation(first, '네.', async () => response([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]));

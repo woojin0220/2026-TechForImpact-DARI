@@ -22,7 +22,9 @@ function koValue(fact: IntakeFact): string {
 function gate(id: string, facts: IntakeFact[]): { value: string; needsReview?: boolean; factIds: string[] } | undefined {
   const own = facts.filter(fact => fact.requirementId === id);
   const details = facts.filter(fact => requirementsById.get(fact.requirementId)?.parentId === id && requirementsById.get(fact.requirementId)?.repeatable && fact.status === 'answered');
-  const said = own.find(fact => fact.status === 'answered')?.value;
+  // A reason for not doing it (e.g. why no protection was sought) is the applicant's "no".
+  const said = own.find(fact => fact.status === 'answered')?.value
+    ?? (facts.some(fact => fact.status === 'answered' && requirementsById.get(fact.requirementId)?.when?.some(condition => condition.id === id && condition.anyOf.includes('no'))) ? 'no' : undefined);
   const factIds = [...own, ...details].map(fact => fact.id);
   if (said === 'no' && details.length) return { value: '다시 확인 필요 (아니요라고 답했지만 관련 내용이 있음)', needsReview: true, factIds };
   if (said === 'yes' || details.length) return { value: '예', factIds };
