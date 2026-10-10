@@ -41,7 +41,8 @@ export function intakeResponseSchema(requirementIds: string[], sources: { id: st
 /** Compact extraction format: short keys, defaults omitted, sentences cited by ref ("N.i"). */
 export function intakeCompactSchema(requirementIds: string[], refs: string[], activeFactIds: string[]): Record<string, unknown> {
   const fact = {
-    type: 'object', additionalProperties: false, required: ['r', 'q'],
+    // v is required: under constrained decoding an optional value was simply left out.
+    type: 'object', additionalProperties: false, required: ['r', 'v', 'q'],
     properties: {
       r: { type: 'string', enum: requirementIds },
       v: { anyOf: [nonempty, strings] },

@@ -14,6 +14,7 @@
 //   --lang ko,fa,ar | all       languages (default ko)
 //   --repeat N                  runs per scenario and language (default 1)
 //   --label L                   name for the output file
+//   --dump                      also write every model request and raw response to tmp/bench/<run>.dump.jsonl
 // Rows go to tmp/bench/<time>-<label>.jsonl; summarize with scripts/bench-summary.mjs.
 import { spawn } from 'node:child_process';
 import { createWriteStream } from 'node:fs';
@@ -27,7 +28,8 @@ const args = process.argv.slice(2);
 const flags = {};
 const selected = [];
 for (let index = 0; index < args.length; index += 1) {
-  if (args[index].startsWith('--')) flags[args[index].slice(2)] = args[++index];
+  // A flag without a value (e.g. --dump) is true; otherwise it takes the next argument.
+  if (args[index].startsWith('--')) flags[args[index].slice(2)] = args[index + 1] === undefined || args[index + 1].startsWith('--') ? true : args[++index];
   else selected.push(args[index]);
 }
 const backend = flags.backend ?? 'ollama';
@@ -105,6 +107,22 @@ if (backend === 'ollama') {
 }
 
 const runId = `${new Date().toISOString().replace(/[:.]/g, '-')}-${flags.label ?? `${backend}-${config.model}`.replace(/[^\w.-]+/g, '_')}`;
+if ('dump' in flags) {
+  // Raw requests and responses (fictional scenarios only) for debugging a runtime or format.
+  const dump = createWriteStream(`tmp/bench/${runId}.dump.jsonl`);
+  const inner = adapter;
+  adapter = async request => {
+    const started = Date.now();
+    try {
+      const result = await inner(request);
+      dump.write(`${JSON.stringify({ task: request.task, system: request.system, prompt: request.prompt, responseSchema: request.responseSchema, text: result.text, ms: Date.now() - started })}\n`);
+      return result;
+    } catch (error) {
+      dump.write(`${JSON.stringify({ task: request.task, prompt: request.prompt, error: error.message, ms: Date.now() - started })}\n`);
+      throw error;
+    }
+  };
+}
 await mkdir('tmp/bench', { recursive: true });
 await mkdir('tmp/scenarios', { recursive: true });
 const file = `tmp/bench/${runId}.jsonl`;

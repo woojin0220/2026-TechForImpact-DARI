@@ -109,6 +109,9 @@ struct Bench {
         }
         emit(["id": id, "text": response.toString, "stats": stats])
       } catch {
+        // A failed call can leave the GPU session unusable (e.g. a WebGPU timeout leaves buffers
+        // mapped), so the next request starts from a fresh engine instead of failing in a row.
+        engine = nil
         emit(["id": id, "error": "\(error)"])
       }
     }
