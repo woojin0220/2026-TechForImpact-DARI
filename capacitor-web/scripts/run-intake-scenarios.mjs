@@ -11,7 +11,7 @@
 //   --accel gpu|cpu             LiteRT-LM backend (default gpu)
 //   --ctx N                     LiteRT-LM context window in tokens (default 16384)
 //   --extract full|compact      extraction output format (default full; compact cites sentences by ref)
-//   --aux on|off                auxiliary topic check and focused passes (default on)
+//   --aux on|off|selective      auxiliary topic check and focused passes (default on)
 //   --lang ko,fa,ar | all       languages (default ko)
 //   --repeat N                  runs per scenario and language (default 1)
 //   --label L                   name for the output file
@@ -40,8 +40,8 @@ const extract = flags.extract ?? 'full';
 if (!['full', 'compact'].includes(extract)) throw new Error(`알 수 없는 --extract: ${extract}`);
 setExtractionFormat(extract);
 const aux = flags.aux ?? 'on';
-if (!['on', 'off'].includes(aux)) throw new Error(`알 수 없는 --aux: ${aux}`);
-setAuxiliaryPasses(aux === 'on');
+if (!['on', 'off', 'selective'].includes(aux)) throw new Error(`알 수 없는 --aux: ${aux}`);
+setAuxiliaryPasses(aux);
 if (!['ollama', 'litertlm'].includes(backend)) throw new Error(`알 수 없는 backend: ${backend}`);
 if (langs.some(lang => !benchLanguages.includes(lang))) throw new Error(`지원 언어: ${benchLanguages.join(', ')}`);
 const chosen = scenarios.filter(item => !selected.length || selected.includes(item.id));

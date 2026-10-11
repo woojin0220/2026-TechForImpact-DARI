@@ -236,6 +236,37 @@ test('auxiliary passes can be turned off to save model calls', async () => {
   } finally { setAuxiliaryPasses(true); }
 });
 
+test('selective auxiliary passes check topics only after an unrecorded denial', async () => {
+  const counted = first => { let count = 0; const topics = []; return [() => count, topics, async request => { count += 1;
+    if (request.system.startsWith('List every topic')) { topics.push(request); return '{"groups":["protection"]}'; }
+    return response(count === 1 ? first : []); }]; };
+  setAuxiliaryPasses('selective');
+  try {
+    // "could not ask the police" left nothing recorded: the topic check and a focused pass run.
+    const denial = '저는 정치적 의견 때문에 신청합니다. 경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다. 그래서 삼촌 집으로 피신했습니다.';
+    const [denialCalls, denialTopics, denialAdapter] = counted([]);
+    await advanceConversation(fullSession(), denial, denialAdapter);
+    assert.equal(denialTopics.length, 1);
+    assert.equal(denialCalls(), 3);
+    // No negation: only the main extraction runs.
+    const plain = '2024년 가을쯤 경찰이 집에 찾아와서 저를 두 시간 조사했습니다. 그 뒤로 매일 감시를 받았습니다. 저는 정치적 의견 때문에 신청합니다.';
+    const [plainCalls, plainTopics, plainAdapter] = counted([]);
+    await advanceConversation(fullSession(), plain, plainAdapter);
+    assert.equal(plainTopics.length, 0);
+    assert.equal(plainCalls(), 1);
+  } finally { setAuxiliaryPasses(true); }
+
+  // A group the answer denied gets no focused pass, which would attach someone else's incident.
+  const hearsay = '저 자신은 직접 피해를 입은 적은 없습니다. 하지만 형이 2023년에 경찰에게 끌려가 맞았다고 형수에게 들었습니다. 그래서 저도 위험하다고 생각합니다.';
+  let passes = 0;
+  await advanceConversation(fullSession(), hearsay, async request => {
+    if (request.system.startsWith('List every topic')) return '{"groups":["harm"]}';
+    passes += 1;
+    return response(passes === 1 ? [fact('harm', 'no', '저 자신은 직접 피해를 입은 적은 없습니다.')] : []);
+  });
+  assert.equal(passes, 1, 'no focused pass for the denied harm group');
+});
+
 test('repeated identical extraction does not inflate metadata', async () => {
   const first = await sessionWith([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]);
   const next = await advanceConversation(first, '네.', async () => response([fact('grounds.summary', '경찰이 왔습니다.', '경찰이 왔')]));

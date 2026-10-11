@@ -217,9 +217,12 @@ let extractionFormat: ExtractionFormat = 'full';
 export function setExtractionFormat(format: ExtractionFormat) { extractionFormat = format; }
 export function getExtractionFormat(): ExtractionFormat { return extractionFormat; }
 /** Auxiliary passes (a topic check and up to two focused re-extractions per answer) add recall at
- * the cost of extra model calls; benchmarks turn them off to measure that trade-off. */
-let auxiliaryPasses = true;
-export function setAuxiliaryPasses(on: boolean) { auxiliaryPasses = on; }
+ * the cost of extra model calls; benchmarks turn them off to measure that trade-off. "selective"
+ * runs the topic check only when an answer with a negation left no "no" recorded, the usual sign
+ * of a missed "I could not / did not" topic; focused passes still follow a bare "yes". */
+export type AuxiliaryPasses = 'on' | 'off' | 'selective';
+let auxiliaryPasses: AuxiliaryPasses = 'on';
+export function setAuxiliaryPasses(mode: boolean | AuxiliaryPasses) { auxiliaryPasses = mode === true ? 'on' : mode === false ? 'off' : mode; }
 
 const fullJson = intakeSystem.slice(intakeSystem.indexOf('Return ONLY JSON: {"reply"'), intakeSystem.indexOf('\n', intakeSystem.indexOf('Return ONLY JSON: {"reply"')));
 const compactSystem = intakeSystem
@@ -454,7 +457,10 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
     // Small models seeing all question 14 metadata at once often record only one topic of
     // an answer, or a group's "yes" without its details. A short check lists the topics the
     // answer talks about; each one left without new facts gets one focused pass.
-    const told = new Set(facts.filter(fact => fact.sourceIds.includes(latest) && (requirementsById.get(fact.requirementId)?.parentId || !requirementsById.get(fact.requirementId)?.gate)).map(fact => groupOf(fact.requirementId)));
+    // A group the answer denied ("I was never harmed myself") is told too: a focused pass asking
+    // for its details would attach someone else's incident to the applicant.
+    const denied = facts.filter(fact => requirementsById.get(fact.requirementId)?.gate && fact.value === 'no' && fact.sourceIds.includes(latest)).map(fact => fact.requirementId);
+    const told = new Set([...denied, ...facts.filter(fact => fact.sourceIds.includes(latest) && (requirementsById.get(fact.requirementId)?.parentId || !requirementsById.get(fact.requirementId)?.gate)).map(fact => groupOf(fact.requirementId))]);
     const groups = [...new Set(focused.map(item => groupOf(item.id)))];
     // The check costs a model call, so it only runs for answers long enough to cover
     // several topics; a short answer is about one topic, which the main pass handles.
@@ -462,9 +468,10 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
     const sentences = (answer.match(/[.!?。！？]/g) ?? []).length;
     // Several sentences but only one topic extracted is the typical sign of a missed topic.
     const longAnswer = answer.length >= 150 || sentences >= 3 || (sentences >= 2 && told.size <= 1);
-    const mentioned = auxiliaryPasses && groups.length > 1 && longAnswer ? await mentionedGroups(session, groups, adapter, signal) : [];
+    const checkTopics = auxiliaryPasses === 'on' || (auxiliaryPasses === 'selective' && NEGATION.test(answer) && !denied.length);
+    const mentioned = checkTopics && groups.length > 1 && longAnswer ? await mentionedGroups(session, groups, adapter, signal) : [];
     const yesWithoutDetail = facts.filter(fact => requirementsById.get(fact.requirementId)?.gate && fact.value === 'yes' && fact.sourceIds.includes(latest)).map(fact => fact.requirementId);
-    const thin = auxiliaryPasses ? groups.filter(group => (mentioned.includes(group) || yesWithoutDetail.includes(group)) && !told.has(group)).slice(0, 2) : [];
+    const thin = auxiliaryPasses !== 'off' ? groups.filter(group => (mentioned.includes(group) || yesWithoutDetail.includes(group)) && !told.has(group)).slice(0, 2) : [];
     for (const name of thin) {
       const gate = { id: name };
       const group = focused.filter(item => groupOf(item.id) === name);
