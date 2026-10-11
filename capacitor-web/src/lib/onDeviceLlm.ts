@@ -29,6 +29,9 @@ interface OnDeviceLlmPlugin {
   importModel(): Promise<OnDeviceLlmStatus>
   generate(options: OnDeviceGenerateOptions): Promise<{ text: string; stats?: ModelStats }>
   cancel(): Promise<void>
+  /** Benchmark only (iOS): saves results to Documents/bench and keeps the screen on during a run. */
+  saveBenchFile?(options: { name: string; text: string }): Promise<{ path: string }>
+  setKeepAwake?(options: { on: boolean }): Promise<void>
 }
 
 const plugin = registerPlugin<OnDeviceLlmPlugin>('OnDeviceLlm')
@@ -44,6 +47,8 @@ export const onDeviceLlm: OnDeviceLlmPlugin = {
   importModel: async () => { requireNative(); return plugin.importModel() },
   generate: async (options) => { requireNative(); return plugin.generate(options) },
   cancel: async () => { if (Capacitor.isNativePlatform()) await plugin.cancel() },
+  saveBenchFile: async (options) => { requireNative(); return plugin.saveBenchFile!(options) },
+  setKeepAwake: async (options) => { if (Capacitor.getPlatform() === 'ios') await plugin.setKeepAwake!(options) },
 }
 export const getOnDeviceLlmStatus = onDeviceLlm.getStatus
 export const importOnDeviceModel = onDeviceLlm.importModel

@@ -205,6 +205,10 @@ export type ExtractionFormat = 'full' | 'compact';
 let extractionFormat: ExtractionFormat = 'full';
 export function setExtractionFormat(format: ExtractionFormat) { extractionFormat = format; }
 export function getExtractionFormat(): ExtractionFormat { return extractionFormat; }
+/** Auxiliary passes (a topic check and up to two focused re-extractions per answer) add recall at
+ * the cost of extra model calls; benchmarks turn them off to measure that trade-off. */
+let auxiliaryPasses = true;
+export function setAuxiliaryPasses(on: boolean) { auxiliaryPasses = on; }
 
 const fullJson = intakeSystem.slice(intakeSystem.indexOf('Return ONLY JSON: {"reply"'), intakeSystem.indexOf('\n', intakeSystem.indexOf('Return ONLY JSON: {"reply"')));
 const compactSystem = intakeSystem
@@ -439,9 +443,9 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
     const sentences = (answer.match(/[.!?。！？]/g) ?? []).length;
     // Several sentences but only one topic extracted is the typical sign of a missed topic.
     const longAnswer = answer.length >= 150 || sentences >= 3 || (sentences >= 2 && told.size <= 1);
-    const mentioned = groups.length > 1 && longAnswer ? await mentionedGroups(session, groups, adapter, signal) : [];
+    const mentioned = auxiliaryPasses && groups.length > 1 && longAnswer ? await mentionedGroups(session, groups, adapter, signal) : [];
     const yesWithoutDetail = facts.filter(fact => requirementsById.get(fact.requirementId)?.gate && fact.value === 'yes' && fact.sourceIds.includes(latest)).map(fact => fact.requirementId);
-    const thin = groups.filter(group => (mentioned.includes(group) || yesWithoutDetail.includes(group)) && !told.has(group)).slice(0, 2);
+    const thin = auxiliaryPasses ? groups.filter(group => (mentioned.includes(group) || yesWithoutDetail.includes(group)) && !told.has(group)).slice(0, 2) : [];
     for (const name of thin) {
       const gate = { id: name };
       const group = focused.filter(item => groupOf(item.id) === name);

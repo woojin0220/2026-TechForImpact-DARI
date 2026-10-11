@@ -14,7 +14,7 @@ from urllib.error import URLError, HTTPError
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 ALLOWED_MODELS = {"qwen3:4b", "llama3.2:3b"}
-INTAKE_MODELS = {"gemma4:e4b", "gemma3n:e4b", "qwen3:4b", "llama3.2:3b"}
+INTAKE_MODELS = {"gemma4:e4b", "gemma4:e2b", "gemma3n:e4b", "qwen3:4b", "llama3.2:3b"}
 INTAKE_LOCK = threading.Lock()
 TRANSLATION_TARGETS = {"en", "ko", "ru", "ar", "fr", "fa"}
 LANGUAGE_NAMES = {"en": "English", "ko": "Korean", "ru": "Russian", "ar": "Arabic", "fr": "French", "fa": "Persian"}

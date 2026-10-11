@@ -14,6 +14,8 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
         CAPPluginMethod(name: "importModel", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "generate", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "cancel", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "saveBenchFile", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setKeepAwake", returnType: CAPPluginReturnPromise),
     ]
     private let lock = NSLock()
     private var busy = false
@@ -195,6 +197,25 @@ public class OnDeviceLlmPlugin: CAPPlugin, CAPBridgedPlugin, UIDocumentPickerDel
                 call.resolve(["text": response.toString, "stats": stats])
             } catch { call.reject(error.localizedDescription) }
         }
+    }
+    /// Benchmark only: writes fictional-scenario results to Documents/bench, visible in Files and
+    /// copyable with `xcrun devicectl device copy from`.
+    @objc func saveBenchFile(_ call: CAPPluginCall) {
+        guard let name = call.getString("name"), !name.isEmpty, !name.contains("/"), let text = call.getString("text") else {
+            call.reject("저장할 파일 이름과 내용이 필요합니다."); return
+        }
+        do {
+            let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("bench")
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+            let url = directory.appendingPathComponent(name)
+            try text.write(to: url, atomically: true, encoding: .utf8)
+            call.resolve(["path": url.path])
+        } catch { call.reject(error.localizedDescription) }
+    }
+    /// Benchmark only: keeps the screen on so a long run is not suspended.
+    @objc func setKeepAwake(_ call: CAPPluginCall) {
+        let on = call.getBool("on") ?? false
+        DispatchQueue.main.async { UIApplication.shared.isIdleTimerDisabled = on; call.resolve() }
     }
     @objc func cancel(_ call: CAPPluginCall) {
         do {

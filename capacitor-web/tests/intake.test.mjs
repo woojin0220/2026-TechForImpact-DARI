@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { applicationSteps } from '../src/form/schema.ts';
-import { setExtractionFormat, createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
+import { setAuxiliaryPasses, setExtractionFormat, createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
 
 function fact(requirementId, value, quote, overrides = {}) {
   return { requirementId, value, sourceIds: ['message-2'], sourceQuotes: [{ sourceId: 'message-2', quote }], status: 'answered', certainty: 'exact', knowledge: 'direct', ...overrides };
@@ -212,6 +212,22 @@ test('a model rewrite that folds an earlier answer into a new one does not repla
     sourceIds: ['message-2', 'message-4'], sourceQuotes: [{ sourceId: 'message-2', quote: first }, { sourceId: 'message-4', quote: fixed }] });
   const corrected = await advanceConversation(session, fixed, withTopicCheck([correction]));
   assert.deepEqual(getActiveFacts(corrected).filter(item => item.requirementId === 'harm.time').map(item => item.value), ['2022년 겨울']);
+});
+
+test('auxiliary passes can be turned off to save model calls', async () => {
+  const text = '2024년 가을쯤 경찰이 집에 찾아와서 두 시간 동안 조사했습니다. 돌아가면 다시 붙잡혀 갈까 두렵습니다. 저는 정치적 의견 때문에 신청합니다.';
+  // The first extraction records only a bare "yes" for fear, which normally triggers extra passes.
+  const calls = () => { let count = 0; return [() => count, async request => { count += 1; return request.system.startsWith('List every topic') ? '{"groups":["harm","fear"]}'
+    : response(count === 1 ? [fact('fear', 'yes', '돌아가면 다시 붙잡혀 갈까 두렵습니다.')] : []); }]; };
+  const [withAux, adapterOn] = calls();
+  await advanceConversation(fullSession(), text, adapterOn);
+  setAuxiliaryPasses(false);
+  try {
+    const [withoutAux, adapterOff] = calls();
+    await advanceConversation(fullSession(), text, adapterOff);
+    assert.equal(withoutAux(), 1, 'only the main extraction runs');
+    assert.ok(withAux() > 1);
+  } finally { setAuxiliaryPasses(true); }
 });
 
 test('repeated identical extraction does not inflate metadata', async () => {
