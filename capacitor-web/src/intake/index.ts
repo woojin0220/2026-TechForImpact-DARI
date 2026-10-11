@@ -242,12 +242,15 @@ function expandCompactFacts(raw: unknown, refs: Map<string, SentenceRef>): unkno
     if (codes && ['unknown', 'skipped', 'not_applicable'].includes(status) && values.length && values.every(item => codes.includes(item as string))) status = 'answered';
     const value = data.v ?? (status === 'answered' ? undefined : quotes.map(item => item.quote).join(' '));
     if (value === undefined) return [];
+    // A malformed incident id (a number, a sentence) only drops this fact; it must not fail the turn.
+    const eventId = typeof data.e === 'number' ? String(data.e) : data.e;
+    if (eventId !== undefined && (typeof eventId !== 'string' || !eventId.trim() || eventId.length > 80)) return [];
     return [{
       requirementId: data.r, value, status,
       certainty: pickCode({ e: 'exact', a: 'approximate', u: 'uncertain' }, data.c, 'exact'),
       knowledge: pickCode({ d: 'direct', h: 'heard', i: 'inferred', u: 'unspecified' }, data.k, 'unspecified'),
       sourceIds: [...new Set(quotes.map(item => item.sourceId))], sourceQuotes: quotes,
-      eventId: data.e ?? 'general', supersedes: data.x ?? [],
+      eventId: eventId ?? 'general', supersedes: data.x ?? [],
     }];
   });
 }

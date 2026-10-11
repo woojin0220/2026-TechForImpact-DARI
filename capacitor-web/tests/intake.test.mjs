@@ -153,6 +153,7 @@ test('compact extraction cites sentences by ref and expands to the same validate
         { r: 'harm.time', v: 'autumn 2024', c: 'a', q: ['2.1'], e: 'harm-1' },
         { r: 'harm.reason', s: 'u', q: ['2.2'], e: 'harm-1' },
         { r: 'harm.place', v: 'somewhere', q: ['9.9'], e: 'harm-1' },
+        { r: 'harm.actor', v: 'police', q: ['2.1'], e: 'x'.repeat(200) },
       ] });
     };
     const session = await advanceConversation(fullSession('en'), text, adapter);
@@ -176,6 +177,7 @@ test('compact extraction cites sentences by ref and expands to the same validate
     assert.equal(facts['harm.reason'].status, 'unknown');
     assert.equal(facts['harm.reason'].value, 'I do not know why they came.', 'an omitted value is the cited sentence');
     assert.equal(facts['harm.place'], undefined, 'an invalid ref leaves a gap instead of failing the turn');
+    assert.equal(facts['harm.actor'], undefined, 'a malformed incident id leaves a gap instead of failing the turn');
 
     const corrected = await advanceConversation(session, 'Sorry, I was wrong: it was spring 2024.', async request => request.system.startsWith('List every topic') ? '{"groups":[]}'
       : JSON.stringify({ reply: 'Thank you.', facts: [{ r: 'harm.time', v: 'spring 2024', q: ['4.1'], e: 'harm-1', x: [facts['harm.time'].id] }] }));
