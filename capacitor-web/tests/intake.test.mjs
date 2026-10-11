@@ -256,6 +256,25 @@ test('selective auxiliary passes check topics only after an unrecorded denial', 
     assert.equal(plainCalls(), 1);
   } finally { setAuxiliaryPasses(true); }
 
+  // Negations are whole words in every language; look-alike substrings are not negations.
+  const cases = [
+    ['ko', '경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다. 그래서 삼촌 집으로 피신했습니다. 저는 그곳에서 두 달 지냈습니다.', '일주일 동안 갇혀 있었습니다. 아까 3월이라고 했는데 잘못 말했습니다. 그 뒤 삼촌 집으로 피신했습니다.'],
+    ['ru', 'Я не мог обратиться за помощью в полицию. Поэтому я укрылся у дяди. Через два месяца я уехал.', 'Меня держали неделю. Потом я укрылся у дяди в другом городе. Через два месяца я уехал.'],
+    ['ar', 'لم أستطع أن أطلب المساعدة من الشرطة. لذلك لجأت إلى بيت عمي. بعد شهرين غادرت.', 'بعد أن شاركت في الاحتجاج هددتني الشرطة. لذلك لجأت إلى بيت عمي في مدينة أخرى. بعد شهرين غادرت.'],
+    ['fa', 'نمی‌توانستم از پلیس کمک بخواهم. برای همین به خانه عمویم رفتم. دو ماه بعد رفتم.', 'پلیس به خانه ما آمد و مرا تهدید کرد. برای همین به خانه عمویم پناه بردم. دو ماه بعد رفتم.'],
+  ];
+  setAuxiliaryPasses('selective');
+  try {
+    for (const [lang, negated, plainText] of cases) {
+      const [, negatedTopics, negatedAdapter] = counted([]);
+      await advanceConversation(fullSession(lang), negated, negatedAdapter);
+      assert.equal(negatedTopics.length, 1, `${lang} negation starts the topic check`);
+      const [, plainTopics, plainAdapter] = counted([]);
+      await advanceConversation(fullSession(lang), plainText, plainAdapter);
+      assert.equal(plainTopics.length, 0, `${lang} look-alike is not a negation`);
+    }
+  } finally { setAuxiliaryPasses(true); }
+
   // A group the answer denied gets no focused pass, which would attach someone else's incident.
   const hearsay = '저 자신은 직접 피해를 입은 적은 없습니다. 하지만 형이 2023년에 경찰에게 끌려가 맞았다고 형수에게 들었습니다. 그래서 저도 위험하다고 생각합니다.';
   let passes = 0;

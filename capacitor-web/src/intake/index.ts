@@ -15,7 +15,20 @@ const MAX_USER_LENGTH = 12000;
 // adapter additionally enforces its model context window.
 const MAX_PROMPT_LENGTH = 26000;
 const MAX_OUTPUT_LENGTH = 64000;
-const NEGATION = /않|없|안\s|아니|못|\bno\b|\bnot\b|never|n't|\bне\b|нет|никогда|\bpas\b|jamais|\bnon\b|لا|لم|لن|ليس|نه|نمی|نکرد|نداشت/i;
+// Negation words in every candidate UI language. Words are matched whole (\b only knows ASCII
+// letters, so "не" never matched and "لا" matched inside "الاحتجاج"); "동안 " and "잘못" are not
+// negations. Persian negates verbs with a prefix, so common negated stems are listed.
+// No lookbehind: iOS 15 WebViews (the app's minimum) reject it when the module loads.
+const wordStart = '(?:^|[^\\p{L}])';
+const wholeWord = (words: string) => `${wordStart}(?:${words})(?!\\p{L})`;
+const NEGATION = new RegExp([
+  '않|없|(?:^|[^잘])못|아니|(?:^|[^가-힣])안\\s',
+  wholeWord('no|not|never|nobody|nothing'), "n't",
+  wholeWord('pas|jamais|non|rien|personne'),
+  wholeWord('не|нет|никогда|ни'),
+  wholeWord('لا|لم|لن|ليس|ليست|لست'),
+  wholeWord('نه|هیچ'), `${wordStart}(?:نمی|نکرد|نکن|نداشت|ندار|نتوان|نبود|نیست|نشد|نخواست|نخواه|نخورد|ندید|نگفت|نزد|نرفت|نیامد|نبرد|نرسید|نگرفت)`,
+].join('|'), 'iu');
 // Self-corrections and "I don't know" in every candidate UI language (ko, en, fr, ru, ar, fa).
 // Phrases are specific to the speaker correcting themselves, so a story that merely
 // mentions a mistake ("arrested by mistake") is not read as a correction.
