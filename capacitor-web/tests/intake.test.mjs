@@ -147,7 +147,9 @@ test('compact extraction cites sentences by ref and expands to the same validate
       if (request.system.startsWith('List every topic')) return '{"groups":[]}';
       seen ??= request;
       return JSON.stringify({ reply: 'What happened then?', facts: [
-        { r: 'harm', v: 'yes', q: ['2.1'] },
+        // A choice marked unknown but given as an option code is an answer.
+        { r: 'harm', v: 'yes', s: 'u', q: ['2.1'] },
+        { r: 'harm.type', v: 'questioning', q: ['2.1'], e: 'harm-1' },
         { r: 'harm.time', v: 'autumn 2024', c: 'a', q: ['2.1'], e: 'harm-1' },
         { r: 'harm.reason', s: 'u', q: ['2.2'], e: 'harm-1' },
         { r: 'harm.place', v: 'somewhere', q: ['9.9'], e: 'harm-1' },
@@ -159,7 +161,7 @@ test('compact extraction cites sentences by ref and expands to the same validate
     assert.deepEqual(JSON.parse(seen.prompt).recentMessages.find(item => item.role === 'user').sentences,
       [{ ref: '2.1', text: 'In autumn 2024 the police came to my house.' }, { ref: '2.2', text: 'I do not know why they came.' }]);
     const variants = seen.responseSchema.properties.facts.items.anyOf;
-    assert.ok(variants.every(item => ['r', 'v', 'q'].every(key => item.required.includes(key))));
+    assert.ok(variants.every(item => ['r', 'v', 'k', 'q'].every(key => item.required.includes(key))), 'value and how the applicant knows are always given');
     const gate = variants.find(item => item.properties.r.enum.includes('harm') && item.properties.v.enum);
     assert.deepEqual(gate.properties.v.enum, ['yes', 'no'], 'a choice is limited to its option codes');
     assert.ok(variants.some(item => item.properties.r.enum.includes('harm') && item.properties.s.enum.join() === 'u,k,n' && item.properties.v.type === 'string'),
@@ -167,6 +169,8 @@ test('compact extraction cites sentences by ref and expands to the same validate
     assert.ok(variants.filter(item => item.properties.r.enum.includes('harm.time')).every(item => item.required.includes('e')), 'a per-incident detail needs its incident');
     assert.ok(variants.filter(item => item.properties.r.enum.includes('harm')).every(item => !item.required.includes('e')), 'a gate does not');
     const facts = Object.fromEntries(getActiveFacts(session).map(item => [item.requirementId, item]));
+    assert.equal(facts['harm'].status, 'answered');
+    assert.deepEqual(facts['harm.type'].value, ['questioning'], 'one code is accepted for a multi-choice field');
     assert.equal(facts['harm.time'].certainty, 'approximate');
     assert.deepEqual(facts['harm.time'].sourceQuotes, [{ sourceId: 'message-2', quote: 'In autumn 2024 the police came to my house.' }]);
     assert.equal(facts['harm.reason'].status, 'unknown');

@@ -59,7 +59,8 @@ export function intakeCompactSchema(requirements: { id: string; type: string; op
   const variants: unknown[] = [];
   for (const incident of [false, true]) {
     const own = requirements.filter(item => perIncident(item) === incident);
-    const keys = incident ? ['r', 'v', 'q', 'e'] : ['r', 'v', 'q'];
+    // k is required too: left to a default, "heard from my mother" was recorded as unspecified.
+    const keys = incident ? ['r', 'v', 'k', 'q', 'e'] : ['r', 'v', 'k', 'q'];
     const text = own.filter(item => !item.options);
     const choice = own.filter(item => item.options);
     const groups = new Map<string, { ids: string[]; codes: string[]; multi: boolean }>();
@@ -71,7 +72,9 @@ export function intakeCompactSchema(requirements: { id: string; type: string; op
     }
     if (text.length) variants.push(variant(text.map(item => item.id), { anyOf: [nonempty, strings] }, ['a', 'u', 'k', 'n', 'c'], keys));
     for (const group of groups.values()) variants.push(variant(group.ids,
-      group.multi ? { type: 'array', minItems: 1, items: { type: 'string', enum: group.codes } } : { type: 'string', enum: group.codes }, ['a', 'c'], keys));
+      // A multi-choice answer may be one code: as an array-only field, a single "political" only fit the
+      // unknown branch and was recorded as unknown.
+      group.multi ? { anyOf: [{ type: 'string', enum: group.codes }, { type: 'array', minItems: 1, items: { type: 'string', enum: group.codes } }] } : { type: 'string', enum: group.codes }, ['a', 'c'], keys));
     if (choice.length) variants.push(variant(choice.map(item => item.id), nonempty, ['u', 'k', 'n'], [...keys, 's']));
   }
   return strictObject({ reply: nonempty, facts: { type: 'array', maxItems: 60, items: variants.length === 1 ? variants[0] : { anyOf: variants } } });

@@ -212,7 +212,7 @@ export function setAuxiliaryPasses(on: boolean) { auxiliaryPasses = on; }
 
 const fullJson = intakeSystem.slice(intakeSystem.indexOf('Return ONLY JSON: {"reply"'), intakeSystem.indexOf('\n', intakeSystem.indexOf('Return ONLY JSON: {"reply"')));
 const compactSystem = intakeSystem
-  .replace(fullJson, 'Return ONLY JSON: {"reply":"question or acknowledgement in the session language","facts":[{"r":"catalog id","v":"source-language fact or canonical option value; array for multi-select","s":"status code","c":"certainty code","k":"knowledge code","q":["N.i"],"e":"incident/row id","x":["fact-N"]}]}. Codes: s answered=a (default), unknown=u, skipped=k, not_applicable=n, conflict=c; c exact=e (default), approximate=a, uncertain=u; k direct=d, heard=h, inferred=i, unspecified=u (default). q lists refs "N.i" (sentence i of user message-N) of the USER sentences that support the fact. Always give v. Omit other keys to use their defaults; omit e for nonrepeating fields and x unless correcting. Below, value means v, status means s, eventId means e and supersedes means x.')
+  .replace(fullJson, 'Return ONLY JSON: {"reply":"question or acknowledgement in the session language","facts":[{"r":"catalog id","v":"source-language fact or canonical option value; array for multi-select","s":"status code","c":"certainty code","k":"knowledge code","q":["N.i"],"e":"incident/row id","x":["fact-N"]}]}. Codes: s answered=a (default), unknown=u, skipped=k, not_applicable=n, conflict=c; c exact=e (default), approximate=a, uncertain=u; k direct=d, heard=h, inferred=i, unspecified=u (default). q lists refs "N.i" (sentence i of user message-N) of the USER sentences that support the fact. Always give v and k (k says how the applicant knows: h when they heard it from someone). Omit other keys to use their defaults; omit e for nonrepeating fields and x unless correcting. Below, value means v, status means s, eventId means e and supersedes means x.')
   .replace('Every fact, including unknown/skipped/not_applicable, needs an exact quote from a USER message that supports it.', 'Every fact, including unknown/skipped/not_applicable, needs q citing the USER sentences that support it.')
   .replace("For unknown/skipped/not_applicable, value is the applicant's verbatim statement of uncertainty/refusal/non-applicability.", "For unknown/skipped/not_applicable, v is the applicant's verbatim statement.")
   .replace('Every fact MUST contain eventId: use a stable incident/row ID for repeated fields, and "general" for nonrepeating fields. Every fact MUST contain supersedes: [] for new facts, and the OLD fact ID(s) for explicit corrections. For example if fact-5 recorded March and the person corrects that to April, the new time fact must include supersedes:["fact-5"].', 'Every per-incident detail (perIncident in requirements) MUST have e, a stable incident/row ID such as "harm-1"; use a new one for each separate incident. For explicit corrections x lists the OLD fact ID(s): if fact-5 recorded March and the person corrects that to April, the new time fact has x:["fact-5"].');
@@ -234,7 +234,12 @@ function expandCompactFacts(raw: unknown, refs: Map<string, SentenceRef>): unkno
     const cited = (Array.isArray(data.q) ? data.q : [data.q]).map(ref => refs.get(String(ref))).filter((item): item is SentenceRef => !!item);
     const quotes = [...new Map(cited.map(item => [`${item.sourceId}|${item.quote}`, item])).values()];
     if (!quotes.length) return [];
-    const status = pickCode({ a: 'answered', u: 'unknown', k: 'skipped', n: 'not_applicable', c: 'conflict' }, data.s, 'answered');
+    let status = pickCode({ a: 'answered', u: 'unknown', k: 'skipped', n: 'not_applicable', c: 'conflict' }, data.s, 'answered');
+    // A choice "unknown" whose value is exactly option codes is an answer, not the applicant's words of
+    // uncertainty (those are never a bare code such as "yes" or "political").
+    const codes = requirementsById.get(String(data.r))?.options?.map(option => option.value);
+    const values = Array.isArray(data.v) ? data.v : [data.v];
+    if (codes && ['unknown', 'skipped', 'not_applicable'].includes(status) && values.length && values.every(item => codes.includes(item as string))) status = 'answered';
     const value = data.v ?? (status === 'answered' ? undefined : quotes.map(item => item.quote).join(' '));
     if (value === undefined) return [];
     return [{
