@@ -1,7 +1,7 @@
 import { applicationSteps, type FormField, type VisibleWhen } from '../form/schema.ts';
 import { metadata14 } from './metadata14.ts';
 
-export type IntakeScope = 'priority' | 'full';
+export type IntakeScope = 'priority' | 'full' | 'test';
 export type Requirement = {
   id: string;
   questionId: string;
@@ -85,5 +85,8 @@ export function isFormSection(id: string): boolean {
 
 export const requirementsById = new Map(requirementCatalog.map(item => [item.id, item]));
 export function requirementsForScope(scope: IntakeScope): Requirement[] {
+  if (scope === 'test') return requirementCatalog.filter(item => testRequirementIds.includes(item.id));
   return requirementCatalog.filter(item => scope === 'full' || ['14.1', '14.2', '14.3'].includes(item.questionId));
 }
+
+export const testRequirementIds = ['grounds.summary', 'harm', 'harm.event', 'harm.type', 'harm.time', 'harm.place', 'harm.actor', 'harm.reason', 'fear', 'fear.harm', 'fear.actor', 'fear.reason'];

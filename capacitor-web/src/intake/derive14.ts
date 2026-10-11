@@ -26,6 +26,10 @@ function gate(id: string, facts: IntakeFact[]): { value: string; needsReview?: b
   const said = own.find(fact => fact.status === 'answered')?.value
     ?? (facts.some(fact => fact.status === 'answered' && requirementsById.get(fact.requirementId)?.when?.some(condition => condition.id === id && condition.anyOf.includes('no'))) ? 'no' : undefined);
   const factIds = [...own, ...details].map(fact => fact.id);
+  const answers = new Set(own.filter(fact => fact.status === 'answered').flatMap(fact => Array.isArray(fact.value) ? fact.value : [fact.value]));
+  if (own.some(fact => fact.status === 'conflict') || answers.size > 1) {
+    return { value: '다시 확인 필요 (서로 다른 답변이 있음)', needsReview: true, factIds };
+  }
   if (said === 'no' && details.length) return { value: '다시 확인 필요 (아니요라고 답했지만 관련 내용이 있음)', needsReview: true, factIds };
   if (said === 'yes' || details.length) return { value: '예', factIds };
   if (said === 'no') return { value: '아니요', factIds };
