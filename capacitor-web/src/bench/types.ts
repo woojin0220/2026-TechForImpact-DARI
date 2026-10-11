@@ -35,7 +35,9 @@ export type NativeBenchOptions = { constrained?: boolean; maxNumTokens?: number;
 export type BenchRow =
   | { type: 'meta'; runId: string; startedAt: string; config: Record<string, unknown>; device?: Record<string, unknown> }
   | { type: 'call'; runId: string; scenario: string; lang: string; repeat: number; turn: number | 'draft'; call: number; task: string;
-      systemChars: number; promptChars: number; outputChars: number; ms: number; jsonOk: boolean; error?: string; stats?: ModelStats }
+      systemChars: number; promptChars: number; outputChars: number; ms: number; jsonOk: boolean; error?: string; stats?: ModelStats;
+      /** The app's separate next-question call after a turn (not part of turnMs). */
+      question?: boolean }
   | { type: 'session'; runId: string; scenario: string; lang: string; repeat: number; passed: number; total: number;
-      safetyPassed: number; safetyTotal: number; ms: number; turnMs: number[]; draftMs?: number; error?: string;
+      safetyPassed: number; safetyTotal: number; ms: number; turnMs: number[]; questionMs?: number[]; draftMs?: number; error?: string;
       checks: { label: string; ok: boolean; safety: boolean; actual?: string }[] };

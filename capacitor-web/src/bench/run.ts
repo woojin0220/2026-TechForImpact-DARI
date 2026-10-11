@@ -1,4 +1,4 @@
-import { appendAssistantMessage, appendUserMessage, calculateCoverage, confirmFacts, continueConversation, createSession, generateDraft, getActiveFacts, narrativeOpening, type IntakeSession, type ModelRequest } from '../intake/index.ts';
+import { appendAssistantMessage, appendUserMessage, calculateCoverage, confirmFacts, continueConversation, createSession, generateDraft, getActiveFacts, guideConversation, narrativeOpening, needsTopicQuestion, type IntakeSession, type ModelRequest } from '../intake/index.ts';
 import type { BenchLanguage, Scenario } from './scenarios.ts';
 import { scoreCheck } from './score.ts';
 import type { BenchRow, ModelStats } from './types.ts';
@@ -33,11 +33,12 @@ export async function runScenario(scenario: Scenario, lang: BenchLanguage, adapt
   const base = { runId: options.runId, scenario: scenario.id, lang, repeat };
   const calls: CallRow[] = [];
   let turn: number | 'draft' = 1;
+  let question = false;
   // Engine loading is reported per call (stats.initMs) and kept out of turn latency.
   let initMs = 0;
   const instrumented = async (request: ModelRequest): Promise<string> => {
     const started = Date.now();
-    const row: CallRow = { type: 'call', ...base, turn, call: calls.length + 1, task: request.task,
+    const row: CallRow = { type: 'call', ...base, turn, call: calls.length + 1, task: request.task, ...(question ? { question: true } : {}),
       systemChars: request.system.length, promptChars: request.prompt.length, outputChars: 0, ms: 0, jsonOk: false };
     try {
       const { text, stats } = await adapter(request);
@@ -57,6 +58,7 @@ export async function runScenario(scenario: Scenario, lang: BenchLanguage, adapt
   let session = appendAssistantMessage(createSession(lang, 'full'), narrativeOpening(lang), { kind: 'narrative' });
   const started = Date.now();
   const turnMs: number[] = [];
+  const questionMs: number[] = [];
   let error: string | undefined;
   for (const [index, text] of scenario.turns[lang].entries()) {
     if (options.signal?.aborted) { error = '중단됨'; break; }
@@ -76,6 +78,17 @@ export async function runScenario(scenario: Scenario, lang: BenchLanguage, adapt
       session = (failure as { session?: IntakeSession }).session ?? asked;
       break;
     } finally { turnMs.push(Date.now() - turnStarted - initMs); }
+    // The app then asks its next question with a separate call (guideConversation), which the
+    // applicant also waits for. It is timed on its own so turnMs stays comparable with earlier
+    // runs, and its question is not kept: the scripted answers do not respond to it.
+    if (!error && needsTopicQuestion(session)) {
+      const asked = Date.now();
+      initMs = 0;
+      question = true;
+      try { await guideConversation(session, instrumented, options.signal); } catch { /* recorded on the call row */ }
+      question = false;
+      questionMs.push(Date.now() - asked - initMs);
+    }
   }
 
   const facts = getActiveFacts(session);
@@ -103,7 +116,7 @@ export async function runScenario(scenario: Scenario, lang: BenchLanguage, adapt
     type: 'session', ...base,
     passed: checks.filter(item => item.ok).length, total: checks.length,
     safetyPassed: checks.filter(item => item.safety && item.ok).length, safetyTotal: checks.filter(item => item.safety).length,
-    ms: Date.now() - started, turnMs, ...(draftMs !== undefined ? { draftMs } : {}), ...(error ? { error } : {}),
+    ms: Date.now() - started, turnMs, ...(questionMs.length ? { questionMs } : {}), ...(draftMs !== undefined ? { draftMs } : {}), ...(error ? { error } : {}),
     checks: checks.map(({ ok, label, safety, actual }) => ({ ok, label, safety, ...(ok ? {} : { actual }) })),
   };
   options.onRow?.(result);

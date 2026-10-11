@@ -9,6 +9,8 @@ export type LanguageSummary = {
   safetyPassed: number; safetyTotal: number;
   callsPerTurn: number; jsonFailRate: number;
   turnP50: number; turnP90: number; draftP50?: number;
+  /** The app's separate next-question call after a turn (from runs that time it). */
+  questionP50?: number;
   promptTokens?: number; decodeTokPerSec?: number; ttftP50?: number; peakMemMB?: number;
 };
 
@@ -36,10 +38,11 @@ export function summarize(rows: BenchRow[]): LanguageSummary[] {
       lang, sessions: own.length, failedSessions: own.length - ran.length,
       quality: quality.length ? quality.filter(check => check.ok).length / quality.length : NaN,
       safetyPassed: safety.filter(check => check.ok).length, safetyTotal: safety.length,
-      callsPerTurn: turns.length ? ownCalls.filter(row => row.turn !== 'draft').length / turns.length : NaN,
+      callsPerTurn: turns.length ? ownCalls.filter(row => row.turn !== 'draft' && !row.question).length / turns.length : NaN,
       jsonFailRate: ownCalls.length ? ownCalls.filter(row => !row.jsonOk).length / ownCalls.length : NaN,
       turnP50: percentile(turns, 0.5), turnP90: percentile(turns, 0.9),
       ...(drafts.length ? { draftP50: percentile(drafts, 0.5) } : {}),
+      ...(own.some(row => row.questionMs?.length) ? { questionP50: percentile(own.flatMap(row => row.questionMs ?? []), 0.5) } : {}),
       promptTokens: mean(ownCalls.map(row => row.stats?.prefillTokens).filter((value): value is number => typeof value === 'number')),
       decodeTokPerSec: mean(ownCalls.map(row => row.stats?.decodeTokPerSec).filter((value): value is number => typeof value === 'number' && value > 0)),
       ttftP50: percentile(ownCalls.map(row => row.stats?.ttftMs).filter((value): value is number => typeof value === 'number'), 0.5),
