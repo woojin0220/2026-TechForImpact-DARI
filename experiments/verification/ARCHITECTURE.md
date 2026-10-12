@@ -96,7 +96,7 @@ strategy에는 gold annotation을 전달하지 않는다. 평가 runner만 예�
 | `indeterminate` | parser, 모델, 지원 언어 또는 계약 문제로 판단할 수 없음 |
 | `invalid_input` | 입력이 계약을 만족하지 않음 |
 
-빈 `findings` 배열은 pipeline이 정상 완료된 경우에만 `completed`로 해석한다. 구성 요소 오류, timeout, malformed output은 반드시 `indeterminate`와 구조화된 오류를 반환한다.
+상태 우선순위는 `invalid_input > indeterminate > issues_found > completed`다. `candidate`와 `confirmed`는 active finding이고, `rejected`는 active finding이 아니다. 하나라도 `abstained`가 있으면 결과는 오류가 포함된 `indeterminate`다. 빈 `findings` 배열은 pipeline이 정상 완료된 경우에만 `completed`로 해석한다. 구성 요소 오류, timeout, malformed output은 반드시 `indeterminate`와 구조화된 오류를 반환한다.
 
 ### 5.3 Finding
 
@@ -109,9 +109,10 @@ strategy에는 gold annotation을 전달하지 않는다. 평가 runner만 예�
 | `severity` | 의미 보존 관점의 `low`, `medium`, `high`, `critical` |
 | `source_span` | 원문의 문자 범위와 인용문. 없으면 `null` |
 | `translation_span` | 번역문의 문자 범위와 인용문. 없으면 `null` |
+| `evidence_absence_reason` | 한쪽 span이 존재할 수 없는 이유. 양쪽 span이 있으면 `null` |
 | `confidence` | strategy 내부 confidence. 방식 사이의 절대 비교에는 사용하지 않음 |
 | `status` | `candidate`, `confirmed`, `rejected`, `abstained` |
-| `detector` | finding을 만든 구성 요소 ID와 버전 |
+| `detectors` | finding을 만든 모든 구성 요소의 ID, 버전, 선택적 config·prompt·model digest |
 | `rationale` | 관계 차이에 대한 짧고 중립적인 설명 |
 
 `유리하게 강화`, `불리하게 약화` 같은 신청 결과 방향은 protocol 값으로 사용하지 않는다. 시스템은 `행위자 교체`, `부정 삭제`, `불확실성 삭제`처럼 관찰 가능한 의미 변화만 기록한다. 법적 영향이 필요하면 별도의 사람 검토 단계에서 다룬다.
@@ -185,11 +186,14 @@ Graph 차이 하나에 필요한 국소 문장과 질문만 별도 confirmer에 
 
 ## 9. Evidence와 provenance
 
-- 모든 span은 UTF-8 문자열의 Python/JavaScript 공통 문자 인덱스 정책을 정하기 전까지 Unicode code point offset을 기준으로 한다.
+- v1의 모든 span은 Python 문자열의 Unicode code point offset을 기준으로 한다. JavaScript adapter는 UTF-16 code unit index를 그대로 저장하지 않고 code point offset으로 변환한다.
 - runner는 저장 전에 `text[start:end] == quote`를 검증한다.
+- v1의 단일 문서 단위 ID는 원문 `source:0`, 번역문 `translation:0`으로 고정한다.
+- `omission`은 source-only span과 부재 이유, `unsupported_addition`은 translation-only span과 부재 이유를 가진다. 나머지 type은 양쪽 span을 가진다.
 - 정규화된 텍스트만 저장하지 않고 원문과 offset mapping을 유지한다.
-- finding에는 detector ID와 버전, model revision, prompt hash, config hash를 남긴다.
-- run manifest에는 dataset version, Git commit, random seed, 시작 시각, 실행 시간, hardware class를 남긴다.
+- component에는 detector ID와 버전, model revision, prompt hash, config hash를 남긴다.
+- provenance에는 dataset version과 canonical content digest, Git commit, random seed, 시작 시각, 실행 시간, hardware class를 남긴다.
+- `experiment_fingerprint`는 dataset content digest·code·strategy·config의 정적 identity이며 시각과 실행 시간은 포함하지 않는다. `run_id`는 실행마다 별도로 생성한다.
 - 기본 로그와 집계 결과에는 원문을 남기지 않는다.
 
 ## 10. 실패 격리
@@ -201,7 +205,7 @@ Graph 차이 하나에 필요한 국소 문장과 질문만 별도 confirmer에 
 | extractor 하나가 실패 | 해당 strategy 전체 `indeterminate` |
 | aligner confidence 부족 | 관련 항목 `abstained`; 전체 판단 가능 여부도 기록 |
 | model timeout 또는 malformed JSON | `indeterminate`; 빈 finding으로 대체 금지 |
-| evidence span 불일치 | contract violation으로 해당 run 실패 |
+| evidence span 불일치 | 해당 case `indeterminate` + `evidence_mismatch` |
 | 일부 case만 실패 | 다른 case는 계속 실행하고 실패율을 지표로 집계 |
 
 ## 11. 현재 저장소와의 관계

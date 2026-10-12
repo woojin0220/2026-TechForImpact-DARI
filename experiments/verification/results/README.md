@@ -4,8 +4,9 @@
 
 ## 커밋 가능한 내용
 
-- dataset ID와 version
+- dataset ID, version, canonical content digest
 - Git commit
+- 정적 설정을 식별하는 `experiment_fingerprint`와 고유 `run_id`
 - strategy, component, model, prompt, config version
 - random seed와 실행 환경 class
 - 집계 지표

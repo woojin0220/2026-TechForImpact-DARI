@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://dari.example/schemas/verification-input-v1.json",
+  "$id": "https://dari.example/schemas/input.schema.json",
   "title": "DARI verification input v1",
   "type": "object",
   "additionalProperties": false,
@@ -37,10 +37,12 @@
       "properties": {
         "question_id": {
           "type": "string",
+          "minLength": 1,
           "maxLength": 64
         },
         "document_id": {
           "type": "string",
+          "minLength": 1,
           "maxLength": 128
         }
       }
@@ -62,6 +64,7 @@
         "text": {
           "type": "string",
           "minLength": 1,
+          "pattern": "\\S",
           "maxLength": 20000
         }
       }

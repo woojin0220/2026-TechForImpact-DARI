@@ -29,8 +29,8 @@
 
 - `text[start:end]`가 `quote`와 정확히 일치한다.
 - source span을 translation 문서에 연결하거나 반대로 연결하면 실패한다.
-- Unicode, 줄바꿈, RTL 텍스트에서도 offset이 보존된다.
-- omission처럼 한쪽 근거가 없는 finding은 반대쪽 span과 의미 단위 ID를 반드시 가진다.
+- Unicode code point 기준으로 emoji, 결합문자, CRLF, RTL 텍스트의 offset이 보존된다.
+- `omission`은 source-only span, `unsupported_addition`은 translation-only span과 명시적 부재 이유를 가진다. 다른 type은 양쪽 span을 가진다.
 
 ### 실패 처리
 
@@ -43,9 +43,11 @@
 
 - source extractor 호출에는 source 문서만 전달된다.
 - translation extractor 호출에는 translation 문서만 전달된다.
-- 같은 seed, model revision, prompt hash, config로 재실행하면 같은 manifest identity를 만든다.
+- 같은 dataset content digest, code, seed, model revision, prompt hash, config는 같은 `experiment_fingerprint`를 만들고, 각 실행의 `run_id`는 고유하다.
 - raw text는 기본 로그와 결과 summary에 포함되지 않는다.
 - fixture 안의 `ignore previous instructions` 같은 문자열은 지시가 아니라 문서 내용으로 처리된다.
+
+현재 A단계 자동 시험은 strict JSON의 중복 key와 비유한 수, 공백뿐인 입력, bool-as-number, 중복 case ID, 상태 조합, 근거 방향·범위·인용문, adapter exception·timeout·malformed output, batch 계속 실행을 포함한다.
 
 ## 3. B단계: mutation suite
 
@@ -96,6 +98,8 @@
 - finding-level: type, severity, change, 양쪽 evidence span
 - adjudication: agreed / disputed / indeterminate
 - provenance: 작성 방법, 번역 방법, mutation 여부, 검수자 수
+
+현재 fixture contract v1은 A/B단계의 synthetic label인 `faithful/issues_found`와 `unreviewed/agreed`만 표현한다. C단계에서 `disputed/indeterminate`를 보존하기 전에 fixture schema와 loader의 다음 버전을 먼저 정의한다.
 
 ## 5. 비교 실험
 

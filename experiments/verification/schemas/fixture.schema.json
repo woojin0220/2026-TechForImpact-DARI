@@ -1,0 +1,423 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dari.example/schemas/fixture.schema.json",
+  "title": "DARI verification fixture v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case",
+    "gold",
+    "fixture_provenance"
+  ],
+  "properties": {
+    "case": {
+      "$ref": "input.schema.json"
+    },
+    "gold": {
+      "$ref": "#/$defs/gold"
+    },
+    "fixture_provenance": {
+      "$ref": "#/$defs/fixtureProvenance"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "fixture_provenance": {
+            "properties": {
+              "mutation": {
+                "const": "none"
+              }
+            },
+            "required": [
+              "mutation"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "gold": {
+            "properties": {
+              "status": {
+                "const": "faithful"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "gold": {
+            "properties": {
+              "status": {
+                "const": "issues_found"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "fixture_provenance": {
+            "properties": {
+              "human_reviewed": {
+                "const": true
+              }
+            },
+            "required": [
+              "human_reviewed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "gold": {
+            "properties": {
+              "findings": {
+                "items": {
+                  "properties": {
+                    "adjudication": {
+                      "const": "agreed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "gold": {
+            "properties": {
+              "findings": {
+                "items": {
+                  "properties": {
+                    "adjudication": {
+                      "const": "unreviewed"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "gold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "findings"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "faithful",
+            "issues_found"
+          ]
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/goldFinding"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "faithful"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "findings": {
+                "maxItems": 0
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "findings": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "goldFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "type",
+        "related_types",
+        "change",
+        "severity",
+        "source_span",
+        "translation_span",
+        "evidence_absence_reason",
+        "rationale",
+        "adjudication"
+      ],
+      "properties": {
+        "finding_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "type": {
+          "$ref": "report.schema.json#/$defs/findingType"
+        },
+        "related_types": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "report.schema.json#/$defs/findingType"
+          }
+        },
+        "change": {
+          "enum": [
+            "added",
+            "removed",
+            "changed",
+            "swapped"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "source_span": {
+          "oneOf": [
+            {
+              "$ref": "report.schema.json#/$defs/sourceSpan"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "translation_span": {
+          "oneOf": [
+            {
+              "$ref": "report.schema.json#/$defs/translationSpan"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_absence_reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "adjudication": {
+          "enum": [
+            "agreed",
+            "unreviewed"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "anyOf": [
+            {
+              "properties": {
+                "source_span": {
+                  "$ref": "report.schema.json#/$defs/sourceSpan"
+                }
+              }
+            },
+            {
+              "properties": {
+                "translation_span": {
+                  "$ref": "report.schema.json#/$defs/translationSpan"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "source_span": {
+                    "type": "null"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "translation_span": {
+                    "type": "null"
+                  }
+                }
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_absence_reason": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "evidence_absence_reason": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "omission"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "change": {
+                "const": "removed"
+              },
+              "source_span": {
+                "$ref": "report.schema.json#/$defs/sourceSpan"
+              },
+              "translation_span": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "unsupported_addition"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "change": {
+                "const": "added"
+              },
+              "source_span": {
+                "type": "null"
+              },
+              "translation_span": {
+                "$ref": "report.schema.json#/$defs/translationSpan"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "not": {
+                  "enum": [
+                    "omission",
+                    "unsupported_addition"
+                  ]
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "source_span": {
+                "$ref": "report.schema.json#/$defs/sourceSpan"
+              },
+              "translation_span": {
+                "$ref": "report.schema.json#/$defs/translationSpan"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "fixtureProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixture_version",
+        "authoring_method",
+        "mutation",
+        "paired_case_id",
+        "human_reviewed"
+      ],
+      "properties": {
+        "fixture_version": {
+          "const": "1.0"
+        },
+        "authoring_method": {
+          "enum": [
+            "human_written_synthetic",
+            "model_assisted_synthetic"
+          ]
+        },
+        "mutation": {
+          "enum": [
+            "none",
+            "omission",
+            "unsupported_addition",
+            "negation_flip",
+            "certainty_shift",
+            "source_attribution_change",
+            "actor_role_change",
+            "identity_value_change",
+            "temporal_change",
+            "causality_change",
+            "harm_strength_change"
+          ]
+        },
+        "paired_case_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "human_reviewed": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

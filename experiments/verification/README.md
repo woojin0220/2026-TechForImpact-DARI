@@ -24,8 +24,27 @@
 - [TEST_PLAN.md](TEST_PLAN.md): 아키텍처 시험, 모델 비교 실험, 평가 지표와 단계별 통과 조건
 - [schemas/input.schema.json](schemas/input.schema.json): 모든 검증 방식이 받는 공통 입력
 - [schemas/report.schema.json](schemas/report.schema.json): 모든 검증 방식이 반환하는 공통 결과
+- [schemas/fixture.schema.json](schemas/fixture.schema.json): 합성 fixture와 gold annotation 계약
 - [fixtures/README.md](fixtures/README.md): 합성 평가 사례 작성 규칙
 - [results/README.md](results/README.md): 실행 결과와 manifest 보관 규칙
+
+## 현재 실행 가능한 시작점
+
+외부 모델이나 패키지 없이 A단계 contract harness를 실행할 수 있다. Python 구현은 입력·결과·근거 span을 검사하고, adapter 실패를 구조화된 `indeterminate` 결과로 바꾸며, 한 사례가 실패해도 batch의 다음 사례를 계속 실행한다.
+
+```powershell
+python -m unittest discover -s experiments/verification/tests -t experiments/verification -v
+```
+
+현재 [synthetic_cases.jsonl](fixtures/synthetic_cases.jsonl)에는 15개의 가상 사례가 있다. 7개 오류 변이에는 각각 faithful control이 있고, 별도로 문서 안의 지시문 형태 문자열을 일반 데이터로 처리하는 회귀 사례가 있다. 이 fixture는 `human_reviewed: false`이므로 아키텍처 시험용이며 모델 성능 근거로 사용하지 않는다.
+
+구현 경계는 다음과 같다.
+
+- `src/dari_verification/contracts.py`: 실행 시 semantic contract 검증
+- `src/dari_verification/fixtures.py`: strict JSONL 로딩, 중복 ID와 gold 검증
+- `src/dari_verification/pipeline.py`: strategy 실행, 실패 격리, finding 병합
+- `src/dari_verification/batch.py`: 검증된 fixture의 순차 batch 실행
+- `tests/`: 네트워크 없는 contract 및 회귀 시험
 
 ## 설계 원칙
 
