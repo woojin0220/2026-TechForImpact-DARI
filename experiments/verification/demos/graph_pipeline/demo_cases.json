@@ -1,0 +1,717 @@
+{
+  "demo_version": "1.0",
+  "mode": "hand_authored_oracle",
+  "cases": [
+    {
+      "title": "행위자와 대상이 뒤바뀐 체포 문장",
+      "purpose": "역할을 alignment feature에서 가린 뒤 ACTOR/TARGET 반전을 검출한다.",
+      "confirmations": {
+        "actor_role_change": "confirmed"
+      },
+      "case": {
+        "schema_version": "1.0",
+        "case_id": "demo-actor-role-swap",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "경찰이 민수를 체포했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "Minsu arrested the police officer."
+        },
+        "context": {
+          "question_id": "graph-demo-role",
+          "document_id": "graph-demo-001"
+        }
+      },
+      "graphs": {
+        "source": {
+          "graph_id": "graph-demo-role-source",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "match_key": "police",
+              "evidence": "경찰"
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "민수",
+              "match_key": "minsu",
+              "evidence": "민수"
+            },
+            {
+              "id": "s-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "체포했다",
+              "match_key": "arrest-main",
+              "evidence": "경찰이 민수를 체포했다"
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "s-arrest",
+              "target_id": "s-police",
+              "evidence": "경찰이"
+            },
+            {
+              "id": "s-arrest-target",
+              "type": "TARGET",
+              "source_id": "s-arrest",
+              "target_id": "s-self",
+              "evidence": "민수를"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-arrest-polarity",
+              "target_id": "s-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "체포했다"
+            },
+            {
+              "id": "s-arrest-certainty",
+              "target_id": "s-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "체포했다"
+            },
+            {
+              "id": "s-arrest-evidentiality",
+              "target_id": "s-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "경찰이 민수를 체포했다"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation": {
+          "graph_id": "graph-demo-role-translation",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police officer",
+              "match_key": "police",
+              "evidence": "the police officer"
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "Minsu",
+              "match_key": "minsu",
+              "evidence": "Minsu"
+            },
+            {
+              "id": "t-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "arrested",
+              "match_key": "arrest-main",
+              "evidence": "Minsu arrested the police officer"
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "t-arrest",
+              "target_id": "t-self",
+              "evidence": "Minsu"
+            },
+            {
+              "id": "t-arrest-target",
+              "type": "TARGET",
+              "source_id": "t-arrest",
+              "target_id": "t-police",
+              "evidence": "the police officer"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-arrest-polarity",
+              "target_id": "t-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "arrested"
+            },
+            {
+              "id": "t-arrest-certainty",
+              "target_id": "t-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "arrested"
+            },
+            {
+              "id": "t-arrest-evidentiality",
+              "target_id": "t-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "Minsu arrested the police officer"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      }
+    },
+    {
+      "title": "정보 출처가 사라지고 가능성이 확정으로 바뀐 문장",
+      "purpose": "한 사건에서 source attribution과 certainty의 복합 변화를 검출한다.",
+      "confirmations": {
+        "source_attribution_change": "confirmed",
+        "certainty_shift": "confirmed"
+      },
+      "case": {
+        "schema_version": "1.0",
+        "case_id": "demo-attribution-certainty",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The police will search our home next week."
+        },
+        "context": {
+          "question_id": "graph-demo-attribution",
+          "document_id": "graph-demo-002"
+        }
+      },
+      "graphs": {
+        "source": {
+          "graph_id": "graph-demo-attribution-source",
+          "nodes": [
+            {
+              "id": "s-sujin",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "이웃 수진",
+              "match_key": "sujin",
+              "evidence": "이웃 수진"
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "내게",
+              "match_key": "self",
+              "evidence": "내게"
+            },
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "match_key": "police",
+              "evidence": "경찰"
+            },
+            {
+              "id": "s-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "우리 집",
+              "match_key": "home",
+              "evidence": "우리 집"
+            },
+            {
+              "id": "s-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "다음 주",
+              "normalized": "NEXT_WEEK",
+              "match_key": "next-week",
+              "evidence": "다음 주"
+            },
+            {
+              "id": "s-report",
+              "kind": "event",
+              "semantic_type": "COMMUNICATION",
+              "event_family": "COMMUNICATION",
+              "surface": "말했다",
+              "match_key": "report-sujin",
+              "evidence": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+            },
+            {
+              "id": "s-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "수색할 수도",
+              "match_key": "search-home",
+              "evidence": "경찰이 다음 주에 우리 집을 수색할 수도"
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-report-actor",
+              "type": "ACTOR",
+              "source_id": "s-report",
+              "target_id": "s-sujin",
+              "evidence": "이웃 수진은"
+            },
+            {
+              "id": "s-report-recipient",
+              "type": "RECIPIENT",
+              "source_id": "s-report",
+              "target_id": "s-self",
+              "evidence": "내게"
+            },
+            {
+              "id": "s-report-content",
+              "type": "REPORTS",
+              "source_id": "s-report",
+              "target_id": "s-search",
+              "evidence": "수색할 수도 있다고"
+            },
+            {
+              "id": "s-search-actor",
+              "type": "ACTOR",
+              "source_id": "s-search",
+              "target_id": "s-police",
+              "evidence": "경찰이"
+            },
+            {
+              "id": "s-search-target",
+              "type": "TARGET",
+              "source_id": "s-search",
+              "target_id": "s-home",
+              "evidence": "우리 집을"
+            },
+            {
+              "id": "s-search-time",
+              "type": "AT_TIME",
+              "source_id": "s-search",
+              "target_id": "s-next-week",
+              "evidence": "다음 주에"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-search-polarity",
+              "target_id": "s-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "수색할"
+            },
+            {
+              "id": "s-search-certainty",
+              "target_id": "s-search",
+              "type": "certainty",
+              "value": "possible",
+              "evidence": "수색할 수도"
+            },
+            {
+              "id": "s-search-evidentiality",
+              "target_id": "s-search",
+              "type": "evidentiality",
+              "value": "reported",
+              "evidence": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+            },
+            {
+              "id": "s-search-tense",
+              "target_id": "s-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence": "수색할"
+            },
+            {
+              "id": "s-report-polarity",
+              "target_id": "s-report",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "말했다"
+            },
+            {
+              "id": "s-report-certainty",
+              "target_id": "s-report",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "말했다"
+            },
+            {
+              "id": "s-report-evidentiality",
+              "target_id": "s-report",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "말했다"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation": {
+          "graph_id": "graph-demo-attribution-translation",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "The police",
+              "match_key": "police",
+              "evidence": "The police"
+            },
+            {
+              "id": "t-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "our home",
+              "match_key": "home",
+              "evidence": "our home"
+            },
+            {
+              "id": "t-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "next week",
+              "normalized": "NEXT_WEEK",
+              "match_key": "next-week",
+              "evidence": "next week"
+            },
+            {
+              "id": "t-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "will search",
+              "match_key": "search-home",
+              "evidence": "The police will search our home next week"
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-search-actor",
+              "type": "ACTOR",
+              "source_id": "t-search",
+              "target_id": "t-police",
+              "evidence": "The police"
+            },
+            {
+              "id": "t-search-target",
+              "type": "TARGET",
+              "source_id": "t-search",
+              "target_id": "t-home",
+              "evidence": "our home"
+            },
+            {
+              "id": "t-search-time",
+              "type": "AT_TIME",
+              "source_id": "t-search",
+              "target_id": "t-next-week",
+              "evidence": "next week"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-search-polarity",
+              "target_id": "t-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "search"
+            },
+            {
+              "id": "t-search-certainty",
+              "target_id": "t-search",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "will search"
+            },
+            {
+              "id": "t-search-evidentiality",
+              "target_id": "t-search",
+              "type": "evidentiality",
+              "value": "unspecified",
+              "evidence": "The police will search our home next week"
+            },
+            {
+              "id": "t-search-tense",
+              "target_id": "t-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence": "will search"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      }
+    },
+    {
+      "title": "석방 사건을 두 표현으로 풀어 쓴 정상 의역",
+      "purpose": "1:2 event alignment가 의미 보존 문장을 오류로 만들지 않는지 확인한다.",
+      "confirmations": {},
+      "case": {
+        "schema_version": "1.0",
+        "case_id": "demo-faithful-one-to-many",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "경찰은 나를 다음 날 아침 석방했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The next morning, the police stopped holding me and allowed me to leave."
+        },
+        "context": {
+          "question_id": "graph-demo-faithful",
+          "document_id": "graph-demo-003"
+        }
+      },
+      "graphs": {
+        "source": {
+          "graph_id": "graph-demo-faithful-source",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "match_key": "police",
+              "evidence": "경찰"
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "나",
+              "match_key": "self",
+              "evidence": "나를"
+            },
+            {
+              "id": "s-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "다음 날 아침",
+              "normalized": "FOLLOWING_MORNING",
+              "match_key": "next-morning",
+              "evidence": "다음 날 아침"
+            },
+            {
+              "id": "s-release",
+              "kind": "event",
+              "semantic_type": "RELEASE",
+              "event_family": "DETENTION",
+              "surface": "석방했다",
+              "match_key": "release-main",
+              "evidence": "경찰은 나를 다음 날 아침 석방했다"
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-release-actor",
+              "type": "ACTOR",
+              "source_id": "s-release",
+              "target_id": "s-police",
+              "evidence": "경찰은"
+            },
+            {
+              "id": "s-release-target",
+              "type": "TARGET",
+              "source_id": "s-release",
+              "target_id": "s-self",
+              "evidence": "나를"
+            },
+            {
+              "id": "s-release-time",
+              "type": "AT_TIME",
+              "source_id": "s-release",
+              "target_id": "s-next-morning",
+              "evidence": "다음 날 아침"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-release-polarity",
+              "target_id": "s-release",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "석방했다"
+            },
+            {
+              "id": "s-release-certainty",
+              "target_id": "s-release",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "석방했다"
+            },
+            {
+              "id": "s-release-evidentiality",
+              "target_id": "s-release",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "경찰은 나를 다음 날 아침 석방했다"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation": {
+          "graph_id": "graph-demo-faithful-translation",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police",
+              "match_key": "police",
+              "evidence": "the police"
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "me",
+              "match_key": "self",
+              "evidence": "holding me"
+            },
+            {
+              "id": "t-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "The next morning",
+              "normalized": "FOLLOWING_MORNING",
+              "match_key": "next-morning",
+              "evidence": "The next morning"
+            },
+            {
+              "id": "t-stop-holding",
+              "kind": "event",
+              "semantic_type": "END_DETENTION",
+              "event_family": "DETENTION",
+              "surface": "stopped holding",
+              "match_key": "release-main",
+              "evidence": "stopped holding me"
+            },
+            {
+              "id": "t-allow-leave",
+              "kind": "event",
+              "semantic_type": "PERMIT_MOVE",
+              "event_family": "MOVEMENT",
+              "surface": "allowed me to leave",
+              "match_key": "release-main",
+              "evidence": "allowed me to leave"
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-stop-actor",
+              "type": "ACTOR",
+              "source_id": "t-stop-holding",
+              "target_id": "t-police",
+              "evidence": "the police"
+            },
+            {
+              "id": "t-stop-target",
+              "type": "TARGET",
+              "source_id": "t-stop-holding",
+              "target_id": "t-self",
+              "evidence": "holding me"
+            },
+            {
+              "id": "t-stop-time",
+              "type": "AT_TIME",
+              "source_id": "t-stop-holding",
+              "target_id": "t-next-morning",
+              "evidence": "The next morning"
+            },
+            {
+              "id": "t-allow-actor",
+              "type": "ACTOR",
+              "source_id": "t-allow-leave",
+              "target_id": "t-police",
+              "evidence": "the police"
+            },
+            {
+              "id": "t-allow-target",
+              "type": "TARGET",
+              "source_id": "t-allow-leave",
+              "target_id": "t-self",
+              "evidence": "allowed me"
+            },
+            {
+              "id": "t-allow-time",
+              "type": "AT_TIME",
+              "source_id": "t-allow-leave",
+              "target_id": "t-next-morning",
+              "evidence": "The next morning"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-stop-polarity",
+              "target_id": "t-stop-holding",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "stopped holding me"
+            },
+            {
+              "id": "t-stop-certainty",
+              "target_id": "t-stop-holding",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "stopped holding me"
+            },
+            {
+              "id": "t-stop-evidentiality",
+              "target_id": "t-stop-holding",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "stopped holding me"
+            },
+            {
+              "id": "t-allow-polarity",
+              "target_id": "t-allow-leave",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "allowed me to leave"
+            },
+            {
+              "id": "t-allow-certainty",
+              "target_id": "t-allow-leave",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "allowed me to leave"
+            },
+            {
+              "id": "t-allow-evidentiality",
+              "target_id": "t-allow-leave",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "allowed me to leave"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      }
+    }
+  ]
+}

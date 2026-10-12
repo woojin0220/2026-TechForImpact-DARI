@@ -28,6 +28,7 @@
 - [schemas/fixture.schema.json](schemas/fixture.schema.json): 합성 fixture와 gold annotation 계약
 - [fixtures/README.md](fixtures/README.md): 합성 평가 사례 작성 규칙
 - [results/README.md](results/README.md): 실행 결과와 manifest 보관 규칙
+- [demos/graph_pipeline/README.md](demos/graph_pipeline/README.md): 모델 없이 실행하는 세 개의 graph module input/output 예시
 
 ## 현재 실행 가능한 시작점
 
@@ -35,6 +36,12 @@
 
 ```powershell
 python -m unittest discover -s experiments/verification/tests -t experiments/verification -v
+```
+
+세 개의 hand-authored graph로 전체 module 흐름을 확인하려면 다음을 실행한다.
+
+```powershell
+python experiments/verification/demos/graph_pipeline/run_demo.py
 ```
 
 현재 [synthetic_cases.jsonl](fixtures/synthetic_cases.jsonl)에는 15개의 가상 사례가 있다. 7개 오류 변이에는 각각 faithful control이 있고, 별도로 문서 안의 지시문 형태 문자열을 일반 데이터로 처리하는 회귀 사례가 있다. 이 fixture는 `human_reviewed: false`이므로 아키텍처 시험용이며 모델 성능 근거로 사용하지 않는다.
