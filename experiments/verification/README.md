@@ -20,6 +20,7 @@
 
 ## 핵심 문서
 
+- [GRAPH_METHOD.md](GRAPH_METHOD.md): 텍스트에서 추출할 정보, DARI Situation Graph schema, cross-lingual 정렬·비교 알고리즘, baseline과 성능 검증 방법
 - [ARCHITECTURE.md](ARCHITECTURE.md): 경계, 데이터 흐름, 공통 계약, 실패 처리
 - [TEST_PLAN.md](TEST_PLAN.md): 아키텍처 시험, 모델 비교 실험, 평가 지표와 단계별 통과 조건
 - [schemas/input.schema.json](schemas/input.schema.json): 모든 검증 방식이 받는 공통 입력
