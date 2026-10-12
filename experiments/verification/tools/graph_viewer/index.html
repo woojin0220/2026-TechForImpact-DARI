@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DARI Graph Trace Viewer</title>
+  <link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">DARI Verification Architecture Lab</p>
+      <h1>Graph Trace Viewer</h1>
+      <p class="subtitle">실행 중 생성되는 graph와 오류 근거를 모듈별로 확인합니다.</p>
+    </div>
+    <div class="live-status" aria-live="polite">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span id="live-text">연결 중</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="Trace 선택">
+      <label>Case
+        <select id="case-select"></select>
+      </label>
+      <label class="switch-label">
+        <input id="auto-refresh" type="checkbox" checked>
+        2초마다 자동 갱신
+      </label>
+      <button id="refresh-button" type="button">지금 새로고침</button>
+      <span id="updated-at" class="updated-at"></span>
+    </section>
+
+    <section id="error-banner" class="error-banner" role="alert" hidden></section>
+
+    <section class="case-header" aria-labelledby="case-title">
+      <div>
+        <p id="case-id" class="case-id"></p>
+        <h2 id="case-title">Trace를 불러오는 중입니다</h2>
+        <p id="case-purpose" class="case-purpose"></p>
+      </div>
+      <div id="case-badges" class="badges"></div>
+    </section>
+
+    <section class="text-grid" aria-label="검증 입력">
+      <article class="panel text-panel">
+        <div class="panel-heading"><h3>Source input</h3><span id="source-language"></span></div>
+        <p id="source-text"></p>
+      </article>
+      <article class="panel text-panel">
+        <div class="panel-heading"><h3>Translation input</h3><span id="translation-language"></span></div>
+        <p id="translation-text"></p>
+      </article>
+    </section>
+
+    <section aria-labelledby="module-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">Pipeline trace</p><h2 id="module-title">M0 → M6</h2></div>
+        <p>카드를 펼치면 해당 모듈의 실제 JSON input/output을 볼 수 있습니다.</p>
+      </div>
+      <div id="module-grid" class="module-grid"></div>
+    </section>
+
+    <section aria-labelledby="graph-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">DocumentGraph</p><h2 id="graph-title">Source ↔ Translation</h2></div>
+        <div class="legend" aria-label="Graph 범례">
+          <span><i class="legend-shape entity"></i>Entity</span>
+          <span><i class="legend-shape event"></i>Event</span>
+          <span><i class="legend-shape value"></i>Value</span>
+          <span><i class="legend-line changed"></i>Finding 관련</span>
+        </div>
+      </div>
+      <div class="graph-grid">
+        <article class="panel graph-panel">
+          <div class="panel-heading"><h3>Source graph</h3><span id="source-counts"></span></div>
+          <div id="source-graph" class="graph-canvas"></div>
+        </article>
+        <article class="panel graph-panel">
+          <div class="panel-heading"><h3>Translation graph</h3><span id="translation-counts"></span></div>
+          <div id="translation-graph" class="graph-canvas"></div>
+        </article>
+      </div>
+      <aside id="element-detail" class="element-detail" aria-live="polite">노드를 선택하면 semantic type, qualifier, evidence를 표시합니다.</aside>
+    </section>
+
+    <section class="result-grid" aria-label="정렬과 최종 결과">
+      <article class="panel">
+        <div class="panel-heading"><h3>Event alignments</h3><span id="alignment-count"></span></div>
+        <div id="alignment-list" class="alignment-list"></div>
+      </article>
+      <article id="final-result" class="panel result-panel">
+        <div class="panel-heading"><h3>Final result</h3><span id="report-status"></span></div>
+        <div id="finding-list"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="viewer.js"></script>
+</body>
+</html>

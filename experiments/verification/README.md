@@ -29,6 +29,7 @@
 - [fixtures/README.md](fixtures/README.md): 합성 평가 사례 작성 규칙
 - [results/README.md](results/README.md): 실행 결과와 manifest 보관 규칙
 - [demos/graph_pipeline/README.md](demos/graph_pipeline/README.md): 모델 없이 실행하는 세 개의 짧은 사례와 한 개 문단의 graph module input/output 예시
+- [tools/graph_viewer/README.md](tools/graph_viewer/README.md): 생성된 graph, 모듈 trace, alignment와 finding을 실시간으로 확인하는 로컬 viewer
 
 ## 현재 실행 가능한 시작점
 
