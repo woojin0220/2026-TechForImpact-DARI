@@ -1,0 +1,1667 @@
+{
+  "trace_version": "1.0",
+  "run_id": "demo-run-demo-actor-role-swap",
+  "case_id": "demo-actor-role-swap",
+  "title": "행위자와 대상이 뒤바뀐 체포 문장",
+  "purpose": "역할을 alignment feature에서 가린 뒤 ACTOR/TARGET 반전을 검출한다.",
+  "mode": "hand_authored_oracle",
+  "model_used": false,
+  "modules": {
+    "M0_input_contract": {
+      "input": {
+        "schema_version": "1.0",
+        "case_id": "demo-actor-role-swap",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "경찰이 민수를 체포했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "Minsu arrested the police officer."
+        },
+        "context": {
+          "question_id": "graph-demo-role",
+          "document_id": "graph-demo-001"
+        }
+      },
+      "output": {
+        "schema_version": "1.0",
+        "case_id": "demo-actor-role-swap",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "경찰이 민수를 체포했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "Minsu arrested the police officer."
+        },
+        "context": {
+          "question_id": "graph-demo-role",
+          "document_id": "graph-demo-001"
+        }
+      }
+    },
+    "M1_graph_extractor": {
+      "implementation": "fixture_lookup_stub",
+      "input": [
+        {
+          "call_id": "extract-source",
+          "document": "source",
+          "payload": {
+            "language": "ko",
+            "text": "경찰이 민수를 체포했다."
+          }
+        },
+        {
+          "call_id": "extract-translation",
+          "document": "translation",
+          "payload": {
+            "language": "en",
+            "text": "Minsu arrested the police officer."
+          }
+        }
+      ],
+      "output": {
+        "source_graph": {
+          "graph_id": "graph-demo-role-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "민수",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "민수"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "s-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "체포했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "s-arrest",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-target",
+              "type": "TARGET",
+              "source_id": "s-arrest",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 7,
+                  "quote": "민수를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-arrest-polarity",
+              "target_id": "s-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-certainty",
+              "target_id": "s-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-evidentiality",
+              "target_id": "s-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-role-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police officer",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "Minsu",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "t-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "arrested",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "t-arrest",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-target",
+              "type": "TARGET",
+              "source_id": "t-arrest",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-arrest-polarity",
+              "target_id": "t-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-certainty",
+              "target_id": "t-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-evidentiality",
+              "target_id": "t-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      }
+    },
+    "M2_graph_validator": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-role-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "민수",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "민수"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "s-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "체포했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "s-arrest",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-target",
+              "type": "TARGET",
+              "source_id": "s-arrest",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 7,
+                  "quote": "민수를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-arrest-polarity",
+              "target_id": "s-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-certainty",
+              "target_id": "s-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-evidentiality",
+              "target_id": "s-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-role-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police officer",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "Minsu",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "t-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "arrested",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "t-arrest",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-target",
+              "type": "TARGET",
+              "source_id": "t-arrest",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-arrest-polarity",
+              "target_id": "t-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-certainty",
+              "target_id": "t-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-evidentiality",
+              "target_id": "t-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "source_text": "경찰이 민수를 체포했다.",
+        "translation_text": "Minsu arrested the police officer."
+      },
+      "output": {
+        "source": {
+          "graph_id": "graph-demo-role-source",
+          "status": "valid",
+          "node_count": 3,
+          "edge_count": 2,
+          "qualifier_count": 3,
+          "evidence_span_count": 8,
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          },
+          "errors": []
+        },
+        "translation": {
+          "graph_id": "graph-demo-role-translation",
+          "status": "valid",
+          "node_count": 3,
+          "edge_count": 2,
+          "qualifier_count": 3,
+          "evidence_span_count": 8,
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          },
+          "errors": []
+        }
+      }
+    },
+    "M3_cross_lingual_aligner": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-role-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "민수",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "민수"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "s-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "체포했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "s-arrest",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-target",
+              "type": "TARGET",
+              "source_id": "s-arrest",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 7,
+                  "quote": "민수를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-arrest-polarity",
+              "target_id": "s-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-certainty",
+              "target_id": "s-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-evidentiality",
+              "target_id": "s-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-role-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police officer",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "Minsu",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "t-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "arrested",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "t-arrest",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-target",
+              "type": "TARGET",
+              "source_id": "t-arrest",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-arrest-polarity",
+              "target_id": "t-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-certainty",
+              "target_id": "t-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-evidentiality",
+              "target_id": "t-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      },
+      "output": {
+        "source_graph_id": "graph-demo-role-source",
+        "translation_graph_id": "graph-demo-role-translation",
+        "entity_value_alignments": [
+          {
+            "alignment_id": "align-minsu",
+            "semantic_unit_id": "minsu",
+            "source_ids": [
+              "s-self"
+            ],
+            "translation_ids": [
+              "t-self"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          },
+          {
+            "alignment_id": "align-police",
+            "semantic_unit_id": "police",
+            "source_ids": [
+              "s-police"
+            ],
+            "translation_ids": [
+              "t-police"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          }
+        ],
+        "event_alignments": [
+          {
+            "alignment_id": "align-arrest-main",
+            "semantic_unit_id": "arrest-main",
+            "source_ids": [
+              "s-arrest"
+            ],
+            "translation_ids": [
+              "t-arrest"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "ACTOR",
+              "TARGET",
+              "polarity",
+              "certainty",
+              "evidentiality",
+              "temporal_direction",
+              "causal_direction"
+            ]
+          }
+        ],
+        "unaligned_source_ids": [],
+        "unaligned_translation_ids": []
+      }
+    },
+    "M4_typed_comparator": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-role-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "민수",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "민수"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "s-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "체포했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "s-arrest",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-target",
+              "type": "TARGET",
+              "source_id": "s-arrest",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 7,
+                  "quote": "민수를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-arrest-polarity",
+              "target_id": "s-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-certainty",
+              "target_id": "s-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 8,
+                  "end": 12,
+                  "quote": "체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-arrest-evidentiality",
+              "target_id": "s-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 12,
+                  "quote": "경찰이 민수를 체포했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-role-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police officer",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "Minsu",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "minsu",
+              "alternative_group": null
+            },
+            {
+              "id": "t-arrest",
+              "kind": "event",
+              "semantic_type": "ARREST",
+              "event_family": "DETENTION",
+              "surface": "arrested",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "arrest-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-arrest-actor",
+              "type": "ACTOR",
+              "source_id": "t-arrest",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "Minsu"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-target",
+              "type": "TARGET",
+              "source_id": "t-arrest",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 15,
+                  "end": 33,
+                  "quote": "the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-arrest-polarity",
+              "target_id": "t-arrest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-certainty",
+              "target_id": "t-arrest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 6,
+                  "end": 14,
+                  "quote": "arrested"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-arrest-evidentiality",
+              "target_id": "t-arrest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 33,
+                  "quote": "Minsu arrested the police officer"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "alignments": {
+          "source_graph_id": "graph-demo-role-source",
+          "translation_graph_id": "graph-demo-role-translation",
+          "entity_value_alignments": [
+            {
+              "alignment_id": "align-minsu",
+              "semantic_unit_id": "minsu",
+              "source_ids": [
+                "s-self"
+              ],
+              "translation_ids": [
+                "t-self"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            },
+            {
+              "alignment_id": "align-police",
+              "semantic_unit_id": "police",
+              "source_ids": [
+                "s-police"
+              ],
+              "translation_ids": [
+                "t-police"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            }
+          ],
+          "event_alignments": [
+            {
+              "alignment_id": "align-arrest-main",
+              "semantic_unit_id": "arrest-main",
+              "source_ids": [
+                "s-arrest"
+              ],
+              "translation_ids": [
+                "t-arrest"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "ACTOR",
+                "TARGET",
+                "polarity",
+                "certainty",
+                "evidentiality",
+                "temporal_direction",
+                "causal_direction"
+              ]
+            }
+          ],
+          "unaligned_source_ids": [],
+          "unaligned_translation_ids": []
+        }
+      },
+      "output": {
+        "candidate_diffs": [
+          {
+            "candidate_id": "candidate-demo-actor-role-swap-arrest-main-actor_role_change",
+            "semantic_unit_id": "arrest-main",
+            "alignment_id": "align-arrest-main",
+            "type": "actor_role_change",
+            "change": "swapped",
+            "predicted_severity": "critical",
+            "source_element_ids": [
+              "s-arrest"
+            ],
+            "translation_element_ids": [
+              "t-arrest"
+            ],
+            "source_span": {
+              "document": "source",
+              "unit_id": "source:0",
+              "start": 0,
+              "end": 12,
+              "quote": "경찰이 민수를 체포했다"
+            },
+            "translation_span": {
+              "document": "translation",
+              "unit_id": "translation:0",
+              "start": 0,
+              "end": 33,
+              "quote": "Minsu arrested the police officer"
+            },
+            "confidence": 1.0,
+            "rationale": "The aligned event reverses its ACTOR and TARGET roles.",
+            "details": {}
+          }
+        ],
+        "preserved_units": [],
+        "suppressed_generic_omissions": []
+      }
+    },
+    "M5_targeted_confirmer": {
+      "input": {
+        "candidates": [
+          {
+            "candidate_id": "candidate-demo-actor-role-swap-arrest-main-actor_role_change",
+            "semantic_unit_id": "arrest-main",
+            "alignment_id": "align-arrest-main",
+            "type": "actor_role_change",
+            "change": "swapped",
+            "predicted_severity": "critical",
+            "source_element_ids": [
+              "s-arrest"
+            ],
+            "translation_element_ids": [
+              "t-arrest"
+            ],
+            "source_span": {
+              "document": "source",
+              "unit_id": "source:0",
+              "start": 0,
+              "end": 12,
+              "quote": "경찰이 민수를 체포했다"
+            },
+            "translation_span": {
+              "document": "translation",
+              "unit_id": "translation:0",
+              "start": 0,
+              "end": 33,
+              "quote": "Minsu arrested the police officer"
+            },
+            "confidence": 1.0,
+            "rationale": "The aligned event reverses its ACTOR and TARGET roles.",
+            "details": {}
+          }
+        ],
+        "source": {
+          "language": "ko",
+          "text": "경찰이 민수를 체포했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "Minsu arrested the police officer."
+        },
+        "oracle_decision_table": {
+          "actor_role_change": "confirmed"
+        }
+      },
+      "output": {
+        "called": true,
+        "mode": "scripted_oracle_confirmation",
+        "note": "This demo uses hand-authored expected judgments; it is not a learned confirmer.",
+        "decisions": [
+          {
+            "candidate_id": "candidate-demo-actor-role-swap-arrest-main-actor_role_change",
+            "decision": "confirmed",
+            "confidence": 1.0,
+            "mode": "scripted_oracle_confirmation",
+            "evidence_checks": [
+              "source_span_exact",
+              "translation_span_exact"
+            ]
+          }
+        ]
+      }
+    },
+    "M6_report_adapter": {
+      "input": [
+        {
+          "finding_id": "finding-demo-actor-role-swap-01",
+          "type": "actor_role_change",
+          "related_types": [],
+          "change": "swapped",
+          "severity": "critical",
+          "source_span": {
+            "document": "source",
+            "unit_id": "source:0",
+            "start": 0,
+            "end": 12,
+            "quote": "경찰이 민수를 체포했다"
+          },
+          "translation_span": {
+            "document": "translation",
+            "unit_id": "translation:0",
+            "start": 0,
+            "end": 33,
+            "quote": "Minsu arrested the police officer"
+          },
+          "evidence_absence_reason": null,
+          "confidence": 1.0,
+          "status": "confirmed",
+          "detectors": [
+            {
+              "id": "scripted_graph_demo",
+              "version": "1.0",
+              "config_digest": null,
+              "prompt_digest": null,
+              "model_revision": null
+            }
+          ],
+          "rationale": "The aligned event reverses its ACTOR and TARGET roles."
+        }
+      ],
+      "output": {
+        "report_status": "issues_found",
+        "finding_ids": [
+          "finding-demo-actor-role-swap-01"
+        ],
+        "strict_contract": "VerificationReport v1"
+      }
+    }
+  }
+}

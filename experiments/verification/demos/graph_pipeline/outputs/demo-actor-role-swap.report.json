@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "run_id": "demo-run-demo-actor-role-swap",
+  "case_id": "demo-actor-role-swap",
+  "strategy_id": "scripted_graph_demo",
+  "status": "issues_found",
+  "findings": [
+    {
+      "finding_id": "finding-demo-actor-role-swap-01",
+      "type": "actor_role_change",
+      "related_types": [],
+      "change": "swapped",
+      "severity": "critical",
+      "source_span": {
+        "document": "source",
+        "unit_id": "source:0",
+        "start": 0,
+        "end": 12,
+        "quote": "경찰이 민수를 체포했다"
+      },
+      "translation_span": {
+        "document": "translation",
+        "unit_id": "translation:0",
+        "start": 0,
+        "end": 33,
+        "quote": "Minsu arrested the police officer"
+      },
+      "evidence_absence_reason": null,
+      "confidence": 1.0,
+      "status": "confirmed",
+      "detectors": [
+        {
+          "id": "scripted_graph_demo",
+          "version": "1.0",
+          "config_digest": null,
+          "prompt_digest": null,
+          "model_revision": null
+        }
+      ],
+      "rationale": "The aligned event reverses its ACTOR and TARGET roles."
+    }
+  ],
+  "errors": [],
+  "provenance": {
+    "pipeline_version": "graph-demo-1.0",
+    "dataset_version": "graph-demo-1.0",
+    "dataset_digest": "0a0a5c0094819b094f8bdfcc75a7fe0bc6d4ea39186453a7a561fda2c42a0cfe",
+    "git_commit": "5ace5a9f9785ffbfdcd7524e94ebcf4ea4b21f3d",
+    "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+    "experiment_fingerprint": "e230e3c923e9565ba1a352ae6dbe67a6ad21612baf0d319c493b1177cc25067c",
+    "components": [
+      {
+        "id": "scripted_graph_demo",
+        "version": "1.0",
+        "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+        "prompt_digest": null,
+        "model_revision": null
+      }
+    ],
+    "random_seed": 0,
+    "hardware_class": "model-free-local",
+    "started_at": "2026-10-12T00:00:00Z",
+    "duration_ms": 0
+  }
+}

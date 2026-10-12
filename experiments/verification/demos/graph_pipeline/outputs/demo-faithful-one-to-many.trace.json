@@ -1,0 +1,2384 @@
+{
+  "trace_version": "1.0",
+  "run_id": "demo-run-demo-faithful-one-to-many",
+  "case_id": "demo-faithful-one-to-many",
+  "title": "석방 사건을 두 표현으로 풀어 쓴 정상 의역",
+  "purpose": "1:2 event alignment가 의미 보존 문장을 오류로 만들지 않는지 확인한다.",
+  "mode": "hand_authored_oracle",
+  "model_used": false,
+  "modules": {
+    "M0_input_contract": {
+      "input": {
+        "schema_version": "1.0",
+        "case_id": "demo-faithful-one-to-many",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "경찰은 나를 다음 날 아침 석방했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The next morning, the police stopped holding me and allowed me to leave."
+        },
+        "context": {
+          "question_id": "graph-demo-faithful",
+          "document_id": "graph-demo-003"
+        }
+      },
+      "output": {
+        "schema_version": "1.0",
+        "case_id": "demo-faithful-one-to-many",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "경찰은 나를 다음 날 아침 석방했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The next morning, the police stopped holding me and allowed me to leave."
+        },
+        "context": {
+          "question_id": "graph-demo-faithful",
+          "document_id": "graph-demo-003"
+        }
+      }
+    },
+    "M1_graph_extractor": {
+      "implementation": "fixture_lookup_stub",
+      "input": [
+        {
+          "call_id": "extract-source",
+          "document": "source",
+          "payload": {
+            "language": "ko",
+            "text": "경찰은 나를 다음 날 아침 석방했다."
+          }
+        },
+        {
+          "call_id": "extract-translation",
+          "document": "translation",
+          "payload": {
+            "language": "en",
+            "text": "The next morning, the police stopped holding me and allowed me to leave."
+          }
+        }
+      ],
+      "output": {
+        "source_graph": {
+          "graph_id": "graph-demo-faithful-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "나",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "다음 날 아침",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "s-release",
+              "kind": "event",
+              "semantic_type": "RELEASE",
+              "event_family": "DETENTION",
+              "surface": "석방했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-release-actor",
+              "type": "ACTOR",
+              "source_id": "s-release",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-target",
+              "type": "TARGET",
+              "source_id": "s-release",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-time",
+              "type": "AT_TIME",
+              "source_id": "s-release",
+              "target_id": "s-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-release-polarity",
+              "target_id": "s-release",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-certainty",
+              "target_id": "s-release",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-evidentiality",
+              "target_id": "s-release",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-faithful-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "me",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "The next morning",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "t-stop-holding",
+              "kind": "event",
+              "semantic_type": "END_DETENTION",
+              "event_family": "DETENTION",
+              "surface": "stopped holding",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            },
+            {
+              "id": "t-allow-leave",
+              "kind": "event",
+              "semantic_type": "PERMIT_MOVE",
+              "event_family": "MOVEMENT",
+              "surface": "allowed me to leave",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-stop-actor",
+              "type": "ACTOR",
+              "source_id": "t-stop-holding",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-target",
+              "type": "TARGET",
+              "source_id": "t-stop-holding",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-time",
+              "type": "AT_TIME",
+              "source_id": "t-stop-holding",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-actor",
+              "type": "ACTOR",
+              "source_id": "t-allow-leave",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-target",
+              "type": "TARGET",
+              "source_id": "t-allow-leave",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 62,
+                  "quote": "allowed me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-time",
+              "type": "AT_TIME",
+              "source_id": "t-allow-leave",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-stop-polarity",
+              "target_id": "t-stop-holding",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-certainty",
+              "target_id": "t-stop-holding",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-evidentiality",
+              "target_id": "t-stop-holding",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-polarity",
+              "target_id": "t-allow-leave",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-certainty",
+              "target_id": "t-allow-leave",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-evidentiality",
+              "target_id": "t-allow-leave",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      }
+    },
+    "M2_graph_validator": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-faithful-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "나",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "다음 날 아침",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "s-release",
+              "kind": "event",
+              "semantic_type": "RELEASE",
+              "event_family": "DETENTION",
+              "surface": "석방했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-release-actor",
+              "type": "ACTOR",
+              "source_id": "s-release",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-target",
+              "type": "TARGET",
+              "source_id": "s-release",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-time",
+              "type": "AT_TIME",
+              "source_id": "s-release",
+              "target_id": "s-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-release-polarity",
+              "target_id": "s-release",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-certainty",
+              "target_id": "s-release",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-evidentiality",
+              "target_id": "s-release",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-faithful-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "me",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "The next morning",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "t-stop-holding",
+              "kind": "event",
+              "semantic_type": "END_DETENTION",
+              "event_family": "DETENTION",
+              "surface": "stopped holding",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            },
+            {
+              "id": "t-allow-leave",
+              "kind": "event",
+              "semantic_type": "PERMIT_MOVE",
+              "event_family": "MOVEMENT",
+              "surface": "allowed me to leave",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-stop-actor",
+              "type": "ACTOR",
+              "source_id": "t-stop-holding",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-target",
+              "type": "TARGET",
+              "source_id": "t-stop-holding",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-time",
+              "type": "AT_TIME",
+              "source_id": "t-stop-holding",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-actor",
+              "type": "ACTOR",
+              "source_id": "t-allow-leave",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-target",
+              "type": "TARGET",
+              "source_id": "t-allow-leave",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 62,
+                  "quote": "allowed me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-time",
+              "type": "AT_TIME",
+              "source_id": "t-allow-leave",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-stop-polarity",
+              "target_id": "t-stop-holding",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-certainty",
+              "target_id": "t-stop-holding",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-evidentiality",
+              "target_id": "t-stop-holding",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-polarity",
+              "target_id": "t-allow-leave",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-certainty",
+              "target_id": "t-allow-leave",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-evidentiality",
+              "target_id": "t-allow-leave",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "source_text": "경찰은 나를 다음 날 아침 석방했다.",
+        "translation_text": "The next morning, the police stopped holding me and allowed me to leave."
+      },
+      "output": {
+        "source": {
+          "graph_id": "graph-demo-faithful-source",
+          "status": "valid",
+          "node_count": 4,
+          "edge_count": 3,
+          "qualifier_count": 3,
+          "evidence_span_count": 10,
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          },
+          "errors": []
+        },
+        "translation": {
+          "graph_id": "graph-demo-faithful-translation",
+          "status": "valid",
+          "node_count": 5,
+          "edge_count": 6,
+          "qualifier_count": 6,
+          "evidence_span_count": 17,
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          },
+          "errors": []
+        }
+      }
+    },
+    "M3_cross_lingual_aligner": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-faithful-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "나",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "다음 날 아침",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "s-release",
+              "kind": "event",
+              "semantic_type": "RELEASE",
+              "event_family": "DETENTION",
+              "surface": "석방했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-release-actor",
+              "type": "ACTOR",
+              "source_id": "s-release",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-target",
+              "type": "TARGET",
+              "source_id": "s-release",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-time",
+              "type": "AT_TIME",
+              "source_id": "s-release",
+              "target_id": "s-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-release-polarity",
+              "target_id": "s-release",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-certainty",
+              "target_id": "s-release",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-evidentiality",
+              "target_id": "s-release",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-faithful-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "me",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "The next morning",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "t-stop-holding",
+              "kind": "event",
+              "semantic_type": "END_DETENTION",
+              "event_family": "DETENTION",
+              "surface": "stopped holding",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            },
+            {
+              "id": "t-allow-leave",
+              "kind": "event",
+              "semantic_type": "PERMIT_MOVE",
+              "event_family": "MOVEMENT",
+              "surface": "allowed me to leave",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-stop-actor",
+              "type": "ACTOR",
+              "source_id": "t-stop-holding",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-target",
+              "type": "TARGET",
+              "source_id": "t-stop-holding",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-time",
+              "type": "AT_TIME",
+              "source_id": "t-stop-holding",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-actor",
+              "type": "ACTOR",
+              "source_id": "t-allow-leave",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-target",
+              "type": "TARGET",
+              "source_id": "t-allow-leave",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 62,
+                  "quote": "allowed me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-time",
+              "type": "AT_TIME",
+              "source_id": "t-allow-leave",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-stop-polarity",
+              "target_id": "t-stop-holding",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-certainty",
+              "target_id": "t-stop-holding",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-evidentiality",
+              "target_id": "t-stop-holding",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-polarity",
+              "target_id": "t-allow-leave",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-certainty",
+              "target_id": "t-allow-leave",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-evidentiality",
+              "target_id": "t-allow-leave",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      },
+      "output": {
+        "source_graph_id": "graph-demo-faithful-source",
+        "translation_graph_id": "graph-demo-faithful-translation",
+        "entity_value_alignments": [
+          {
+            "alignment_id": "align-next-morning",
+            "semantic_unit_id": "next-morning",
+            "source_ids": [
+              "s-next-morning"
+            ],
+            "translation_ids": [
+              "t-next-morning"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          },
+          {
+            "alignment_id": "align-police",
+            "semantic_unit_id": "police",
+            "source_ids": [
+              "s-police"
+            ],
+            "translation_ids": [
+              "t-police"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          },
+          {
+            "alignment_id": "align-self",
+            "semantic_unit_id": "self",
+            "source_ids": [
+              "s-self"
+            ],
+            "translation_ids": [
+              "t-self"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          }
+        ],
+        "event_alignments": [
+          {
+            "alignment_id": "align-release-main",
+            "semantic_unit_id": "release-main",
+            "source_ids": [
+              "s-release"
+            ],
+            "translation_ids": [
+              "t-allow-leave",
+              "t-stop-holding"
+            ],
+            "cardinality": "1:2",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "ACTOR",
+              "TARGET",
+              "polarity",
+              "certainty",
+              "evidentiality",
+              "temporal_direction",
+              "causal_direction"
+            ]
+          }
+        ],
+        "unaligned_source_ids": [],
+        "unaligned_translation_ids": []
+      }
+    },
+    "M4_typed_comparator": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-faithful-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 2,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "나",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "다음 날 아침",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "s-release",
+              "kind": "event",
+              "semantic_type": "RELEASE",
+              "event_family": "DETENTION",
+              "surface": "석방했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-release-actor",
+              "type": "ACTOR",
+              "source_id": "s-release",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 3,
+                  "quote": "경찰은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-target",
+              "type": "TARGET",
+              "source_id": "s-release",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 4,
+                  "end": 6,
+                  "quote": "나를"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-time",
+              "type": "AT_TIME",
+              "source_id": "s-release",
+              "target_id": "s-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 14,
+                  "quote": "다음 날 아침"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-release-polarity",
+              "target_id": "s-release",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-certainty",
+              "target_id": "s-release",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 15,
+                  "end": 19,
+                  "quote": "석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-release-evidentiality",
+              "target_id": "s-release",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 19,
+                  "quote": "경찰은 나를 다음 날 아침 석방했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-faithful-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "the police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "me",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-morning",
+              "kind": "value",
+              "semantic_type": "TIME",
+              "surface": "The next morning",
+              "normalized": "FOLLOWING_MORNING",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-morning",
+              "alternative_group": null
+            },
+            {
+              "id": "t-stop-holding",
+              "kind": "event",
+              "semantic_type": "END_DETENTION",
+              "event_family": "DETENTION",
+              "surface": "stopped holding",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            },
+            {
+              "id": "t-allow-leave",
+              "kind": "event",
+              "semantic_type": "PERMIT_MOVE",
+              "event_family": "MOVEMENT",
+              "surface": "allowed me to leave",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "release-main",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-stop-actor",
+              "type": "ACTOR",
+              "source_id": "t-stop-holding",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-target",
+              "type": "TARGET",
+              "source_id": "t-stop-holding",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 37,
+                  "end": 47,
+                  "quote": "holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-time",
+              "type": "AT_TIME",
+              "source_id": "t-stop-holding",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-actor",
+              "type": "ACTOR",
+              "source_id": "t-allow-leave",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 18,
+                  "end": 28,
+                  "quote": "the police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-target",
+              "type": "TARGET",
+              "source_id": "t-allow-leave",
+              "target_id": "t-self",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 62,
+                  "quote": "allowed me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-time",
+              "type": "AT_TIME",
+              "source_id": "t-allow-leave",
+              "target_id": "t-next-morning",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 16,
+                  "quote": "The next morning"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-stop-polarity",
+              "target_id": "t-stop-holding",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-certainty",
+              "target_id": "t-stop-holding",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-stop-evidentiality",
+              "target_id": "t-stop-holding",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 29,
+                  "end": 47,
+                  "quote": "stopped holding me"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-polarity",
+              "target_id": "t-allow-leave",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-certainty",
+              "target_id": "t-allow-leave",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-allow-evidentiality",
+              "target_id": "t-allow-leave",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 52,
+                  "end": 71,
+                  "quote": "allowed me to leave"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "alignments": {
+          "source_graph_id": "graph-demo-faithful-source",
+          "translation_graph_id": "graph-demo-faithful-translation",
+          "entity_value_alignments": [
+            {
+              "alignment_id": "align-next-morning",
+              "semantic_unit_id": "next-morning",
+              "source_ids": [
+                "s-next-morning"
+              ],
+              "translation_ids": [
+                "t-next-morning"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            },
+            {
+              "alignment_id": "align-police",
+              "semantic_unit_id": "police",
+              "source_ids": [
+                "s-police"
+              ],
+              "translation_ids": [
+                "t-police"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            },
+            {
+              "alignment_id": "align-self",
+              "semantic_unit_id": "self",
+              "source_ids": [
+                "s-self"
+              ],
+              "translation_ids": [
+                "t-self"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            }
+          ],
+          "event_alignments": [
+            {
+              "alignment_id": "align-release-main",
+              "semantic_unit_id": "release-main",
+              "source_ids": [
+                "s-release"
+              ],
+              "translation_ids": [
+                "t-allow-leave",
+                "t-stop-holding"
+              ],
+              "cardinality": "1:2",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "ACTOR",
+                "TARGET",
+                "polarity",
+                "certainty",
+                "evidentiality",
+                "temporal_direction",
+                "causal_direction"
+              ]
+            }
+          ],
+          "unaligned_source_ids": [],
+          "unaligned_translation_ids": []
+        }
+      },
+      "output": {
+        "candidate_diffs": [],
+        "preserved_units": [
+          {
+            "semantic_unit_id": "release-main",
+            "alignment_id": "align-release-main",
+            "cardinality": "1:2",
+            "preserved_features": [
+              "participant_roles",
+              "polarity",
+              "certainty",
+              "evidentiality",
+              "temporal_values"
+            ]
+          }
+        ],
+        "suppressed_generic_omissions": []
+      }
+    },
+    "M5_targeted_confirmer": {
+      "input": {
+        "candidates": [],
+        "source": {
+          "language": "ko",
+          "text": "경찰은 나를 다음 날 아침 석방했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The next morning, the police stopped holding me and allowed me to leave."
+        },
+        "oracle_decision_table": {}
+      },
+      "output": {
+        "called": false,
+        "mode": "scripted_oracle_confirmation",
+        "note": "This demo uses hand-authored expected judgments; it is not a learned confirmer.",
+        "decisions": []
+      }
+    },
+    "M6_report_adapter": {
+      "input": [],
+      "output": {
+        "report_status": "completed",
+        "finding_ids": [],
+        "strict_contract": "VerificationReport v1"
+      }
+    }
+  }
+}

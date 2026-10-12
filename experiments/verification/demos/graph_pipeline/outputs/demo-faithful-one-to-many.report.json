@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "run_id": "demo-run-demo-faithful-one-to-many",
+  "case_id": "demo-faithful-one-to-many",
+  "strategy_id": "scripted_graph_demo",
+  "status": "completed",
+  "findings": [],
+  "errors": [],
+  "provenance": {
+    "pipeline_version": "graph-demo-1.0",
+    "dataset_version": "graph-demo-1.0",
+    "dataset_digest": "0a0a5c0094819b094f8bdfcc75a7fe0bc6d4ea39186453a7a561fda2c42a0cfe",
+    "git_commit": "5ace5a9f9785ffbfdcd7524e94ebcf4ea4b21f3d",
+    "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+    "experiment_fingerprint": "e230e3c923e9565ba1a352ae6dbe67a6ad21612baf0d319c493b1177cc25067c",
+    "components": [
+      {
+        "id": "scripted_graph_demo",
+        "version": "1.0",
+        "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+        "prompt_digest": null,
+        "model_revision": null
+      }
+    ],
+    "random_seed": 0,
+    "hardware_class": "model-free-local",
+    "started_at": "2026-10-12T00:00:00Z",
+    "duration_ms": 0
+  }
+}

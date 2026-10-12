@@ -1,0 +1,2890 @@
+{
+  "trace_version": "1.0",
+  "run_id": "demo-run-demo-attribution-certainty",
+  "case_id": "demo-attribution-certainty",
+  "title": "정보 출처가 사라지고 가능성이 확정으로 바뀐 문장",
+  "purpose": "한 사건에서 source attribution과 certainty의 복합 변화를 검출한다.",
+  "mode": "hand_authored_oracle",
+  "model_used": false,
+  "modules": {
+    "M0_input_contract": {
+      "input": {
+        "schema_version": "1.0",
+        "case_id": "demo-attribution-certainty",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The police will search our home next week."
+        },
+        "context": {
+          "question_id": "graph-demo-attribution",
+          "document_id": "graph-demo-002"
+        }
+      },
+      "output": {
+        "schema_version": "1.0",
+        "case_id": "demo-attribution-certainty",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The police will search our home next week."
+        },
+        "context": {
+          "question_id": "graph-demo-attribution",
+          "document_id": "graph-demo-002"
+        }
+      }
+    },
+    "M1_graph_extractor": {
+      "implementation": "fixture_lookup_stub",
+      "input": [
+        {
+          "call_id": "extract-source",
+          "document": "source",
+          "payload": {
+            "language": "ko",
+            "text": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다."
+          }
+        },
+        {
+          "call_id": "extract-translation",
+          "document": "translation",
+          "payload": {
+            "language": "en",
+            "text": "The police will search our home next week."
+          }
+        }
+      ],
+      "output": {
+        "source_graph": {
+          "graph_id": "graph-demo-attribution-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-sujin",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "이웃 수진",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "이웃 수진"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "내게",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 9,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "우리 집",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 21,
+                  "quote": "우리 집"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "다음 주",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 15,
+                  "quote": "다음 주"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "s-report",
+              "kind": "event",
+              "semantic_type": "COMMUNICATION",
+              "event_family": "COMMUNICATION",
+              "surface": "말했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "report-sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "수색할 수도",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 29,
+                  "quote": "경찰이 다음 주에 우리 집을 수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-report-actor",
+              "type": "ACTOR",
+              "source_id": "s-report",
+              "target_id": "s-sujin",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 6,
+                  "quote": "이웃 수진은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-recipient",
+              "type": "RECIPIENT",
+              "source_id": "s-report",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-content",
+              "type": "REPORTS",
+              "source_id": "s-report",
+              "target_id": "s-search",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 33,
+                  "quote": "수색할 수도 있다고"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-actor",
+              "type": "ACTOR",
+              "source_id": "s-search",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 10,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-target",
+              "type": "TARGET",
+              "source_id": "s-search",
+              "target_id": "s-home",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 22,
+                  "quote": "우리 집을"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-time",
+              "type": "AT_TIME",
+              "source_id": "s-search",
+              "target_id": "s-next-week",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 16,
+                  "quote": "다음 주에"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-search-polarity",
+              "target_id": "s-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-certainty",
+              "target_id": "s-search",
+              "type": "certainty",
+              "value": "possible",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 29,
+                  "quote": "수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-evidentiality",
+              "target_id": "s-search",
+              "type": "evidentiality",
+              "value": "reported",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-tense",
+              "target_id": "s-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-polarity",
+              "target_id": "s-report",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-certainty",
+              "target_id": "s-report",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-evidentiality",
+              "target_id": "s-report",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-attribution-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "The police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "our home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "next week",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "t-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "will search",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-search-actor",
+              "type": "ACTOR",
+              "source_id": "t-search",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-target",
+              "type": "TARGET",
+              "source_id": "t-search",
+              "target_id": "t-home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-time",
+              "type": "AT_TIME",
+              "source_id": "t-search",
+              "target_id": "t-next-week",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-search-polarity",
+              "target_id": "t-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 16,
+                  "end": 22,
+                  "quote": "search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-certainty",
+              "target_id": "t-search",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-evidentiality",
+              "target_id": "t-search",
+              "type": "evidentiality",
+              "value": "unspecified",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-tense",
+              "target_id": "t-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      }
+    },
+    "M2_graph_validator": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-attribution-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-sujin",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "이웃 수진",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "이웃 수진"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "내게",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 9,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "우리 집",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 21,
+                  "quote": "우리 집"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "다음 주",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 15,
+                  "quote": "다음 주"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "s-report",
+              "kind": "event",
+              "semantic_type": "COMMUNICATION",
+              "event_family": "COMMUNICATION",
+              "surface": "말했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "report-sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "수색할 수도",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 29,
+                  "quote": "경찰이 다음 주에 우리 집을 수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-report-actor",
+              "type": "ACTOR",
+              "source_id": "s-report",
+              "target_id": "s-sujin",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 6,
+                  "quote": "이웃 수진은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-recipient",
+              "type": "RECIPIENT",
+              "source_id": "s-report",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-content",
+              "type": "REPORTS",
+              "source_id": "s-report",
+              "target_id": "s-search",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 33,
+                  "quote": "수색할 수도 있다고"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-actor",
+              "type": "ACTOR",
+              "source_id": "s-search",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 10,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-target",
+              "type": "TARGET",
+              "source_id": "s-search",
+              "target_id": "s-home",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 22,
+                  "quote": "우리 집을"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-time",
+              "type": "AT_TIME",
+              "source_id": "s-search",
+              "target_id": "s-next-week",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 16,
+                  "quote": "다음 주에"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-search-polarity",
+              "target_id": "s-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-certainty",
+              "target_id": "s-search",
+              "type": "certainty",
+              "value": "possible",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 29,
+                  "quote": "수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-evidentiality",
+              "target_id": "s-search",
+              "type": "evidentiality",
+              "value": "reported",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-tense",
+              "target_id": "s-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-polarity",
+              "target_id": "s-report",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-certainty",
+              "target_id": "s-report",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-evidentiality",
+              "target_id": "s-report",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-attribution-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "The police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "our home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "next week",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "t-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "will search",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-search-actor",
+              "type": "ACTOR",
+              "source_id": "t-search",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-target",
+              "type": "TARGET",
+              "source_id": "t-search",
+              "target_id": "t-home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-time",
+              "type": "AT_TIME",
+              "source_id": "t-search",
+              "target_id": "t-next-week",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-search-polarity",
+              "target_id": "t-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 16,
+                  "end": 22,
+                  "quote": "search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-certainty",
+              "target_id": "t-search",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-evidentiality",
+              "target_id": "t-search",
+              "type": "evidentiality",
+              "value": "unspecified",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-tense",
+              "target_id": "t-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "source_text": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다.",
+        "translation_text": "The police will search our home next week."
+      },
+      "output": {
+        "source": {
+          "graph_id": "graph-demo-attribution-source",
+          "status": "valid",
+          "node_count": 7,
+          "edge_count": 6,
+          "qualifier_count": 7,
+          "evidence_span_count": 20,
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          },
+          "errors": []
+        },
+        "translation": {
+          "graph_id": "graph-demo-attribution-translation",
+          "status": "valid",
+          "node_count": 4,
+          "edge_count": 3,
+          "qualifier_count": 4,
+          "evidence_span_count": 11,
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          },
+          "errors": []
+        }
+      }
+    },
+    "M3_cross_lingual_aligner": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-attribution-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-sujin",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "이웃 수진",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "이웃 수진"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "내게",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 9,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "우리 집",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 21,
+                  "quote": "우리 집"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "다음 주",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 15,
+                  "quote": "다음 주"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "s-report",
+              "kind": "event",
+              "semantic_type": "COMMUNICATION",
+              "event_family": "COMMUNICATION",
+              "surface": "말했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "report-sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "수색할 수도",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 29,
+                  "quote": "경찰이 다음 주에 우리 집을 수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-report-actor",
+              "type": "ACTOR",
+              "source_id": "s-report",
+              "target_id": "s-sujin",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 6,
+                  "quote": "이웃 수진은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-recipient",
+              "type": "RECIPIENT",
+              "source_id": "s-report",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-content",
+              "type": "REPORTS",
+              "source_id": "s-report",
+              "target_id": "s-search",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 33,
+                  "quote": "수색할 수도 있다고"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-actor",
+              "type": "ACTOR",
+              "source_id": "s-search",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 10,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-target",
+              "type": "TARGET",
+              "source_id": "s-search",
+              "target_id": "s-home",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 22,
+                  "quote": "우리 집을"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-time",
+              "type": "AT_TIME",
+              "source_id": "s-search",
+              "target_id": "s-next-week",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 16,
+                  "quote": "다음 주에"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-search-polarity",
+              "target_id": "s-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-certainty",
+              "target_id": "s-search",
+              "type": "certainty",
+              "value": "possible",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 29,
+                  "quote": "수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-evidentiality",
+              "target_id": "s-search",
+              "type": "evidentiality",
+              "value": "reported",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-tense",
+              "target_id": "s-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-polarity",
+              "target_id": "s-report",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-certainty",
+              "target_id": "s-report",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-evidentiality",
+              "target_id": "s-report",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-attribution-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "The police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "our home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "next week",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "t-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "will search",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-search-actor",
+              "type": "ACTOR",
+              "source_id": "t-search",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-target",
+              "type": "TARGET",
+              "source_id": "t-search",
+              "target_id": "t-home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-time",
+              "type": "AT_TIME",
+              "source_id": "t-search",
+              "target_id": "t-next-week",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-search-polarity",
+              "target_id": "t-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 16,
+                  "end": 22,
+                  "quote": "search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-certainty",
+              "target_id": "t-search",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-evidentiality",
+              "target_id": "t-search",
+              "type": "evidentiality",
+              "value": "unspecified",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-tense",
+              "target_id": "t-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      },
+      "output": {
+        "source_graph_id": "graph-demo-attribution-source",
+        "translation_graph_id": "graph-demo-attribution-translation",
+        "entity_value_alignments": [
+          {
+            "alignment_id": "align-home",
+            "semantic_unit_id": "home",
+            "source_ids": [
+              "s-home"
+            ],
+            "translation_ids": [
+              "t-home"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          },
+          {
+            "alignment_id": "align-next-week",
+            "semantic_unit_id": "next-week",
+            "source_ids": [
+              "s-next-week"
+            ],
+            "translation_ids": [
+              "t-next-week"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          },
+          {
+            "alignment_id": "align-police",
+            "semantic_unit_id": "police",
+            "source_ids": [
+              "s-police"
+            ],
+            "translation_ids": [
+              "t-police"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "surface"
+            ]
+          }
+        ],
+        "event_alignments": [
+          {
+            "alignment_id": "align-search-home",
+            "semantic_unit_id": "search-home",
+            "source_ids": [
+              "s-search"
+            ],
+            "translation_ids": [
+              "t-search"
+            ],
+            "cardinality": "1:1",
+            "score": 1.0,
+            "status": "aligned",
+            "excluded_features": [
+              "ACTOR",
+              "TARGET",
+              "polarity",
+              "certainty",
+              "evidentiality",
+              "temporal_direction",
+              "causal_direction"
+            ]
+          }
+        ],
+        "unaligned_source_ids": [
+          "s-report",
+          "s-self",
+          "s-sujin"
+        ],
+        "unaligned_translation_ids": []
+      }
+    },
+    "M4_typed_comparator": {
+      "input": {
+        "source_graph": {
+          "graph_id": "graph-demo-attribution-source",
+          "document": "source",
+          "language": "ko",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "s-sujin",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "이웃 수진",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 5,
+                  "quote": "이웃 수진"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-self",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "내게",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "self",
+              "alternative_group": null
+            },
+            {
+              "id": "s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 9,
+                  "quote": "경찰"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "s-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "우리 집",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 21,
+                  "quote": "우리 집"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "s-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "다음 주",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 15,
+                  "quote": "다음 주"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "s-report",
+              "kind": "event",
+              "semantic_type": "COMMUNICATION",
+              "event_family": "COMMUNICATION",
+              "surface": "말했다",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "report-sujin",
+              "alternative_group": null
+            },
+            {
+              "id": "s-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "수색할 수도",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 29,
+                  "quote": "경찰이 다음 주에 우리 집을 수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "s-report-actor",
+              "type": "ACTOR",
+              "source_id": "s-report",
+              "target_id": "s-sujin",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 6,
+                  "quote": "이웃 수진은"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-recipient",
+              "type": "RECIPIENT",
+              "source_id": "s-report",
+              "target_id": "s-self",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 34,
+                  "end": 36,
+                  "quote": "내게"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-content",
+              "type": "REPORTS",
+              "source_id": "s-report",
+              "target_id": "s-search",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 33,
+                  "quote": "수색할 수도 있다고"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-actor",
+              "type": "ACTOR",
+              "source_id": "s-search",
+              "target_id": "s-police",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 7,
+                  "end": 10,
+                  "quote": "경찰이"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-target",
+              "type": "TARGET",
+              "source_id": "s-search",
+              "target_id": "s-home",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 17,
+                  "end": 22,
+                  "quote": "우리 집을"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-time",
+              "type": "AT_TIME",
+              "source_id": "s-search",
+              "target_id": "s-next-week",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 11,
+                  "end": 16,
+                  "quote": "다음 주에"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "s-search-polarity",
+              "target_id": "s-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-certainty",
+              "target_id": "s-search",
+              "type": "certainty",
+              "value": "possible",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 29,
+                  "quote": "수색할 수도"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-evidentiality",
+              "target_id": "s-search",
+              "type": "evidentiality",
+              "value": "reported",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 0,
+                  "end": 40,
+                  "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-search-tense",
+              "target_id": "s-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 23,
+                  "end": 26,
+                  "quote": "수색할"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-polarity",
+              "target_id": "s-report",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-certainty",
+              "target_id": "s-report",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "s-report-evidentiality",
+              "target_id": "s-report",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence_spans": [
+                {
+                  "document": "source",
+                  "unit_id": "source:0",
+                  "start": 37,
+                  "end": 40,
+                  "quote": "말했다"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation_graph": {
+          "graph_id": "graph-demo-attribution-translation",
+          "document": "translation",
+          "language": "en",
+          "ontology_version": "dsg-demo-1.0",
+          "event_family_map_version": "dsg-family-demo-1.0",
+          "nodes": [
+            {
+              "id": "t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "The police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "police",
+              "alternative_group": null
+            },
+            {
+              "id": "t-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "our home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "home",
+              "alternative_group": null
+            },
+            {
+              "id": "t-next-week",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "next week",
+              "normalized": "NEXT_WEEK",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "canonical_key": "next-week",
+              "alternative_group": null
+            },
+            {
+              "id": "t-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "event_family": "INVESTIGATION",
+              "surface": "will search",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0,
+              "alignment_key": "search-home",
+              "alternative_group": null
+            }
+          ],
+          "edges": [
+            {
+              "id": "t-search-actor",
+              "type": "ACTOR",
+              "source_id": "t-search",
+              "target_id": "t-police",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 10,
+                  "quote": "The police"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-target",
+              "type": "TARGET",
+              "source_id": "t-search",
+              "target_id": "t-home",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 23,
+                  "end": 31,
+                  "quote": "our home"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-time",
+              "type": "AT_TIME",
+              "source_id": "t-search",
+              "target_id": "t-next-week",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 32,
+                  "end": 41,
+                  "quote": "next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "t-search-polarity",
+              "target_id": "t-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 16,
+                  "end": 22,
+                  "quote": "search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-certainty",
+              "target_id": "t-search",
+              "type": "certainty",
+              "value": "certain",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-evidentiality",
+              "target_id": "t-search",
+              "type": "evidentiality",
+              "value": "unspecified",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 0,
+                  "end": 41,
+                  "quote": "The police will search our home next week"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            },
+            {
+              "id": "t-search-tense",
+              "target_id": "t-search",
+              "type": "tense_aspect",
+              "value": "future",
+              "evidence_spans": [
+                {
+                  "document": "translation",
+                  "unit_id": "translation:0",
+                  "start": 11,
+                  "end": 22,
+                  "quote": "will search"
+                }
+              ],
+              "explicit_or_inferred": "explicit",
+              "confidence": 1.0
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "alignments": {
+          "source_graph_id": "graph-demo-attribution-source",
+          "translation_graph_id": "graph-demo-attribution-translation",
+          "entity_value_alignments": [
+            {
+              "alignment_id": "align-home",
+              "semantic_unit_id": "home",
+              "source_ids": [
+                "s-home"
+              ],
+              "translation_ids": [
+                "t-home"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            },
+            {
+              "alignment_id": "align-next-week",
+              "semantic_unit_id": "next-week",
+              "source_ids": [
+                "s-next-week"
+              ],
+              "translation_ids": [
+                "t-next-week"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            },
+            {
+              "alignment_id": "align-police",
+              "semantic_unit_id": "police",
+              "source_ids": [
+                "s-police"
+              ],
+              "translation_ids": [
+                "t-police"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "surface"
+              ]
+            }
+          ],
+          "event_alignments": [
+            {
+              "alignment_id": "align-search-home",
+              "semantic_unit_id": "search-home",
+              "source_ids": [
+                "s-search"
+              ],
+              "translation_ids": [
+                "t-search"
+              ],
+              "cardinality": "1:1",
+              "score": 1.0,
+              "status": "aligned",
+              "excluded_features": [
+                "ACTOR",
+                "TARGET",
+                "polarity",
+                "certainty",
+                "evidentiality",
+                "temporal_direction",
+                "causal_direction"
+              ]
+            }
+          ],
+          "unaligned_source_ids": [
+            "s-report",
+            "s-self",
+            "s-sujin"
+          ],
+          "unaligned_translation_ids": []
+        }
+      },
+      "output": {
+        "candidate_diffs": [
+          {
+            "candidate_id": "candidate-demo-attribution-certainty-search-home-certainty_shift",
+            "semantic_unit_id": "search-home",
+            "alignment_id": "align-search-home",
+            "type": "certainty_shift",
+            "change": "changed",
+            "predicted_severity": "high",
+            "source_element_ids": [
+              "s-search-certainty"
+            ],
+            "translation_element_ids": [
+              "t-search-certainty"
+            ],
+            "source_span": {
+              "document": "source",
+              "unit_id": "source:0",
+              "start": 23,
+              "end": 29,
+              "quote": "수색할 수도"
+            },
+            "translation_span": {
+              "document": "translation",
+              "unit_id": "translation:0",
+              "start": 11,
+              "end": 22,
+              "quote": "will search"
+            },
+            "confidence": 1.0,
+            "rationale": "The aligned claim changes certainty.",
+            "details": {}
+          },
+          {
+            "candidate_id": "candidate-demo-attribution-certainty-search-home-source_attribution_change",
+            "semantic_unit_id": "search-home",
+            "alignment_id": "align-search-home",
+            "type": "source_attribution_change",
+            "change": "changed",
+            "predicted_severity": "high",
+            "source_element_ids": [
+              "s-report",
+              "s-report-actor",
+              "s-report-content",
+              "s-search",
+              "s-search-evidentiality",
+              "s-sujin"
+            ],
+            "translation_element_ids": [
+              "t-search",
+              "t-search-evidentiality"
+            ],
+            "source_span": {
+              "document": "source",
+              "unit_id": "source:0",
+              "start": 0,
+              "end": 40,
+              "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+            },
+            "translation_span": {
+              "document": "translation",
+              "unit_id": "translation:0",
+              "start": 0,
+              "end": 41,
+              "quote": "The police will search our home next week"
+            },
+            "confidence": 1.0,
+            "rationale": "The aligned content changes its reporting frame, reporter, or evidentiality mode.",
+            "details": {
+              "source_reporters": [
+                "sujin"
+              ],
+              "translation_reporters": [],
+              "source_evidentiality": [
+                "reported"
+              ],
+              "translation_evidentiality": [
+                "unspecified"
+              ]
+            }
+          }
+        ],
+        "preserved_units": [],
+        "suppressed_generic_omissions": [
+          "s-report"
+        ]
+      }
+    },
+    "M5_targeted_confirmer": {
+      "input": {
+        "candidates": [
+          {
+            "candidate_id": "candidate-demo-attribution-certainty-search-home-certainty_shift",
+            "semantic_unit_id": "search-home",
+            "alignment_id": "align-search-home",
+            "type": "certainty_shift",
+            "change": "changed",
+            "predicted_severity": "high",
+            "source_element_ids": [
+              "s-search-certainty"
+            ],
+            "translation_element_ids": [
+              "t-search-certainty"
+            ],
+            "source_span": {
+              "document": "source",
+              "unit_id": "source:0",
+              "start": 23,
+              "end": 29,
+              "quote": "수색할 수도"
+            },
+            "translation_span": {
+              "document": "translation",
+              "unit_id": "translation:0",
+              "start": 11,
+              "end": 22,
+              "quote": "will search"
+            },
+            "confidence": 1.0,
+            "rationale": "The aligned claim changes certainty.",
+            "details": {}
+          },
+          {
+            "candidate_id": "candidate-demo-attribution-certainty-search-home-source_attribution_change",
+            "semantic_unit_id": "search-home",
+            "alignment_id": "align-search-home",
+            "type": "source_attribution_change",
+            "change": "changed",
+            "predicted_severity": "high",
+            "source_element_ids": [
+              "s-report",
+              "s-report-actor",
+              "s-report-content",
+              "s-search",
+              "s-search-evidentiality",
+              "s-sujin"
+            ],
+            "translation_element_ids": [
+              "t-search",
+              "t-search-evidentiality"
+            ],
+            "source_span": {
+              "document": "source",
+              "unit_id": "source:0",
+              "start": 0,
+              "end": 40,
+              "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+            },
+            "translation_span": {
+              "document": "translation",
+              "unit_id": "translation:0",
+              "start": 0,
+              "end": 41,
+              "quote": "The police will search our home next week"
+            },
+            "confidence": 1.0,
+            "rationale": "The aligned content changes its reporting frame, reporter, or evidentiality mode.",
+            "details": {
+              "source_reporters": [
+                "sujin"
+              ],
+              "translation_reporters": [],
+              "source_evidentiality": [
+                "reported"
+              ],
+              "translation_evidentiality": [
+                "unspecified"
+              ]
+            }
+          }
+        ],
+        "source": {
+          "language": "ko",
+          "text": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "The police will search our home next week."
+        },
+        "oracle_decision_table": {
+          "source_attribution_change": "confirmed",
+          "certainty_shift": "confirmed"
+        }
+      },
+      "output": {
+        "called": true,
+        "mode": "scripted_oracle_confirmation",
+        "note": "This demo uses hand-authored expected judgments; it is not a learned confirmer.",
+        "decisions": [
+          {
+            "candidate_id": "candidate-demo-attribution-certainty-search-home-certainty_shift",
+            "decision": "confirmed",
+            "confidence": 1.0,
+            "mode": "scripted_oracle_confirmation",
+            "evidence_checks": [
+              "source_span_exact",
+              "translation_span_exact"
+            ]
+          },
+          {
+            "candidate_id": "candidate-demo-attribution-certainty-search-home-source_attribution_change",
+            "decision": "confirmed",
+            "confidence": 1.0,
+            "mode": "scripted_oracle_confirmation",
+            "evidence_checks": [
+              "source_span_exact",
+              "translation_span_exact"
+            ]
+          }
+        ]
+      }
+    },
+    "M6_report_adapter": {
+      "input": [
+        {
+          "finding_id": "finding-demo-attribution-certainty-01",
+          "type": "source_attribution_change",
+          "related_types": [
+            "certainty_shift"
+          ],
+          "change": "changed",
+          "severity": "high",
+          "source_span": {
+            "document": "source",
+            "unit_id": "source:0",
+            "start": 0,
+            "end": 40,
+            "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+          },
+          "translation_span": {
+            "document": "translation",
+            "unit_id": "translation:0",
+            "start": 0,
+            "end": 41,
+            "quote": "The police will search our home next week"
+          },
+          "evidence_absence_reason": null,
+          "confidence": 1.0,
+          "status": "confirmed",
+          "detectors": [
+            {
+              "id": "scripted_graph_demo",
+              "version": "1.0",
+              "config_digest": null,
+              "prompt_digest": null,
+              "model_revision": null
+            }
+          ],
+          "rationale": "The aligned claim changes certainty. The aligned content changes its reporting frame, reporter, or evidentiality mode."
+        }
+      ],
+      "output": {
+        "report_status": "issues_found",
+        "finding_ids": [
+          "finding-demo-attribution-certainty-01"
+        ],
+        "strict_contract": "VerificationReport v1"
+      }
+    }
+  }
+}

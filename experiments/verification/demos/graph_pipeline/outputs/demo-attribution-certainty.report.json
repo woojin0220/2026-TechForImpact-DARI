@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "run_id": "demo-run-demo-attribution-certainty",
+  "case_id": "demo-attribution-certainty",
+  "strategy_id": "scripted_graph_demo",
+  "status": "issues_found",
+  "findings": [
+    {
+      "finding_id": "finding-demo-attribution-certainty-01",
+      "type": "source_attribution_change",
+      "related_types": [
+        "certainty_shift"
+      ],
+      "change": "changed",
+      "severity": "high",
+      "source_span": {
+        "document": "source",
+        "unit_id": "source:0",
+        "start": 0,
+        "end": 40,
+        "quote": "이웃 수진은 경찰이 다음 주에 우리 집을 수색할 수도 있다고 내게 말했다"
+      },
+      "translation_span": {
+        "document": "translation",
+        "unit_id": "translation:0",
+        "start": 0,
+        "end": 41,
+        "quote": "The police will search our home next week"
+      },
+      "evidence_absence_reason": null,
+      "confidence": 1.0,
+      "status": "confirmed",
+      "detectors": [
+        {
+          "id": "scripted_graph_demo",
+          "version": "1.0",
+          "config_digest": null,
+          "prompt_digest": null,
+          "model_revision": null
+        }
+      ],
+      "rationale": "The aligned claim changes certainty. The aligned content changes its reporting frame, reporter, or evidentiality mode."
+    }
+  ],
+  "errors": [],
+  "provenance": {
+    "pipeline_version": "graph-demo-1.0",
+    "dataset_version": "graph-demo-1.0",
+    "dataset_digest": "0a0a5c0094819b094f8bdfcc75a7fe0bc6d4ea39186453a7a561fda2c42a0cfe",
+    "git_commit": "5ace5a9f9785ffbfdcd7524e94ebcf4ea4b21f3d",
+    "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+    "experiment_fingerprint": "e230e3c923e9565ba1a352ae6dbe67a6ad21612baf0d319c493b1177cc25067c",
+    "components": [
+      {
+        "id": "scripted_graph_demo",
+        "version": "1.0",
+        "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+        "prompt_digest": null,
+        "model_revision": null
+      }
+    ],
+    "random_seed": 0,
+    "hardware_class": "model-free-local",
+    "started_at": "2026-10-12T00:00:00Z",
+    "duration_ms": 0
+  }
+}
