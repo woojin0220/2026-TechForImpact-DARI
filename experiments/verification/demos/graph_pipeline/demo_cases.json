@@ -712,6 +712,700 @@
           }
         }
       }
+    },
+    {
+      "title": "여러 문장의 맥락은 유지되지만 가능성이 확정으로 바뀐 문단",
+      "purpose": "문단의 여러 사건과 정보 출처를 정렬한 뒤 국소적인 certainty 변화만 검출한다.",
+      "confirmations": {
+        "certainty_shift": "confirmed"
+      },
+      "case": {
+        "schema_version": "1.0",
+        "case_id": "demo-paragraph-certainty",
+        "data_classification": "synthetic",
+        "source": {
+          "language": "ko",
+          "text": "5월 3일 민수는 광장 시위에 참여했다. 시위가 끝난 뒤 경찰관 두 명이 그의 집을 수색했다. 이웃 수진은 경찰이 다시 올 수도 있다고 민수에게 말했다. 다음 날 민수는 다른 도시로 이동했다."
+        },
+        "translation": {
+          "language": "en",
+          "text": "On May 3, Minsu joined a protest in the square. After it ended, two police officers searched his home. Sujin told Minsu that the police would definitely return. The next day, Minsu moved to another city."
+        },
+        "context": {
+          "question_id": "graph-demo-paragraph-certainty",
+          "document_id": "graph-demo-004"
+        }
+      },
+      "graphs": {
+        "source": {
+          "graph_id": "graph-demo-paragraph-source",
+          "nodes": [
+            {
+              "id": "p-s-minsu",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "민수",
+              "match_key": "minsu",
+              "evidence": [
+                "민수는 광장 시위에 참여했다",
+                "민수에게 말했다",
+                "다음 날 민수는"
+              ]
+            },
+            {
+              "id": "p-s-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "경찰",
+              "match_key": "police",
+              "evidence": [
+                "경찰관 두 명이",
+                "경찰이 다시"
+              ]
+            },
+            {
+              "id": "p-s-sujin",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "수진",
+              "match_key": "sujin",
+              "evidence": "이웃 수진은"
+            },
+            {
+              "id": "p-s-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "그의 집",
+              "match_key": "minsu-home",
+              "evidence": "그의 집"
+            },
+            {
+              "id": "p-s-square",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "광장",
+              "match_key": "civic-square",
+              "evidence": "광장 시위"
+            },
+            {
+              "id": "p-s-city",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "다른 도시",
+              "match_key": "other-city",
+              "evidence": "다른 도시"
+            },
+            {
+              "id": "p-s-date",
+              "kind": "value",
+              "semantic_type": "DATE",
+              "surface": "5월 3일",
+              "match_key": "may-3",
+              "evidence": "5월 3일",
+              "normalized": "05-03"
+            },
+            {
+              "id": "p-s-next-day",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "다음 날",
+              "match_key": "following-day",
+              "evidence": "다음 날",
+              "normalized": "FOLLOWING_DAY"
+            },
+            {
+              "id": "p-s-protest",
+              "kind": "event",
+              "semantic_type": "PARTICIPATE",
+              "surface": "시위에 참여했다",
+              "match_key": "protest-main",
+              "evidence": "민수는 광장 시위에 참여했다",
+              "event_family": "CIVIC_ACTIVITY"
+            },
+            {
+              "id": "p-s-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "surface": "집을 수색했다",
+              "match_key": "search-home",
+              "evidence": "경찰관 두 명이 그의 집을 수색했다",
+              "event_family": "INVESTIGATION"
+            },
+            {
+              "id": "p-s-return",
+              "kind": "event",
+              "semantic_type": "RETURN",
+              "surface": "다시 올 수도",
+              "match_key": "police-return",
+              "evidence": "경찰이 다시 올 수도",
+              "event_family": "MOVEMENT"
+            },
+            {
+              "id": "p-s-report",
+              "kind": "event",
+              "semantic_type": "COMMUNICATION",
+              "surface": "말했다",
+              "match_key": "report-sujin-return",
+              "evidence": "이웃 수진은 경찰이 다시 올 수도 있다고 민수에게 말했다",
+              "event_family": "COMMUNICATION"
+            },
+            {
+              "id": "p-s-move",
+              "kind": "event",
+              "semantic_type": "MOVE",
+              "surface": "다른 도시로 이동했다",
+              "match_key": "move-city",
+              "evidence": "다음 날 민수는 다른 도시로 이동했다",
+              "event_family": "MOVEMENT"
+            }
+          ],
+          "edges": [
+            {
+              "id": "p-s-protest-actor",
+              "type": "ACTOR",
+              "source_id": "p-s-protest",
+              "target_id": "p-s-minsu",
+              "evidence": "민수는 광장"
+            },
+            {
+              "id": "p-s-protest-location",
+              "type": "AT_LOCATION",
+              "source_id": "p-s-protest",
+              "target_id": "p-s-square",
+              "evidence": "광장 시위"
+            },
+            {
+              "id": "p-s-protest-time",
+              "type": "AT_TIME",
+              "source_id": "p-s-protest",
+              "target_id": "p-s-date",
+              "evidence": "5월 3일"
+            },
+            {
+              "id": "p-s-search-actor",
+              "type": "ACTOR",
+              "source_id": "p-s-search",
+              "target_id": "p-s-police",
+              "evidence": "경찰관 두 명이"
+            },
+            {
+              "id": "p-s-search-target",
+              "type": "TARGET",
+              "source_id": "p-s-search",
+              "target_id": "p-s-home",
+              "evidence": "그의 집을"
+            },
+            {
+              "id": "p-s-protest-before-search",
+              "type": "BEFORE",
+              "source_id": "p-s-protest",
+              "target_id": "p-s-search",
+              "evidence": "시위가 끝난 뒤"
+            },
+            {
+              "id": "p-s-return-actor",
+              "type": "ACTOR",
+              "source_id": "p-s-return",
+              "target_id": "p-s-police",
+              "evidence": "경찰이 다시"
+            },
+            {
+              "id": "p-s-report-actor",
+              "type": "ACTOR",
+              "source_id": "p-s-report",
+              "target_id": "p-s-sujin",
+              "evidence": "이웃 수진은"
+            },
+            {
+              "id": "p-s-report-recipient",
+              "type": "RECIPIENT",
+              "source_id": "p-s-report",
+              "target_id": "p-s-minsu",
+              "evidence": "민수에게"
+            },
+            {
+              "id": "p-s-report-content",
+              "type": "REPORTS",
+              "source_id": "p-s-report",
+              "target_id": "p-s-return",
+              "evidence": "다시 올 수도 있다고"
+            },
+            {
+              "id": "p-s-move-actor",
+              "type": "ACTOR",
+              "source_id": "p-s-move",
+              "target_id": "p-s-minsu",
+              "evidence": "다음 날 민수는"
+            },
+            {
+              "id": "p-s-move-target",
+              "type": "TARGET",
+              "source_id": "p-s-move",
+              "target_id": "p-s-city",
+              "evidence": "다른 도시로"
+            },
+            {
+              "id": "p-s-move-time",
+              "type": "AT_TIME",
+              "source_id": "p-s-move",
+              "target_id": "p-s-next-day",
+              "evidence": "다음 날"
+            },
+            {
+              "id": "p-s-report-before-move",
+              "type": "BEFORE",
+              "source_id": "p-s-report",
+              "target_id": "p-s-move",
+              "evidence": "다음 날 민수는"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "p-s-protest-polarity",
+              "target_id": "p-s-protest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "참여했다"
+            },
+            {
+              "id": "p-s-protest-certainty",
+              "target_id": "p-s-protest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "참여했다"
+            },
+            {
+              "id": "p-s-protest-evidentiality",
+              "target_id": "p-s-protest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "참여했다"
+            },
+            {
+              "id": "p-s-search-polarity",
+              "target_id": "p-s-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "수색했다"
+            },
+            {
+              "id": "p-s-search-certainty",
+              "target_id": "p-s-search",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "수색했다"
+            },
+            {
+              "id": "p-s-search-evidentiality",
+              "target_id": "p-s-search",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "수색했다"
+            },
+            {
+              "id": "p-s-return-polarity",
+              "target_id": "p-s-return",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "올 수도"
+            },
+            {
+              "id": "p-s-return-certainty",
+              "target_id": "p-s-return",
+              "type": "certainty",
+              "value": "possible",
+              "evidence": "다시 올 수도"
+            },
+            {
+              "id": "p-s-return-evidentiality",
+              "target_id": "p-s-return",
+              "type": "evidentiality",
+              "value": "reported",
+              "evidence": "수진은 경찰이 다시 올 수도 있다고"
+            },
+            {
+              "id": "p-s-report-polarity",
+              "target_id": "p-s-report",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "말했다"
+            },
+            {
+              "id": "p-s-report-certainty",
+              "target_id": "p-s-report",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "말했다"
+            },
+            {
+              "id": "p-s-report-evidentiality",
+              "target_id": "p-s-report",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "말했다"
+            },
+            {
+              "id": "p-s-move-polarity",
+              "target_id": "p-s-move",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "이동했다"
+            },
+            {
+              "id": "p-s-move-certainty",
+              "target_id": "p-s-move",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "이동했다"
+            },
+            {
+              "id": "p-s-move-evidentiality",
+              "target_id": "p-s-move",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "이동했다"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        },
+        "translation": {
+          "graph_id": "graph-demo-paragraph-translation",
+          "nodes": [
+            {
+              "id": "p-t-minsu",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "Minsu",
+              "match_key": "minsu",
+              "evidence": [
+                "Minsu joined",
+                "told Minsu",
+                "Minsu moved"
+              ]
+            },
+            {
+              "id": "p-t-police",
+              "kind": "entity",
+              "semantic_type": "ORGANIZATION",
+              "surface": "police",
+              "match_key": "police",
+              "evidence": [
+                "two police officers",
+                "the police would"
+              ]
+            },
+            {
+              "id": "p-t-sujin",
+              "kind": "entity",
+              "semantic_type": "PERSON",
+              "surface": "Sujin",
+              "match_key": "sujin",
+              "evidence": "Sujin told"
+            },
+            {
+              "id": "p-t-home",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "his home",
+              "match_key": "minsu-home",
+              "evidence": "his home"
+            },
+            {
+              "id": "p-t-square",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "the square",
+              "match_key": "civic-square",
+              "evidence": "the square"
+            },
+            {
+              "id": "p-t-city",
+              "kind": "entity",
+              "semantic_type": "LOCATION",
+              "surface": "another city",
+              "match_key": "other-city",
+              "evidence": "another city"
+            },
+            {
+              "id": "p-t-date",
+              "kind": "value",
+              "semantic_type": "DATE",
+              "surface": "May 3",
+              "match_key": "may-3",
+              "evidence": "May 3",
+              "normalized": "05-03"
+            },
+            {
+              "id": "p-t-next-day",
+              "kind": "value",
+              "semantic_type": "DATE_INTERVAL",
+              "surface": "The next day",
+              "match_key": "following-day",
+              "evidence": "The next day",
+              "normalized": "FOLLOWING_DAY"
+            },
+            {
+              "id": "p-t-protest",
+              "kind": "event",
+              "semantic_type": "PARTICIPATE",
+              "surface": "joined a protest",
+              "match_key": "protest-main",
+              "evidence": "Minsu joined a protest in the square",
+              "event_family": "CIVIC_ACTIVITY"
+            },
+            {
+              "id": "p-t-search",
+              "kind": "event",
+              "semantic_type": "SEARCH",
+              "surface": "searched his home",
+              "match_key": "search-home",
+              "evidence": "two police officers searched his home",
+              "event_family": "INVESTIGATION"
+            },
+            {
+              "id": "p-t-return",
+              "kind": "event",
+              "semantic_type": "RETURN",
+              "surface": "would definitely return",
+              "match_key": "police-return",
+              "evidence": "the police would definitely return",
+              "event_family": "MOVEMENT"
+            },
+            {
+              "id": "p-t-report",
+              "kind": "event",
+              "semantic_type": "COMMUNICATION",
+              "surface": "told",
+              "match_key": "report-sujin-return",
+              "evidence": "Sujin told Minsu that the police would definitely return",
+              "event_family": "COMMUNICATION"
+            },
+            {
+              "id": "p-t-move",
+              "kind": "event",
+              "semantic_type": "MOVE",
+              "surface": "moved to another city",
+              "match_key": "move-city",
+              "evidence": "The next day, Minsu moved to another city",
+              "event_family": "MOVEMENT"
+            }
+          ],
+          "edges": [
+            {
+              "id": "p-t-protest-actor",
+              "type": "ACTOR",
+              "source_id": "p-t-protest",
+              "target_id": "p-t-minsu",
+              "evidence": "Minsu joined"
+            },
+            {
+              "id": "p-t-protest-location",
+              "type": "AT_LOCATION",
+              "source_id": "p-t-protest",
+              "target_id": "p-t-square",
+              "evidence": "the square"
+            },
+            {
+              "id": "p-t-protest-time",
+              "type": "AT_TIME",
+              "source_id": "p-t-protest",
+              "target_id": "p-t-date",
+              "evidence": "May 3"
+            },
+            {
+              "id": "p-t-search-actor",
+              "type": "ACTOR",
+              "source_id": "p-t-search",
+              "target_id": "p-t-police",
+              "evidence": "two police officers"
+            },
+            {
+              "id": "p-t-search-target",
+              "type": "TARGET",
+              "source_id": "p-t-search",
+              "target_id": "p-t-home",
+              "evidence": "his home"
+            },
+            {
+              "id": "p-t-protest-before-search",
+              "type": "BEFORE",
+              "source_id": "p-t-protest",
+              "target_id": "p-t-search",
+              "evidence": "After it ended"
+            },
+            {
+              "id": "p-t-return-actor",
+              "type": "ACTOR",
+              "source_id": "p-t-return",
+              "target_id": "p-t-police",
+              "evidence": "the police would"
+            },
+            {
+              "id": "p-t-report-actor",
+              "type": "ACTOR",
+              "source_id": "p-t-report",
+              "target_id": "p-t-sujin",
+              "evidence": "Sujin told"
+            },
+            {
+              "id": "p-t-report-recipient",
+              "type": "RECIPIENT",
+              "source_id": "p-t-report",
+              "target_id": "p-t-minsu",
+              "evidence": "told Minsu"
+            },
+            {
+              "id": "p-t-report-content",
+              "type": "REPORTS",
+              "source_id": "p-t-report",
+              "target_id": "p-t-return",
+              "evidence": "that the police would definitely return"
+            },
+            {
+              "id": "p-t-move-actor",
+              "type": "ACTOR",
+              "source_id": "p-t-move",
+              "target_id": "p-t-minsu",
+              "evidence": "Minsu moved"
+            },
+            {
+              "id": "p-t-move-target",
+              "type": "TARGET",
+              "source_id": "p-t-move",
+              "target_id": "p-t-city",
+              "evidence": "another city"
+            },
+            {
+              "id": "p-t-move-time",
+              "type": "AT_TIME",
+              "source_id": "p-t-move",
+              "target_id": "p-t-next-day",
+              "evidence": "The next day"
+            },
+            {
+              "id": "p-t-report-before-move",
+              "type": "BEFORE",
+              "source_id": "p-t-report",
+              "target_id": "p-t-move",
+              "evidence": "The next day, Minsu moved"
+            }
+          ],
+          "qualifiers": [
+            {
+              "id": "p-t-protest-polarity",
+              "target_id": "p-t-protest",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "joined"
+            },
+            {
+              "id": "p-t-protest-certainty",
+              "target_id": "p-t-protest",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "joined"
+            },
+            {
+              "id": "p-t-protest-evidentiality",
+              "target_id": "p-t-protest",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "joined"
+            },
+            {
+              "id": "p-t-search-polarity",
+              "target_id": "p-t-search",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "searched"
+            },
+            {
+              "id": "p-t-search-certainty",
+              "target_id": "p-t-search",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "searched"
+            },
+            {
+              "id": "p-t-search-evidentiality",
+              "target_id": "p-t-search",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "searched"
+            },
+            {
+              "id": "p-t-return-polarity",
+              "target_id": "p-t-return",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "return"
+            },
+            {
+              "id": "p-t-return-certainty",
+              "target_id": "p-t-return",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "definitely return"
+            },
+            {
+              "id": "p-t-return-evidentiality",
+              "target_id": "p-t-return",
+              "type": "evidentiality",
+              "value": "reported",
+              "evidence": "Sujin told Minsu that the police would definitely return"
+            },
+            {
+              "id": "p-t-report-polarity",
+              "target_id": "p-t-report",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "told"
+            },
+            {
+              "id": "p-t-report-certainty",
+              "target_id": "p-t-report",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "told"
+            },
+            {
+              "id": "p-t-report-evidentiality",
+              "target_id": "p-t-report",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "told"
+            },
+            {
+              "id": "p-t-move-polarity",
+              "target_id": "p-t-move",
+              "type": "polarity",
+              "value": "affirmed",
+              "evidence": "moved"
+            },
+            {
+              "id": "p-t-move-certainty",
+              "target_id": "p-t-move",
+              "type": "certainty",
+              "value": "certain",
+              "evidence": "moved"
+            },
+            {
+              "id": "p-t-move-evidentiality",
+              "target_id": "p-t-move",
+              "type": "evidentiality",
+              "value": "direct",
+              "evidence": "moved"
+            }
+          ],
+          "coverage": {
+            "parsed_character_ratio": 1.0,
+            "unparsed_spans": []
+          }
+        }
+      }
     }
   ]
 }

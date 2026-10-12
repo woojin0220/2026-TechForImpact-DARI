@@ -28,7 +28,7 @@
 - [schemas/fixture.schema.json](schemas/fixture.schema.json): 합성 fixture와 gold annotation 계약
 - [fixtures/README.md](fixtures/README.md): 합성 평가 사례 작성 규칙
 - [results/README.md](results/README.md): 실행 결과와 manifest 보관 규칙
-- [demos/graph_pipeline/README.md](demos/graph_pipeline/README.md): 모델 없이 실행하는 세 개의 graph module input/output 예시
+- [demos/graph_pipeline/README.md](demos/graph_pipeline/README.md): 모델 없이 실행하는 세 개의 짧은 사례와 한 개 문단의 graph module input/output 예시
 
 ## 현재 실행 가능한 시작점
 
@@ -38,7 +38,7 @@
 python -m unittest discover -s experiments/verification/tests -t experiments/verification -v
 ```
 
-세 개의 hand-authored graph로 전체 module 흐름을 확인하려면 다음을 실행한다.
+네 개의 hand-authored graph 사례로 전체 module 흐름을 확인하려면 다음을 실행한다.
 
 ```powershell
 python experiments/verification/demos/graph_pipeline/run_demo.py

@@ -31,8 +31,8 @@ class GraphPipelineDemoTests(unittest.TestCase):
         self.spec = load_demo_spec(DEMO_PATH)
         self.results = run_demo_file(DEMO_PATH, git_commit=TEST_COMMIT)
 
-    def test_three_demo_cases_cover_error_and_faithful_paths(self):
-        self.assertEqual(len(self.results), 3)
+    def test_four_demo_cases_cover_sentence_paragraph_and_faithful_paths(self):
+        self.assertEqual(len(self.results), 4)
         by_id = {result["trace"]["case_id"]: result for result in self.results}
 
         role = by_id["demo-actor-role-swap"]
@@ -70,6 +70,30 @@ class GraphPipelineDemoTests(unittest.TestCase):
         self.assertEqual(faithful["report"]["findings"], [])
         alignments = faithful["trace"]["modules"]["M3_cross_lingual_aligner"]["output"]
         self.assertEqual(alignments["event_alignments"][0]["cardinality"], "1:2")
+
+        paragraph = by_id["demo-paragraph-certainty"]
+        self.assertGreaterEqual(
+            paragraph["trace"]["modules"]["M0_input_contract"]["input"]["source"]["text"].count("."),
+            4,
+        )
+        self.assertEqual(paragraph["report"]["status"], "issues_found")
+        self.assertEqual(
+            [item["type"] for item in paragraph["report"]["findings"]],
+            ["certainty_shift"],
+        )
+        paragraph_modules = paragraph["trace"]["modules"]
+        self.assertEqual(len(paragraph_modules), 7)
+        paragraph_alignment = paragraph_modules["M3_cross_lingual_aligner"]["output"]
+        self.assertEqual(len(paragraph_alignment["event_alignments"]), 5)
+        self.assertEqual(
+            {item["cardinality"] for item in paragraph_alignment["event_alignments"]},
+            {"1:1"},
+        )
+        paragraph_comparison = paragraph_modules["M4_typed_comparator"]["output"]
+        self.assertEqual(
+            [item["type"] for item in paragraph_comparison["candidate_diffs"]],
+            ["certainty_shift"],
+        )
 
     def test_every_report_span_exactly_matches_the_original_text(self):
         cases = {item["case"]["case_id"]: item["case"] for item in self.spec["cases"]}
@@ -128,7 +152,13 @@ class GraphPipelineDemoTests(unittest.TestCase):
             validate_graph(graph, case, "source")
 
     def test_temporal_dimensions_merge_into_one_candidate(self):
-        raw = deepcopy(self.spec["cases"][2])
+        raw = deepcopy(
+            next(
+                item
+                for item in self.spec["cases"]
+                if item["case"]["case_id"] == "demo-faithful-one-to-many"
+            )
+        )
         case = VerificationCase.from_mapping(raw["case"])
         source = materialize_graph(raw["graphs"]["source"], case, "source")
         translation = materialize_graph(

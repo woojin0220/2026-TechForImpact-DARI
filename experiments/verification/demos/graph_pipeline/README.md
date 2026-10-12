@@ -1,6 +1,6 @@
 # DARI graph pipeline demo
 
-이 디렉터리는 세 개의 합성 문장쌍을 사용해 `text → graph → alignment → typed diff → report` 흐름을 모델 없이 재현한다.
+이 디렉터리는 세 개의 짧은 합성 사례와 한 개의 합성 문단을 사용해 `text → graph → alignment → typed diff → report` 흐름을 모델 없이 재현한다.
 
 이 데모에서 `M1 Graph Extractor`는 사람이 작성한 graph fixture를 반환하는 stub이다. 따라서 graph 이후의 계약과 비교 규칙을 확인할 수 있지만, 처음 보는 글을 자동으로 graph로 바꾸는 성능은 보여 주지 않는다.
 
@@ -49,7 +49,7 @@ python experiments/verification/demos/graph_pipeline/run_demo.py `
 
 M1의 source graph는 translation text를 입력받지 않고, translation graph도 source text를 입력받지 않는다. Trace에 각 호출의 입력을 별도로 남겨 이 격리를 확인할 수 있다.
 
-## 세 사례의 실행 결과
+## 네 사례의 실행 결과
 
 ### 1. ACTOR/TARGET 교환
 
@@ -111,6 +111,28 @@ Translation events STOP_HOLDING + ALLOW_LEAVE
 
 두 target event를 합쳤을 때 행위자, 대상, 시간, polarity, certainty, evidentiality가 source의 `RELEASE`와 같다. Comparator 결과는 빈 배열이고 최종 report는 `completed`다. 이 사례는 표현이 길어졌다는 이유만으로 오류를 만들지 않는 정상 대조군이다.
 
+### 4. 문단 안의 국소적인 certainty 변화
+
+```text
+Source      5월 3일 민수는 광장 시위에 참여했다. 시위가 끝난 뒤 경찰관 두 명이
+            그의 집을 수색했다. 이웃 수진은 경찰이 다시 올 수도 있다고 민수에게
+            말했다. 다음 날 민수는 다른 도시로 이동했다.
+
+Translation On May 3, Minsu joined a protest in the square. After it ended, two police
+            officers searched his home. Sujin told Minsu that the police would definitely
+            return. The next day, Minsu moved to another city.
+```
+
+```text
+PROTEST ↔ PROTEST     preserved
+SEARCH  ↔ SEARCH      preserved
+REPORT  ↔ REPORT      reporter=Sujin preserved
+RETURN  ↔ RETURN      certainty: possible → certain
+MOVE    ↔ MOVE        preserved
+```
+
+다섯 사건과 인물·장소·시간을 먼저 1:1로 정렬한다. 수진이 전달한 정보라는 reporting frame은 양쪽에 그대로 있으므로 `source_attribution_change`는 만들지 않고, `RETURN` 사건의 `certainty_shift` 하나만 최종 finding으로 보고한다. 문장 간 인물 참조와 사건 연결도 이 hand-authored graph에 포함되지만 자동 coreference 성능을 측정한 결과는 아니다.
+
 ## 모델이 필요한 단계
 
 | 단계 | 모델 필요 여부 |
@@ -127,7 +149,7 @@ Translation events STOP_HOLDING + ALLOW_LEAVE
 
 ## 파일
 
-- [demo_cases.json](demo_cases.json): 세 문장쌍과 hand-authored source/translation graph
+- [demo_cases.json](demo_cases.json): 세 개의 짧은 사례와 한 개의 문단 사례에 대한 hand-authored source/translation graph
 - [run_demo.py](run_demo.py): 모델 없는 실행 진입점
 - `outputs/*.trace.json`: 모든 모듈의 input/output을 담는 연구용 GraphTrace
 - `outputs/*.report.json`: strict v1 최종 report
