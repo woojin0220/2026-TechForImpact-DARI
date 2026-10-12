@@ -9,10 +9,10 @@
   "provenance": {
     "pipeline_version": "graph-demo-1.0",
     "dataset_version": "graph-demo-1.0",
-    "dataset_digest": "0a0a5c0094819b094f8bdfcc75a7fe0bc6d4ea39186453a7a561fda2c42a0cfe",
-    "git_commit": "5ace5a9f9785ffbfdcd7524e94ebcf4ea4b21f3d",
+    "dataset_digest": "572cdf271489144b59b7863a57bd699df8cfe4506ff6c9a2d2239263c0fd2e55",
+    "git_commit": "37aeb8d7ac2711ce0fb330f0378db726d2d559dc",
     "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
-    "experiment_fingerprint": "e230e3c923e9565ba1a352ae6dbe67a6ad21612baf0d319c493b1177cc25067c",
+    "experiment_fingerprint": "2973aa258674d68f9ffe395a4872d05f42afc13c759a8095bbbab16df6ca7fd9",
     "components": [
       {
         "id": "scripted_graph_demo",

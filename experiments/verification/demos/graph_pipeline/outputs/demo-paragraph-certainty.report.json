@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "run_id": "demo-run-demo-paragraph-certainty",
+  "case_id": "demo-paragraph-certainty",
+  "strategy_id": "scripted_graph_demo",
+  "status": "issues_found",
+  "findings": [
+    {
+      "finding_id": "finding-demo-paragraph-certainty-01",
+      "type": "certainty_shift",
+      "related_types": [],
+      "change": "changed",
+      "severity": "high",
+      "source_span": {
+        "document": "source",
+        "unit_id": "source:0",
+        "start": 64,
+        "end": 71,
+        "quote": "다시 올 수도"
+      },
+      "translation_span": {
+        "document": "translation",
+        "unit_id": "translation:0",
+        "start": 142,
+        "end": 159,
+        "quote": "definitely return"
+      },
+      "evidence_absence_reason": null,
+      "confidence": 1.0,
+      "status": "confirmed",
+      "detectors": [
+        {
+          "id": "scripted_graph_demo",
+          "version": "1.0",
+          "config_digest": null,
+          "prompt_digest": null,
+          "model_revision": null
+        }
+      ],
+      "rationale": "The aligned claim changes certainty."
+    }
+  ],
+  "errors": [],
+  "provenance": {
+    "pipeline_version": "graph-demo-1.0",
+    "dataset_version": "graph-demo-1.0",
+    "dataset_digest": "572cdf271489144b59b7863a57bd699df8cfe4506ff6c9a2d2239263c0fd2e55",
+    "git_commit": "37aeb8d7ac2711ce0fb330f0378db726d2d559dc",
+    "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+    "experiment_fingerprint": "2973aa258674d68f9ffe395a4872d05f42afc13c759a8095bbbab16df6ca7fd9",
+    "components": [
+      {
+        "id": "scripted_graph_demo",
+        "version": "1.0",
+        "config_digest": "c72bb3340e0da0a39c93e562ffe17504612913f9c167b44bdf8aa7a0f4fc21a0",
+        "prompt_digest": null,
+        "model_revision": null
+      }
+    ],
+    "random_seed": 0,
+    "hardware_class": "model-free-local",
+    "started_at": "2026-10-12T00:00:00Z",
+    "duration_ms": 0
+  }
+}
