@@ -1,130 +1,146 @@
-# DARI 검증 아키텍처 v0.3 비판적 평가
+# DARI 검증 아키텍처 v0.4 비판적 평가
 
 - 평가일: 2026-10-17
-- 평가 대상: [ARCHITECTURE.md](ARCHITECTURE.md) v0.3
+- 평가 대상: [ARCHITECTURE.md](ARCHITECTURE.md) v0.4
+- 관점: 실제 서비스, 연구 기여, LLM 발전 내성
 
 ## 결론
 
-v0.3는 v0.2보다 제품 적합성이 높다. 가장 중요한 변화는 graph를 기술의 목적에서 **사용자 확인 의미를 보존하기 위한 선택적 도구**로 내린 것이다.
+v0.3은 올바른 방향으로 graph의 비중을 줄였지만 여전히 검출 알고리즘을 중심으로 설계했다. 이 접근은 최신 LLM이 번역과 비교를 더 잘하고 더 싸게 수행할수록 가치가 줄어든다.
 
-다만 아직 성능 우위가 입증된 제품 기술은 아니다. 현재 구현이 증명한 것은 hand-authored graph 이후의 comparator와 report 흐름이다. 자동 claim extraction, 실제 alignment, 자연 발생 오류, 사용자 검수 개선은 앞으로 검증해야 한다.
+v0.4는 중심을 **지원자가 통제하는 근거 연결 사건기록과 최종 문서 검토 workflow**로 옮겼다. 이 구조라면 LLM이 좋아질수록 모델을 교체해 생성과 분석 비용을 낮추면서도, 누가 무엇을 확인했고 어느 문장이 어떤 claim에서 왔는지에 대한 기록은 남는다.
 
-## 점수표
+다만 이것은 아직 설계 가설이다. 실제 지원자와 조력자가 lineage를 이해하고 사용하며, 최신 direct baseline보다 잔존 오류 또는 시간을 줄인다는 증거가 나오기 전에는 기술적 우위나 해자를 주장하면 안 된다.
 
-| 관점 | 현재 점수 | 근거 |
-| --- | ---: | --- |
-| 문제 중요도 | 9/10 | 고위험 문서의 행위자·부정·확실성·출처 변화는 실질 피해로 이어질 수 있음 |
-| 제품 적합성 | 8/10 | 기존 `sourceQuotes`, `confirmed`, `eventId`, `supersedes`, `factIds`를 직접 활용 |
-| 현재 기술 성숙도 | 3/10 | extractor와 aligner가 아직 oracle fixture 수준 |
-| 기술 차별성 | 5/10 | Claim Ledger 중심 구조는 차별적이지만 개별 알고리즘은 공개 기술 |
-| 해자 잠재력 | 7/10 | correction lineage, bilingual gold data, calibration이 축적될 경우 강해짐 |
-| 구현 가능성 | 7/10 | 첫 경계를 V2로 좁히고 7개 오류 유형으로 줄여 현실성이 높아짐 |
-| 실패 위험 | 7/10 | 저자원 언어 parsing, 오탐 피로, reference 오류, 사용자 실험 불확실성 |
-| impact 증거 | 2/10 | 아직 실제 사용자와 자연 데이터 결과가 없음 |
+## 점수
 
-## 실제 가치가 있는 부분
+| 관점 | v0.3 | v0.4 잠재력 | 판단 |
+| --- | ---: | ---: | --- |
+| 해결하는 문제의 중요성 | 9/10 | 9/10 | 고위험 문서의 의미 왜곡은 실제 피해로 이어질 수 있음 |
+| 현재 서비스 준비도 | 3/10 | 5/10 | 경계와 사용자 역할은 명확해졌지만 제품 구현과 pilot이 없음 |
+| 검출 기술 차별성 | 3/10 | 4/10 | graph와 judge는 쉽게 대체 가능, 선택적 micrograph만 미검증 가능성 |
+| 사용자 가치 잠재력 | 8/10 | 8/10 | 원문 근거, 확인, 수정, 인계는 실제 사용 가치가 큼 |
+| LLM 발전 내성 | 4/10 | 8/10 | 모델을 부품으로 만들고 case record와 release gate를 중심에 둠 |
+| 데이터 해자 가능성 | 5/10 | 7/10 | 비식별 correction outcome과 calibration이 쌓일 때만 가능 |
+| 연구 기여 가능성 | 6/10 | 8/10 | model-upgrade resilience와 human impact가 더 강한 질문 |
+| 개인정보 및 사용자 통제 | 4/10 | 7/10 | 최소 export와 삭제 가능성을 넣었지만 실제 정책과 구현이 필요 |
 
-1. **Semantic chain of custody**
-   원문 evidence, confirmed claim, draft, edit, translation이 동일 claim과 revision으로 연결된다. 최종 오류의 유입 단계를 역추적할 수 있다.
+## 외부 사례가 보여주는 냉정한 현실
 
-2. **Reference 재사용**
-   사용자 확인 fact를 매번 LLM으로 다시 추출하지 않아 비용과 상관 오류를 줄인다.
+| 사례 | 이미 증명하거나 보유한 것 | DARI에 주는 의미 |
+| --- | --- | --- |
+| Tarjimly | 난민 대상 언어 지원, AI 초벌번역, 인간 검수, 대규모 통역 네트워크 | `AI + human`과 난민 번역 데이터만으로 차별화하기 어려움 |
+| Signpost | 다국어 위기 정보와 양방향 지원, 지역 커뮤니티 운영 | 신뢰와 현지 운영망이 모델보다 오래가는 자산임 |
+| UNHCR RiMAP | 권위 있는 법률 자료, 정확한 citation, 법률가 검증 | 신뢰 자료와 검증 절차가 generic chatbot보다 중요함 |
+| LegalServer | intake, 사건, 문서, 역할과 업무흐름 | 전체 case management를 새로 만드는 것은 범위가 큼 |
+| docassemble / Citizenshipworks | 구조화 질문을 통한 법률 문서 조립 | 정형 정보만으로 문서를 만드는 영역은 이미 성숙함 |
+| Phrase / Smartling / RWS / LILT | 번역 품질 평가와 인간 검수 routing | 일반 QE와 auto-approval은 기존 시장과 정면 경쟁임 |
+| CoCounsel | 권위 콘텐츠, source attribution, 업무 도구 통합 | 법률 AI의 해자는 기반 모델보다 자료와 workflow에 가까움 |
+| eyeWitness / C2PA 계열 | 원본과 변경 이력을 추적하는 provenance | 이력은 증명할 수 있지만 내용의 진실까지 증명하지는 않음 |
 
-3. **행동 가능한 evidence**
-   단일 점수가 아니라 바뀐 claim과 양쪽 span을 보여주므로 사용자가 수정할 수 있다.
+따라서 DARI의 방어 가능한 공백은 범용 번역이나 법률 AI가 아니다. **한국 난민신청서 작성에서 지원자 원문과 확인 claim, 한국어 초안, 수정, 최종 export를 의미 단위로 연결하는 층**이다.
 
-4. **실패해도 축소 가능한 구조**
-   Micrograph가 baseline을 이기지 못하면 Claim Ledger plus NLI로 전환할 수 있다. 아키텍처 전체를 버릴 필요가 없다.
+## 현재 코드에서 확인한 가장 큰 서비스 공백
 
-## 가장 위험한 가정
+### 1. 일괄 확인은 실질적 확인이 아니다
 
-### 1. 사용자 confirmed fact가 충분히 좋은 reference라는 가정
+현재 `capacitor-web/src/App.tsx`의 fact 화면은 하나의 checkbox로 전체 fact를 확인한다. 중요한 사건이 많을수록 사용자가 각각의 행위자, 시점, 확실성, 정보 출처를 실제로 이해하고 확인했다는 근거가 약해진다.
 
-사용자 확인은 제품의 기준을 만들지만 외부 진실을 보장하지 않는다. 최초 fact extraction이 잘못됐고 사용자가 놓치면 이후 단계는 그 오류를 잘 보존할 수 있다. 따라서 V1 추출 검증과 evidence UI는 여전히 필요하다.
+v0.4는 event 또는 episode 카드마다 모국어 read-back을 제공하고 `confirmed`, `uncertain`, `corrected`, `withdrawn`을 구분한다. 확인 언어, 주체, 방법과 revision도 기록해야 한다.
 
-### 2. 자연어를 안정적인 claim으로 바꿀 수 있다는 가정
+### 2. 직접 수정 뒤 provenance가 끊어진다
 
-생략 주어, 대명사, 전언, 시간 표현이 많은 저자원 언어에서 candidate extractor가 무너지면 typed diff의 이론적 장점이 사라진다.
+현재 UI는 직접 고친 문장이 수집 원문과 자동으로 다시 연결되지 않는다고 명시한다. 사람이 고쳤다는 이유로 안전한 것이 아니며, 제안 적용과 수동 편집에서 새 누락, 추가, 정정 전 값 재등장이 생길 수 있다.
 
-### 3. 구조화가 정상적인 의역을 해치지 않는다는 가정
+따라서 **편집 적용 직후부터 최종 export까지**가 첫 verification boundary다. 모든 수정 뒤 claim coverage와 semantic delta를 다시 계산하고 unresolved 항목을 export 전에 해결하거나 명시적으로 보류해야 한다.
 
-문장 분할·병합, 요약, 호칭 변화, 암시적 관계를 고정 ontology에 맞추면 false positive가 늘 수 있다. Semantic Contract와 abstention이 필요한 이유다.
+### 3. 최종 문장을 모든 대상 사용자가 확인하기 어렵다
 
-### 4. 더 자세한 finding이 사람에게 실제로 도움이 된다는 가정
+현재 meaning view는 영어 사용자 경로에 치우쳐 있다. 러시아어, 아랍어, 프랑스어, 페르시아어 등의 사용자가 한국어 최종 문장을 자기 언어로 충분히 확인하는 경로가 필요하다.
 
-Finding 수가 많거나 설명이 어렵다면 높은 recall이 오히려 검수 시간을 늘리고 사용자의 신뢰를 낮출 수 있다.
+각 최종 문장에 source-language read-back, 연결된 episode, `이 의미가 맞음/다름/판단 어려움`을 제공해야 한다. 자동 역번역은 보조 설명이며 독립 검증으로 계산하지 않는다.
 
-## 기술적 해자 평가
+### 4. 법적 유불리 방향 분류는 제품 중심에서 제거해야 한다
+
+현재 `local_verification_server.py`의 과거 검증 prompt는 변화를 `유리하게 강화`, `불리하게 약화`, `방향 불명확`으로 분류한다. 면책 문구가 있더라도 법적 전략이나 결과 예측과 가깝다.
+
+v0.4 finding은 `added`, `removed`, `changed`, `unclear`와 양쪽 evidence만 제시한다. 법률 검토가 필요한 경우에는 판단하지 않고 허가된 조력자에게 보낸다.
+
+### 5. correction history는 해자이면서 위험이다
+
+초기 진술과 정정, 철회 이력은 사용자를 돕는 데 필요할 수 있지만 유출되거나 기관에 과도하게 전달되면 불이익 자료가 될 수 있다. immutable history를 무조건 중앙 축적하는 전략은 부적절하다.
+
+versioned, encrypted, access-controlled, deletable record와 목적별 retention을 사용한다. 기본 export는 현재 active claim, 최종 문서, 필요한 범위의 review receipt만 포함한다.
+
+## LLM 발전 시나리오
+
+### 시나리오 A: 대부분의 번역과 검수가 범용화
+
+Frontier와 on-device 모델이 대상 언어의 초안과 의미 비교를 충분히 잘한다. DARI의 extractor와 verifier 이점은 사라진다.
+
+남는 가치는 사용자 확인, claim lineage, 최소화된 export, 책임 있는 검토 기록이다. 기관과 사용자가 이 기록에도 가치를 느끼지 않으면 검증 제품 방향을 중단해야 한다.
+
+### 시나리오 B: 평균은 좋아지지만 취약 조건은 남음
+
+고자원 언어와 짧은 문장은 좋아지지만 저자원 언어, 긴 개인 서술, 전언, 불확실성, 사건 순서 오류는 남는다.
+
+DARI는 모든 문장을 검사하는 도구가 아니라 고위험 문항과 취약 조건에만 검수를 배분하는 assurance layer가 된다. 현재 가장 현실적인 가설이다.
+
+### 시나리오 C: privacy와 책임성이 더 중요해짐
+
+민감한 원문을 cloud에 보낼 수 없고 on-device 모델은 frontier보다 약하다. 기관은 사용자 동의, 변경 이력, 검토 책임을 요구한다.
+
+DARI의 가치는 작은 모델 자체가 아니라 작은 모델을 어느 조건에서 통과, 보류, 이관할지 결정하는 calibration과 evidence workflow다.
+
+## 해자 평가
 
 ### 약한 해자
 
-- AMR 또는 SRL 기반 graph
-- LLM constrained JSON prompt
-- embedding alignment
-- 일반 error taxonomy
+- 특정 LLM 또는 prompt
+- 범용 graph schema
+- 번역 점수와 red/green 표시
+- on-device 실행 자체
+- 두 모델의 다수결
 - graph viewer
 
-이 요소는 논문과 범용 모델로 비교적 쉽게 복제된다.
+### 조건부로 강한 해자
 
-### 강해질 수 있는 해자
+- 한국 난민신청 문항별 Semantic Contract
+- 지원자가 확인한 claim과 exact evidence의 연결
+- 수정 후 최종 export까지 끊기지 않는 lineage
+- 오류 유형과 언어별 검수 threshold 및 abstention 정책
+- 조력자가 해결한 비식별 correction outcome
+- NGO, 통역가, 법률지원자 workflow에 대한 통합과 신뢰
+- 두 번 이상의 model upgrade를 통과한 regression benchmark
 
-- 원문부터 최종 번역까지 이어지는 claim, evidence, correction revision graph
-- 사용자가 수락·거절·수정한 finding data
-- DARI 문맥의 hard faithful control과 고위험 mutation set
-- 이중언어 검수자 agreement가 확보된 codebook
-- 언어·길이·오류 유형별 calibrated review policy
-- 모델을 교체해도 재사용 가능한 evaluation trace
+이 자산들도 자동으로 해자가 되지 않는다. 파트너가 실제로 사용하고, 축적된 label이 성능 또는 시간을 개선하며, 새 모델이 나와도 효과가 유지돼야 한다.
 
-핵심은 graph algorithm의 비밀이 아니라 **데이터와 workflow가 함께 개선되는 구조**다.
+## 연구로서 더 강해진 질문
 
-## 가장 중요한 경쟁 비교
+v0.3의 질문은 graph comparator가 direct judge보다 좋은지에 가까웠다. v0.4는 다음을 묻는다.
 
-제품 후보는 최소 다음 셋이다.
+1. 사용자 확인 provenance가 매번 source를 다시 분석하는 것보다 안정적인가?
+2. controlled generation이 post-hoc 검수보다 더 많은 오류를 예방하는가?
+3. evidence-linked review가 최신 direct judge보다 최종 잔존 오류와 사람 시간을 줄이는가?
+4. 이 효과가 다른 모델 계열과 새 버전에서도 유지되는가?
+5. 수정과 재생성 뒤 정정 전 사실이 다시 등장하는 것을 막는가?
+6. 지원자와 조력자가 finding을 이해하고 올바르게 해결하는가?
 
-| 후보 | 장점 | 약점 |
-| --- | --- | --- |
-| Direct judge | 구현이 빠르고 넓은 오류를 다룸 | 재현성, 근거 환각, prompt/model 변화 |
-| Claim Ledger + NLI | 단순하고 DARI 구조를 활용 | 관계와 scope 오류 표현력이 제한될 수 있음 |
-| Claim Ledger + Micrograph | 관계 오류와 설명력이 강할 가능성 | extractor·alignment 비용과 오탐 위험 |
+이 연구는 새로운 graph 알고리즘보다 human-AI workflow, provenance, selective prediction과 longitudinal evaluation의 결합으로 기여하는 편이 설득력 있다.
 
-Micrograph가 세 번째 후보라는 이유만으로 채택하지 않는다. 같은 비용 또는 같은 review burden에서 유의미한 추가 이득이 있어야 한다.
+## 가장 중요한 반증 조건
 
-## Impact 판단 기준
+- 최신 source-linked direct judge가 같은 burden에서 DARI와 비열등함
+- DARI가 잔존 critical/high 오류를 25% 줄이지도, 검수 시간을 20% 줄이지도 못함
+- evidence UI가 정상 문장의 불필요한 수정을 증가시킴
+- graph가 flat claim보다 관계 오류 recall을 8%p 이상 높이지 못함
+- 두 번의 모델 업그레이드에서 추가 효과가 사라짐
+- 지원자 또는 파트너가 portable record와 review receipt를 실제로 사용하지 않음
 
-기술 성능보다 다음 변화가 중요하다.
-
-- 사용자가 놓치는 고위험 의미 변화가 줄어드는가
-- 정상 문서의 불필요한 경고가 감당 가능한가
-- finding을 본 사람이 더 빠르고 정확하게 수정하는가
-- 오류가 어느 단계에서 생겼는지 팀이 재현할 수 있는가
-- 새로운 DARI correction data가 쌓일수록 성능이 더 좋아지는가
-
-Macro-F1이 높아도 위 항목이 개선되지 않으면 제품 impact는 없다.
-
-## Go, Pivot, Kill
-
-### Go
-
-- 관계 오류 subset에서 strongest baseline보다 high-risk recall이 명확히 높음
-- 같은 recall에서 false alert가 30% 이상 감소
-- 양쪽 evidence만 보고도 사람이 차이를 정확히 판단함
-- 사용자 실험에서 잔존 오류 또는 검수 시간이 20% 이상 감소
-
-### Pivot
-
-- Claim Ledger의 가치는 있지만 graph 추가 이득이 작음
-- 이 경우 `Claim Ledger + deterministic guards + NLI/direct judge`로 단순화
-- Graph는 offline diagnosis와 일부 고위험 관계에만 사용
-
-### Kill
-
-- 자연 데이터에서 direct judge와 차이가 없음
-- graph 때문에 경고 수와 검수 시간이 늘어남
-- extractor 성능이 언어별로 불안정하고 abstention이 과도함
-- 사람이 evidence를 보고도 finding을 이해하거나 수정하지 못함
+이 결과가 나오면 graph와 별도 verifier를 줄이거나 중단한다. lineage만 가치가 있으면 evidence record와 공동 검토 workflow 제품으로 전환한다. lineage에도 실사용 가치가 없으면 전체 검증 방향을 중단하는 것이 맞다.
 
 ## 최종 판단
 
-v0.3의 가장 강한 아이디어는 **graph 비교가 아니라 provenance-aware staged verification**이다. 이 방향은 DARI의 현재 데이터 모델과 사용자 흐름에 맞고, 범용 번역 평가기와 분명히 다르다.
+v0.4의 가장 큰 개선은 `LLM이 계속 틀릴 것`을 전제로 삼지 않는 점이다. LLM은 계속 교체하고, 지원자가 확인한 의미와 검토 책임을 모델 밖에 둔다.
 
-Graph는 기술적 해자가 아니라 해자를 만드는 데이터를 구조화하는 내부 표현이다. 관계 오류에서 실질적인 추가 성능을 보일 때만 제품 runtime에 남겨야 한다. 이 원칙을 지키면 실패한 실험도 설계를 단순화하는 근거가 되고, 성공하면 DARI만의 의미 계보와 correction data가 장기 자산이 된다.
+이 방향의 잠재력은 높지만 현재 증거 수준은 낮다. 다음 성과는 더 복잡한 graph가 아니라 **수정 후 최종 export 재검증**, **episode별 모국어 확인**, **조력자 crossover pilot**에서 나와야 한다. 세 가지가 최신 direct baseline보다 잔존 오류 또는 사람 시간을 줄일 때 DARI는 기술적 가치와 서비스 가치를 함께 주장할 수 있다.

@@ -1,0 +1,168 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" role="img" aria-labelledby="title desc">
+  <title id="title">DARI Service and Verification Architecture v0.4</title>
+  <desc id="desc">Applicant-controlled evidence-linked case record, controlled document generation, semantic delta review, human escalation, and model evaluation control plane.</desc>
+  <defs>
+    <style>
+      .bg { fill:#f5f7fb; }
+      .navy { fill:#123b5d; }
+      .ink { fill:#102a43; }
+      .muted { fill:#627d98; }
+      .white { fill:#ffffff; }
+      .blue { fill:#e8f2fb; stroke:#2878b5; stroke-width:2.5; }
+      .teal { fill:#e6f6f2; stroke:#17857b; stroke-width:3; }
+      .violet { fill:#f1edfb; stroke:#7557b7; stroke-width:2.5; }
+      .orange { fill:#fff5e5; stroke:#d97706; stroke-width:2.5; }
+      .rose { fill:#fff0f0; stroke:#b93838; stroke-width:2.5; }
+      .card { fill:#ffffff; stroke:#cbd5e1; stroke-width:2; }
+      .darkcard { fill:#173f5f; stroke:#173f5f; stroke-width:2; }
+      .line { fill:none; stroke:#426581; stroke-width:3; marker-end:url(#arrow); }
+      .dash { fill:none; stroke:#819bb0; stroke-width:2.5; stroke-dasharray:8 7; marker-end:url(#arrowSoft); }
+      .h1 { font-size:38px; font-weight:700; }
+      .h2 { font-size:24px; font-weight:700; }
+      .h3 { font-size:18px; font-weight:700; }
+      .body { font-size:16px; }
+      .small { font-size:13px; }
+      .tiny { font-size:12px; }
+      text { font-family:"Malgun Gothic","Noto Sans KR",Arial,sans-serif; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#426581"/>
+    </marker>
+    <marker id="arrowSoft" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#819bb0"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1600" height="1120"/>
+  <rect class="navy" width="1600" height="118"/>
+  <text x="70" y="55" class="h1 white">DARI 서비스·검증 아키텍처 v0.4</text>
+  <text x="70" y="88" class="body white">더 좋은 LLM이 아니라, 지원자가 통제하는 의미 계보와 검토 workflow를 제품 핵심으로</text>
+
+  <rect x="70" y="145" width="1460" height="76" rx="14" class="darkcard"/>
+  <text x="800" y="178" text-anchor="middle" class="h2 white">지원자가 확인한 중요한 진술을 원문부터 최종 문서까지 연결한다</text>
+  <text x="800" y="204" text-anchor="middle" class="small white">모델은 교체 가능한 부품 · 사건기록과 검토 결정은 지속되는 기준</text>
+
+  <text x="70" y="266" class="h2 ink">1. 제품 흐름</text>
+
+  <g>
+    <rect x="70" y="292" width="190" height="112" rx="14" class="card"/>
+    <text x="165" y="326" text-anchor="middle" class="h3 ink">모국어 capture</text>
+    <text x="165" y="352" text-anchor="middle" class="small muted">text · voice · document</text>
+    <text x="165" y="376" text-anchor="middle" class="small muted">exact evidence span</text>
+
+    <rect x="294" y="292" width="205" height="112" rx="14" class="blue"/>
+    <text x="396" y="326" text-anchor="middle" class="h3 ink">의미 read-back</text>
+    <text x="396" y="352" text-anchor="middle" class="small muted">episode별 확인</text>
+    <text x="396" y="376" text-anchor="middle" class="small muted">불확실 · 정정 · 철회</text>
+
+    <rect x="533" y="276" width="250" height="144" rx="14" class="teal"/>
+    <text x="658" y="313" text-anchor="middle" class="h3 ink">Evidence-linked</text>
+    <text x="658" y="338" text-anchor="middle" class="h3 ink">Case Record</text>
+    <text x="658" y="368" text-anchor="middle" class="small muted">claim · evidence · revision</text>
+    <text x="658" y="392" text-anchor="middle" class="small muted">consent · access · retention</text>
+
+    <rect x="817" y="292" width="205" height="112" rx="14" class="violet"/>
+    <text x="919" y="326" text-anchor="middle" class="h3 ink">Artifact Builder</text>
+    <text x="919" y="352" text-anchor="middle" class="small muted">claim-constrained draft</text>
+    <text x="919" y="376" text-anchor="middle" class="small muted">sentence provenance</text>
+
+    <rect x="1056" y="292" width="205" height="112" rx="14" class="orange"/>
+    <text x="1158" y="326" text-anchor="middle" class="h3 ink">Semantic Delta Gate</text>
+    <text x="1158" y="352" text-anchor="middle" class="small muted">생성·수정 뒤 재검사</text>
+    <text x="1158" y="376" text-anchor="middle" class="small muted">added · removed · changed</text>
+
+    <rect x="1295" y="292" width="235" height="112" rx="14" class="rose"/>
+    <text x="1412" y="326" text-anchor="middle" class="h3 ink">Evidence Review</text>
+    <text x="1412" y="352" text-anchor="middle" class="small muted">지원자 또는 허가된 조력자</text>
+    <text x="1412" y="376" text-anchor="middle" class="small muted">검토 후 최소화 export</text>
+
+    <path d="M260 348 H288" class="line"/>
+    <path d="M499 348 H527" class="line"/>
+    <path d="M783 348 H811" class="line"/>
+    <path d="M1022 348 H1050" class="line"/>
+    <path d="M1261 348 H1289" class="line"/>
+  </g>
+
+  <g>
+    <rect x="560" y="446" width="196" height="74" rx="12" class="card"/>
+    <text x="658" y="476" text-anchor="middle" class="h3 ink">Rule &amp; Template</text>
+    <text x="658" y="500" text-anchor="middle" class="small muted">공식 서식 · 전문가 승인</text>
+    <path d="M756 483 C825 483 830 406 870 406" class="dash"/>
+  </g>
+
+  <text x="70" y="574" class="h2 ink">2. 위험에 따라 올라가는 Assurance Cascade</text>
+  <g>
+    <rect x="70" y="600" width="270" height="116" rx="14" class="card"/>
+    <text x="95" y="634" class="h3 ink">1 · Deterministic</text>
+    <text x="95" y="660" class="small muted">coverage · 숫자 · 날짜 · 부정</text>
+    <text x="95" y="684" class="small muted">철회된 값 재등장</text>
+
+    <rect x="368" y="600" width="270" height="116" rx="14" class="blue"/>
+    <text x="393" y="634" class="h3 ink">2 · Flat claim / judge</text>
+    <text x="393" y="660" class="small muted">일반 누락과 추가</text>
+    <text x="393" y="684" class="small muted">source-linked baseline 우선</text>
+
+    <rect x="666" y="600" width="270" height="116" rx="14" class="violet"/>
+    <text x="691" y="634" class="h3 ink">3 · Micrograph plugin</text>
+    <text x="691" y="660" class="small muted">행위자 · 전언 · scope · 순서</text>
+    <text x="691" y="684" class="small muted">baseline을 이길 때만 유지</text>
+
+    <rect x="964" y="600" width="270" height="116" rx="14" class="orange"/>
+    <text x="989" y="634" class="h3 ink">4 · Independent check</text>
+    <text x="989" y="660" class="small muted">다른 model family 또는 경로</text>
+    <text x="989" y="684" class="small muted">self-check는 독립 검증 아님</text>
+
+    <rect x="1262" y="600" width="268" height="116" rx="14" class="rose"/>
+    <text x="1287" y="634" class="h3 ink">5 · Human escalation</text>
+    <text x="1287" y="660" class="small muted">중요하거나 불확실한 delta</text>
+    <text x="1287" y="684" class="small muted">통역·활동가·법률지원자</text>
+
+    <path d="M340 658 H362" class="line"/>
+    <path d="M638 658 H660" class="line"/>
+    <path d="M936 658 H958" class="line"/>
+    <path d="M1234 658 H1256" class="line"/>
+  </g>
+
+  <text x="70" y="770" class="h2 ink">3. 모델 발전을 흡수하는 control plane</text>
+  <g>
+    <rect x="70" y="796" width="330" height="112" rx="14" class="blue"/>
+    <text x="95" y="831" class="h3 ink">Model Adapter Registry</text>
+    <text x="95" y="858" class="small muted">generator · extractor · judge 교체</text>
+    <text x="95" y="883" class="small muted">provider · version · prompt 기록</text>
+
+    <rect x="430" y="796" width="330" height="112" rx="14" class="orange"/>
+    <text x="455" y="831" class="h3 ink">Frozen Evaluation &amp; Release Gate</text>
+    <text x="455" y="858" class="small muted">자연 오류 + challenge set + shadow run</text>
+    <text x="455" y="883" class="small muted">새 모델을 자동 승격하지 않음</text>
+
+    <rect x="790" y="796" width="330" height="112" rx="14" class="teal"/>
+    <text x="815" y="831" class="h3 ink">Calibration &amp; Decision Log</text>
+    <text x="815" y="858" class="small muted">언어 · 오류 · 단계별 threshold</text>
+    <text x="815" y="883" class="small muted">동의한 비식별 correction만 학습</text>
+
+    <rect x="1150" y="796" width="380" height="112" rx="14" class="card"/>
+    <text x="1175" y="831" class="h3 ink">Privacy &amp; Controlled Export</text>
+    <text x="1175" y="858" class="small muted">최소 수집 · 암호화 · 접근 통제 · 삭제</text>
+    <text x="1175" y="883" class="small muted">원시 correction history는 기본 제외</text>
+  </g>
+
+  <g>
+    <rect x="70" y="948" width="460" height="126" rx="14" class="teal"/>
+    <text x="95" y="982" class="h3 ink">남길 해자</text>
+    <text x="95" y="1009" class="small ink">문항별 contract · evidence/claim/revision lineage</text>
+    <text x="95" y="1033" class="small ink">calibration · partner workflow · model regression set</text>
+    <text x="95" y="1057" class="small muted">민감한 원문 자체는 데이터 해자로 삼지 않음</text>
+
+    <rect x="570" y="948" width="460" height="126" rx="14" class="card"/>
+    <text x="595" y="982" class="h3 ink">빠르게 범용화될 것</text>
+    <text x="595" y="1009" class="small ink">번역 · claim/graph 추출 · long context · self-check</text>
+    <text x="595" y="1033" class="small ink">on-device 실행 · 일반 QE · graph viewer</text>
+    <text x="595" y="1057" class="small muted">좋은 부품으로 사용하되 제품 정의로 삼지 않음</text>
+
+    <rect x="1070" y="948" width="460" height="126" rx="14" class="rose"/>
+    <text x="1095" y="982" class="h3 ink">연구 Gate</text>
+    <text x="1095" y="1009" class="small ink">잔존 중요 오류 25% 감소 또는 검수 시간 20% 감소</text>
+    <text x="1095" y="1033" class="small ink">두 언어 · 두 model family에서 효과 방향 유지</text>
+    <text x="1095" y="1057" class="small muted">실패하면 verifier 축소, lineage도 무가치하면 중단</text>
+  </g>
+</svg>

@@ -1,362 +1,300 @@
-# DARI 검증 아키텍처 v0.3
+# DARI 검증 아키텍처 v0.4
 
 - 작성일: 2026-10-17
-- 상태: 구현 전 설계 기준
+- 상태: 서비스 및 연구 방향 재설계
 - 대상 브랜치: `experiment/verification-architecture`
 - 제품 연동 상태: 미연동 연구 sidecar
 
-## 1. 한 문장 결론
+## 1. 이번 설계의 결론
 
-**DARI는 두 문서를 막연히 비교하는 번역 평가기가 아니라, 사용자가 확인한 claim과 원문 근거가 사실 추출, 초안, 수정, 번역 과정에서 보존되는지를 추적하는 provenance-aware semantic diff system으로 설계한다.**
+**DARI는 더 좋은 번역기나 LLM 검사기가 아니라, 지원자가 확인한 중요한 진술을 원문부터 최종 문서까지 근거와 함께 연결하고 의미가 바뀐 지점만 지원자 또는 허가된 조력자가 검토하게 하는 applicant-controlled multilingual integrity layer로 설계한다.**
 
-이 시스템은 외부 세계의 진실이나 법률적 타당성을 판정하지 않는다. 보장하려는 것은 다음 두 가지다.
+모델이 좋아질수록 번역, 추출, JSON 생성, 문단 이해와 일반적인 self-check는 빠르게 범용 기능이 된다. 따라서 DARI의 장기 가치는 모델의 현재 약점에 의존하면 안 된다. 모델 밖에 남는 다음 자산이 중심이어야 한다.
 
-1. 사용자가 확인한 의미가 downstream artifact에서 바뀌지 않았는가.
-2. 바뀌었다면 어떤 claim이 어느 단계에서 바뀌었고, 그 판단 근거는 무엇인가.
+1. 지원자가 자기 언어로 확인한 claim과 정확한 원문 근거
+2. 한국 난민신청 절차와 문항에 맞춘 Semantic Contract
+3. 원문, claim, 초안, 수정, 최종본을 연결하는 revision lineage
+4. 오류 유형, 언어, 문서 단계별 검수 기준과 calibration
+5. 지원자와 통역가, 활동가, 법률지원자가 함께 검토하는 업무흐름
+6. 모델 교체 때마다 같은 평가를 다시 실행하는 release gate
 
-## 2. v0.2에서 바꾼 핵심 결정
+Graph는 행위자와 대상, 전언, 확실성의 적용 범위, 사건 순서처럼 관계가 중요한 오류에만 쓰는 선택적 도구다. 제품의 해자나 기본 화면이 아니다.
 
-| 기존 방향 | v0.3 결정 | 이유 |
+## 2. v0.3에서 바꾼 큰 결정
+
+| v0.3 | v0.4 결정 | 이유 |
 | --- | --- | --- |
-| source와 candidate를 매번 각각 full graph로 추출 | 사용자 확인 fact를 `Claim Ledger`로 고정하고 candidate만 주로 분석 | reference 재추출 오류와 비용을 줄이고 DARI의 구조화 정보를 활용 |
-| graph가 전체 검증의 중심 | graph는 관계 오류를 다루는 선택적 `Relational Micrograph` | 숫자, 날짜, 명시적 부정, 누락은 더 단순한 방법이 안정적 |
-| V1, V2, V3를 동시에 구현 | V2 `confirmed fact -> Korean draft`를 첫 제품 경계로 선택 | 같은 언어에서 핵심 가설을 먼저 검증할 수 있음 |
-| QE, direct judge, graph를 runtime에서 병렬 orchestration | baseline은 research plane에서 독립 실행 | 제품 복잡도를 줄이고 각 방법의 실제 기여를 분리 |
-| macro-F1 중심 | 고위험 오류 recall, 문서당 오탐, 검수 시간, 잔존 오류 중심 | 실제 사용자 impact와 직접 연결 |
-| graph 구조 자체를 차별점으로 설명 | provenance, correction data, calibration을 해자 후보로 정의 | graph와 prompt는 공개 기술로 복제 가능 |
+| 검출 파이프라인이 아키텍처의 중심 | `Evidence-linked Case Record`와 검토 업무흐름이 중심 | 검출기는 더 좋은 기반 모델로 대체될 수 있지만 확인 기록과 계보는 남음 |
+| confirmed fact를 한 번에 확인 | 사건 또는 episode 단위 의미 read-back과 상태 기록 | 현재의 단일 checkbox는 중요한 claim을 실제로 확인했다는 근거가 약함 |
+| 초안 생성 뒤 검증을 주로 상정 | 생성 전 제약, 생성 뒤 delta gate를 함께 사용 | 오류를 만든 뒤 찾는 것보다 허용된 claim만 사용하게 하는 편이 우선 |
+| 수정본은 별도 text로 저장 가능 | 모든 적용 및 수동 수정 뒤 claim coverage를 재계산 | 현재 제품에서 직접 고친 문장이 원문 근거와 끊기는 경계가 가장 위험함 |
+| correction lineage를 데이터 해자로 설명 | 최소 수집, 암호화, 접근 통제, 삭제 가능, 제한된 export | 민감한 정정 이력은 자산이기 전에 사용자 위험이 될 수 있음 |
+| graph와 verifier의 성능을 주 연구 질문으로 둠 | 모델 교체 후에도 잔존 오류와 검수 시간을 줄이는지 검증 | 더 강한 LLM이 등장해도 유효한 주장이어야 함 |
+| claimant-only 도구에 가까움 | 지원자와 허가된 조력자의 B2B2C 공동 검토 | 고위험 언어 및 법률지원에는 인간 이관과 책임 주체가 필요함 |
 
-## 3. 제품에서 지켜야 할 의미 계보
+## 3. 자동으로 보장할 수 있는 범위
 
-```mermaid
-flowchart LR
-    U[사용자 원문 evidence] --> F[추출 fact]
-    F --> C[사용자 confirmed claim]
-    C --> D[한국어 draft sentence]
-    D --> E[사용자 edited sentence]
-    E --> T[다국어 translation]
+검증이라는 말을 세 층으로 분리한다.
 
-    U -. sourceQuotes .-> C
-    C -. claim IDs .-> D
-    D -. revision lineage .-> E
-    E -. artifact revision .-> T
+| 층 | 질문 | DARI의 역할 |
+| --- | --- | --- |
+| 의미 충실성 | 확인한 claim이 후속 문서에 보존됐는가 | 제품 핵심, 자동 검출과 선택적 사람 검토 |
+| 기록 무결성 | 어떤 원본, revision, 모델, 검토에서 나온 결과인가 | hash, ID, access log와 review receipt로 지원 |
+| 법적 타당성 | 법적으로 충분하고 유리하며 신빙성이 있는가 | 자동 판정하지 않고 자격 있는 조력자에게 이관 |
+
+`user_confirmed`는 객관적 진실이 확인됐다는 뜻이 아니다. 해당 시점에 지원자가 자신의 의도가 그렇게 표현됐다고 확인했다는 뜻이다. 진술의 신빙성, 난민 인정 가능성, 법적 유불리를 자동으로 분류하지 않는다.
+
+## 4. 두 개의 기준 정보 영역
+
+DARI는 지원자의 사건 내용과 외부 법률 정보를 하나의 지식 그래프에 섞지 않는다.
+
+### A. Evidence-linked Case Record
+
+지원자의 원문과 의도에 대한 기준이다.
+
+```text
+episode_id, claim_id, revision
+source_language, evidence_span, optional_media_ref
+subject, predicate, object_or_value
+polarity, certainty, evidentiality, time, location
+state = asserted | clarified | user_confirmed | uncertain |
+        corrected | withdrawn | professionally_reviewed
+supersedes[], created_by, confirmed_by, confirmation_method
+consent_scope, retention_policy
 ```
 
-각 화살표는 서로 다른 검증 문제다.
+이 기록은 지원자가 통제한다. 철회된 claim은 후속 문서 생성에서 제외하지만, 내부 보관 여부와 기간은 동의와 운영 정책에 따른다. 외부 기관에 전달하는 기본 export에는 원시 대화와 전체 정정 이력을 넣지 않는다.
 
-| 단계 | 검증 질문 | 주된 실패 |
-| --- | --- | --- |
-| V1 원문 -> fact | 원문이 fact로 정확히 구조화됐는가 | 추출 누락, 잘못된 값, 출처·확실성 왜곡 |
-| V2 confirmed claim -> draft | 확인한 의미가 초안에 보존됐는가 | 누락, 단정 강화, 행위자 교체, 정정 전 값 재사용 |
-| V3 final draft -> translation | 언어 변환 중 의미가 보존됐는가 | 부정·역할·시간·출처·수치 변화 |
+### B. Rule and Template Registry
 
-세 단계를 같은 알고리즘으로 억지로 통일하지 않는다. 대신 모든 결과가 같은 `claim_id`, `revision`, `evidence`를 이어받는 **semantic chain of custody**로 통일한다.
+공식 서식, 문항, 작성 규칙과 전문가가 승인한 설명의 기준이다.
 
-## 4. 전체 구조
+```text
+template_id, version, jurisdiction, effective_date
+question_id, required_claim_types, optional_claim_types
+forbidden_states, allowed_transformations
+official_source, reviewer, review_date
+```
+
+두 영역의 출처와 책임 주체를 분리해야 지원자의 진술과 법률적 안내가 섞이는 것을 막을 수 있다.
+
+## 5. 전체 구조
 
 ```mermaid
 flowchart TB
-    subgraph Product[제품 plane]
-        A[원문, facts, draft, translation]
-        B[P0 Case Compiler]
-        C[P1 Claim Ledger and Semantic Contract]
-        D[P2 Candidate Analyzer]
-        E1[Deterministic Invariants]
-        E2[Relational Micrograph]
-        F[P3 Typed Semantic Diff]
-        G[P4 Risk and Abstention Policy]
-        H[P5 Evidence Review Loop]
-        A --> B --> C --> D
-        D --> E1 --> F
-        D --> E2 --> F
-        F --> G --> H
-        H -. accepted correction .-> A
+    subgraph Experience[지원자와 조력자 경험]
+        A[모국어 대화와 첨부자료]
+        B[episode별 의미 read-back]
+        H[근거 중심 review queue]
+        X[최종 문서와 제한된 review receipt]
+        A --> B
+        H --> X
     end
 
-    subgraph Research[research plane]
-        R1[Direct judge]
-        R2[Flat claim plus NLI]
-        R3[QE or xCOMET]
-        R4[Graph ablations]
-        R5[Evaluator and Dataset Registry]
-        R1 --> R5
-        R2 --> R5
-        R3 --> R5
-        R4 --> R5
+    subgraph Record[지속되는 제품 핵심]
+        C[Evidence-linked Case Record]
+        R[Rule and Template Registry]
+        L[Correction and Decision Log]
+        B --> C
+        H --> L
     end
 
-    C -. frozen cases .-> R5
-    F -. predictions .-> R5
+    subgraph Transform[교체 가능한 생성과 검증]
+        D[Controlled Artifact Builder]
+        E[Semantic Delta Gate]
+        F[Risk and Escalation Router]
+        C --> D
+        R --> D
+        D --> E --> F --> H
+        C --> E
+        R --> E
+    end
+
+    subgraph Control[모델 및 연구 control plane]
+        M[Model Adapter Registry]
+        Q[Frozen Evaluation and Release Gate]
+        P[Calibration and Privacy Policy]
+        M --> D
+        M --> E
+        Q --> M
+        L -. consented labels .-> Q
+        P --> C
+        P --> F
+    end
 ```
 
-제품 plane은 선택된 방법 하나만 실행한다. research plane은 같은 frozen data에서 여러 방법을 독립 비교한다. 성능 근거 없이 여러 detector를 합치지 않는다.
+제품 흐름은 `원문 -> 확인된 사건기록 -> 제약된 문서 생성 -> 의미 delta 검수 -> 사람 검토 -> 최소화된 export`다. 모델은 이 흐름의 공급자이고, 사건기록과 검토 결정이 기준이다.
 
-## 5. 핵심 artifact
+## 6. 모듈의 입력과 출력
 
-### 5.1 Evidence Ledger
-
-사용자 발화와 정확한 원문 범위를 보존한다.
-
-```text
-message_id, revision, language, text
-evidence_span = {message_id, start, end, quote}
-```
-
-### 5.2 Canonical Claim Ledger
-
-사용자가 확인한 의미를 비교 기준으로 고정한다. 현재 제품의 `requirementId`, `eventId`, `certainty`, `knowledge`, `sourceQuotes`, `supersedes`, `confirmed`를 활용한다.
-
-```text
-claim_id
-event_id
-subject, predicate, object or value
-polarity, certainty, evidentiality
-time, location, frequency
-source_evidence[]
-confirmation_state
-supersedes[]
-revision
-```
-
-Claim Ledger는 세계의 진실이 아니라 **사용자가 확인한 현재 기준**이다. 사용자가 fact를 수정하면 새 revision이 생기고 이전 검증 결과는 stale 상태가 된다.
-
-### 5.3 Semantic Contract
-
-artifact마다 모든 claim이 반드시 들어가야 하는 것은 아니다. 문항과 문서 단계에 따라 필요한 의미를 명시한다.
-
-```text
-contract_id, stage, target_section
-required_claim_ids[]
-optional_claim_ids[]
-forbidden_superseded_claim_ids[]
-risk_weights
-allowed_transformations
-```
-
-이 계약이 없으면 정상적인 요약이나 문항별 선택까지 omission으로 잘못 경고하게 된다.
-
-### 5.4 Candidate Semantic Artifact
-
-초안 또는 번역문에서 관찰된 claim과 관계를 담는다. 모든 요소는 candidate text의 evidence span을 가진다.
-
-### 5.5 Finding
-
-```text
-finding_id, claim_id, type, risk
-reference_evidence[], candidate_evidence[]
-observed_change
-detector, confidence, calibration_group
-status = candidate | confirmed | rejected | abstained
-```
-
-## 6. 실행 모듈의 입력과 출력
-
-| 모듈 | 입력 | 출력 | 책임 |
+| 모듈 | 입력 | 출력 | 핵심 책임 |
 | --- | --- | --- | --- |
-| P0 Case Compiler | 제품 artifact, revision, digest, stage | `VerificationCaseV2` | stale artifact와 잘못된 연결을 모델 호출 전에 제거 |
-| P1 Claim Ledger Compiler | confirmed facts, sourceQuotes, corrections | `ClaimLedger` | reference 의미를 가능한 한 결정론적으로 구성 |
-| P1 Semantic Contract Projector | claim ledger, question/section, stage | `SemanticContract` | 이번 artifact가 보존해야 할 claim 범위를 정함 |
-| P2 Candidate Analyzer | candidate text, sentence `factIds`, language | candidate claims, coverage | candidate만 보고 claim을 추출하고 anchor 후보를 만듦 |
-| P3 Typed Semantic Diff | contract, reference claims, candidate claims | candidate findings | claim 정렬 후 관찰 가능한 의미 차이를 분류 |
-| P4 Risk and Abstention Policy | findings, confidence, coverage, calibration | review queue 또는 통과 | 위험과 불확실성에 따라 자동 통과·검토·보류 |
-| P5 Evidence Review Loop | finding과 양쪽 evidence | accepted/rejected/corrected decision | 사람이 빠르게 판단하고 수정하도록 지원 |
-| Offline Evaluator | frozen gold set, 각 strategy 결과, 비용 | scorecard, go/pivot/kill | 기술 가치와 제품 impact를 독립 평가 |
+| P0 Capture and Episode Builder | 모국어 text/voice, 문항 맥락, 첨부자료 | evidence span, episode, candidate claim, ambiguity | 사건을 claim 묶음으로 나누되 해석 불가능한 부분을 숨기지 않음 |
+| P1 Meaning Read-back | episode, candidate claims, source-language renderer | claim별 `confirmed/uncertain/corrected/withdrawn` 결정 | 사용자가 이해하는 언어로 의미를 다시 보여주고 실질적 확인을 기록 |
+| P2 Case Record Store | read-back 결정, evidence, revision, consent | versioned Evidence-linked Case Record | 현재 기준 claim과 수정 계보, 접근 및 보관 정책을 유지 |
+| P3 Artifact Builder | active claims, Semantic Contract, model adapter | 문장, claim IDs, model/prompt/version, unresolved items | 허용된 claim만 사용해 초안 또는 번역을 만들고 문장별 근거를 연결 |
+| P4 Semantic Delta Gate | 기준 claims, 생성 또는 수정 artifact, prior revision | added/removed/changed/unclear delta와 evidence | 매 생성, 적용, 수동 편집 뒤 의미 변화를 다시 계산 |
+| P5 Assurance Cascade | delta, risk, detector confidence, language calibration | pass, review, human escalation, abstain | 가장 싼 신뢰 가능한 검사부터 실행하고 불확실하면 멈춤 |
+| P6 Evidence Review | 양쪽 evidence, plain-language change, reviewer role | accept, reject, correct, defer 결정 | graph가 아니라 무엇이 어떻게 바뀌었는지를 판단 가능하게 제시 |
+| P7 Export and Handoff | final artifact, active claims, review decisions, policy | 제출 초안, portable case packet, 제한된 receipt | 필요한 내용만 역할별로 내보내고 내부 원시 이력은 기본 제외 |
+| C0 Model Adapter Registry | provider/model/version/config | 표준화된 generation/extraction/judge interface | 특정 모델 종속을 막고 실행 정보를 기록 |
+| C1 Evaluation and Release Gate | frozen set, ecological set, candidate model | scorecard, regression report, deploy decision | 새 모델을 자동 승격하지 않고 기존 기준보다 나은지 확인 |
+| C2 Calibration and Policy | 언어/오류/단계별 결과, 비용, 검토 용량 | threshold, abstention, escalation rule | confidence를 실제 위험과 검토 자원에 맞춤 |
 
-## 7. 각 모듈의 설계
+## 7. Assurance Cascade
 
-### P0. Case Compiler
+모든 문장을 여러 모델로 반복 검사하지 않는다. 위험과 불확실성에 따라 다음 순서로 올린다.
 
-기존 revision, digest, evidence span, fact ID 검사를 하나의 입구로 묶는다.
+1. **Deterministic invariant**: claim coverage, 숫자, 날짜, 이름, 명시적 부정, 철회된 값 재등장
+2. **Flat claim entailment 또는 direct judge**: 일반적인 의미 누락과 추가
+3. **Relational micrograph plugin**: 행위자-대상, 전언, 확실성 scope, 사건 순서
+4. **독립 verifier**: 생성기와 다른 계열의 모델 또는 다른 증거 경로
+5. **인간 이관**: 중요한데 불확실하거나 언어별 calibration 범위를 벗어난 항목
 
-- V2에서는 사용자 확인이 끝난 fact snapshot만 reference로 허용한다.
-- candidate draft가 어떤 fact revision에서 생성됐는지 확인한다.
-- sourceQuote가 실제 사용자 메시지의 substring인지 확인한다.
-- 정정으로 폐기된 fact가 active reference에 포함되지 않게 한다.
-- 실패하면 의미 모델을 호출하지 않는다.
+동일한 모델에 같은 정보를 다시 물은 self-check는 독립 검증으로 계산하지 않는다. 자동 역번역도 지원자의 이해를 돕는 read-back일 수는 있지만 독립적인 정확성 증거는 아니다.
 
-### P1. Claim Ledger Compiler와 Semantic Contract
+Finding은 `유리/불리`를 추정하지 않고 다음만 보여준다.
 
-reference 쪽을 자유 텍스트 LLM으로 다시 해석하지 않는다. 현재 DARI 데이터에서 결정 가능한 내용은 deterministic projector로 만든다.
-
-- `requirementId + eventId`는 claim과 event의 안정적인 anchor다.
-- `certainty`는 확실성 qualifier가 된다.
-- `knowledge`는 direct, reported, inferred provenance가 된다.
-- `supersedes`는 정정 계보가 된다.
-- `sourceQuotes`는 사용자가 확인할 수 있는 근거가 된다.
-
-자유 서술값에서 주체·대상 관계를 더 추출해야 할 때만 제한적으로 모델을 사용하고, 그 결과는 `model_extracted`로 구분한다.
-
-### P2. Candidate Analyzer
-
-candidate text만 보고 의미를 추출한다. reference의 정답 구조를 보여주지 않는다.
-
-초기 구현에서는 다음 두 경로를 함께 사용한다.
-
-1. **Deterministic invariant path**: fact ID coverage, 숫자, 날짜, 이름, 명시적 부정, 정정 전 값.
-2. **Candidate claim extraction path**: predicate, participant role, certainty, source attribution, temporal relation.
-
-문장에 붙은 `factIds`는 alignment 후보를 줄이는 anchor일 뿐, 그 문장이 fact 의미를 실제로 보존했다는 증거로 간주하지 않는다.
-
-### P3. Typed Semantic Diff
-
-MVP 오류 유형은 일곱 개로 제한한다.
-
-| Type | 판정 대상 | 기본 경로 |
-| --- | --- | --- |
-| `omission` | required claim이 candidate에 없음 | contract coverage |
-| `actor_role_change` | 같은 사건의 주체·대상이 바뀜 | micrograph |
-| `negation_flip` | claim polarity가 바뀜 | deterministic + claim |
-| `certainty_shift` | 가능·추정·확정의 범위나 강도가 바뀜 | scoped qualifier |
-| `source_attribution_change` | 직접 경험·전언·추론 또는 화자가 바뀜 | reporting relation |
-| `identity_value_change` | 인물·장소·날짜·수치가 바뀜 | normalized value |
-| `temporal_change` | 사건 순서·기간·빈도가 바뀜 | temporal relation |
-
-`causality_change`, `harm_strength_change`, 일반 `unsupported_addition`은 pilot의 annotation agreement와 실제 오류 빈도를 확인한 뒤 추가한다. 특히 피해 강도는 법률적 판단으로 오해될 수 있어 초기 자동 판정에서 제외한다.
-
-### P3-A. Relational Micrograph
-
-Graph는 다음처럼 연결 구조가 필요한 claim에만 만든다.
-
-```mermaid
-flowchart LR
-    E[EVENT] -->|ACTOR| A[ENTITY]
-    E -->|TARGET| B[ENTITY]
-    E -->|AT_TIME| T[VALUE]
-    R[REPORT EVENT] -->|ACTOR| S[SOURCE]
-    R -->|REPORTS| E
-    E -->|BEFORE| E2[EVENT]
+```text
+claim_id, artifact_revision, type = added | removed | changed | unclear
+risk = critical | high | medium | low
+source_evidence[], artifact_evidence[]
+plain_language_delta
+detector, model_family, confidence, calibration_group
+status = open | accepted | rejected | corrected | deferred
 ```
 
-전체 문단을 하나의 거대한 AMR로 만들지 않는다. 필요한 event 주변의 작은 subgraph를 만들고 claim 단위로 비교한다. Embedding은 후보를 찾는 데만 사용하고 역할, 부정, 확실성, 시간 차이의 최종 판정은 typed rule이 담당한다.
+## 8. 지금 가장 먼저 검증할 경계
 
-### P4. Risk and Abstention Policy
+첫 연구 범위는 `confirmed facts -> Korean draft -> applicant edits -> final Korean export`로 고정한다.
 
-모델 confidence를 그대로 신뢰하지 않는다. calibration set에서 언어, 길이, error type별 risk-coverage를 측정한다.
+현재 제품은 수집된 fact 전체를 하나의 checkbox로 확인하고, 직접 고친 문장은 원문 근거에 자동으로 다시 연결하지 않는다. 또한 영어 UI에서만 한국어 초안의 영어 meaning view가 보이고 다른 대상 언어 사용자가 최종 문장을 자기 언어로 확인하는 경로는 충분하지 않다. 따라서 가장 가치가 큰 경계는 다음 세 곳이다.
 
-- 명확한 deterministic difference는 바로 review finding으로 보낸다.
-- 정렬 margin이 작거나 coverage가 낮으면 보류한다.
-- 동일 base model을 같은 prompt로 다시 호출한 결과를 독립 확인으로 취급하지 않는다.
-- targeted verifier는 graph-only 오탐 유형이 반복적으로 확인된 뒤에만 추가한다.
+1. episode별 fact 확인이 실제 사용자 의도를 반영하는가
+2. 초안 생성이 active confirmed claim과 Semantic Contract를 지키는가
+3. 생성 뒤 수정이나 재생성으로 근거 연결이 끊기거나 철회된 사실이 되살아나는가
 
-### P5. Evidence Review Loop
+이 경계가 검증되기 전에는 cross-lingual V3나 범용 번역 검사를 제품 핵심으로 확장하지 않는다.
 
-사용자에게는 graph 자체보다 판단 가능한 근거를 보여준다.
+## 9. LLM 발전을 흡수하는 구조
 
-- 무엇이 달라졌는지 한 문장으로 설명
-- 확인된 claim의 원문 evidence
-- candidate의 대응 evidence
-- `수정 필요`, `같은 의미`, `판단 어려움` 선택
-- 수정 후 새 revision 재검증
+새 모델은 위협이면서 더 좋은 부품이다. 모델이 개선되면 adapter 뒤의 생성기, 추출기, judge를 교체하고 Evidence-linked Case Record는 그대로 유지한다.
 
-이 판정은 동의와 비식별 정책 아래 evaluation data로 축적할 수 있다.
+모든 실행은 다음을 남긴다.
 
-## 8. 연구 근거를 가져온 방식
+```text
+model_provider, model_family, model_version
+prompt_or_policy_version, inference_config
+input_artifact_digest, output_artifact_digest
+claim_coverage, findings, abstention, latency, cost
+```
 
-| 연구 계열 | 가져온 아이디어 | DARI에서 바꾼 점 |
+새 모델 승격 조건은 다음과 같다.
+
+- frozen challenge set과 자연 사례를 모두 실행
+- 두 개 이상의 언어와 고위험 오류 유형별 결과 확인
+- 잔존 중요 오류, 잘못된 경고, 검수 시간 중 어느 것도 허용 범위 밖으로 악화되지 않음
+- privacy와 on-device/cloud 정책을 충족
+- shadow run 뒤 명시적으로 release
+
+## 10. 제품 경계와 시장 위치
+
+| 영역 | 이미 강한 사례 | DARI의 선택 |
 | --- | --- | --- |
-| PropBank, MEANT | predicate와 semantic role 비교 | full SRL score 대신 고위험 role 차이만 typed finding으로 사용 |
-| AMR, Smatch | 의미를 node와 edge로 표현 | full AMR 대신 작은 relation subgraph 사용 |
-| S2MATCH, FGW | soft graph alignment 후보 | embedding은 후보 검색에만 사용하고 최종 판정에서 제외 |
-| COMETKiwi, xCOMET | reference-free QE와 error span | 제품 core가 아닌 강한 baseline으로 사용 |
-| QuestEval | 질문을 통한 정보 보존 확인 | 전체 문서 QA 대신 의심 claim만 선택적으로 확인 |
-| ACES / SPAN-ACES | 평균 점수보다 현상별 challenge set과 span 평가 | DARI 고위험 관계 오류 중심 frozen challenge set 구성 |
-| Conformal MT evaluation | 언어·품질별 불확실성 보정 | review burden을 고정하는 calibrated abstention에 활용 |
+| 실시간 통번역과 인간 네트워크 | Tarjimly, CLEAR Global | 직접 경쟁하지 않고 고위험 검수 이관 파트너로 봄 |
+| 위기 정보와 양방향 상담 | Signpost, IRAP | 정보 포털보다 개별 사건 기록의 의미 계보에 집중 |
+| 구조화 법률 문서 조립 | docassemble, Citizenshipworks | 자유 서술과 다국어 변환까지 이어지는 claim provenance를 담당 |
+| 법률기관 case management | LegalServer | 전체 CMS를 만들지 않고 삽입 가능한 integrity layer로 연동 |
+| 번역 QE와 human review | Phrase, Smartling, RWS, LILT | 평균 품질 점수보다 사건 claim 변화와 양쪽 evidence를 제시 |
+| 권위 자료 기반 법률 AI | CoCounsel, UNHCR RiMAP | 법률 판단이 아니라 지원자 진술의 전달 무결성에 집중 |
 
-관련 연구는 [GRAPH_METHOD.md](GRAPH_METHOD.md)의 참고문헌과 평가 설계에 정리한다.
+검토한 사례를 기준으로 DARI가 점유할 수 있는 좁은 공백은 **한국 난민신청 과정에서 지원자의 원문 진술, 확인된 claim, 한국어 초안, 수정본, 최종본을 claim 단위로 연결하는 검수 계층**이다. 경쟁사가 없다는 주장이 아니라, 이 가설을 파트너 pilot로 검증해야 한다는 뜻이다.
 
-## 9. 왜 이 구조가 제품에 맞는가
+## 11. 해자 후보와 해자가 아닌 것
 
-현재 `capacitor-web`에는 이미 다음 신호가 있다.
+### 축적할 가치가 있는 것
 
-- 원문과 연결된 `sourceQuotes`
-- 사용자가 확인한 `confirmed`
-- 반복 사건을 구분하는 `eventId`
-- 확실성과 정보 출처를 나타내는 `certainty`, `knowledge`
-- 정정 계보인 `supersedes`
-- 초안 문장과 fact를 연결하는 `factIds`
+- 한국 난민신청 문항별 Semantic Contract와 전문가 review history
+- 동의한 범위에서 비식별화한 `claim - delta - evidence - decision` 학습 사례
+- 언어, 오류 유형, 문서 단계별 calibration과 abstention 정책
+- 지원자 확인과 조력자 검토가 연결된 correction workflow
+- 두 번 이상의 모델 교체를 견딘 longitudinal benchmark
+- NGO, 통역가, 법률지원자와의 검토 및 배포 관계
 
-일반 QE나 direct judge는 결과 텍스트만 보고 판단한다. DARI는 생성 이전부터 축적된 구조와 사용자 확인을 reference로 사용할 수 있다. 이 차이가 실제 기술 가치가 될 가능성이 가장 높다.
+민감한 원문 자체를 데이터 해자로 삼지 않는다. 원시 진술과 철회 이력은 최소화하고, 모델 개선에 쓰는 사례는 별도 동의, 비식별화, 접근 통제 조건을 만족해야 한다.
 
-## 10. 기술적 해자
+### 빠르게 범용화될 것
 
-### 해자가 될 수 있는 것
+- 번역과 초안 생성
+- 5W1H와 claim 추출
+- LLM 기반 graph 생성
+- 긴 context 처리
+- 단순 self-check와 종합 quality score
+- 특정 소형 모델 또는 특정 cloud model 연결
+- graph viewer 자체
 
-1. 원문 evidence부터 번역까지 이어지는 immutable claim and correction lineage
-2. 사용자가 수락·거절·수정한 finding을 relation과 evidence 단위로 축적한 데이터
-3. 저자원 언어와 오류 유형별 calibrated coverage and abstention policy
-4. 이중언어 검수자가 만든 domain challenge set과 annotation codebook
-5. model을 교체해도 유지되는 claim IDs, graph traces, evaluation history
+## 12. 연구 질문
 
-### 해자가 아닌 것
+**RQ1.** persistent user-confirmed provenance가 매번 source를 다시 parsing하는 방식보다 모델과 언어가 바뀌어도 안정적인가?
 
-- graph schema 자체
-- LLM prompt
-- multilingual embedding과 Hungarian matching
-- AMR, SRL, QA 아이디어의 단순 결합
-- graph viewer와 hand-authored demo
-- 특정 foundation model 사용
+**RQ2.** controlled generation과 evidence-linked selective review가 최신 direct LLM judge보다 최종 잔존 중요 오류와 검수 시간을 줄이는가?
 
-따라서 기술 해자를 주장하려면 데이터가 `0 -> 50 -> 150 -> 300`개로 늘 때 DARI 구조를 사용하는 방법의 learning curve가 baseline보다 더 좋아지는지 보여야 한다.
+**RQ3.** 수정, 재생성, 번역을 거친 뒤에도 철회되거나 정정된 claim의 재등장을 막는가?
 
-## 11. 구현 순서
+**RQ4.** 지원자와 조력자가 finding을 이해하고 올바르게 수락, 거절, 수정할 수 있는가?
 
-1. `VerificationCaseV2`, `ClaimLedger`, `SemanticContract`, multi-span evidence 계약을 고정한다.
-2. `IntakeFact -> ClaimLedger` deterministic projector를 만든다.
-3. V2 초안에서 fact coverage, 정정 전 값, certainty, knowledge를 검사한다.
-4. 한국어 candidate claim extractor 하나를 연결한다.
-5. gold claim과 gold alignment에서 typed diff 상한을 측정한다.
-6. direct judge, flat claim plus NLI와 같은 비용 조건으로 비교한다.
-7. 관계 오류에서 추가 가치가 있을 때만 micrograph aligner를 확장한다.
-8. 반복 오탐을 줄이는 경우에만 targeted verifier를 추가한다.
-9. V2가 통과한 뒤 V3 다국어 번역 검증으로 확장한다.
-10. 두 번째 언어쌍과 실제 사용자 검수 실험을 통과한 뒤 제품 adapter를 연결한다.
+**RQ5.** relational micrograph가 flat claim 방식보다 관계 오류에서만이라도 실질적인 추가 가치를 주는가?
 
-## 12. 현재 코드와의 대응
+연구의 가장 강한 주장은 새로운 graph 표현이 아니라 **사용자 확인 provenance를 이용한 생성과 검토가 기반 모델 발전 뒤에도 case export의 잔존 위험과 사람 시간을 줄인다**가 되어야 한다.
 
-| 현재 자산 | v0.3에서의 위치 |
-| --- | --- |
-| `contracts.py` | strict validation, evidence, report state의 기반 |
-| `pipeline.py` | 실패 격리, fingerprint, `indeterminate` 처리 재사용 |
-| `fixtures.py`, `batch.py` | dataset digest와 독립 실행 재사용 |
-| `graph_demo.py` | typed diff의 oracle prototype, production extractor로는 사용하지 않음 |
-| `graph_viewer/` | candidate claim과 micrograph trace 디버깅 도구 |
-| `IntakeFact` | Claim Ledger의 source artifact |
-| draft sentence `factIds` | alignment anchor와 coverage signal |
-| revision state | stale report 무효화 |
+## 13. 성공, 전환, 중단 기준
 
-현재 demo의 hand-authored graph, `match_key`, scripted confirmer는 교육용 trace다. 이것이 자동 추출, 실제 다국어 정렬, baseline 대비 성능을 증명하지는 않는다.
+수치는 pilot 전에 사전 등록하며 다음은 초기 기준이다.
 
-## 13. 성공과 중단 기준
+### Go
 
-| Gate | Go | Pivot 또는 Kill |
-| --- | --- | --- |
-| Comparator 상한 | gold claim/graph에서 high-risk recall 95% 이상, faithful FPR 5% 이하 | schema와 diff rule 재설계 |
-| 자동 분석 | predicted artifact가 oracle recall의 85% 이상 보존 | extractor가 병목이므로 데이터·모델에 집중 |
-| Graph 추가 가치 | 같은 검토 부담에서 strongest baseline보다 high-risk recall 8%p 이상 개선 | graph를 conditional module로 축소하거나 제거 |
-| 검수 부담 | 같은 recall에서 false alert 30% 이상 감소 | evidence UI와 policy 재설계 |
-| 사용자 impact | 잔존 고위험 오류 20% 이상 감소 또는 검수 시간 20% 감소 | 연구 도구로만 유지 |
-| 일반화 | 두 번째 언어쌍·모델에서 이득의 80% 이상 유지 | 지원 범위를 축소 |
+- 최신 frontier direct baseline과 같은 검토 부담에서 최종 잔존 critical/high 오류를 25% 이상 줄임
+- 또는 같은 잔존 오류 수준에서 조력자 검토 시간을 20% 이상 줄임
+- claim provenance coverage 95% 이상, 철회된 claim 재등장률 1% 미만
+- 두 개 이상 언어, 두 모델 계열에서 효과 방향이 유지됨
 
-숫자는 pilot 전에 잠정 등록하고, frozen test를 본 뒤 낮추지 않는다.
+### Pivot
 
-## 14. 최종 설계 평가
+- verifier 이점은 사라졌지만 evidence lineage가 검토 시간과 인계 품질을 개선함
+- 이 경우 별도 검출 연구를 줄이고 case record, read-back, export, review receipt에 집중
+- graph가 flat claim보다 관계 오류 recall을 8%p 이상 높이지 못하면 runtime에서 제거
 
-### 강점
+### Kill
 
-- DARI가 이미 수집하는 사용자 확인 정보와 원문 근거를 직접 활용한다.
-- 최종 오류가 어느 변환 단계에서 생겼는지 역추적할 수 있다.
-- 모든 finding을 사용자가 이해할 수 있는 evidence에 연결할 수 있다.
-- graph가 효과가 없을 경우 더 단순한 Claim Ledger plus NLI로 축소할 수 있다.
+- 최신 모델과 단순 source-linked prompt가 같은 부담에서 비열등하고 lineage UI도 검토 시간을 줄이지 못함
+- 조력자가 evidence view를 사용하지 않거나 잘못된 수정을 더 많이 유도함
+- 두 번의 주요 모델 교체에서 추가 효과가 반복해서 사라짐
+- 실제 사용자와 파트너가 portable case record 또는 review receipt에 가치를 느끼지 않음
 
-### 가장 큰 위험
+## 14. 구현 순서
 
-- Claim Ledger가 틀리면 잘못된 의미를 일관되게 보존할 수 있다.
-- 저자원 언어의 coreference와 생략 주어는 candidate extraction의 병목이다.
-- ontology가 너무 경직되면 정상적인 요약과 의역을 오류로 잡는다.
-- 같은 모델이 extractor와 verifier를 맡으면 상관 오류가 반복될 수 있다.
-- 높은 offline F1이 실제 검수 시간이나 수정 정확도 개선으로 이어지지 않을 수 있다.
+1. 현재 fact 확인을 episode별 모국어 read-back과 claim 상태로 바꾼다.
+2. 직접 수정과 제안 적용 뒤 문장별 claim coverage와 unresolved delta를 다시 계산한다.
+3. 최종 문장을 대상 원언어로 확인하고 고위험 불확실성은 인간에게 이관한다.
+4. final export에는 필요한 artifact와 제한된 receipt만 넣는 정책을 만든다.
+5. current UI, 최신 direct judge, provenance-aware gate, 이중언어 human review를 같은 case export 단위에서 비교한다.
+6. 위 비교를 통과한 뒤에만 cross-lingual translation stage와 선택적 micrograph를 확장한다.
 
-### 객관적 판단
+## 15. 현재 demo의 의미
 
-이 설계의 **impact 잠재력은 높지만 현재 기술 우위는 아직 증명되지 않았다**. 지금 가치가 확인된 것은 evidence와 contract를 보존하는 실험 기반이다. Graph의 제품 가치는 gold comparator, 자동 extraction, 자연 발생 오류, 사용자 검수의 네 단계를 모두 통과해야 인정할 수 있다.
+현재 `graph_demo.py`와 viewer는 hand-authored graph와 scripted alignment를 이용해 role, polarity, certainty, attribution, temporal delta를 시각화한다. 이는 relation-aware finding과 evidence trace가 표현 가능하다는 증거다.
 
-가장 방어력 있는 방향은 범용 번역 점수 경쟁이 아니라 **사용자 확인 의미의 chain of custody와 단계별 semantic checksum**이다. Graph는 이 목표에 도움이 되는 경우에만 남긴다.
+자동 claim extraction, 실제 사용자 확인의 타당성, 자연 발생 오류 성능, 검수 시간 절감, 모델 교체 내성은 아직 증명되지 않았다. v0.4의 가치는 문서에 제시된 가설이며, 파트너와 사용자 연구를 거쳐야 제품 또는 연구 성과로 주장할 수 있다.
+
+## 16. 주요 외부 근거
+
+- [Tarjimly FirstPass](https://www.tarjimly.org/firstpass-landing): AI 초벌번역, 인간 수정, 저자원 언어 feedback loop
+- [Signpost](https://www.signpost.ngo/home): 지역 기반 정보, 양방향 지원, 커뮤니티 운영
+- [UNHCR RiMAP](https://www.unhcr.org/innovation/project/rimap-ai-virtual-assistant-refugee-law-support-protection): 권위 자료, 정확한 인용, 법률가 검증
+- [LegalServer Intake](https://www.legalserver.org/features/intake/): 법률구조기관 intake와 case workflow
+- [docassemble](https://docassemble.org/): 구조화 답변을 이용한 문서 조립
+- [CoCounsel Legal](https://legal.thomsonreuters.com/en/legal/draft-review-analysis-corp): 신뢰 자료, source attribution, 기존 업무흐름 통합
+- [WMT25 Automated Translation Evaluation](https://aclanthology.org/2025.wmt-1.24/): segment와 span 수준 오류 검출의 지속적인 어려움
+- [ACES and SPAN-ACES](https://aclanthology.org/2025.cl-1.4/): 평균 점수보다 오류 유형별 challenge set의 필요성
+- [Stanford AI Index 2025](https://hai.stanford.edu/ai-index/2025-ai-index-report): 모델 성능과 비용의 빠른 범용화
+- [C2PA Explainer](https://spec.c2pa.org/specifications/specifications/2.4/explainer/Explainer.html): provenance와 내용의 진실성 구분

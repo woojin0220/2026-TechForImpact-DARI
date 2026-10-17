@@ -1,192 +1,249 @@
-# DARI Verification Test Plan v0.2
+# DARI Verification Test Plan v0.3
 
 - 작성일: 2026-10-17
-- 대상 설계: [ARCHITECTURE.md](ARCHITECTURE.md) v0.3
+- 대상 설계: [ARCHITECTURE.md](ARCHITECTURE.md) v0.4
+- 평가 단위: 개별 finding보다 최종 `case export`
 
-## 1. 평가의 중심 질문
+## 1. 핵심 연구 질문
 
-> Claim Ledger와 선택적 relational graph가 강한 비그래프 방식보다 중요한 의미 오류를 더 찾고, 실제 사용자의 검수 부담과 잔존 오류를 줄이는가?
+> 최신 모델이 계속 좋아져도, 사용자 확인 claim과 provenance에 제약된 생성 및 선택적 검수가 같은 사람 시간 안에서 최종 문서의 중요 의미 오류를 더 줄이는가?
 
-Graph를 채택한다는 결론을 미리 정하지 않는다. 직접 비교 결과가 비슷하면 더 단순한 Claim Ledger plus NLI 또는 direct judge 구조로 전환한다.
+두 개의 질문을 분리한다.
 
-## 2. 실험 단계
+1. **예방 가치**: Claim Ledger와 Semantic Contract로 생성을 제약하면 자유 생성보다 오류가 덜 생기는가?
+2. **검수 가치**: evidence-linked delta review가 direct LLM judge나 원문 대조보다 잔존 오류와 검수 시간을 줄이는가?
 
-| 단계 | 데이터 | 답할 질문 | 다음 단계 조건 |
-| --- | --- | --- | --- |
-| T0 Contract | synthetic fixtures | evidence, revision, state 계약이 안정적인가 | 자동 테스트 통과 |
-| T1 Representation audit | 자연 문단 60-100개 | 중요 오류를 claim/micrograph로 표현할 수 있는가 | 표현 coverage 95% 이상 |
-| T2 Oracle comparator | gold claim과 alignment | typed diff 자체가 충분한가 | high-risk recall 95%, faithful FPR 5% 이하 |
-| T3 Feasibility pilot | 180 pairs | extractor, aligner, annotation 병목은 무엇인가 | frozen test 설계 고정 |
-| T4 Frozen benchmark | challenge 600 + ecological 400 | strongest baseline보다 실제 우위가 있는가 | 사전 등록 gate 통과 |
-| T5 User impact | crossover review study | finding이 사람의 결과를 개선하는가 | 잔존 오류 또는 시간 20% 개선 |
-| T6 Generalization | 두 번째 언어쌍·모델 | 특정 조건에 과적합되지 않았는가 | 이득의 80% 이상 유지 |
+Graph의 우수성은 하위 가설이다. 전체 시스템의 성공 여부를 graph 성능으로 결정하지 않는다.
 
-## 3. 반드시 비교할 baseline
+## 2. 첫 실험 경계
 
-| ID | 방법 | 의미 |
-| --- | --- | --- |
-| B0 | always faithful / always issue | class imbalance sanity check |
-| B1 | deterministic guards | 숫자, 날짜, 이름, 부정, 정정 전 값의 저비용 하한 |
-| B2 | flat claim + bidirectional NLI | graph edge 없이 구조화한 가장 중요한 baseline |
-| B3 | cost-matched direct LLM judge | 같은 모델·taxonomy·evidence 계약의 직접 비교 |
-| B4 | COMETKiwi 또는 xCOMET | translation stage의 일반 QE baseline |
-| P1 | Claim Ledger + typed diff | DARI 구조를 쓰는 기본 제안법 |
-| P2 | P1 + relational micrograph | 관계 구조의 추가 가치 측정 |
-| P3 | P2 + selective verifier | 반복 오탐 감소 효과 측정 |
-
-최선 성능 비교와 같은 추론 비용 비교를 함께 보고한다. 호출 수가 크게 늘어난 작은 개선은 제품 우위로 해석하지 않는다.
-
-## 4. 데이터셋
-
-### 4.1 Contrastive challenge set
-
-한 번에 하나의 의미만 바꾼 오류 pair와 의미 보존 control을 짝으로 만든다.
-
-- omission
-- actor/target swap
-- negation flip
-- certainty shift
-- source attribution change
-- name/date/number/location change
-- temporal order/frequency change
-- faithful paraphrase
-- sentence split/merge
-- pronoun and omitted-subject variation
-
-같은 base narrative의 mutation sibling은 반드시 같은 split에 둔다.
-
-### 4.2 Ecological set
-
-실제 candidate 생성 방식 세 종류 이상에서 문단을 수집하고 오류 비율을 인위적으로 맞추지 않는다. 이 set은 실제 prevalence에서 precision, 문서당 false alert, 검수 부담을 측정한다.
-
-### 4.3 Gold diagnostic subset
-
-전체의 10-20%에만 gold claim, micrograph, alignment를 붙인다. 주 평가 gold는 아키텍처 중립적으로 다음을 기록한다.
+첫 실험은 다음 변환만 평가한다.
 
 ```text
-semantic change present?
-type and risk
-reference and candidate evidence
-natural-language description
-agreed | disputed | indeterminate
+confirmed facts
+  -> Korean draft
+  -> model suggestion or manual edit
+  -> final Korean export
 ```
 
-### 4.4 권장 규모
+최초 fact extraction과 다른 언어 번역은 고정하거나 gold로 제공한다. 이 경계에서 효과가 확인된 뒤 V1 source-to-fact와 V3 Korean-to-multilingual translation을 각각 확장한다.
 
-| Set | 규모 | 용도 |
-| --- | ---: | --- |
-| Representation audit | 60-100 paragraphs | schema 수정 |
-| Pilot | 180 pairs | annotation guide와 분산 추정 |
-| Frozen challenge test | 약 600 pairs | 현상별 confirmatory test |
-| Ecological test | 약 400 pairs | 실제 precision과 burden |
-| Gold graph subset | 100-150 pairs | 병목 분해 |
+## 3. 비교 조건
 
-오류 유형별 positive가 100개보다 적으면 해당 유형의 결과는 exploratory로 표시한다.
-
-## 5. Annotation
-
-- 두 명의 이중언어 검수자가 독립 annotation한다.
-- 모델 종류와 mutation 여부를 숨긴다.
-- 단문만이 아니라 필요한 문단 문맥을 제공한다.
-- 불일치는 세 번째 검수자가 adjudication한다.
-- adjudication 전 agreement도 공개한다.
-- `disputed`와 `indeterminate`를 강제로 정답에 합치지 않는다.
-- risk는 법률적 승패가 아니라 의미 보존 위험으로 정의한다.
-
-Taxonomy agreement가 0.75 미만이면 type을 합치거나 exploratory로 내린다.
-
-## 6. Oracle decomposition
-
-| ID | 구성 | 측정하는 병목 |
+| ID | 조건 | 무엇을 분리하는가 |
 | --- | --- | --- |
-| A0 | gold claim/graph + gold alignment + typed diff | 표현과 comparator 상한 |
-| A1 | predicted candidate claims + gold alignment | extractor 손실 |
-| A2 | predicted claims + predicted alignment | aligner 손실 |
-| A3 | A2 + selective verifier | verifier의 precision 이득 |
-| A4 | flat claims, graph edge 없음 | relation graph 자체의 가치 |
-| A5 | certainty와 attribution qualifier 제거 | scoped qualifier 가치 |
-| A6 | sentence-only context | 문단과 coreference 가치 |
-| A7 | 양쪽 full graph 추출 | Claim Ledger reference 재사용 가치 |
-| A8 | fact/event anchor 제거 | DARI 제품 구조의 가치 |
+| B0 | 현재 UI 흐름 | 현 제품 기준의 일괄 확인, 초안, 직접 수정 |
+| B1 | 최신 frontier model 직접 생성 | 구조 없이 강한 모델만 썼을 때의 상한 |
+| B2 | B1 + 동일 모델 self-check | 가장 쉽게 추가할 수 있는 검수 baseline |
+| B3 | source-linked direct judge | 원문 근거를 보여주는 단순한 강한 baseline |
+| P1 | Claim Ledger + controlled generation | 구조가 오류를 사전에 줄이는 효과 |
+| P2 | P1 + flat claim delta gate | provenance-aware 검수의 기본 효과 |
+| P3 | P2 + selective relational micrograph | 관계 graph의 순수 추가 효과 |
+| P4 | P2 또는 P3 + calibrated human routing | 실제 서비스의 최종 효과 |
+| H1 | 이중언어 사람의 전체 검토 | 안전성과 시간의 실무 기준 |
 
-## 7. 제품 판단용 metric
+비교는 같은 case, 문서 목적, 검토 시간 또는 API 비용 조건에서 수행한다. B2는 생성기와 같은 모델의 self-check이므로 독립 검증으로 부르지 않는다.
 
-### Primary
+## 4. 2x2 핵심 분해
 
-1. **High-risk recall at fixed review burden**
-   faithful paragraph의 false-positive rate 또는 문서당 경고 수를 고정했을 때 high-risk 오류를 얼마나 찾는지 측정한다.
-2. **Residual high-risk error rate**
-   시스템 finding을 사람이 검토한 뒤에도 남은 중요 오류 비율이다.
-3. **False alerts per faithful paragraph**
-   case-level FPR만으로 숨겨질 수 있는 경고 피로를 직접 측정한다.
-4. **Review time**
-   같은 최종 정확도를 얻는 데 걸리는 시간을 측정한다.
+전체 효과를 `구조화가 좋았다`로 뭉뚱그리지 않기 위해 다음 2x2를 먼저 실행한다.
 
-### Secondary
-
-- actionable precision
-- evidence sufficiency
-- type별 precision, recall, F1
-- evidence span overlap과 human correctness
-- claim extraction F1
-- entity/event alignment accuracy
-- risk-coverage curve와 abstention
-- 언어, 길이, coreference, 모델별 격차
-- latency, token cost, memory
-
-## 8. 사전 등록 Gate
-
-| Gate | Go | Pivot 또는 No-go |
+| 생성 | 검수 없음 또는 direct judge | provenance-aware review |
 | --- | --- | --- |
-| 표현력 | 자연 오류 95% 이상을 손실 없이 표현, agreement 0.75 이상 | schema 축소·재설계 |
-| Comparator | gold 조건 high-risk recall 95% 이상, faithful FPR 5% 이하 | typed diff 재설계 |
-| 자동 분석 | oracle recall의 85% 이상 보존 | extractor에 집중 |
-| Alignment | 추가 recall 손실 5%p 이하 | aligner 재설계 |
-| Baseline 우위 | 같은 burden에서 strongest baseline보다 high-risk recall 8%p 이상, 95% CI 하한 > 0 | graph 축소 또는 제거 |
-| Burden | 같은 recall에서 false alert 30% 이상 감소 | policy와 evidence UI 재설계 |
-| User impact | 잔존 오류 20% 감소 또는 검수 시간 20% 감소 | 연구 도구로 유지 |
-| Generalization | 두 번째 언어·모델에서 이득의 80% 이상 유지 | 지원 범위 축소 |
+| 자유 생성 | B1/B3 | 자유 생성 + P2 gate |
+| controlled generation | P1 | P2/P4 |
 
-위 숫자는 pilot 전에 잠정 등록한다. Frozen test 결과를 본 뒤 기준을 낮추지 않는다.
+이 비교로 오류 감소가 생성 제약, post-hoc verifier, evidence UI 중 어디에서 왔는지 분해한다.
 
-## 9. 사용자 impact 실험
+## 5. 데이터셋
 
-같은 문서를 세 조건에서 무작위 crossover로 검토한다.
+### 5.1 Contrastive challenge set
 
-1. 원문과 candidate만 제공
+하나의 claim만 바꾼 최소 대조쌍을 만든다.
+
+- 핵심 claim 누락
+- 원문에 없는 사실 또는 동기 추가
+- 행위자와 피해자 교체
+- 부정 반전
+- 가능성, 추정, 기억 불확실성을 확정으로 강화
+- 직접 경험과 전언의 혼동
+- 날짜, 기간, 빈도, 사건 순서 변경
+- 이름, 장소, 수치 변경
+- 정정 또는 철회된 사실의 재등장
+- 정상적인 문장 분할, 병합, 요약, 대명사 변화
+
+같은 사건에서 만든 sibling은 항상 같은 split에 둔다.
+
+### 5.2 Ecological set
+
+실제 사용 방식과 비슷하게 생성, 재생성, 제안 적용, 직접 편집에서 자연스럽게 생긴 artifact를 수집한다. 오류 비율을 인위적으로 맞추지 않고 실제 prevalence에서 문서당 false alert와 검토 부담을 측정한다.
+
+실제 지원자 자료는 Git에 저장하지 않는다. 사용할 경우 별도 승인과 동의, 최소 수집, 접근 통제, 삭제 정책을 갖춘 비공개 저장소를 사용하고 집계 결과만 남긴다.
+
+### 5.3 Longitudinal model set
+
+최소 다음 축을 포함한다.
+
+- 서로 다른 두 model family
+- frontier cloud model과 제품 후보 on-device model
+- 개발에 사용하지 않은 새 버전
+- 두 개 이상의 대상 언어
+
+모델명, 날짜, 가격, prompt, decoding, runtime을 manifest에 고정한다.
+
+## 6. Gold annotation
+
+두 명의 이중언어 검수자가 독립적으로 다음을 판정하고 불일치는 별도 adjudicator가 해결한다.
+
+```text
+case_export_acceptable?
+material_semantic_change?
+type = added | removed | changed | unclear
+risk = critical | high | medium | low
+reference_evidence[]
+artifact_evidence[]
+normal_variation | requires_correction | indeterminate
+```
+
+법적 유불리, 신빙성, 난민 인정 가능성은 label에 넣지 않는다. 전문가가 법률상 검토가 필요하다고 판단한 경우에는 `refer_to_legal_reviewer`만 기록한다.
+
+## 7. 1차 지표
+
+1. **Final residual material errors per 100 case exports**
+   모든 검토가 끝난 최종 export 100건당 남은 critical/high 의미 오류 수다.
+
+2. **Prevented errors per reviewer-hour**
+   사람 검토 한 시간당 실제로 막은 critical/high 오류 수다.
+
+3. **Review time to acceptable export**
+   같은 gold 기준을 만족하는 최종본을 만들 때 걸린 사람 시간이다.
+
+4. **Unnecessary edit rate**
+   정상 표현을 경고 때문에 잘못 바꾼 비율이다.
+
+5. **False alerts per clean document**
+   오류가 없는 문서 하나에서 사람이 확인해야 했던 불필요 경고 수다.
+
+6. **Superseded-claim resurrection rate**
+   정정 또는 철회된 값이 재생성이나 수정 뒤 다시 등장한 비율이다.
+
+## 8. 2차 지표
+
+- provenance coverage: 최종 문장 중 active claim 또는 허용된 template content에 연결된 비율
+- evidence sufficiency: 검수자가 별도 탐색 없이 판단 가능한 finding 비율
+- correction success: 경고가 실제 올바른 수정으로 이어진 비율
+- wrong-correction induction: 시스템이 정상 문장을 잘못 고치게 한 비율
+- user confirmation burden: episode 확인 시간과 재질문 수
+- abstention 및 unresolved rate
+- 오류 유형과 언어별 precision, recall, risk-coverage
+- 문서당 latency, 비용, peak memory, on-device 성공률
+- export data minimization: 정책상 불필요한 원문 또는 이력 노출 건수
+
+## 9. 모델 발전 내성 시험
+
+매 주요 모델 교체 때 같은 frozen set을 다음 조건으로 재실행한다.
+
+```text
+new model only
+new model + self-check
+new model + Claim Ledger
+new model + full DARI assurance
+full DARI without graph
+full DARI without accumulated correction labels
+```
+
+### Value Persistence Curve
+
+각 모델 세대 `m`에서 다음을 기록한다.
+
+```text
+V_m = residual_error(baseline_m) - residual_error(DARI_m)
+T_m = review_time(baseline_m) - review_time(DARI_m)
+```
+
+기반 모델이 좋아지면서 `V_m`이 줄어드는 것은 예상한다. 두 번의 주요 모델 업그레이드에서 `V_m`과 `T_m`이 모두 실질적으로 0에 가까워지면 별도 verifier를 축소한다. Case Record와 lineage는 별도로 검수 및 인계 시간을 줄이는지 평가한다.
+
+## 10. Graph ablation
+
+Graph는 관계 오류 subset에서만 평가한다.
+
+| 비교 | 측정 |
+| --- | --- |
+| flat claim vs micrograph | actor/target, reporting source, scope, chronology recall |
+| gold graph vs predicted graph | graph 표현의 상한과 extractor 손실 |
+| graph finding vs direct judge | 같은 false alert 및 비용에서 추가 오류 발견 |
+| graph UI vs evidence-only UI | 사람이 더 빠르고 정확하게 판단하는지 |
+
+관계 오류 recall이 flat claim보다 8%p 이상 높지 않거나, 같은 recall에서 review burden을 줄이지 못하면 graph는 runtime core에서 제거한다. graph viewer는 연구 진단 도구로만 유지한다.
+
+## 11. 사용자 및 조력자 연구
+
+같은 case를 무작위 순서의 crossover로 검토한다.
+
+1. 원문과 최종 문서만 제공
 2. direct judge finding과 span 제공
-3. DARI typed finding과 양쪽 evidence 제공
+3. DARI의 양쪽 evidence, claim 상태, plain-language delta 제공
 
-측정값은 다음과 같다.
+참가자는 지원자 역할의 이중언어 사용자와 실제 검수 역할에 가까운 통역가, 활동가 또는 법률지원자를 구분한다. 지원자는 claim read-back의 이해와 통제 가능성을, 조력자는 최종 검토 시간과 정확성을 평가한다.
 
-- 중요 오류의 최종 수정률
-- 오류를 정상으로 받아들인 비율
-- 정상 표현의 불필요한 수정률
-- 검수 완료 시간
-- finding을 이해하는 데 필요한 상호작용 수
-- 시스템 오판을 그대로 따른 비율
+그래프 구조 자체는 기본 UI에 보여주지 않는다. 다음을 측정한다.
 
-## 10. 기술적 해자 검증
+- finding 이해 정확도
+- 수락, 거절, 수정 결정 정확도
+- 최종 잔존 오류
+- 잘못된 수정
+- 검토 시간
+- 신뢰와 통제감
+- 인간 이관이 필요하다고 판단한 비율
 
-DARI gold 사례를 `0 -> 50 -> 150 -> 300`개로 늘리며 P2, flat claim, direct judge의 learning curve를 비교한다.
+## 12. 단계별 Gate
 
-다음 조건이 모두 보여야 데이터 해자라고 부를 수 있다.
+| 단계 | 질문 | Go 기준 |
+| --- | --- | --- |
+| T0 Contract | revision, consent, claim 상태, evidence 연결이 안정적인가 | contract test 통과, provenance coverage 100% on fixtures |
+| T1 Read-back pilot | episode별 확인이 일괄 checkbox보다 의도를 잘 포착하는가 | 누락 또는 오확인 감소, 사용 시간 허용 범위 |
+| T2 Oracle delta | gold claim 조건에서 중요 변화가 검출되는가 | high-risk recall 95%, clean FPR 5% 이하 |
+| T3 Controlled generation | 자유 생성보다 오류를 예방하는가 | residual high-risk error 20% 이상 감소 |
+| T4 Frozen benchmark | 최신 direct baseline을 이기는가 | 같은 burden에서 잔존 오류 25% 감소 또는 시간 20% 감소 |
+| T5 Human review | 실제로 검수 결과가 좋아지는가 | wrong correction 증가 없이 위 기준 유지 |
+| T6 Model shift | 다른 model family와 version에서도 유지되는가 | 두 언어, 두 family에서 효과 방향 유지 |
+| T7 Partner pilot | 업무흐름과 export가 실제로 사용되는가 | 재인터뷰 또는 검수 시간 감소, partner adoption signal |
 
-- DARI 구조를 쓰는 방법의 개선 기울기가 baseline보다 큼
-- 기반 모델을 바꿔도 이득이 유지됨
-- 두 번째 언어쌍에서도 이득이 재현됨
-- correction feedback이 hard negative 성능을 개선함
+숫자는 T1 pilot 전에 사전 등록하고 frozen test 결과를 본 뒤 바꾸지 않는다.
 
-## 11. 의사결정 규칙
+## 13. Go, Pivot, Kill
 
-- A0가 낮으면 모델 개발 전에 schema와 diff를 고친다.
-- A0는 높고 A1이 낮으면 extractor가 병목이다.
-- A1은 높고 A2가 낮으면 aligner가 병목이다.
-- A4와 P2가 비슷하면 graph edge를 제품 core에서 제거한다.
-- P3가 precision 또는 burden을 개선하지 못하면 verifier를 제거한다.
-- Synthetic에서만 좋고 ecological set에서 우위가 없으면 제품 연결을 중단한다.
-- 자동 metric이 좋아도 사용자 residual error와 review time이 개선되지 않으면 impact를 주장하지 않는다.
+### Go
 
-## 12. 현재 상태
+- 같은 사람 검토 시간에서 최종 잔존 critical/high 오류를 25% 이상 줄임
+- 또는 같은 잔존 오류 수준에서 조력자 검토 시간을 20% 이상 줄임
+- provenance coverage 95% 이상과 superseded-claim resurrection 1% 미만
+- 두 언어, 두 model family에서 효과 방향 유지
 
-현재 46개 테스트는 contract, 실패 격리, hand-authored demo의 안정성을 확인한다. 현재 demo는 사람이 만든 graph, `match_key` oracle, scripted confirmer를 사용하므로 자동 추출·실제 정렬·baseline 우위에 대한 성능 증거는 아니다.
+### Pivot
+
+- 자동 verifier의 추가 효과는 작지만 lineage와 evidence UI가 검토 또는 인계 시간을 줄임
+- 이 경우 detection 연구를 축소하고 Case Record, read-back, export와 review receipt 제품으로 전환
+- low-resource 또는 특정 문항에서만 효과가 있으면 지원 범위를 명시적으로 축소
+
+### Kill
+
+- 최신 source-linked direct baseline이 같은 burden에서 비열등함
+- evidence UI가 검토 시간을 줄이지 못하거나 wrong correction을 증가시킴
+- 두 번의 주요 모델 교체 후 DARI 추가 효과가 반복해서 사라짐
+- 기관과 사용자가 portable record와 review receipt를 실제로 사용하지 않음
+
+## 14. 해자 검증
+
+데이터가 쌓인다는 사실만으로 해자가 되지 않는다. 동의한 비식별 correction label을 `0 -> 50 -> 150 -> 300`개로 늘려 다음을 비교한다.
+
+- DARI calibration의 learning curve
+- 같은 시점 최신 범용 모델의 개선
+- 새 언어와 새 모델에 대한 전이
+- 잘못된 경고와 검수 시간 변화
+
+DARI 곡선이 최신 baseline보다 빠르게 개선되고, model family가 바뀌어도 효과가 유지될 때만 correction data를 기술 자산이라고 부른다. 원시 난민 진술의 중앙 축적은 해자 전략에서 제외한다.
+
+## 15. 현재 상태
+
+현재 46개 테스트는 schema, 실패 격리, hand-authored graph demo와 trace viewer의 동작을 확인한다. 실제 사용자 read-back, 자동 extractor, 자연 오류, 최신 baseline 대비 우위, human review impact와 model-upgrade resilience는 아직 검증되지 않았다.

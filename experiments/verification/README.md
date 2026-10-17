@@ -20,12 +20,13 @@
 
 ## 핵심 문서
 
-- [ARCHITECTURE.md](ARCHITECTURE.md): Claim Ledger 중심 v0.3 구조, 모듈 입출력, 기술적 해자와 중단 기준
-- [GRAPH_METHOD.md](GRAPH_METHOD.md): candidate claim 추출, selective micrograph, 정렬·typed diff 방법
-- [TEST_PLAN.md](TEST_PLAN.md): baseline, oracle 분해, 사용자 impact 지표와 Go/Pivot/Kill 기준
-- [DESIGN_REVIEW.md](DESIGN_REVIEW.md): 현재 설계의 객관적 점수, 가장 큰 위험과 비판적 최종 평가
-- [docs/architecture_v0.3.svg](docs/architecture_v0.3.svg): Claim Ledger 중심 전체 흐름을 한 장으로 정리한 다이어그램
-- [아키텍처 v0.3 보고서](../../output/pdf/DARI_verification_architecture_v0.3_review.pdf): 설계 변경, 논문 근거, 평가 gate와 비판적 최종 판단을 담은 시각 보고서
+- [SERVICE_STRATEGY.md](SERVICE_STRATEGY.md): 시간이 없을 때 먼저 보는 v0.4 서비스·연구 결정 요약
+- [ARCHITECTURE.md](ARCHITECTURE.md): Evidence-linked Case Record 중심 v0.4 구조, 모듈 입출력, 모델 교체와 개인정보 경계
+- [GRAPH_METHOD.md](GRAPH_METHOD.md): candidate claim 추출과 선택적 relational micrograph plugin
+- [TEST_PLAN.md](TEST_PLAN.md): case export 중심 baseline, model-upgrade resilience, 사용자 impact와 Go/Pivot/Kill 기준
+- [DESIGN_REVIEW.md](DESIGN_REVIEW.md): 현재 코드의 공백, 해외 사례, 해자와 비판적 최종 평가
+- [docs/architecture_v0.4.svg](docs/architecture_v0.4.svg): 모델 발전 뒤에도 남는 제품 구조와 연구 gate를 한 장으로 정리한 다이어그램
+- [v0.4 서비스·연구 전략 보고서](../../output/pdf/DARI_service_research_strategy_v0.4.pdf): 핵심 결정, 경쟁 지형, 아키텍처, 실험과 중단 기준을 담은 시각 보고서
 - [schemas/input.schema.json](schemas/input.schema.json): 모든 검증 방식이 받는 공통 입력
 - [schemas/report.schema.json](schemas/report.schema.json): 모든 검증 방식이 반환하는 공통 결과
 - [schemas/fixture.schema.json](schemas/fixture.schema.json): 합성 fixture와 gold annotation 계약
@@ -60,21 +61,27 @@ python experiments/verification/demos/graph_pipeline/run_demo.py
 
 ## 설계 원칙
 
-1. 원문과 번역문은 서로의 내용을 보지 않고 독립적으로 구조화한다.
-2. 검출 결과는 항상 실제 텍스트 범위에 연결한다.
-3. 의미 비교와 법적 영향 판단을 분리한다.
-4. 검증 방식은 adapter로 교체 가능하게 만든다.
-5. 실패와 판단 보류를 정상 상태로 모델링한다.
-6. 실제 사용자 데이터가 없어도 전체 시험을 재현할 수 있게 한다.
+1. 지원자가 확인한 claim과 exact evidence를 모델 밖의 기준으로 유지한다.
+2. 생성과 모든 수정 뒤 claim coverage와 semantic delta를 다시 계산한다.
+3. 의미 충실성, 기록 무결성, 법적 타당성을 분리한다.
+4. 생성기와 검출기는 adapter 뒤에서 교체하고 모델·prompt·version을 기록한다.
+5. 실패, 불확실성과 판단 보류를 정상 상태로 모델링한다.
+6. graph는 관계 오류에서 baseline을 이길 때만 선택적으로 사용한다.
+7. 원시 진술과 정정 이력은 최소화하고 역할별 export와 삭제 정책을 둔다.
+8. 실제 사용자 데이터가 없어도 frozen benchmark를 재현할 수 있게 한다.
 
 ## 예정된 비교 방식
 
 | ID | 방식 | 역할 |
 | --- | --- | --- |
-| `qe_baseline` | COMETKiwi 또는 xCOMET의 reference-free 설정 | 일반적인 번역 품질과 오류 span baseline |
-| `direct_judge` | 문장쌍을 직접 비교하는 LLM judge | 현재 단일 프롬프트 방식의 baseline |
-| `domain_graph` | 사건·인물·역할·속성 graph 추출 후 비교 | DARI 고유 가설 |
-| `graph_confirmed` | graph 차이를 국소 QA 또는 별도 judge로 재확인 | 오탐 감소 가설 |
+| `current_ui` | 현재 일괄 확인, 초안, 직접 수정 흐름 | 서비스 baseline |
+| `frontier_direct` | 평가 시점의 최신 강한 모델 직접 생성 | 모델 발전을 반영한 생성 baseline |
+| `direct_self_check` | 생성 모델의 자체 검수 | 가장 쉽게 추가할 수 있는 검수 baseline |
+| `source_linked_judge` | 원문 evidence를 함께 보는 direct judge | 단순하지만 강한 provenance baseline |
+| `claim_controlled` | Claim Ledger와 Semantic Contract 기반 생성 | 오류 예방 가설 |
+| `provenance_gate` | flat claim delta와 evidence review | DARI 기본 제안 |
+| `selective_graph` | 관계 오류에만 micrograph 추가 | graph의 순수 추가 가치 검증 |
+| `bilingual_human` | 이중언어 사람의 전체 검토 | 실제 안전성과 시간 기준 |
 
 모델 이름은 프로토콜에 넣지 않는다. 각 방법의 구현과 모델은 실행 manifest에 기록한다.
 
@@ -101,5 +108,11 @@ git pull --ff-only
 - [xCOMET, TACL 2024](https://aclanthology.org/2024.tacl-1.54/)
 - [QuestEval, EMNLP 2021](https://aclanthology.org/2021.emnlp-main.529/)
 - [S2MATCH, TACL 2020](https://aclanthology.org/2020.tacl-1.34/)
+- [WMT25 Automated Translation Evaluation](https://aclanthology.org/2025.wmt-1.24/)
+- [ACES and SPAN-ACES](https://aclanthology.org/2025.cl-1.4/)
+- [Tarjimly FirstPass](https://www.tarjimly.org/firstpass-landing)
+- [UNHCR RiMAP](https://www.unhcr.org/innovation/project/rimap-ai-virtual-assistant-refugee-law-support-protection)
+- [CoCounsel Legal workflow](https://legal.thomsonreuters.com/en/legal/draft-review-analysis-corp)
+- [Stanford AI Index 2025](https://hai.stanford.edu/ai-index/2025-ai-index-report)
 
-이 연구들은 후보 baseline과 표현 방식을 정하는 근거다. DARI 문맥에서 실제 성능이 보장된다는 뜻은 아니며, 언어 지원과 모델 사용 조건은 각 실험 manifest에서 별도로 확인한다.
+이 자료들은 후보 baseline, 제품 경계와 모델 발전 가정을 정하는 근거다. DARI 문맥에서 실제 성능이나 시장성을 보장한다는 뜻은 아니며, 언어 지원과 모델 사용 조건은 각 실험 manifest에서 별도로 확인한다.

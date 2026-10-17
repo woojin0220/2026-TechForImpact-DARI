@@ -1,15 +1,17 @@
-# DARI Claim Ledger와 Relational Micrograph 방법 v0.2
+# DARI Claim Ledger와 Relational Micrograph 방법 v0.3
 
 - 작성일: 2026-10-17
-- 목적: [ARCHITECTURE.md](ARCHITECTURE.md)의 P1-P4를 구현하고 검증하기 위한 방법 정의
+- 목적: [ARCHITECTURE.md](ARCHITECTURE.md) v0.4의 Semantic Delta Gate 안에서 선택적 graph plugin을 구현하고 검증하기 위한 방법 정의
+
+> v0.4 결정: Evidence-linked Case Record와 검토 workflow가 제품의 중심이다. 이 문서의 micrograph는 행위자, 정보 출처, 확실성 scope와 사건 순서 오류에서 flat claim baseline을 이길 때만 runtime에 남는다. graph viewer는 연구 진단 도구이며 사용자 기본 화면이 아니다.
 
 ## 1. 연구 질문
 
 핵심 질문은 “문장을 graph로 바꿀 수 있는가”가 아니다.
 
-> DARI가 이미 가진 사용자 확인 claim과 evidence를 활용한 구조적 비교가, 비용을 맞춘 direct judge와 flat claim 방식보다 고위험 의미 변화를 더 잘 찾고 검수 부담을 줄이는가?
+> Evidence-linked Case Record를 기준으로 한 선택적 graph 비교가, 비용을 맞춘 direct judge와 flat claim 방식보다 관계 오류를 더 잘 찾고 전체 검수 부담을 줄이는가?
 
-Graph가 도움이 되는 범위는 행위자와 대상, 정보 출처, 확실성의 적용 범위, 사건 순서처럼 **연결 구조가 중요한 오류**다. 누락, 숫자, 날짜, 명시적 부정은 먼저 단순하고 재현 가능한 규칙으로 검사한다.
+Graph가 도움이 될 수 있는 범위는 행위자와 대상, 정보 출처, 확실성의 적용 범위, 사건 순서처럼 **연결 구조가 중요한 오류**다. 누락, 숫자, 날짜, 명시적 부정은 먼저 단순하고 재현 가능한 규칙으로 검사한다. 최종 판정 단위는 graph score가 아니라 evidence가 연결된 semantic delta다.
 
 ## 2. 비교 단위: Semantic Claim
 
