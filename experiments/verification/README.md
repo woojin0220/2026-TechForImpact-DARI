@@ -34,6 +34,7 @@
 - [results/README.md](results/README.md): 실행 결과와 manifest 보관 규칙
 - [demos/graph_pipeline/README.md](demos/graph_pipeline/README.md): 모델 없이 실행하는 세 개의 짧은 사례와 한 개 문단의 graph module input/output 예시
 - [tools/graph_viewer/README.md](tools/graph_viewer/README.md): 생성된 graph, 모듈 trace, alignment와 finding을 실시간으로 확인하는 로컬 viewer
+- [tools/assurance_demo/README.md](tools/assurance_demo/README.md): v0.4의 read-back, Case Record, 수정 후 delta gate와 evidence review를 실행하는 대화형 데모
 
 ## 현재 실행 가능한 시작점
 
@@ -47,6 +48,12 @@ python -m unittest discover -s experiments/verification/tests -t experiments/ver
 
 ```powershell
 python experiments/verification/demos/graph_pipeline/run_demo.py
+```
+
+v0.4의 전체 서비스 흐름을 브라우저에서 직접 눌러 보려면 다음을 실행하고 `http://127.0.0.1:8874`에 접속한다.
+
+```powershell
+python experiments/verification/tools/assurance_demo/serve.py
 ```
 
 현재 [synthetic_cases.jsonl](fixtures/synthetic_cases.jsonl)에는 15개의 가상 사례가 있다. 7개 오류 변이에는 각각 faithful control이 있고, 별도로 문서 안의 지시문 형태 문자열을 일반 데이터로 처리하는 회귀 사례가 있다. 이 fixture는 `human_reviewed: false`이므로 아키텍처 시험용이며 모델 성능 근거로 사용하지 않는다.
