@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title desc">
+  <title id="title">DARI Verification Architecture v0.3</title>
+  <desc id="desc">Claim Ledger centered provenance-aware semantic diff architecture</desc>
+  <defs>
+    <style>
+      .bg { fill:#f6f8fb; }
+      .ink { fill:#102a43; }
+      .muted { fill:#627d98; }
+      .navy { fill:#123f68; }
+      .blue { fill:#2878b5; }
+      .teal { fill:#17857b; }
+      .orange { fill:#d97706; }
+      .red { fill:#b93838; }
+      .card { fill:#ffffff; stroke:#cbd5e1; stroke-width:2; }
+      .core { fill:#e8f2fb; stroke:#2878b5; stroke-width:3; }
+      .claim { fill:#e7f7f3; stroke:#17857b; stroke-width:3; }
+      .research { fill:#fff7e8; stroke:#d97706; stroke-width:2; }
+      .risk { fill:#fff0f0; stroke:#b93838; stroke-width:2; }
+      .line { fill:none; stroke:#44637f; stroke-width:3; marker-end:url(#arrow); }
+      .dash { fill:none; stroke:#8aa4bb; stroke-width:2; stroke-dasharray:8 7; marker-end:url(#arrowSoft); }
+      text { font-family:"Malgun Gothic","Noto Sans KR",Arial,sans-serif; }
+      .h1 { font-size:38px; font-weight:700; }
+      .h2 { font-size:24px; font-weight:700; }
+      .h3 { font-size:19px; font-weight:700; }
+      .body { font-size:17px; }
+      .small { font-size:14px; }
+      .white { fill:#ffffff; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#44637f"/>
+    </marker>
+    <marker id="arrowSoft" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#8aa4bb"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1600" height="980"/>
+  <rect x="0" y="0" width="1600" height="106" class="navy"/>
+  <text x="70" y="58" class="h1 white">DARI 검증 아키텍처 v0.3</text>
+  <text x="70" y="88" class="body white">사용자 확인 의미의 chain of custody + 선택적 relational micrograph</text>
+
+  <text x="70" y="150" class="h2 ink">1. 제품이 보존해야 하는 의미 계보</text>
+  <g>
+    <rect x="70" y="178" rx="14" ry="14" width="220" height="92" class="card"/>
+    <text x="180" y="215" text-anchor="middle" class="h3 ink">원문 evidence</text>
+    <text x="180" y="244" text-anchor="middle" class="small muted">message + exact span</text>
+    <rect x="328" y="178" rx="14" ry="14" width="220" height="92" class="card"/>
+    <text x="438" y="215" text-anchor="middle" class="h3 ink">추출 fact</text>
+    <text x="438" y="244" text-anchor="middle" class="small muted">value + eventId</text>
+    <rect x="586" y="166" rx="14" ry="14" width="260" height="116" class="claim"/>
+    <text x="716" y="207" text-anchor="middle" class="h3 ink">Confirmed Claim Ledger</text>
+    <text x="716" y="237" text-anchor="middle" class="small muted">certainty · knowledge · correction</text>
+    <text x="716" y="261" text-anchor="middle" class="small muted">DARI의 기준 artifact</text>
+    <rect x="884" y="178" rx="14" ry="14" width="200" height="92" class="card"/>
+    <text x="984" y="215" text-anchor="middle" class="h3 ink">한국어 초안</text>
+    <text x="984" y="244" text-anchor="middle" class="small muted">sentence + factIds</text>
+    <rect x="1122" y="178" rx="14" ry="14" width="180" height="92" class="card"/>
+    <text x="1212" y="215" text-anchor="middle" class="h3 ink">수정본</text>
+    <text x="1212" y="244" text-anchor="middle" class="small muted">new revision</text>
+    <rect x="1340" y="178" rx="14" ry="14" width="190" height="92" class="card"/>
+    <text x="1435" y="215" text-anchor="middle" class="h3 ink">번역문</text>
+    <text x="1435" y="244" text-anchor="middle" class="small muted">future V3</text>
+    <path d="M290 224 H322" class="line"/>
+    <path d="M548 224 H580" class="line"/>
+    <path d="M846 224 H878" class="line"/>
+    <path d="M1084 224 H1116" class="line"/>
+    <path d="M1302 224 H1334" class="line"/>
+  </g>
+
+  <text x="70" y="342" class="h2 ink">2. 실행 흐름: V2 confirmed facts → Korean draft부터 검증</text>
+  <g>
+    <rect x="70" y="372" rx="14" ry="14" width="205" height="126" class="core"/>
+    <text x="172" y="410" text-anchor="middle" class="h3 ink">P0 Case Compiler</text>
+    <text x="172" y="439" text-anchor="middle" class="small muted">revision · digest</text>
+    <text x="172" y="462" text-anchor="middle" class="small muted">evidence integrity</text>
+
+    <rect x="315" y="360" rx="14" ry="14" width="250" height="150" class="claim"/>
+    <text x="440" y="401" text-anchor="middle" class="h3 ink">P1 Claim Ledger</text>
+    <text x="440" y="430" text-anchor="middle" class="small muted">deterministic reference</text>
+    <text x="440" y="454" text-anchor="middle" class="small muted">+ Semantic Contract</text>
+    <text x="440" y="480" text-anchor="middle" class="small muted">required · optional · forbidden</text>
+
+    <rect x="605" y="372" rx="14" ry="14" width="205" height="126" class="core"/>
+    <text x="707" y="410" text-anchor="middle" class="h3 ink">P2 Candidate Analyzer</text>
+    <text x="707" y="439" text-anchor="middle" class="small muted">candidate-only claims</text>
+    <text x="707" y="462" text-anchor="middle" class="small muted">coverage + spans</text>
+
+    <rect x="850" y="348" rx="14" ry="14" width="240" height="174" class="card"/>
+    <text x="970" y="386" text-anchor="middle" class="h3 ink">P3 Semantic Diff</text>
+    <rect x="875" y="406" rx="9" ry="9" width="190" height="42" fill="#eef2f7"/>
+    <text x="970" y="432" text-anchor="middle" class="small ink">Deterministic invariants</text>
+    <rect x="875" y="459" rx="9" ry="9" width="190" height="42" fill="#e7f7f3"/>
+    <text x="970" y="485" text-anchor="middle" class="small ink">Relational micrograph</text>
+
+    <rect x="1130" y="372" rx="14" ry="14" width="205" height="126" class="risk"/>
+    <text x="1232" y="410" text-anchor="middle" class="h3 ink">P4 Risk Policy</text>
+    <text x="1232" y="439" text-anchor="middle" class="small muted">calibrated review</text>
+    <text x="1232" y="462" text-anchor="middle" class="small muted">or abstention</text>
+
+    <rect x="1375" y="372" rx="14" ry="14" width="155" height="126" class="core"/>
+    <text x="1452" y="410" text-anchor="middle" class="h3 ink">P5 Review</text>
+    <text x="1452" y="439" text-anchor="middle" class="small muted">evidence</text>
+    <text x="1452" y="462" text-anchor="middle" class="small muted">correction loop</text>
+
+    <path d="M275 435 H309" class="line"/>
+    <path d="M565 435 H599" class="line"/>
+    <path d="M810 435 H844" class="line"/>
+    <path d="M1090 435 H1124" class="line"/>
+    <path d="M1335 435 H1369" class="line"/>
+  </g>
+
+  <text x="70" y="590" class="h2 ink">3. Graph가 담당하는 범위</text>
+  <g>
+    <rect x="70" y="618" rx="14" ry="14" width="700" height="132" class="claim"/>
+    <text x="100" y="654" class="h3 ink">Relational micrograph가 필요한 오류</text>
+    <text x="100" y="686" class="body ink">행위자-대상 · 정보 출처 · 확실성 scope · 사건 순서</text>
+    <text x="100" y="717" class="small muted">event 주변의 작은 subgraph만 구성하고 typed rule로 비교</text>
+
+    <rect x="830" y="618" rx="14" ry="14" width="700" height="132" class="card"/>
+    <text x="860" y="654" class="h3 ink">더 단순한 경로가 먼저인 오류</text>
+    <text x="860" y="686" class="body ink">누락 · 숫자 · 날짜 · 이름 · 명시적 부정 · 정정 전 값</text>
+    <text x="860" y="717" class="small muted">contract coverage와 deterministic guard로 처리</text>
+  </g>
+
+  <text x="70" y="814" class="h2 ink">4. 성능과 해자 판단</text>
+  <g>
+    <rect x="70" y="840" rx="14" ry="14" width="450" height="104" class="research"/>
+    <text x="95" y="875" class="h3 ink">Go</text>
+    <text x="95" y="905" class="small ink">같은 검토 부담에서 baseline보다 high-risk recall +8%p</text>
+    <text x="95" y="928" class="small ink">사용자 잔존 오류 또는 검수 시간 20% 감소</text>
+
+    <rect x="575" y="840" rx="14" ry="14" width="450" height="104" class="risk"/>
+    <text x="600" y="875" class="h3 ink">Pivot / Kill</text>
+    <text x="600" y="905" class="small ink">flat claim/direct judge와 차이가 없으면 graph 축소</text>
+    <text x="600" y="928" class="small ink">경고 피로가 커지면 제품 runtime에서 제거</text>
+
+    <rect x="1080" y="840" rx="14" ry="14" width="450" height="104" class="claim"/>
+    <text x="1105" y="875" class="h3 ink">해자 후보</text>
+    <text x="1105" y="905" class="small ink">claim/evidence/correction lineage + bilingual gold data</text>
+    <text x="1105" y="928" class="small ink">언어별 calibration과 사용자 correction loop</text>
+  </g>
+</svg>

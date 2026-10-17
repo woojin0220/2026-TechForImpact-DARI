@@ -20,9 +20,12 @@
 
 ## 핵심 문서
 
-- [GRAPH_METHOD.md](GRAPH_METHOD.md): 텍스트에서 추출할 정보, DARI Situation Graph schema, cross-lingual 정렬·비교 알고리즘, baseline과 성능 검증 방법
-- [ARCHITECTURE.md](ARCHITECTURE.md): 경계, 데이터 흐름, 공통 계약, 실패 처리
-- [TEST_PLAN.md](TEST_PLAN.md): 아키텍처 시험, 모델 비교 실험, 평가 지표와 단계별 통과 조건
+- [ARCHITECTURE.md](ARCHITECTURE.md): Claim Ledger 중심 v0.3 구조, 모듈 입출력, 기술적 해자와 중단 기준
+- [GRAPH_METHOD.md](GRAPH_METHOD.md): candidate claim 추출, selective micrograph, 정렬·typed diff 방법
+- [TEST_PLAN.md](TEST_PLAN.md): baseline, oracle 분해, 사용자 impact 지표와 Go/Pivot/Kill 기준
+- [DESIGN_REVIEW.md](DESIGN_REVIEW.md): 현재 설계의 객관적 점수, 가장 큰 위험과 비판적 최종 평가
+- [docs/architecture_v0.3.svg](docs/architecture_v0.3.svg): Claim Ledger 중심 전체 흐름을 한 장으로 정리한 다이어그램
+- [아키텍처 v0.3 보고서](../../output/pdf/DARI_verification_architecture_v0.3_review.pdf): 설계 변경, 논문 근거, 평가 gate와 비판적 최종 판단을 담은 시각 보고서
 - [schemas/input.schema.json](schemas/input.schema.json): 모든 검증 방식이 받는 공통 입력
 - [schemas/report.schema.json](schemas/report.schema.json): 모든 검증 방식이 반환하는 공통 결과
 - [schemas/fixture.schema.json](schemas/fixture.schema.json): 합성 fixture와 gold annotation 계약
