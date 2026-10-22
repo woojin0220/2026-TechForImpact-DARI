@@ -3,8 +3,13 @@ import test from 'node:test';
 import {
   createSession, advanceConversation, getActiveFacts, calculateCoverage,
   deriveQuestion14, buildQuestion14Answers, appendUserMessage, applyFormAnswers,
-  exportSession, appendAssistantMessage, answerScripted,
+  exportSession, appendAssistantMessage, answerScripted, setAuxiliaryPasses, setExtractionFormat,
 } from '../src/intake/index.ts';
+
+// These tests mock full-format model output and the always-on auxiliary passes; the compact
+// default is expanded into the same facts before the same validation (see the compact tests).
+setExtractionFormat('full');
+setAuxiliaryPasses('on');
 
 const fact = (requirementId, value, quote, sourceId = 'message-2', eventId) => ({
   requirementId, value, sourceIds: [sourceId], sourceQuotes: [{ sourceId, quote }],

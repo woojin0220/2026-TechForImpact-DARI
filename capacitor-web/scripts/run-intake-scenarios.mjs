@@ -10,8 +10,8 @@
 //   --constrained on|off        LiteRT-LM JSON-schema constrained decoding (default off, the app default)
 //   --accel gpu|cpu             LiteRT-LM backend (default gpu)
 //   --ctx N                     LiteRT-LM context window in tokens (default 16384)
-//   --extract full|compact      extraction output format (default full; compact cites sentences by ref)
-//   --aux on|off|selective      auxiliary topic check and focused passes (default on)
+//   --extract full|compact      extraction output format (default compact, the app default; it cites sentences by ref)
+//   --aux on|off|selective      auxiliary topic check and focused passes (default selective, the app default)
 //   --lang ko,fa,ar | all       languages (default ko)
 //   --repeat N                  runs per scenario and language (default 1)
 //   --label L                   name for the output file
@@ -22,7 +22,7 @@ import { createWriteStream } from 'node:fs';
 import { mkdir, writeFile, access } from 'node:fs/promises';
 import os from 'node:os';
 import { createInterface } from 'node:readline';
-import { exportSession, setAuxiliaryPasses, setExtractionFormat } from '../src/intake/index.ts';
+import { exportSession, getAuxiliaryPasses, getExtractionFormat, setAuxiliaryPasses, setExtractionFormat } from '../src/intake/index.ts';
 import { benchLanguages, runScenario, scenarios, summarize, summaryTable } from '../src/bench/index.ts';
 
 const args = process.argv.slice(2);
@@ -36,10 +36,10 @@ for (let index = 0; index < args.length; index += 1) {
 const backend = flags.backend ?? 'ollama';
 const langs = !flags.lang ? ['ko'] : flags.lang === 'all' ? [...benchLanguages] : flags.lang.split(',');
 const repeat = Number(flags.repeat ?? 1);
-const extract = flags.extract ?? 'full';
+const extract = flags.extract ?? getExtractionFormat();
 if (!['full', 'compact'].includes(extract)) throw new Error(`알 수 없는 --extract: ${extract}`);
 setExtractionFormat(extract);
-const aux = flags.aux ?? 'on';
+const aux = flags.aux ?? getAuxiliaryPasses();
 if (!['on', 'off', 'selective'].includes(aux)) throw new Error(`알 수 없는 --aux: ${aux}`);
 setAuxiliaryPasses(aux);
 if (!['ollama', 'litertlm'].includes(backend)) throw new Error(`알 수 없는 backend: ${backend}`);

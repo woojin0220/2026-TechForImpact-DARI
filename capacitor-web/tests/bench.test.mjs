@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { benchLanguages, runScenario, scenarios, summarize, summaryTable } from '../src/bench/index.ts';
+import { setAuxiliaryPasses, setExtractionFormat } from '../src/intake/index.ts';
+
+// These tests mock full-format model output and the always-on auxiliary passes; the compact
+// default is expanded into the same facts before the same validation (see the compact tests).
+setExtractionFormat('full');
+setAuxiliaryPasses('on');
 
 test('every scenario has the same turns in every candidate language', () => {
   for (const scenario of scenarios) {

@@ -1,7 +1,14 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { applicationSteps } from '../src/form/schema.ts';
-import { setAuxiliaryPasses, setExtractionFormat, createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
+import { getAuxiliaryPasses, getExtractionFormat, setAuxiliaryPasses, setExtractionFormat, createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
+
+
+const appDefaults = { format: getExtractionFormat(), aux: getAuxiliaryPasses() };
+// These tests mock full-format model output and the always-on auxiliary passes; the compact
+// default is expanded into the same facts before the same validation (see the compact tests).
+setExtractionFormat('full');
+setAuxiliaryPasses('on');
 
 function fact(requirementId, value, quote, overrides = {}) {
   return { requirementId, value, sourceIds: ['message-2'], sourceQuotes: [{ sourceId: 'message-2', quote }], status: 'answered', certainty: 'exact', knowledge: 'direct', ...overrides };
@@ -220,6 +227,10 @@ test('a model rewrite that folds an earlier answer into a new one does not repla
   assert.deepEqual(getActiveFacts(corrected).filter(item => item.requirementId === 'harm.time').map(item => item.value), ['2022년 겨울']);
 });
 
+test('the app defaults to the compact format with selective auxiliary passes (benchmark b8)', () => {
+  assert.deepEqual(appDefaults, { format: 'compact', aux: 'selective' });
+});
+
 test('auxiliary passes can be turned off to save model calls', async () => {
   const text = '2024년 가을쯤 경찰이 집에 찾아와서 두 시간 동안 조사했습니다. 돌아가면 다시 붙잡혀 갈까 두렵습니다. 저는 정치적 의견 때문에 신청합니다.';
   // The first extraction records only a bare "yes" for fear, which normally triggers extra passes.
@@ -233,7 +244,7 @@ test('auxiliary passes can be turned off to save model calls', async () => {
     await advanceConversation(fullSession(), text, adapterOff);
     assert.equal(withoutAux(), 1, 'only the main extraction runs');
     assert.ok(withAux() > 1);
-  } finally { setAuxiliaryPasses(true); }
+  } finally { setAuxiliaryPasses('on'); }
 });
 
 test('selective auxiliary passes check topics only after an unrecorded denial', async () => {
@@ -254,7 +265,7 @@ test('selective auxiliary passes check topics only after an unrecorded denial', 
     await advanceConversation(fullSession(), plain, plainAdapter);
     assert.equal(plainTopics.length, 0);
     assert.equal(plainCalls(), 1);
-  } finally { setAuxiliaryPasses(true); }
+  } finally { setAuxiliaryPasses('on'); }
 
   // Negations are whole words in every language; look-alike substrings are not negations.
   const cases = [
@@ -273,7 +284,7 @@ test('selective auxiliary passes check topics only after an unrecorded denial', 
       await advanceConversation(fullSession(lang), plainText, plainAdapter);
       assert.equal(plainTopics.length, 0, `${lang} look-alike is not a negation`);
     }
-  } finally { setAuxiliaryPasses(true); }
+  } finally { setAuxiliaryPasses('on'); }
 
   // A group the answer denied gets no focused pass, which would attach someone else's incident.
   const hearsay = '저 자신은 직접 피해를 입은 적은 없습니다. 하지만 형이 2023년에 경찰에게 끌려가 맞았다고 형수에게 들었습니다. 그래서 저도 위험하다고 생각합니다.';

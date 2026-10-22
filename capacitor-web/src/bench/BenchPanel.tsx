@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { generateIntakeModelWithStats, getPreviewModel, setBenchOptions, type IntakeRuntimeStatus } from '../lib/intakeModel';
-import { setExtractionFormat, type ExtractionFormat } from '../intake/index.ts';
+import { getExtractionFormat, setExtractionFormat, type ExtractionFormat } from '../intake/index.ts';
 import { Capacitor } from '@capacitor/core';
 import { onDeviceLlm } from '../lib/onDeviceLlm';
 import { runScenario } from './run';
@@ -18,7 +18,7 @@ export default function BenchPanel({ runtime, disabled }: { runtime: IntakeRunti
   const [ctx, setCtx] = useState(16384);
   const [backend, setBackend] = useState<'gpu' | 'cpu'>('gpu');
   const [format, setFormat] = useState<'schema' | 'json' | 'none'>('schema');
-  const [extract, setExtract] = useState<ExtractionFormat>('full');
+  const [extract, setExtract] = useState<ExtractionFormat>(getExtractionFormat);
   const [progress, setProgress] = useState('');
   const [rows, setRows] = useState<BenchRow[]>([]);
   const [running, setRunning] = useState(false);
@@ -34,6 +34,7 @@ export default function BenchPanel({ runtime, disabled }: { runtime: IntakeRunti
     const config = onDevice ? { backend: 'device', model: runtime?.modelName, constrained, ctx, accel: backend, extract } : { backend: 'preview', model: getPreviewModel(), format, extract };
     const runId = `${new Date().toISOString().replace(/[:.]/g, '-')}-${Object.values(config).join('-').replace(/[^\w.-]+/g, '_')}`;
     setBenchOptions(onDevice ? { constrained, maxNumTokens: ctx, backend } : { previewFormat: format });
+    const appFormat = getExtractionFormat();
     setExtractionFormat(extract);
     await onDeviceLlm.setKeepAwake?.({ on: true }).catch(() => {});
     write({ type: 'meta', runId, startedAt: new Date().toISOString(), config: { ...config, langs, scenarios: scenarios.map(item => item.id), repeat },
@@ -53,7 +54,7 @@ export default function BenchPanel({ runtime, disabled }: { runtime: IntakeRunti
       setProgress(`완료 ${done}/${total}`);
     } finally {
       setBenchOptions({});
-      setExtractionFormat('full');
+      setExtractionFormat(appFormat);
       await onDeviceLlm.setKeepAwake?.({ on: false }).catch(() => {});
       // On iOS the rows are also saved to Documents/bench so they survive and can be copied off the phone.
       if (Capacitor.getPlatform() === 'ios') await onDeviceLlm.saveBenchFile?.({ name: `${runId}.jsonl`, text: collected.map(row => JSON.stringify(row)).join('\n') + '\n' })

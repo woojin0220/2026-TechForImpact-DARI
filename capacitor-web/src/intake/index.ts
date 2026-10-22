@@ -224,18 +224,21 @@ Questions must be neutral and never accusatory: ask what happened TO the applica
 
 /** Extraction output format. "compact" uses short keys, omits defaults and cites sentences by
  * ref instead of copying them, which cuts the tokens a phone has to generate; the app expands it
- * back to full facts before the same validation. Benchmarks compare it with "full". */
+ * back to full facts before the same validation. It is the default (benchmark b8, see
+ * docs/BENCHMARK.md); benchmarks compare it with "full". */
 export type ExtractionFormat = 'full' | 'compact';
-let extractionFormat: ExtractionFormat = 'full';
+let extractionFormat: ExtractionFormat = 'compact';
 export function setExtractionFormat(format: ExtractionFormat) { extractionFormat = format; }
 export function getExtractionFormat(): ExtractionFormat { return extractionFormat; }
 /** Auxiliary passes (a topic check and up to two focused re-extractions per answer) add recall at
  * the cost of extra model calls; benchmarks turn them off to measure that trade-off. "selective"
  * runs the topic check only when an answer with a negation left no "no" recorded, the usual sign
- * of a missed "I could not / did not" topic; focused passes still follow a bare "yes". */
+ * of a missed "I could not / did not" topic; focused passes still follow a bare "yes". It is the
+ * default: it kept "on"'s safety with about two calls per turn instead of three (benchmark b8). */
 export type AuxiliaryPasses = 'on' | 'off' | 'selective';
-let auxiliaryPasses: AuxiliaryPasses = 'on';
+let auxiliaryPasses: AuxiliaryPasses = 'selective';
 export function setAuxiliaryPasses(mode: boolean | AuxiliaryPasses) { auxiliaryPasses = mode === true ? 'on' : mode === false ? 'off' : mode; }
+export function getAuxiliaryPasses(): AuxiliaryPasses { return auxiliaryPasses; }
 
 const fullJson = intakeSystem.slice(intakeSystem.indexOf('Return ONLY JSON: {"reply"'), intakeSystem.indexOf('\n', intakeSystem.indexOf('Return ONLY JSON: {"reply"')));
 const compactSystem = intakeSystem
