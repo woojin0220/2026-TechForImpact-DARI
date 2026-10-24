@@ -2,6 +2,7 @@ import { dummyFormAnswers, formSteps, isFieldVisible, requirementsById, type For
 import type { FormField } from './form/schema';
 import { hasQuestionPhrase, localize } from './form/localize';
 import type { ScriptedCopy } from './intakeCopy';
+import { samePrompt } from './form/presentation';
 
 // Development builds, or a build made with VITE_DARI_DEV_TOOLS=true, show test helpers.
 export const DEV_TOOLS = import.meta.env.DEV || import.meta.env.VITE_DARI_DEV_TOOLS === 'true';
@@ -32,6 +33,8 @@ type Props = {
 export function FormStage({ language, answers, page, copy, back, next, onChange, onPage, onDone }: Props) {
   const step = formSteps[page];
   const last = page === formSteps.length - 1;
+  const title = text(language, step.titleKo, step.titleEn);
+  const visibleFields = step.fields.filter(field => isFieldVisible(field, answers));
   const set = (id: string, value: FormValue | undefined) => {
     const updated = { ...answers };
     if (value) updated[id] = value; else delete updated[id];
@@ -45,9 +48,9 @@ export function FormStage({ language, answers, page, copy, back, next, onChange,
     <div className="form-progress" aria-hidden="true"><span style={{ width: `${100 * (page + 1) / formSteps.length}%` }} /></div>
     {DEV_TOOLS && <button className="quiet dev-fill" onClick={() => onChange(dummyFormAnswers())}>개발용 · 더미 데이터로 자동 채우기</button>}
     <section className="panel form-card" key={step.id}>
-      <h2>{text(language, step.titleKo, step.titleEn)}</h2>
-      {step.fields.filter(field => isFieldVisible(field, answers)).map(field =>
-        <FieldInput key={field.id} field={field} language={language} value={answers[field.id]} copy={copy} onChange={value => set(field.id, value)} />)}
+      <h2>{title}</h2>
+      {visibleFields.map(field =>
+        <FieldInput key={field.id} field={field} language={language} value={answers[field.id]} copy={copy} showLabel={!samePrompt(title, text(language, field.ko, field.en))} onChange={value => set(field.id, value)} />)}
     </section>
     <div className="form-nav">
       <button className="secondary" disabled={page === 0} onClick={() => onPage(page - 1)}>{back}</button>
@@ -56,13 +59,13 @@ export function FormStage({ language, answers, page, copy, back, next, onChange,
   </div>;
 }
 
-export function FieldInput({ field, language, value, copy, onChange }: { field: FormField; language: string; value?: FormValue; copy: ScriptedCopy; onChange: (value: FormValue | undefined) => void }) {
+export function FieldInput({ field, language, value, copy, onChange, showStatus = true, showLabel = true }: { field: FormField; language: string; value?: FormValue; copy: ScriptedCopy; onChange: (value: FormValue | undefined) => void; showStatus?: boolean; showLabel?: boolean }) {
   const label = text(language, field.ko, field.en);
   const selected = value?.kind === 'choice' ? value.values : [];
   const status = value?.kind === 'status' ? value.status : undefined;
   const toggleStatus = (next: 'unknown' | 'not_applicable') => onChange(status === next ? undefined : { kind: 'status', status: next });
   return <div className="form-field">
-    <p className="form-label">{label}</p>
+    {showLabel && <p className="form-label">{label}</p>}
     {(field.type === 'single' || field.type === 'multi') && <div className="choice-list" role="group" aria-label={label}>
       {field.options?.map(option => {
         const on = selected.includes(option.value);
@@ -75,7 +78,7 @@ export function FieldInput({ field, language, value, copy, onChange }: { field: 
     {field.type === 'long' && <textarea dir="auto" rows={4} value={value?.kind === 'text' ? value.text : ''} aria-label={label}
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}
     {field.type === 'table' && <TableInput field={field} language={language} value={value} copy={copy} onChange={onChange} />}
-    {field.type !== 'table' && <div className="status-toggles">
+    {showStatus && field.type !== 'table' && <div className="status-toggles">
       <button className="quiet" aria-pressed={status === 'unknown'} onClick={() => toggleStatus('unknown')}>{copy.unknown}</button>
       <button className="quiet" aria-pressed={status === 'not_applicable'} onClick={() => toggleStatus('not_applicable')}>{copy.notApplicable}</button>
     </div>}
