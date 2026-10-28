@@ -1,6 +1,8 @@
 # Capacitor 웹 기반 전환
 
-`capacitor-web/`은 Android와 iOS에서 함께 사용할 수 있도록 추가한 React·TypeScript·Capacitor 기반 MVP입니다. 기존 루트의 Kotlin Android 앱은 초기 온디바이스 번역 실험을 담은 참고 구현으로 남겨 두었습니다. 두 구현을 동시에 수정하기보다, 이후 기능 개발은 `capacitor-web/`을 기준으로 진행합니다.
+이 문서는 초기 번역·검증 프로토타입을 Capacitor로 전환하던 당시의 기록입니다. 현재 대화형 초안 작성 흐름은 [대화형 초안 구현 안내](INTAKE_IMPLEMENTATION.md), 모바일 모델 실행은 [온디바이스 실행 안내](NATIVE_LLM.md)를 참고하세요.
+
+`capacitor-web/`은 Android와 iOS에서 함께 사용하는 React·TypeScript·Capacitor 앱입니다. 루트의 초기 Kotlin Android 앱은 제거했으며, 현재 네이티브 구현은 `capacitor-web/android/`와 `capacitor-web/ios/`에 있습니다. 초기 앱 코드는 제거 전 커밋 `d2ba724`의 Git 이력에 남아 있습니다.
 
 ## 현재 데이터 흐름
 
