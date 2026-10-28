@@ -6,9 +6,20 @@ export type FactStatus = 'answered' | 'unknown' | 'skipped' | 'not_applicable' |
 export type CoverageStatus = FactStatus | 'missing' | 'blocked';
 /** What an app-authored assistant message is asking. LLM replies carry no ask. */
 export type ScriptedAsk = { kind: 'field' | 'table' | 'more'; requirementId: string; eventId?: string };
-export type MessageAsk = ScriptedAsk | { kind: 'narrative'; topics?: string[] } | { kind: 'done' };
+export type MessageAsk = ScriptedAsk | { kind: 'narrative'; topics?: string[]; clarifies?: string[] } | { kind: 'done' };
 export type SourceMessage = { id: string; role: 'user' | 'assistant'; content: string; createdAt: string; ask?: MessageAsk };
 export type SourceQuote = { sourceId: string; quote: string };
+/** Applicant statements, not findings about whether an event is true. Role text is
+ * quoted in the applicant's language; null means the role has not been resolved. */
+export type Statement = {
+  subject: string | null;
+  action: string;
+  object: string | null;
+  polarity: 'positive' | 'negative' | 'unspecified';
+  certainty: IntakeFact['certainty'];
+  knowledge: IntakeFact['knowledge'];
+  sourceQuotes: SourceQuote[];
+};
 export type IntakeFact = {
   id: string;
   requirementId: string;
@@ -21,6 +32,10 @@ export type IntakeFact = {
   eventId?: string;
   supersedes?: string[];
   confirmed: boolean;
+  statements?: Statement[];
+  /** Additional narrative fields this same fact supports; never a duplicate fact. */
+  relatedRequirementIds?: string[];
+  clarification?: ('roles' | 'polarity' | 'structure')[];
 };
 export type CoverageEntry = { requirementId: string; status: CoverageStatus; factIds: string[] };
 export type DraftSentence = { text: string; factIds: string[]; sourceIds: string[] };
@@ -48,6 +63,8 @@ export type IntakeSession = {
    * each question 14 group has been asked, and whether the applicant ended the questions. */
   narrativeFocus?: string;
   topicAttempts: Record<string, number>;
+  /** User chose not to discuss a topic now; gaps remain unresolved. */
+  topicDecisions?: Record<string, 'unknown' | 'skipped'>;
   guidedDone: boolean;
   /** Editable question 14 answers built from metadata and the draft; the applicant's edits live here. */
   question14?: FormAnswers;

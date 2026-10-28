@@ -3,6 +3,7 @@ import type { FormAnswers, FormValue } from './form.ts';
 import { getActiveFacts } from './index.ts';
 import { requirementsById } from './catalog.ts';
 import type { IntakeFact, IntakeSession } from './types.ts';
+import { onlyDenials } from './statements.ts';
 
 /** A question 14 box filled from metadata. Narrative boxes (14.x details) are not
  * derived here; the Korean draft writes them from the same metadata. */
@@ -21,8 +22,10 @@ function koValue(fact: IntakeFact): string {
  * A "no" alongside described incidents is a contradiction for the applicant to resolve. */
 function gate(id: string, facts: IntakeFact[]): { value: string; needsReview?: boolean; factIds: string[] } | undefined {
   const own = facts.filter(fact => fact.requirementId === id);
-  const details = facts.filter(fact => requirementsById.get(fact.requirementId)?.parentId === id && requirementsById.get(fact.requirementId)?.repeatable && fact.status === 'answered');
-  const said = own.find(fact => fact.status === 'answered')?.value;
+  const details = facts.filter(fact => requirementsById.get(fact.requirementId)?.parentId === id && requirementsById.get(fact.requirementId)?.repeatable && fact.status === 'answered' && !onlyDenials(fact));
+  // A reason for not doing it (e.g. why no protection was sought) is the applicant's "no".
+  const said = own.find(fact => fact.status === 'answered')?.value
+    ?? (facts.some(fact => fact.status === 'answered' && requirementsById.get(fact.requirementId)?.when?.some(condition => condition.id === id && condition.anyOf.includes('no'))) ? 'no' : undefined);
   const factIds = [...own, ...details].map(fact => fact.id);
   const answers = new Set(own.filter(fact => fact.status === 'answered').flatMap(fact => Array.isArray(fact.value) ? fact.value : [fact.value]));
   if (own.some(fact => fact.status === 'conflict') || answers.size > 1) {

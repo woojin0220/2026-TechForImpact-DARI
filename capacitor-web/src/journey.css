@@ -1,0 +1,32 @@
+.topic-progress { margin-block: 16px; }
+.topic-progress h2 { font-size: 1.1rem; }
+.topic-progress ol { list-style: none; padding: 0; margin: 0; }
+.topic-progress li { display: flex; justify-content: space-between; gap: 16px; padding-block: 10px; border-bottom: 1px solid var(--line, #ddd); }
+.topic-progress li[aria-current] { font-weight: 700; }
+.topic-progress small { flex-shrink: 0; }
+.story-summary { padding-block: 20px; border-bottom: 1px solid var(--line, #ddd); }
+.story-summary h3 { margin-top: 0; }
+.story-summary dl > div { margin-block: 16px; }
+.story-summary dt { font-size: .875rem; }
+.story-summary dd { margin: 4px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.65; }
+.story-summary dd .quiet { margin-inline-start: 12px; min-height: 44px; }
+.summary-qualifier { display: inline-block; margin-inline-start: 8px; font-weight: 600; }
+.conversation-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 12px; }
+.conversation-controls button { min-height: 44px; }
+.final-check { margin-top: 24px; }
+.final-check .check-row { margin-block: 20px; }
+.final-check li { margin-block: 8px; overflow-wrap: anywhere; }
+.save-options > div { margin-block: 16px; }
+.save-options dt { font-weight: 600; }
+.save-options dd { margin: 4px 0 0; }
+@media (max-width: 600px) { .topic-progress li { flex-direction: column; gap: 4px; } }
+
+/* Secondary conversation tools overlay the thread instead of shrinking it. */
+.chat-mode .chat-toolbar { justify-content: flex-end; padding: 0 12px; min-height: 36px; position: relative; }
+.chat-options > summary { cursor: pointer; font-size: 12px; padding: 10px 2px; }
+.chat-options-sheet { position: absolute; z-index: 10; top: 100%; inset-inline-end: 8px; width: min(360px, calc(100vw - 64px)); max-height: 50dvh; overflow-y: auto; padding: 16px; background: white; border: 1px solid var(--line, #ddd); border-radius: 10px; box-shadow: 0 8px 24px #00000012; }
+.chat-options-sheet .topic-progress { margin-top: 0; }
+.chat-options-sheet .topic-progress h2 { font-size: 14px; }
+.chat-options-sheet .topic-progress p { font-size: 12px; }
+.chat-options-sheet .conversation-controls { flex-direction: column; align-items: stretch; }
+.chat-options-sheet button { width: 100%; }

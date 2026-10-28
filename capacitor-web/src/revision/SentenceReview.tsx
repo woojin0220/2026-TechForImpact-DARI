@@ -4,6 +4,7 @@ import { generateSentenceReply } from './model.mjs';
 import { addAssistantMessage, addUserMessage, applySuggestion, createDocument, dismissSuggestion, documentText, sentence, undoChange, type TxtDocument } from './state.mjs';
 import './revision.css';
 import { EnglishMeaning } from './EnglishMeaning';
+import { canApproveSuggestion } from './approval';
 
 export function SentenceReview({ text, saved, onChange, uiLanguage = 'ko' }: {
   text: string; saved?: TxtDocument; onChange: (doc: TxtDocument, expectedText: string) => void; uiLanguage?: string;
@@ -14,6 +15,7 @@ export function SentenceReview({ text, saved, onChange, uiLanguage = 'ko' }: {
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [proposalMeanings, setProposalMeanings] = useState<Record<string, string>>({});
   const request = useRef<AbortController | null>(null);
   useEffect(() => () => { request.current?.abort(); }, []);
   const row = sentence(doc, selected);
@@ -45,9 +47,9 @@ export function SentenceReview({ text, saved, onChange, uiLanguage = 'ko' }: {
     <div className="revision-grid"><section className="revision-document"><div className="section-title"><h3>{t("초안","Korean draft")}</h3><span className="small-tag">{t("클릭해 문장 선택","Select a sentence")}</span></div><div className="revision-sentences" aria-label={t("수정할 문장", "Sentence to edit")}>{doc.pieces.map((piece, index) => piece.kind === 'gap' ? <span key={index}>{piece.text}</span> : <button key={piece.id} className={piece.text !== piece.originalText ? 'edited' : undefined} aria-pressed={piece.id === selected} disabled={busy} onClick={() => { setSelected(piece.id); setInput(''); setError(''); }}>{piece.text}</button>)}</div>
     <p className="micro">{t("밑줄이 있는 문장은 원문에서 수정된 문장입니다.","Underlined sentences have been edited.")}</p></section><section className="revision-chat"><div className="revision-selected"><p className="overline">{t("선택한 문장","Selected sentence")}</p>{uiLanguage === 'en' ? <EnglishMeaning text={row.text} compact /> : <p>{row.text}</p>}{uiLanguage !== 'en' && row.text !== row.originalText && <details><summary>{t("처음 작성한 문장 보기","View original sentence")}</summary><p>{row.originalText}</p></details>}</div><div className="revision-thread" role="log" aria-label={t("문장별 수정 대화", "Sentence discussion")}>{messages.map(message => <article key={message.id} className={message.role}>
       <small>{message.role === 'user' ? t('수정 요청', 'Your request') : 'DARI'}</small><p>{message.content}</p>
-      {message.proposal && <div className="revision-proposal"><details><summary>{t("수정 전 보기","Before the edit")}</summary><p>{message.proposal.before}</p></details><h3>{t("수정안","Suggested Korean text")}</h3><p>{message.proposal.after}</p>
-        {message.proposal.status === 'pending' && message.proposal.baseRevision === row.revision ? <div className="actions"><button className="primary" disabled={busy} onClick={() => edit(() => applySuggestion(doc, selected, message.id))}>{t("이 수정안 반영","Apply this suggestion")}</button><button className="secondary" disabled={busy} onClick={() => edit(() => dismissSuggestion(doc, selected, message.id))}>{t("반영하지 않기","Dismiss")}</button></div> : <small>{message.proposal.status === 'applied' ? t('반영 이력 있음', 'Previously applied') : t('사용할 수 없는 수정안', 'Suggestion no longer available')}</small>}</div>}
-    {message.proposal && uiLanguage === 'en' && <EnglishMeaning text={message.proposal.after} />}
+      {message.proposal && <div className="revision-proposal"><h3>{t("수정안","Suggested Korean text")}</h3><p lang="ko">{message.proposal.after}</p>
+        {uiLanguage === 'en' && <EnglishMeaning text={message.proposal.after} onReady={text => setProposalMeanings(current => current[message.id] === text ? current : { ...current, [message.id]: text })} />}
+        {message.proposal.status === 'pending' && message.proposal.baseRevision === row.revision ? <div className="actions"><button className="primary" disabled={!canApproveSuggestion(message.proposal, row.revision, row.text, uiLanguage, proposalMeanings[message.id], busy)} onClick={() => { if (message.proposal && canApproveSuggestion(message.proposal, row.revision, row.text, uiLanguage, proposalMeanings[message.id], busy)) edit(() => applySuggestion(doc, selected, message.id)); }}>{t("이 수정안 반영","Apply this suggestion")}</button><button className="secondary" disabled={busy} onClick={() => edit(() => dismissSuggestion(doc, selected, message.id))}>{t("반영하지 않기","Dismiss")}</button></div> : <small>{message.proposal.status === 'applied' ? t('반영 이력 있음', 'Previously applied') : t('사용할 수 없는 수정안', 'Suggestion no longer available')}</small>}</div>}
     </article>)}</div>
     <div className="revision-composer"><label>{t("이 문장에 대해 이야기하기","Discuss this sentence in English")}<textarea maxLength={3000} value={input} disabled={busy} placeholder={t("같은 뜻을 유지하면서 자연스럽게 다듬어 주세요.", "Please make this sound natural without changing its meaning.")} onChange={event => setInput(event.target.value)} /></label>
     <div className="actions"><button className="primary" disabled={busy || !input.trim()} onClick={() => void send()}>{t("수정 요청","Request an edit")}</button><button className="secondary" disabled={busy || !doc.undo.length} onClick={() => edit(() => undoChange(doc))}>{t("마지막 수정 되돌리기","Undo last edit")}</button>{busy && <button className="secondary" onClick={() => { request.current?.abort(); setError(t('요청을 취소했습니다. 본문은 유지됩니다.', 'Request cancelled. The draft is unchanged.')); }}>{t("중지","Stop")}</button>}</div>

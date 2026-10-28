@@ -35,6 +35,23 @@ class IntakeServerTests(unittest.TestCase):
             server.generate_intake(self.payload() | {"responseSchema": schema})
         self.assertEqual(json.loads(mocked.call_args.args[0].data)["format"], schema)
 
+    def test_benchmark_format_modes_and_stats(self):
+        schema = {"type": "object", "properties": {"reply": {"type": "string"}}, "required": ["reply"]}
+        sent = {}
+        for mode in ["schema", "json", "none"]:
+            response = io.BytesIO(json.dumps({"message": {"content": '{"reply":"hello"}'}, "prompt_eval_count": 120,
+                                              "prompt_eval_duration": 2e9, "eval_count": 30, "eval_duration": 3e9,
+                                              "total_duration": 6e9, "load_duration": 1e9}).encode())
+            with patch.object(server, "urlopen", return_value=response) as mocked:
+                result = server.generate_intake(self.payload() | {"responseSchema": schema, "format": mode})
+            sent[mode] = json.loads(mocked.call_args.args[0].data).get("format")
+        self.assertEqual(sent, {"schema": schema, "json": "json", "none": None})
+        self.assertEqual(result["stats"], {"runtime": "ollama", "constrained": False, "totalMs": 6000, "initMs": 1000,
+                                           "prefillTokens": 120, "decodeTokens": 30, "prefillTokPerSec": 60.0, "decodeTokPerSec": 10.0})
+        with patch.object(server, "urlopen") as mocked, self.assertRaises(ValueError):
+            server.generate_intake(self.payload() | {"format": "xml"})
+        mocked.assert_not_called()
+
     def test_rejects_invalid_response_schema(self):
         with patch.object(server, "urlopen") as mocked, self.assertRaises(ValueError):
             server.generate_intake(self.payload() | {"responseSchema": "not a schema"})

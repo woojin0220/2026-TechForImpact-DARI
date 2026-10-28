@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { generateReviewModel } from './queue';
 import { meaningRequest, parseMeaning } from './meaning';
 
-export function EnglishMeaning({ text, compact = false }: { text: string; compact?: boolean }) {
+export function EnglishMeaning({ text, compact = false, onReady }: { text: string; compact?: boolean; onReady?: (text: string) => void }) {
+  const readyCallback = useRef(onReady);
+  readyCallback.current = onReady;
   const [result, setResult] = useState<{ source: string; english: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -10,12 +12,13 @@ export function EnglishMeaning({ text, compact = false }: { text: string; compac
   useEffect(() => {
     const abort = new AbortController();
     setError('');
+    readyCallback.current?.('');
     if (!text.trim()) { setBusy(false); return () => abort.abort(); }
     setBusy(true);
     void (async () => {
       try {
         const english = parseMeaning(await generateReviewModel({ ...meaningRequest(text), signal: abort.signal }));
-        if (!abort.signal.aborted) setResult({ source: text, english });
+        if (!abort.signal.aborted) { setResult({ source: text, english }); readyCallback.current?.(text); }
       } catch (failure) {
         if (!abort.signal.aborted) setError('The English meaning could not be prepared. Please retry. ' + String(failure));
       } finally {

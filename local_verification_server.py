@@ -14,7 +14,7 @@ from urllib.error import URLError, HTTPError
 
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 ALLOWED_MODELS = {"qwen3:4b", "llama3.2:3b"}
-INTAKE_MODELS = {"gemma4:e4b", "gemma3n:e4b", "qwen3:4b", "llama3.2:3b"}
+INTAKE_MODELS = {"gemma4:e4b", "gemma4:e2b", "gemma3n:e4b", "qwen3:4b", "llama3.2:3b"}
 INTAKE_LOCK = threading.Lock()
 TRANSLATION_TARGETS = {"en", "ko", "ru", "ar", "fr", "fa"}
 LANGUAGE_NAMES = {"en": "English", "ko": "Korean", "ru": "Russian", "ar": "Arabic", "fr": "French", "fa": "Persian"}
@@ -47,14 +47,21 @@ def generate_intake(payload):
     schema = payload.get("responseSchema")
     if schema is not None and (not isinstance(schema, dict) or len(json.dumps(schema)) > 40000):
         raise ValueError("응답 형식 정의를 확인해 주세요.")
+    # Benchmarks compare constrained decoding with the unconstrained phone default:
+    # "schema" (default) enforces the schema, "json" any JSON, "none" free text.
+    output_format = payload.get("format", "schema")
+    if output_format not in {"schema", "json", "none"}:
+        raise ValueError("지원하지 않는 출력 형식입니다.")
     if not INTAKE_LOCK.acquire(blocking=False):
         raise ValueError("이전 모델 요청을 처리하고 있습니다. 잠시 후 다시 시도해 주세요.")
     try:
-        body = {"model": model, "stream": False, "format": schema or "json",
+        body = {"model": model, "stream": False,
                 "messages": [{"role": "system", "content": system},
                              {"role": "user", "content": prompt}],
                 "options": {"temperature": 0.1, "num_ctx": 16384,
                             "num_predict": 4096 if task == "draft" else 3072}}
+        if output_format != "none":
+            body["format"] = (schema or "json") if output_format == "schema" else "json"
         if model.startswith(("qwen3", "gemma4")):
             body["think"] = False
         request = Request("http://127.0.0.1:11434/api/chat", data=json.dumps(body).encode(),
@@ -66,7 +73,15 @@ def generate_intake(payload):
         text = result.get("message", {}).get("content", "").strip()
         if not text:
             raise ValueError("모델이 작성 결과를 반환하지 않았습니다.")
-        return {"text": text, "model": model, "mode": "local-preview"}
+        ms = lambda key: round(result.get(key, 0) / 1e6)
+        per_second = lambda count, duration: round(result[count] / (result[duration] / 1e9), 1) if result.get(count) and result.get(duration) else None
+        stats = {"runtime": "ollama", "constrained": output_format == "schema",
+                 "totalMs": ms("total_duration"), "initMs": ms("load_duration"),
+                 "prefillTokens": result.get("prompt_eval_count"), "decodeTokens": result.get("eval_count"),
+                 "prefillTokPerSec": per_second("prompt_eval_count", "prompt_eval_duration"),
+                 "decodeTokPerSec": per_second("eval_count", "eval_duration")}
+        return {"text": text, "model": model, "mode": "local-preview",
+                "stats": {key: value for key, value in stats.items() if value is not None}}
     finally:
         INTAKE_LOCK.release()
 

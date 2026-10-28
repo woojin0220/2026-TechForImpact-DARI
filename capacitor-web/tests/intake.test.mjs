@@ -1,7 +1,14 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { applicationSteps } from '../src/form/schema.ts';
-import { createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
+import { getAuxiliaryPasses, getExtractionFormat, setAuxiliaryPasses, setExtractionFormat, createSession, advanceConversation, continueConversation, generateDraft, getActiveFacts, getProgress, requirementCatalog, calculateCoverage, IntakeError, exportSession, confirmFacts, nextStep, appendAssistantMessage, answerScripted, finishNarrative, reaskQuestion, applyFormAnswers, dummyFormAnswers, deriveQuestion14, openTopic, buildQuestion14Answers, narrativeFieldFor, guideConversation, appendUserMessage, needsTopicQuestion } from '../src/intake/index.ts';
+
+
+const appDefaults = { format: getExtractionFormat(), aux: getAuxiliaryPasses() };
+// These tests mock full-format model output and the always-on auxiliary passes; the compact
+// default is expanded into the same facts before the same validation (see the compact tests).
+setExtractionFormat('full');
+setAuxiliaryPasses('on');
 
 function fact(requirementId, value, quote, overrides = {}) {
   return { requirementId, value, sourceIds: ['message-2'], sourceQuotes: [{ sourceId: 'message-2', quote }], status: 'answered', certainty: 'exact', knowledge: 'direct', ...overrides };
@@ -64,6 +71,230 @@ test('explicit correction creates history; contradictory answer without correcti
   assert.equal(getActiveFacts(corrected).length, 1);
   assert.equal(corrected.facts[0].value, '경찰이 왔습니다.');
   assert.equal(getActiveFacts(corrected)[0].value, '경찰이 아니었습니다.');
+});
+
+test('self-corrections and "I don\'t remember" are recognized in every candidate language', async () => {
+  const corrections = {
+    en: 'Earlier I said March, but that was wrong. It was April.',
+    fr: "Tout à l'heure j'ai dit mars, mais je me suis trompé. C'était en avril.",
+    ru: 'Я сказал раньше, что это был март, но ошибся. Это был апрель.',
+    ar: 'قلت قبل قليل مارس، لكنني أخطأت. كان ذلك في أبريل.',
+    fa: 'قبلاً گفتم مارس، اما اشتباه گفتم. آوریل بود.',
+  };
+  for (const [lang, text] of Object.entries(corrections)) {
+    const first = await advanceConversation(createSession(lang), 'March 2025.', async () => response([fact('grounds.summary', 'March 2025', 'March 2025')]));
+    // The model omitted supersedes: the applicant's own correction still replaces the old value.
+    const latest = fact('grounds.summary', 'April 2025', text, { sourceIds: ['message-4'], sourceQuotes: [{ sourceId: 'message-4', quote: text }] });
+    const corrected = await advanceConversation(first, text, async () => response([latest]));
+    assert.equal(corrected.coverage.find(item => item.requirementId === 'grounds.summary').status, 'answered', lang);
+    assert.deepEqual(getActiveFacts(corrected).map(item => item.value), ['April 2025'], lang);
+  }
+  const forgotten = {
+    en: "I don't remember exactly when it was.", fr: 'Je ne me souviens pas exactement quand.', ru: 'Я не помню, когда именно это было.',
+    ar: 'لا أتذكر متى كان ذلك بالضبط.', fa: 'دقیقاً یادم نیست کی بود.',
+  };
+  for (const [lang, text] of Object.entries(forgotten)) {
+    const session = await advanceConversation(createSession(lang), text, async () => response([fact('grounds.summary', text, text)]));
+    assert.equal(getActiveFacts(session)[0].status, 'unknown', lang);
+  }
+});
+
+function fullSession(lang = 'ko') {
+  return appendAssistantMessage(createSession(lang, 'full'), 'Tell me what happened.', { kind: 'narrative' });
+}
+const withTopicCheck = (facts) => async (request) => request.system.startsWith('List every topic') ? '{"groups":[]}' : response(facts);
+
+test('"I don\'t know who or why" is unknown at any length for who/why details, not for narratives', async () => {
+  const text = "I don't know who they were or why they did it. They beat me but I don't remember who was there.";
+  const session = await advanceConversation(fullSession('en'), text, withTopicCheck([
+    fact('harm.reason', "I don't know who they were or why they did it.", "I don't know who they were or why they did it.", { eventId: 'harm-1' }),
+    fact('harm.event', "They beat me but I don't remember who was there.", "They beat me but I don't remember who was there.", { eventId: 'harm-1' }),
+  ]));
+  const status = id => getActiveFacts(session).find(item => item.requirementId === id).status;
+  assert.equal(status('harm.reason'), 'unknown');
+  assert.equal(status('harm.event'), 'answered', 'a described event stays testimony');
+});
+
+test('"I could not ask the police" never silently becomes a protection request, and later testimony is kept', async () => {
+  const text = '경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다. 그래서 다른 도시의 삼촌 집으로 피신했습니다.';
+  const [noHelp, moved] = ['경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다.', '그래서 다른 도시의 삼촌 집으로 피신했습니다.'];
+  const session = await advanceConversation(fullSession(), text, withTopicCheck([
+    fact('protection.no_reason', noHelp, noHelp),
+    // The model mixed the move into the "yes" branch of protection.
+    fact('protection.place', '다른 도시의 삼촌 집', moved, { eventId: 'protection-1' }),
+    fact('protection.result', '삼촌 집으로 피신함', moved, { eventId: 'protection-1' }),
+    fact('relocation', 'yes', moved),
+    fact('relocation.destination', '다른 도시의 삼촌 집', moved, { eventId: 'relocation-1' }),
+  ]));
+  const active = getActiveFacts(session);
+  // The applicant's reason for not asking decides the yes/no; the mixed-in details stay for review.
+  assert.equal(active.find(item => item.requirementId === 'protection').value, 'no');
+  assert.ok(active.some(item => item.requirementId === 'protection.place'), 'testimony is never silently dropped');
+  assert.ok(active.some(item => item.requirementId === 'relocation.destination'));
+  const box = deriveQuestion14(session).find(item => item.id === '14.5');
+  assert.notEqual(box.value, '예');
+  assert.equal(box.needsReview, true);
+  // Without the mixed-in details the box is a plain "no", even with no explicit gate answer.
+  const clean = await advanceConversation(fullSession(), text, withTopicCheck([fact('protection.no_reason', noHelp, noHelp)]));
+  assert.equal(deriveQuestion14(clean).find(item => item.id === '14.5').value, '아니요');
+
+  // A "no" from an earlier answer does not silently drop testimony given later.
+  const later = '그 뒤에 경찰서에 가서 도움을 요청한 적이 한 번 있습니다.';
+  const next = await advanceConversation(session, later, withTopicCheck([fact('protection.authority', '경찰서', later, { eventId: 'protection-1', sourceIds: ['message-4'], sourceQuotes: [{ sourceId: 'message-4', quote: later }] })]));
+  assert.ok(getActiveFacts(next).some(item => item.requirementId === 'protection.authority'));
+  assert.equal(deriveQuestion14(next).find(item => item.id === '14.5').needsReview, true);
+});
+
+test('compact extraction cites sentences by ref and expands to the same validated facts', async () => {
+  setExtractionFormat('compact');
+  try {
+    const text = 'In autumn 2024 the police came to my house. I do not know why they came.';
+    let seen;
+    const adapter = async request => {
+      if (request.system.startsWith('List every topic')) return '{"groups":[]}';
+      seen ??= request;
+      return JSON.stringify({ reply: 'What happened then?', facts: [
+        // A choice marked unknown but given as an option code is an answer.
+        { r: 'harm', v: 'yes', s: 'u', q: ['2.1'] },
+        { r: 'harm.type', v: 'questioning', q: ['2.1'], e: 'harm-1' },
+        { r: 'harm.time', v: 'autumn 2024', c: 'a', q: ['2.1'], e: 'harm-1' },
+        { r: 'harm.reason', s: 'u', q: ['2.2'], e: 'harm-1' },
+        { r: 'harm.place', v: 'somewhere', q: ['9.9'], e: 'harm-1' },
+        { r: 'harm.actor', v: 'police', q: ['2.1'], e: 'x'.repeat(200) },
+      ] });
+    };
+    const session = await advanceConversation(fullSession('en'), text, adapter);
+    assert.match(seen.system, /"q":\["N\.i"\]/);
+    assert.doesNotMatch(seen.system, /sourceQuotes|exact quote from a USER/);
+    assert.deepEqual(JSON.parse(seen.prompt).recentMessages.find(item => item.role === 'user').sentences,
+      [{ ref: '2.1', text: 'In autumn 2024 the police came to my house.' }, { ref: '2.2', text: 'I do not know why they came.' }]);
+    const variants = seen.responseSchema.properties.facts.items.anyOf;
+    assert.ok(variants.every(item => ['r', 'v', 'k', 'q'].every(key => item.required.includes(key))), 'value and how the applicant knows are always given');
+    const gate = variants.find(item => item.properties.r.enum.includes('harm') && item.properties.v.enum);
+    assert.deepEqual(gate.properties.v.enum, ['yes', 'no'], 'a choice is limited to its option codes');
+    assert.ok(variants.some(item => item.properties.r.enum.includes('harm') && item.properties.s.enum.join() === 'u,k,n' && item.properties.v.type === 'string'),
+      'a choice may still be stated as unknown in the applicant\'s words');
+    assert.ok(variants.filter(item => item.properties.r.enum.includes('harm.time')).every(item => item.required.includes('e')), 'a per-incident detail needs its incident');
+    assert.ok(variants.filter(item => item.properties.r.enum.includes('harm')).every(item => !item.required.includes('e')), 'a gate does not');
+    const facts = Object.fromEntries(getActiveFacts(session).map(item => [item.requirementId, item]));
+    assert.equal(facts['harm'].status, 'answered');
+    assert.deepEqual(facts['harm.type'].value, ['questioning'], 'one code is accepted for a multi-choice field');
+    assert.equal(facts['harm.time'].certainty, 'approximate');
+    assert.deepEqual(facts['harm.time'].sourceQuotes, [{ sourceId: 'message-2', quote: 'In autumn 2024 the police came to my house.' }]);
+    assert.equal(facts['harm.reason'].status, 'unknown');
+    assert.equal(facts['harm.reason'].value, 'I do not know why they came.', 'an omitted value is the cited sentence');
+    assert.equal(facts['harm.place'], undefined, 'an invalid ref leaves a gap instead of failing the turn');
+    assert.equal(facts['harm.actor'], undefined, 'a malformed incident id leaves a gap instead of failing the turn');
+
+    const corrected = await advanceConversation(session, 'Sorry, I was wrong: it was spring 2024.', async request => request.system.startsWith('List every topic') ? '{"groups":[]}'
+      : JSON.stringify({ reply: 'Thank you.', facts: [{ r: 'harm.time', v: 'spring 2024', q: ['4.1'], e: 'harm-1', x: [facts['harm.time'].id] }] }));
+    assert.deepEqual(getActiveFacts(corrected).filter(item => item.requirementId === 'harm.time').map(item => item.value), ['spring 2024']);
+  } finally { setExtractionFormat('full'); }
+});
+
+test('hedged "I don\'t really know / I don\'t quite understand" is recognized as unknown', async () => {
+  for (const [lang, text] of [['en', "I don't really know why our village was attacked."], ['ru', 'Я не очень понимаю, почему напали на нашу деревню.']]) {
+    const session = await advanceConversation(fullSession(lang), text, withTopicCheck([fact('harm.reason', text, text, { eventId: 'harm-1' })]));
+    assert.equal(getActiveFacts(session)[0].status, 'unknown', lang);
+  }
+});
+
+test('a model rewrite that folds an earlier answer into a new one does not replace testimony', async () => {
+  const first = '2023년 겨울에 교회에서 경찰이 저를 체포했습니다.';
+  const second = '그리고 2024년 5월쯤에는 집 앞에서 모르는 남자 두 명이 저를 때렸습니다.';
+  const session = await advanceConversation(fullSession(), first, withTopicCheck([fact('harm.time', '2023년 겨울', first, { eventId: 'harm-1' })]));
+  const oldId = getActiveFacts(session)[0].id;
+  // The model merged both incidents into harm-1 and marked it as a correction of the first.
+  const merged = fact('harm.time', '2023년 겨울; 2024년 5월쯤', first, { eventId: 'harm-1', supersedes: [oldId],
+    sourceIds: ['message-2', 'message-4'], sourceQuotes: [{ sourceId: 'message-2', quote: first }, { sourceId: 'message-4', quote: second }] });
+  const next = await advanceConversation(session, second, withTopicCheck([merged]));
+  const times = getActiveFacts(next).filter(item => item.requirementId === 'harm.time');
+  assert.ok(times.some(item => item.id === oldId && item.value === '2023년 겨울'), 'the first answer is kept');
+  assert.ok(times.some(item => item.status === 'conflict'), 'the rewrite is flagged for review');
+  // A merged list of harm types is not folded into the first incident either.
+  const types = await advanceConversation(
+    await advanceConversation(fullSession(), first, withTopicCheck([fact('harm.type', ['arrest'], first, { eventId: 'harm-1' })])),
+    second, withTopicCheck([fact('harm.type', ['arrest', 'assault'], first, { eventId: 'harm-1',
+      sourceIds: ['message-2', 'message-4'], sourceQuotes: [{ sourceId: 'message-2', quote: first }, { sourceId: 'message-4', quote: second }] })]));
+  assert.ok(getActiveFacts(types).some(item => item.requirementId === 'harm.type' && item.status === 'answered' && item.value.join() === 'arrest'));
+  assert.ok(getActiveFacts(types).some(item => item.requirementId === 'harm.type' && item.status === 'conflict'));
+
+  // The same rewrite with the applicant's own correction is applied.
+  const fixed = '아까 말한 건 잘못 말했습니다. 2023년이 아니라 2022년 겨울이었습니다.';
+  const correction = fact('harm.time', '2022년 겨울', fixed, { eventId: 'harm-1', supersedes: [oldId],
+    sourceIds: ['message-2', 'message-4'], sourceQuotes: [{ sourceId: 'message-2', quote: first }, { sourceId: 'message-4', quote: fixed }] });
+  const corrected = await advanceConversation(session, fixed, withTopicCheck([correction]));
+  assert.deepEqual(getActiveFacts(corrected).filter(item => item.requirementId === 'harm.time').map(item => item.value), ['2022년 겨울']);
+});
+
+test('the app defaults to the compact format with selective auxiliary passes (benchmark b8)', () => {
+  assert.deepEqual(appDefaults, { format: 'compact', aux: 'selective' });
+});
+
+test('auxiliary passes can be turned off to save model calls', async () => {
+  const text = '2024년 가을쯤 경찰이 집에 찾아와서 두 시간 동안 조사했습니다. 돌아가면 다시 붙잡혀 갈까 두렵습니다. 저는 정치적 의견 때문에 신청합니다.';
+  // The first extraction records only a bare "yes" for fear, which normally triggers extra passes.
+  const calls = () => { let count = 0; return [() => count, async request => { count += 1; return request.system.startsWith('List every topic') ? '{"groups":["harm","fear"]}'
+    : response(count === 1 ? [fact('fear', 'yes', '돌아가면 다시 붙잡혀 갈까 두렵습니다.')] : []); }]; };
+  const [withAux, adapterOn] = calls();
+  await advanceConversation(fullSession(), text, adapterOn);
+  setAuxiliaryPasses(false);
+  try {
+    const [withoutAux, adapterOff] = calls();
+    await advanceConversation(fullSession(), text, adapterOff);
+    assert.equal(withoutAux(), 1, 'only the main extraction runs');
+    assert.ok(withAux() > 1);
+  } finally { setAuxiliaryPasses('on'); }
+});
+
+test('selective auxiliary passes check topics only after an unrecorded denial', async () => {
+  const counted = first => { let count = 0; const topics = []; return [() => count, topics, async request => { count += 1;
+    if (request.system.startsWith('List every topic')) { topics.push(request); return '{"groups":["protection"]}'; }
+    return response(count === 1 ? first : []); }]; };
+  setAuxiliaryPasses('selective');
+  try {
+    // "could not ask the police" left nothing recorded: the topic check and a focused pass run.
+    const denial = '저는 정치적 의견 때문에 신청합니다. 경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다. 그래서 삼촌 집으로 피신했습니다.';
+    const [denialCalls, denialTopics, denialAdapter] = counted([]);
+    await advanceConversation(fullSession(), denial, denialAdapter);
+    assert.equal(denialTopics.length, 1);
+    assert.equal(denialCalls(), 3);
+    // No negation: only the main extraction runs.
+    const plain = '2024년 가을쯤 경찰이 집에 찾아와서 저를 두 시간 조사했습니다. 그 뒤로 매일 감시를 받았습니다. 저는 정치적 의견 때문에 신청합니다.';
+    const [plainCalls, plainTopics, plainAdapter] = counted([]);
+    await advanceConversation(fullSession(), plain, plainAdapter);
+    assert.equal(plainTopics.length, 0);
+    assert.equal(plainCalls(), 1);
+  } finally { setAuxiliaryPasses('on'); }
+
+  // Negations are whole words in every language; look-alike substrings are not negations.
+  const cases = [
+    ['ko', '경찰이 위협한 당사자라서 경찰에 도움을 요청할 수 없었습니다. 그래서 삼촌 집으로 피신했습니다. 저는 그곳에서 두 달 지냈습니다.', '일주일 동안 갇혀 있었습니다. 아까 3월이라고 했는데 잘못 말했습니다. 그 뒤 삼촌 집으로 피신했습니다.'],
+    ['ru', 'Я не мог обратиться за помощью в полицию. Поэтому я укрылся у дяди. Через два месяца я уехал.', 'Меня держали неделю. Потом я укрылся у дяди в другом городе. Через два месяца я уехал.'],
+    ['ar', 'لم أستطع أن أطلب المساعدة من الشرطة. لذلك لجأت إلى بيت عمي. بعد شهرين غادرت.', 'بعد أن شاركت في الاحتجاج هددتني الشرطة. لذلك لجأت إلى بيت عمي في مدينة أخرى. بعد شهرين غادرت.'],
+    ['fa', 'نمی‌توانستم از پلیس کمک بخواهم. برای همین به خانه عمویم رفتم. دو ماه بعد رفتم.', 'پلیس به خانه ما آمد و مرا تهدید کرد. برای همین به خانه عمویم پناه بردم. دو ماه بعد رفتم.'],
+  ];
+  setAuxiliaryPasses('selective');
+  try {
+    for (const [lang, negated, plainText] of cases) {
+      const [, negatedTopics, negatedAdapter] = counted([]);
+      await advanceConversation(fullSession(lang), negated, negatedAdapter);
+      assert.equal(negatedTopics.length, 1, `${lang} negation starts the topic check`);
+      const [, plainTopics, plainAdapter] = counted([]);
+      await advanceConversation(fullSession(lang), plainText, plainAdapter);
+      assert.equal(plainTopics.length, 0, `${lang} look-alike is not a negation`);
+    }
+  } finally { setAuxiliaryPasses('on'); }
+
+  // A group the answer denied gets no focused pass, which would attach someone else's incident.
+  const hearsay = '저 자신은 직접 피해를 입은 적은 없습니다. 하지만 형이 2023년에 경찰에게 끌려가 맞았다고 형수에게 들었습니다. 그래서 저도 위험하다고 생각합니다.';
+  let passes = 0;
+  await advanceConversation(fullSession(), hearsay, async request => {
+    if (request.system.startsWith('List every topic')) return '{"groups":["harm"]}';
+    passes += 1;
+    return response(passes === 1 ? [fact('harm', 'no', '저 자신은 직접 피해를 입은 적은 없습니다.')] : []);
+  });
+  assert.equal(passes, 1, 'no focused pass for the denied harm group');
 });
 
 test('repeated identical extraction does not inflate metadata', async () => {
