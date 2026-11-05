@@ -17,9 +17,11 @@ import { clarifyStatement, eventReview } from './intake';
 import { StatementDetails } from './StatementDetails';
 import { TopicProgress, ReviewSummaries, FinalCheck } from './JourneyPanels';
 import { deferCurrentTopics, reviewBundles } from './intake/journey';
+import {HwpDownloadButton} from './export/HwpDownloadButton';
 
 // Benchmark tools ship only in development builds or builds made with VITE_DARI_BENCH=1.
 const BenchPanel = import.meta.env.DEV || import.meta.env.VITE_DARI_BENCH === '1' ? lazy(() => import('./bench/BenchPanel')) : null;
+const ApplicationExport = lazy(() => import('./export/ApplicationExport'));
 
 type Stage = 'language' | 'basics' | 'form' | 'conversation' | 'facts' | 'draft';
 type Output = 'draft' | 'source' | 'metadata';
@@ -70,6 +72,7 @@ export default function App() {
   const main = useRef<HTMLElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const [operatorOpen, setOperatorOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   const copy = intakeCopies[language] ?? intakeCopies.en;
   const sc = scriptedCopy[language] ?? scriptedCopy.en;
   const processCopy = intakeProcessCopy[language] ?? intakeProcessCopy.en;
@@ -228,13 +231,6 @@ export default function App() {
   const sectionsByField = new Map(session.draft.map(section => [narrativeFieldFor(section.questionId, answers14), section]));
   function updateQuestion14(id: string, value: FormValue | undefined) {
     setSession(current => { const next = { ...(current.question14 ?? {}) }; if (value) next[id] = value; else delete next[id]; const reviews = { ...current.draftReviews }; delete reviews[id]; return { ...current, question14: next, draftReviews: reviews }; });
-  }
-  function question14Text() {
-    return (session.scope === 'test' ? 'Conversation test only — not for submission.\n\n' : '') + question14Steps.flatMap(step => step.fields.filter(field => isFieldVisible(field, answers14) && answers14[field.id])
-      .map(field => `${field.id} ${field.ko}\n${formatFormAnswer(field, answers14[field.id])}`)).join('\n\n');
-  }
-  function formValuesText() {
-    return formFacts.map(fact => `${fact.requirementId}${fact.eventId ? ` [${fact.eventId}]` : ''} ${requirementsById.get(fact.requirementId)?.label}: ${koreanValue(fact)}`).join('\n');
   }
   /** Leaving the form saves it into metadata; entering the chat shows the next prompt. */
   function setStage(next: Stage) {
@@ -459,7 +455,8 @@ export default function App() {
           {output === 'metadata' && <section className="panel"><p className="developer-label">Metadata / Developer view</p><div className="details-content" dir="ltr"><pre>{JSON.stringify(JSON.parse(exportSession(session)).metadata, null, 2)}</pre></div></section>}
           {output === 'draft' && <FinalCheck session={session} language={language} checked={finalReviewed} ready={englishReady} onCheck={checked => setFinalReviewedText(checked ? reviewTextKey : '')} onReturn={() => setStage('facts')} />}
           {savedNotice && <p role="status">{savedNotice}</p>}
-          <div className="actions"><button className="secondary" onClick={() => setStage('facts')}>{copy.back}</button><button className="primary" onClick={exportAll}>{language === 'ko' ? '전체 작업 기록 저장' : 'Save full record'}</button><button className="secondary" onClick={() => { download('DARI-Korean-draft.txt', [question14Text(), formFacts.length ? `${scriptedCopy.ko.formValues}\n${formValuesText()}` : ''].filter(Boolean).join('\n\n'), 'text/plain'); setSavedNotice(language === 'ko' ? '한국어 초안의 다운로드를 요청했습니다. 신청서는 제출되지 않았습니다.' : 'Korean draft download requested. Your application has not been submitted.'); }}>{copy.downloadText}</button></div>
+          <div className="actions"><button className="secondary" onClick={() => setStage('facts')}>{copy.back}</button><button className="primary" disabled={!!busy} onClick={() => setExportOpen(true)}>{language === 'ko' ? '신청서 내보내기' : 'Export application'}</button><button className="secondary" onClick={exportAll}>{language === 'ko' ? '전체 작업 기록 저장' : 'Save full record'}</button><HwpDownloadButton session={session} reviewed={finalReviewed && englishReady} language={language} label={copy.downloadText} disabled={!!busy} onNotice={setSavedNotice} onError={setError} /></div>
+          {exportOpen && <EditorModal title={language === 'ko' ? '신청서 양식으로 출력' : 'Export application form'} closeLabel={language === 'ko' ? '닫기' : 'Close'} onClose={() => setExportOpen(false)}><Suspense fallback={<p role="status">{language === 'ko' ? '출력 기능 준비 중…' : 'Loading export…'}</p>}><ApplicationExport session={session} reviewed={finalReviewed && englishReady} language={language} /></Suspense></EditorModal>}
         </>}
       </main>
     </div>
