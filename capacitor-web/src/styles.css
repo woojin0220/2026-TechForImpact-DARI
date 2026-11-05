@@ -120,3 +120,82 @@
 .start-mode main,[dir="rtl"] .start-mode main{flex:1;display:flex;flex-direction:column;padding-bottom:16px}
 .start-mode main>h1{margin-top:auto}.start-mode main>.content-grid{margin-bottom:auto}
 .start-mode .start-panel{position:static;transform:none;width:min(320px,100%);margin:20px auto 0}
+
+/* Session UX: keep the compact stepper and expand only its interaction area. */
+.chat-mode .steps button,.start-mode .steps button,.page-mode .steps button{min-height:44px}
+.steps button[aria-disabled="true"]{color:#707070;cursor:help}
+.steps button:hover:not(.active):not([aria-disabled="true"]){text-decoration:underline;text-underline-offset:4px}
+.steps button:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:4px}
+.step-notice{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:6px 0;font-size:12px;line-height:1.6}
+.step-notice span{flex:1}.step-notice .quiet{min-height:32px;padding:0;flex:none}
+.session-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;flex:none;padding:6px 0 10px;font-size:12px;line-height:1.6;color:#555}
+.session-status span{flex:1;min-width:160px}.session-status .quiet{min-height:32px;padding:0;flex:none}
+.chat-options-sheet .test-actions{margin:12px 0}
+
+/* Reading-focused chat: full-width assistant text and compact user messages. */
+.chat-mode .chat-thread{padding:24px max(18px,calc((100% - 760px)/2));gap:24px}
+.chat-mode .chat-message.assistant{align-self:stretch;max-width:none;background:transparent;border:0;border-radius:0;padding:0;font-size:16px;line-height:1.85}
+.chat-mode .chat-message.user{max-width:82%;background:#f3f3f3;color:var(--ink);border:0;border-radius:20px;padding:11px 16px;font-size:15px;line-height:1.75}
+.chat-mode .chat-composer{width:100%;max-width:796px;margin-inline:auto;border-top:0;padding:10px 18px 14px}
+.chat-mode .chat-composer textarea{background:#f7f7f7;border-color:#dedede;min-height:44px;height:44px}
+.chat-mode .chat-composer .composer-actions .send-icon{width:36px;height:36px;min-height:36px}
+.chat-mode .chat-processing{width:100%;max-width:796px;margin-inline:auto;padding-inline:18px}
+.chat-mode .chat-toolbar{justify-content:flex-end}
+@media(max-width:650px){.chat-mode .chat-thread{padding:18px;gap:22px}.chat-mode .chat-message.user{max-width:88%}}
+
+/* Expand the mobile composer while keeping the transcript in its own scroll area. */
+.chat-mode{height:var(--dari-chat-height,100dvh)}
+.chat-mode .chat-composer{width:calc(100% - 36px);max-width:760px;margin:8px auto 4px;padding:7px;background:#f5f5f5;border:1px solid #e5e5e5;border-radius:26px;align-items:flex-end}
+.chat-mode .chat-composer label{display:flex;min-width:0}
+.chat-mode .chat-composer textarea{width:100%;height:44px;min-height:44px;max-height:180px;background:transparent;border:0;border-radius:0;padding:10px 12px;font-size:16px;line-height:24px;resize:none;overflow-y:hidden}
+.chat-mode .chat-composer textarea:focus{outline:0;box-shadow:none}
+.chat-mode .chat-composer:focus-within{border-color:#a8a8a8}
+.chat-mode .chat-composer .composer-actions{flex:none;padding:0;align-self:flex-end}
+.chat-mode .chat-composer .composer-actions .send-icon{width:44px;height:44px;min-height:44px;min-width:44px}
+.chat-mode .chat-composer .composer-actions .secondary{min-height:44px}
+@media(max-width:650px){
+  .chat-mode .workspace{padding-inline:0}
+  .chat-mode .sidebar{padding-inline:22px}
+  .chat-mode .chat-panel{border:0;border-radius:0}
+  .chat-mode .chat-thread{padding:16px 20px 20px}
+  .chat-mode .chat-toolbar{padding:2px 20px;border-bottom:0}
+  .chat-mode main>.notice,.chat-mode main>.session-status{margin-inline:20px}
+  .chat-mode .chat-composer{width:calc(100% - 32px);margin-bottom:4px}
+  .chat-mode .chat-message.user{max-width:88%}
+}
+
+/* Let the layout shrink to the viewport instead of imposing a 320px canvas. */
+html,body,#root{width:100%;max-width:100%;min-width:0}
+.app-shell,.workspace,.content-grid,.content-grid>div,.chat-panel,.chat-thread,.chat-composer{min-width:0;max-width:100%}
+.chat-mode main,.start-mode main,.page-mode main{min-width:0;max-width:100%}
+.site-header .brand{min-width:0}
+.chat-mode .chat-composer label,.chat-mode .chat-composer textarea{min-width:0;max-width:100%}
+@media(max-width:650px){
+  .chat-mode .steps li,.start-mode .steps li,.page-mode .steps li,
+  .chat-mode .steps li:last-child,.start-mode .steps li:last-child,.page-mode .steps li:last-child{flex:1 1 0;min-width:0}
+  .chat-mode .steps li.current-step,.start-mode .steps li.current-step,.page-mode .steps li.current-step{flex:2.8 1 0}
+  .chat-mode .steps button,.start-mode .steps button,.page-mode .steps button{flex:0 1 auto;min-width:0;max-width:100%;gap:5px}
+  .chat-mode .steps button.active>span:last-child,.start-mode .steps button.active>span:last-child,.page-mode .steps button.active>span:last-child{min-width:0;overflow-wrap:anywhere;text-align:start;line-height:1.4}
+  .chat-mode .steps li:not(:last-child):after,.start-mode .steps li:not(:last-child):after,.page-mode .steps li:not(:last-child):after{min-width:0;margin-inline:4px}
+  input,textarea,select{min-width:0;max-width:100%;font-size:16px}
+  .session-status span{min-width:0;overflow-wrap:anywhere}
+  .step-notice span{min-width:0;overflow-wrap:anywhere}
+  .chat-message,.chat-message p{min-width:0;overflow-wrap:anywhere}
+}
+
+/* Quiet, squared composer with a compact inset action. */
+.chat-mode .chat-composer{background:#fafafa;border-color:#dcdcdc;border-radius:16px;padding:8px;box-shadow:0 1px 3px #00000004;gap:8px}
+.chat-mode .chat-composer:focus-within{background:#fff;border-color:#aaa;box-shadow:0 0 0 1px #00000004}
+.chat-mode .chat-composer textarea{padding:9px 10px;line-height:24px;min-height:44px}
+.chat-mode .chat-composer .composer-actions .send-icon,.chat-mode .chat-composer .composer-actions .secondary{border-radius:10px}
+.chat-mode .chat-composer .composer-actions .send-icon:disabled{opacity:1;background:#e6e6e6;border-color:#e6e6e6;color:#929292}
+.composer-stop svg{display:block}
+.processing-status{flex:none;min-width:0;max-width:100%;padding:10px 0 12px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.6}
+.processing-heading{display:flex;align-items:center;gap:8px;min-width:0}.processing-heading strong{font-weight:600;flex:1;min-width:0;overflow-wrap:anywhere}
+.processing-heading .quiet{min-height:28px;padding:0;flex:none}
+.processing-timing{display:flex;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;color:#666;margin-top:5px}
+.processing-timing span{overflow-wrap:anywhere}.processing-status p{margin:3px 0 0;color:#777;font-size:11px}
+.stage-readonly{border:0;margin:0;padding:0;min-inline-size:0;width:100%}
+.form-stage-guard{display:flex;flex:1;min-height:0;min-width:0;border:0;margin:0;padding:0}
+.language-entry .processing-status{width:100%}
+@media(max-width:650px){.chat-mode .workspace>.processing-status{margin-inline:22px;max-width:calc(100% - 44px)}.processing-status{font-size:11px}.processing-timing{gap:4px 12px}}
