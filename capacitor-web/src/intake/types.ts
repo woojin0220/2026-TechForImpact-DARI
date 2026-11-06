@@ -74,7 +74,8 @@ export type IntakeSession = {
   draftReviews?: Record<string, TxtDocument>;
   updatedAt: string;
 };
-export type ModelRequest = { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown> };
+/** `priority: 'background'` marks work nobody is waiting on (e.g. automatic back-translation). */
+export type ModelRequest = { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown>; priority?: 'foreground' | 'background' };
 export type ModelAdapter = (request: ModelRequest) => Promise<string>;
 
 /** Carries the original answer even if inference, JSON parsing or provenance checks fail. */

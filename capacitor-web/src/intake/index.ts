@@ -488,13 +488,15 @@ async function extract(session: IntakeSession, focused: Requirement[], adapter: 
   const focusedIds = new Set(focused.map(item => item.id));
   const compact = extractionFormat === 'compact';
   const prompt = boundedPrompt({
-    language: session.language,
-    clarifyingFactIds: session.messages.at(-2)?.ask?.kind === 'narrative' ? (session.messages.at(-2)!.ask as Extract<MessageAsk, { kind: 'narrative' }>).clarifies ?? [] : [],
+    // The requirement list is the same on every turn, so it comes first: the runtime can
+    // reuse the cached prefix (system prompt + requirements) instead of re-reading it.
     // Compact: "harm" is a yes/no gate and "harm.*" its details; options are listed by value.
     requirements: focused.map(({ id, labelEn, type, options, repeatable, whenEvent, reviewNote }) => ({
       id, label: labelEn, type, ...(options ? { options: options.map(option => option.value) } : {}),
       ...(repeatable ? { perIncident: true } : {}), ...(whenEvent ? { onlyIf: whenEvent } : {}), ...(reviewNote ? { note: reviewNote } : {}),
     })),
+    language: session.language,
+    clarifyingFactIds: session.messages.at(-2)?.ask?.kind === 'narrative' ? (session.messages.at(-2)!.ask as Extract<MessageAsk, { kind: 'narrative' }>).clarifies ?? [] : [],
     stillMissing: calculateCoverage(session).filter(item => focusedIds.has(item.requirementId) && item.status === 'missing').map(item => item.requirementId),
     activeFacts: getActiveFacts(session).filter(item => focusedIds.has(item.requirementId)).map(({ id, requirementId, eventId, value, status, statements, relatedRequirementIds }) => ({ id, requirementId, eventId, value, status, statements, relatedRequirementIds })),
     ...(compact ? {
@@ -883,9 +885,9 @@ export async function generateDraft(session: IntakeSession, adapter: ModelAdapte
         .filter((old): old is IntakeFact => !!old && typeof old.value === 'string' && typeof fact.value === 'string' && !fact.value.includes(old.value))
         .map(old => ({ field: fact.requirementId, eventId: fact.eventId, old: old.value as string, now: fact.value as string })));
       const prompt = boundedPrompt({
-        language: 'ko', questionId,
         contextFacts: facts.map(({ id, requirementId, value, certainty, knowledge, eventId, otherText }) => ({ id, requirementId, value, certainty, knowledge, eventId, ...(otherText ? { otherText } : {}) })),
         contextRule: 'Facts are shared applicant statements. Explicit questionUses link a statement to one or more narrative questions; never reinterpret an unrelated fact to fill a gap. Only cite the supplied facts. Preserve all per-statement roles, polarity, certainty and knowledge; do not turn an identity belief into an identity or reverse subject and object.',
+        language: 'ko', questionId,
         questionUses: uses.filter(use => use.questionId === questionId),
         writingTask: '아래 확인된 사실을 모두 반영하여 신청인이 직접 말하는 형식의 자연스러운 한국어 진술문을 작성하세요. 사건 경위를 문장으로 서술하고 단순한 예/아니요 답변으로 끝내지 마세요. 모든 requiredFactIds를 적어도 한 문장의 근거로 연결하세요.',
         requiredFactIds: questionFacts.map(item => item.id),
