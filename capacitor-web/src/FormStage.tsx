@@ -4,6 +4,7 @@ import { localizedLabel } from './form/localize';
 import type { ScriptedCopy } from './intakeCopy';
 import { samePrompt } from './form/presentation';
 import { OTHER_OPTION, takesOtherText } from './form/otherChoice';
+import { ChoiceList } from './ChoiceList';
 
 // Development builds, or a build made with VITE_DARI_DEV_TOOLS=true, show test helpers.
 export const DEV_TOOLS = import.meta.env.DEV || import.meta.env.VITE_DARI_DEV_TOOLS === 'true';
@@ -63,22 +64,16 @@ export function FieldInput({ field, language, valueLanguage, value, copy, onChan
   const selected = value?.kind === 'choice' ? value.values : [];
   const other = value?.kind === 'choice' ? value.other ?? '' : '';
   const status = value?.kind === 'status' ? value.status : undefined;
-  const otherOpen = takesOtherText(field.id, field.options) && selected.includes(OTHER_OPTION);
   // The “기타” text belongs to the Other option: deselecting Other drops it.
   const choose = (values: string[]) => onChange(values.length ? { kind: 'choice', values, ...(values.includes(OTHER_OPTION) && other ? { other } : {}) } : undefined);
   const toggleStatus = (next: 'unknown' | 'not_applicable') => onChange(status === next ? undefined : { kind: 'status', status: next });
   return <div className="form-field">
     {showLabel && <p className="form-label">{label}</p>}
-    {(field.type === 'single' || field.type === 'multi') && <div className="choice-list" role="group" aria-label={label}>
-      {field.options?.map(option => {
-        const on = selected.includes(option.value);
-        const values = field.type === 'multi' ? (on ? selected.filter(item => item !== option.value) : [...selected, option.value]) : (on ? [] : [option.value]);
-        return <button key={option.value} aria-pressed={on} onClick={() => choose(values)}>{text(language, option.ko, option.en)}</button>;
-      })}
-    </div>}
-    {otherOpen && <label className="other-input">{copy.otherLabel}
-      <input dir="auto" value={other} maxLength={500} placeholder={copy.otherPlaceholder}
-        onChange={event => onChange({ kind: 'choice', values: selected, ...(event.target.value ? { other: event.target.value } : {}) })} /></label>}
+    {(field.type === 'single' || field.type === 'multi') && <ChoiceList label={label} multi={field.type === 'multi'} selected={selected}
+      items={(field.options ?? []).map(option => ({ value: option.value, label: text(language, option.ko, option.en) }))}
+      onToggle={value => { const on = selected.includes(value); choose(field.type === 'multi' ? (on ? selected.filter(item => item !== value) : [...selected, value]) : (on ? [] : [value])); }}
+      otherValue={takesOtherText(field.id, field.options) ? OTHER_OPTION : undefined} otherText={other} otherLabel={copy.otherLabel} otherPlaceholder={copy.otherPlaceholder}
+      onOtherText={value => onChange({ kind: 'choice', values: selected, ...(value ? { other: value } : {}) })} />}
     {(field.type === 'single' || field.type === 'multi') && selected.length > 0 && <button className="quiet clear-choice" onClick={() => onChange(undefined)}>{copy.clearChoice}</button>}
     {(field.type === 'short' || field.type === 'date') && <input lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : field.type === 'date' ? 'ltr' : 'auto'} value={value?.kind === 'text' ? value.text : ''} placeholder={field.type === 'date' ? copy.datePlaceholder : ''} title={field.type === 'date' ? copy.dateFormat : undefined} aria-label={label}
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}
