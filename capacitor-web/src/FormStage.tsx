@@ -28,13 +28,16 @@ type Props = {
   onChange: (answers: FormAnswers) => void;
   onPage: (page: number) => void;
   onDone: () => void;
+  focusField?: string;
+  hiddenFieldNotice?: string;
 };
 
-export function FormStage({ language, answers, page, copy, back, next, onChange, onPage, onDone }: Props) {
+export function FormStage({ language, answers, page, copy, back, next, onChange, onPage, onDone, focusField, hiddenFieldNotice }: Props) {
   const step = formSteps[page];
   const last = page === formSteps.length - 1;
   const title = text(language, step.titleKo, step.titleEn);
-  const visibleFields = step.fields.filter(field => isFieldVisible(field, answers));
+  const visibleFields = step.fields.filter(field => isFieldVisible(field, answers) || field.id === focusField);
+  const editingHidden = step.fields.some(field => field.id === focusField && !isFieldVisible(field, answers));
   const set = (id: string, value: FormValue | undefined) => {
     const updated = { ...answers };
     if (value) updated[id] = value; else delete updated[id];
@@ -49,6 +52,7 @@ export function FormStage({ language, answers, page, copy, back, next, onChange,
     {DEV_TOOLS && <button className="quiet dev-fill" onClick={() => onChange(dummyFormAnswers())}>{copy.devFill}</button>}
     <section className="panel form-card" key={step.id}>
       <h2>{title}</h2>
+      {editingHidden && hiddenFieldNotice && <p className="notice" role="status">{hiddenFieldNotice}</p>}
       {visibleFields.map(field =>
         <FieldInput key={field.id} field={field} language={language} value={answers[field.id]} copy={copy} showLabel={!samePrompt(title, text(language, field.ko, field.en))} onChange={value => set(field.id, value)} />)}
     </section>
@@ -67,12 +71,12 @@ export function FieldInput({ field, language, valueLanguage, value, copy, onChan
   // The “기타” text belongs to the Other option: deselecting Other drops it.
   const choose = (values: string[]) => onChange(values.length ? { kind: 'choice', values, ...(values.includes(OTHER_OPTION) && other ? { other } : {}) } : undefined);
   const toggleStatus = (next: 'unknown' | 'not_applicable') => onChange(status === next ? undefined : { kind: 'status', status: next });
-  return <div className="form-field">
+  return <div className="form-field" data-field-id={field.id} tabIndex={-1}>
     {showLabel && <p className="form-label">{label}</p>}
     {(field.type === 'single' || field.type === 'multi') && <ChoiceList label={label} multi={field.type === 'multi'} selected={selected}
       items={(field.options ?? []).map(option => ({ value: option.value, label: text(language, option.ko, option.en) }))}
       onToggle={value => { const on = selected.includes(value); choose(field.type === 'multi' ? (on ? selected.filter(item => item !== value) : [...selected, value]) : (on ? [] : [value])); }}
-      otherValue={takesOtherText(field.id, field.options) ? OTHER_OPTION : undefined} otherText={other} otherLabel={copy.otherLabel}
+      otherValue={takesOtherText(field.id, field.options) ? OTHER_OPTION : undefined} otherText={other} otherLabel={copy.otherLabel} moreLabel={copy.moreChoices} lessLabel={copy.fewerChoices} hiddenSelectedLabel={copy.hiddenSelected}
       onOtherText={value => { const values = withOtherText(selected, OTHER_OPTION, value, field.type === 'multi'); onChange(values.length || value ? { kind: 'choice', values, ...(value ? { other: value } : {}) } : undefined); }} />}
     {(field.type === 'single' || field.type === 'multi') && selected.length > 0 && <button className="quiet clear-choice" onClick={() => onChange(undefined)}>{copy.clearChoice}</button>}
     {(field.type === 'short' || field.type === 'date') && <input lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : field.type === 'date' ? 'ltr' : 'auto'} value={value?.kind === 'text' ? value.text : ''} placeholder={field.type === 'date' ? copy.datePlaceholder : ''} title={field.type === 'date' ? copy.dateFormat : undefined} aria-label={label}

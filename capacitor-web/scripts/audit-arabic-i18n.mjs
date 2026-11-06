@@ -7,6 +7,7 @@ import { statusWords } from '../src/statusCopy.ts';
 import { journeyCopies } from '../src/journeyCopy.ts';
 import { revisionCopies } from '../src/revision/revisionCopy.ts';
 import { benchCopies } from '../src/bench/benchCopy.ts';
+import { overviewCopies } from '../src/sessionOverview/copy.ts';
 import { intakeCopies, intakeProcessCopy, scriptedCopy } from '../src/intakeCopy.ts';
 import { applicationSteps } from '../src/form/schema.ts';
 import { requirementCatalog } from '../src/intake/catalog.ts';
@@ -15,7 +16,7 @@ import { hasLocalizedPhrase, localizedLabel } from '../src/form/localize.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dictionaries = { app: { en: appEnglish, ko: appKorean, ar: appArabic }, journey: journeyCopies,
-  revision: revisionCopies, bench: benchCopies, intake: intakeCopies, process: intakeProcessCopy, scripted: scriptedCopy, statuses: statusWords };
+  revision: revisionCopies, bench: benchCopies, overview: overviewCopies, intake: intakeCopies, process: intakeProcessCopy, scripted: scriptedCopy, statuses: statusWords };
 const issues = [], entries = [];
 for (const [namespace, copies] of Object.entries(dictionaries)) {
   const keys = Object.keys(copies.en).sort();
@@ -51,7 +52,7 @@ for (const group of metadataGroups) label(group.ko, group.en, `${group.id}:group
 // Static prose in actually reachable components must use a translation key.
 // Brand names and explicitly technical CPU/GPU values are not translated.
 const components = ['App.tsx', 'FormStage.tsx', 'JourneyPanels.tsx', 'StatementDetails.tsx',
-  'revision/SentenceReview.tsx', 'revision/EnglishMeaning.tsx', 'revision/EditorModal.tsx', 'bench/BenchPanel.tsx'];
+  'sessionOverview/SessionOverview.tsx', 'revision/SentenceReview.tsx', 'revision/EnglishMeaning.tsx', 'revision/EditorModal.tsx', 'bench/BenchPanel.tsx'];
 const literalFindings = [];
 function renderedStrings(node) {
   if (!node) return [];
@@ -95,7 +96,7 @@ const result = {
     missingKeys: issues.length, hardcodedLiteralUiProse: literalFindings.length },
   scope: 'Arabic UI chrome, known official labels, metadata, errors/loading and RTL. Other language dictionaries retain their pre-existing coverage.',
   preservedData: ['verbatim user input and source quotations', 'Korean draft text', 'model names, URLs, IDs and raw developer JSON'],
-  explicitLimitations: ['Arabic final meaning/backtranslation remains unsupported and approval remains disabled.', 'English-only developer quick test is explicitly labelled and hidden from the ordinary production start screen.', 'Script detection cannot prove the linguistic quality of generated Arabic.', 'LegacyApp.tsx is not imported by main.tsx and is outside the active user route.'],
+  explicitLimitations: ['Arabic final meaning/backtranslation remains unsupported and approval remains disabled.', 'English-only developer quick test is explicitly labelled and hidden from the ordinary production start screen.', 'Script detection cannot prove the linguistic quality of generated Arabic.'],
   issues, literalFindings, entries, labelOccurrences,
 };
 const output = resolve(root, '../docs/arabic-fix/TRANSLATION_AUDIT.json');

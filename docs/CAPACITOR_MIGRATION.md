@@ -59,7 +59,7 @@ npx cap sync
 
 ## ML Kit 플러그인 구성
 
-`src/lib/mlKitTranslation.ts`가 웹 코드와 네이티브 플러그인을 연결하며, `src/lib/api.ts`의 `MlKitTranslationProvider`가 이를 사용합니다.
+`src/lib/mlKitTranslation.ts`가 웹 코드와 네이티브 플러그인을 연결합니다. 이를 쓰던 `src/lib/api.ts`는 현재 화면에서 쓰이지 않아 삭제했습니다(이전 구현은 커밋 `eea4102` 참고).
 
 1. Android 구현: `android/app/src/main/java/org/dari/app/MlKitTranslationPlugin.java`
 2. iOS 구현: `ios/App/App/MlKitTranslationPlugin.swift`

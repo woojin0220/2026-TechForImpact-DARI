@@ -17,6 +17,14 @@ export type WorkingCopy = {
   pendingTask: 'intake' | 'draft' | null;
 };
 
+/** Raw metadata JSON is a developer view (#6); applicants only see the draft and their own words. */
+export function visibleOutputs(devTools: boolean): Output[] {
+  return devTools ? ['draft', 'source', 'metadata'] : ['draft', 'source'];
+}
+export function initialOutput(saved: Output | undefined, devTools: boolean): Output {
+  return saved && visibleOutputs(devTools).includes(saved) ? saved : 'draft';
+}
+
 export const WORKING_COPY_KEY = 'dari.working-copy.v1';
 type StorageAccess = () => Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 const browserStorage: StorageAccess = () => window.sessionStorage;

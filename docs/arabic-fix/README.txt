@@ -4,10 +4,10 @@ DARI · 아랍어 UI·RTL 수정본 · 2026-11-04
 기준 커밋: 2b298384f5e6914b48a77a969ed9f99c5c344073
 기본 로컬 모델: gemma4:e4b (README·원본 코드와 동일)
 
-코드 원인과 원본 비교: docs/arabic-fix/변경설명.html
-전체 번역 키·문항 감사: docs/arabic-fix/TRANSLATION_AUDIT.json
-실제 화면 증거: docs/arabic-fix/evidence/
-검증 기록: docs/arabic-fix/VALIDATION.json 및 arabic-test-results.txt
+코드 원인과 원본 비교: 변경설명.html
+전체 번역 키·문항 감사: TRANSLATION_AUDIT.json
+실제 화면 증거: evidence/
+검증 기록: VALIDATION.json 및 arabic-test-results.txt
 
 개발 실행:
 1. Ollama에서 gemma4:e4b를 준비합니다. 최초 한 번: ollama pull gemma4:e4b
@@ -17,8 +17,8 @@ DARI · 아랍어 UI·RTL 수정본 · 2026-11-04
 5. npm run audit:ar
 6. npm test
 7. npm run build
-8. npm run dev -- --host 127.0.0.1 --port 5173 --strictPort
-9. http://127.0.0.1:5173/ 에 접속해 العربية를 선택합니다.
+8. npm run dev -- --host 127.0.0.1 --port 5188 --strictPort
+9. http://127.0.0.1:5188/ 에 접속해 العربية를 선택합니다.
 
 수정의 핵심:
 - 한국어가 아니면 영어를 표시하던 분기를 아랍어 번역 키 조회로 바꿨습니다.

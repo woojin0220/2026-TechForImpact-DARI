@@ -256,7 +256,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_json(200, {
             "status": "ok",
             "service": "DARI local translation and verification server",
-            "endpoints": ["POST /v1/translate", "POST /v1/translate/batch", "POST /v1/translation/verify"],
+            "endpoints": ["GET /v1/intake/status", "POST /v1/intake/generate", "POST /v1/translate", "POST /v1/translate/batch", "POST /v1/translation/verify"],
             "note": "개발 컴퓨터에서만 사용하는 로컬 서버입니다.",
         })
 

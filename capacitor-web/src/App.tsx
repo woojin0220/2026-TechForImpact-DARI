@@ -22,14 +22,19 @@ import { StatementDetails } from './StatementDetails';
 import { TopicProgress, ReviewSummaries, FinalCheck } from './JourneyPanels';
 import { deferCurrentTopics, reviewBundles } from './intake/journey';
 import {HwpDownloadButton} from './export/HwpDownloadButton';
+import { SessionOverview } from './sessionOverview/SessionOverview';
+import { overviewCopyFor } from './sessionOverview/copy';
+import type { OverviewEditTarget } from './sessionOverview/model';
+import { formRowIndex } from './sessionOverview/navigation';
 
 // Benchmark tools ship only in development builds or builds made with VITE_DARI_BENCH=1.
 const BenchPanel = import.meta.env.DEV || import.meta.env.VITE_DARI_BENCH === '1' ? lazy(() => import('./bench/BenchPanel')) : null;
 const ApplicationExport = lazy(() => import('./export/ApplicationExport'));
 
-import { clearWorkingCopy, readWorkingCopy, writeWorkingCopy, type WorkingCopy, type Stage, type Output } from './workingCopy';
+import { clearWorkingCopy, readWorkingCopy, writeWorkingCopy, initialOutput, visibleOutputs, type WorkingCopy, type Stage, type Output } from './workingCopy';
 import { sessionUxCopy } from './sessionUxCopy';
 import { ProcessingStatus } from './ProcessingStatus';
+import { stepProgress } from './stepProgress';
 import { estimateProcessingTime, type ProcessingTask } from './processingTime';
 const demoAnswer = '이것은 기능 테스트를 위한 가상 이야기입니다. 저는 정치적 의견 때문에 보호를 신청하려고 합니다. 2025년 봄쯤 제 나라의 작은 도시에서 평화적인 집회에 참여한 뒤 경찰 제복을 입은 두 사람이 집에 찾아왔습니다. 정확한 날짜는 기억나지 않습니다. 그들은 저에게 집회에 다시 나가지 말라고 말했고 저는 무서웠습니다. 저는 구금되거나 다치지는 않았습니다. 이 일이 정치적 의견 때문이라고 생각하지만 그들의 실제 소속은 확인하지 못했습니다. 그 뒤 다른 도시의 친구 집으로 옮겼습니다. 가족이 직접 피해를 입은 일은 없습니다. 돌아가면 다시 위협받을까 두렵습니다. 무기를 보지는 못했습니다.';
 
@@ -41,15 +46,16 @@ function download(name: string, content: string, type = 'application/json') {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export default function App() {
-  const [initialWork] = useState(() => readWorkingCopy());
-  const [stage, updateStage] = useState<Stage>(initialWork.work?.stage ?? 'language');
+// Optional initial data supports isolated UI verification; normal startup is unchanged.
+export default function App({ initialSession, initialStage }: { initialSession?: IntakeSession; initialStage?: Stage } = {}) {
+  const [initialWork] = useState(() => initialSession ? { work: null } as ReturnType<typeof readWorkingCopy> : readWorkingCopy());
+  const [stage, updateStage] = useState<Stage>(initialStage ?? initialWork.work?.stage ?? 'language');
   const currentStage = useRef(stage);
   const languageReturnStage = useRef<Stage>('basics');
   function setStageRaw(next: Stage) { currentStage.current = next; updateStage(next); }
   const [formPage, setFormPage] = useState(Math.min(initialWork.work?.formPage ?? 0, formSteps.length - 1));
-  const [language, setLanguage] = useState(initialWork.work?.language ?? 'ko');
-  const [session, setSession] = useState<IntakeSession>(() => initialWork.work?.session ?? createSession('ko', 'full'));
+  const [language, setLanguage] = useState(initialSession?.language ?? initialWork.work?.language ?? 'ko');
+  const [session, setSession] = useState<IntakeSession>(() => initialSession ?? initialWork.work?.session ?? createSession('ko', 'full'));
   const [input, setInput] = useState(initialWork.work?.input ?? '');
   const [picked, setPicked] = useState<string[]>(initialWork.work?.picked ?? []);
   const [busy, setBusy] = useState<'intake' | 'draft' | null>(null);
@@ -73,7 +79,7 @@ export default function App() {
   const [meaningReady, setMeaningReady] = useState<Record<string, string>>({});
   const [finalReviewedText, setFinalReviewedText] = useState(initialWork.work?.finalReviewedText ?? '');
   const [savedNotice, setSavedNotice] = useState('');
-  const [output, setOutput] = useState<Output>(initialWork.work?.output ?? 'draft');
+  const [output, setOutput] = useState<Output>(initialOutput(initialWork.work?.output, DEV_TOOLS));
   const [editingField, setEditingField] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [sourceIds, setSourceIds] = useState<string[]>([]);
@@ -85,6 +91,8 @@ export default function App() {
   const dialog = useRef<HTMLDialogElement>(null);
   const [operatorOpen, setOperatorOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [overviewOpen, setOverviewOpen] = useState(false);
+  const [overviewTarget, setOverviewTarget] = useState<OverviewEditTarget | null>(null);
   const [stageNotice, setStageNotice] = useState('');
   const [restoredNotice, setRestoredNotice] = useState(!!initialWork.work);
   const [recoveryPending, setRecoveryPending] = useState(!!initialWork.work?.pendingTask);
@@ -93,6 +101,7 @@ export default function App() {
   const ux = sessionUxCopy[language] ?? sessionUxCopy.en;
   const copy = { ...(intakeCopies[language] ?? intakeCopies.en), memory: ux.memory };
   const ui = appCopyFor(language);
+  const overviewCopy = overviewCopyFor(language);
   const sc = scriptedCopy[language] ?? scriptedCopy.en;
   const processCopy = intakeProcessCopy[language] ?? intakeProcessCopy.en;
   const direction = ['ar', 'fa'].includes(language) ? 'rtl' : 'ltr';
@@ -114,6 +123,7 @@ export default function App() {
   const formFacts = facts.filter(fact => fact.status !== 'conflict' && !draftedQuestions.has(requirementsById.get(fact.requirementId)?.questionId ?? '') && !requirementsById.get(fact.requirementId)?.questionId.startsWith('14'));
   const derived14 = deriveQuestion14(session);
   const steps: { id: Stage; label: string }[] = [{ id: 'basics', label: copy.basics }, ...(session.scope === 'test' ? [] : [{ id: 'form' as Stage, label: sc.formStep }]), { id: 'conversation', label: copy.conversation }, { id: 'facts', label: copy.facts }, { id: 'draft', label: copy.draft }];
+  const progress = stepProgress(steps.map(item => item.id), stage);
   const workingCopy = useMemo<WorkingCopy>(() => ({
     version: 1, session, language, stage, formPage, input, picked, demo, finalReviewedText, output,
     pendingTask: recoveryPending ? initialWork.work?.pendingTask ?? null : generatingExample ? null : busy,
@@ -316,6 +326,7 @@ export default function App() {
   }
   /** Leaving the form saves it into metadata; entering the chat shows the next prompt. */
   function setStage(next: Stage) {
+    setOverviewTarget(null);
     const previous = currentStage.current;
     // Viewing another screen must not mutate a session whose model request is in flight.
     if (busy || recoveryPending) { setStageRaw(next); return; }
@@ -438,6 +449,80 @@ export default function App() {
     download(`DARI-${session.id.slice(0, 8)}.json`, JSON.stringify(data, null, 2));
     setSavedNotice(ui.savedRecord);
   }
+  // Opening the overview is read-only. Editing uses the existing form, correction
+  // composer or Korean draft controls; original messages are never rewritten.
+  const overviewFact = overviewTarget?.kind === 'fact' ? session.facts.find(fact => fact.id === overviewTarget.factId) : undefined;
+  const overviewTopic = overviewTarget?.kind === 'conversation' ? metadataGroups.find(item => item.id === overviewTarget.topicId) : undefined;
+  const overviewFormField = overviewTarget?.kind === 'form' ? overviewTarget.fieldId
+    : overviewFact && isFormSection(overviewFact.requirementId) ? requirementsById.get(overviewFact.requirementId)?.parentId ?? overviewFact.requirementId : undefined;
+  function editFromOverview(target: OverviewEditTarget) {
+    if (busy || recoveryPending) return;
+    setOverviewOpen(false);
+    if (target.kind === 'form') {
+      setFormPage(formPageOf(target.fieldId)); setStage('form');
+    } else if (target.kind === 'fact') {
+      const fact = session.facts.find(item => item.id === target.factId);
+      if (!fact) return;
+      if (isFormSection(fact.requirementId)) { setFormPage(formPageOf(fact.requirementId)); setStage('form'); }
+      else if (requirementsById.get(fact.requirementId)?.collection !== 'conversation') reask(fact);
+      else setStage('facts');
+    } else if (target.kind === 'draft') {
+      setOutput('draft'); setEditingField(null); setStage('draft');
+    } else {
+      const index = session.messages.findIndex(item => item.id === target.messageId);
+      const questionMessage = index >= 0 ? session.messages.slice(0, index + 1).reverse().find(item => item.ask) : undefined;
+      const question = questionMessage?.ask;
+      if (question && 'requirementId' in question && isFormSection(question.requirementId)) {
+        editFromOverview({ kind: 'form', fieldId: requirementsById.get(question.requirementId)?.parentId ?? question.requirementId }); return;
+      }
+      if (!target.messageId && !target.topicId) { setStage(stage === 'facts' ? 'facts' : 'conversation'); }
+      else if (question && 'requirementId' in question && questionMessage) {
+        setSession(reaskQuestion(session, questionMessage.content, question)); setStage('conversation');
+      } else setStage('facts');
+    }
+    setOverviewTarget({ ...target });
+  }
+  async function sendCorrection() {
+    let base = session;
+    if (overviewTarget?.kind === 'conversation' && overviewTarget.topicId) {
+      const topicId = overviewTarget.topicId;
+      const group = metadataGroups.find(item => item.id === topicId);
+      const decisions = { ...base.topicDecisions }; delete decisions[topicId];
+      base = appendAssistantMessage({ ...base, topicDecisions: decisions }, sc.topic.replace('{topic}', group ? localizedLabel(language, group.ko, group.en) : topicId), { kind: 'narrative', topics: [topicId] });
+    } else if (overviewFact && !isFormSection(overviewFact.requirementId)) {
+      const group = metadataGroups.find(item => overviewFact.requirementId === item.id || overviewFact.requirementId.startsWith(`${item.id}.`));
+      const topic = group ? localizedLabel(language, group.ko, group.en) : requirementLabel(overviewFact.requirementId);
+      const decisions = { ...base.topicDecisions }; if (group) delete decisions[group.id];
+      base = appendAssistantMessage({ ...base, topicDecisions: decisions }, sc.topic.replace('{topic}', topic), { kind: 'narrative', topics: [group?.id ?? overviewFact.requirementId] });
+    } else if (overviewTarget?.kind === 'conversation' && overviewTarget.messageId) {
+      const index = session.messages.findIndex(item => item.id === overviewTarget.messageId);
+      const question = session.messages.slice(0, index + 1).reverse().find(item => item.ask);
+      if (question?.ask) base = appendAssistantMessage(base, question.content, question.ask);
+    }
+    await send(input, base, true);
+  }
+  useEffect(() => {
+    if (!overviewTarget || overviewOpen) return;
+    const frame = requestAnimationFrame(() => {
+      let element: HTMLElement | null = null;
+      const fieldId = overviewFormField ?? (overviewTarget.kind === 'draft' ? overviewTarget.fieldId : undefined);
+      if (fieldId) {
+        const container = main.current?.querySelector<HTMLElement>(`[data-field-id="${CSS.escape(fieldId)}"]`);
+        if (overviewFact?.eventId && requirementsById.get(overviewFact.requirementId)?.parentId) {
+          const row = formRowIndex(session.form, fieldId, overviewFact.eventId);
+          const parent = formSteps.flatMap(step => step.fields).find(field => field.id === fieldId);
+          const column = parent?.columns?.findIndex(item => `${fieldId}.${item.id}` === overviewFact.requirementId) ?? -1;
+          element = row >= 0 && column >= 0 ? container?.querySelectorAll<HTMLElement>('.table-entry')[row]?.querySelectorAll<HTMLElement>('input')[column] ?? null : null;
+        }
+        element ??= container?.querySelector<HTMLElement>('input,textarea,button') ?? container ?? null;
+      } else element = main.current?.querySelector<HTMLElement>(stage === 'conversation' ? '.chat-composer textarea,.answer-choices button' : '[data-overview-correction] textarea') ?? null;
+      element?.scrollIntoView({ block: 'center' });
+      (element ?? main.current)?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  // Modal open/close alone must preserve correction context and restore its trigger.
+  }, [overviewTarget, overviewFormField, stage, formPage]);
+
   function openOperator() { setOperatorOpen(true); }
   function closeDialog() { setShowHelp(false); setSourceIds([]); }
 
@@ -455,7 +540,7 @@ export default function App() {
 
   return <div className={stage === 'conversation' || stage === 'form' ? 'app-shell chat-mode' : stage === 'basics' ? 'app-shell start-mode' : 'app-shell page-mode'}>
     <a className="skip-link" href="#main">{copy.continue}</a>
-    <header className="site-header"><button className="brand" onClick={() => setStage('basics')}><strong lang="en" dir="ltr">DARI</strong><span>{copy.tagline}</span></button><div className="header-actions"><button className="quiet" onClick={() => { languageReturnStage.current = currentStage.current; setStage('language'); }}>{intakeLanguages.find(item => item.code === language)?.name}</button><button className="quiet" onClick={() => setShowHelp(true)}><span className="help-mark">?</span>{copy.help}</button><div className="operator-entry"><button className="operator-toggle" aria-expanded={operatorOpen} aria-controls="operator" aria-label={ui.operator} title={ui.operator} onClick={() => setOperatorOpen(open => !open)}>⚙</button>
+    <header className="site-header"><button className="brand" onClick={() => setStage('basics')}><strong lang="en" dir="ltr">DARI</strong><span>{copy.tagline}</span></button><div className="header-actions"><button className="secondary overview-trigger" aria-haspopup="dialog" aria-expanded={overviewOpen} onClick={() => { setOperatorOpen(false); setOverviewOpen(true); }}>{overviewCopy.open}</button><button className="quiet" onClick={() => { languageReturnStage.current = currentStage.current; setStage('language'); }}>{intakeLanguages.find(item => item.code === language)?.name}</button><button className="quiet" onClick={() => setShowHelp(true)}><span className="help-mark">?</span>{copy.help}</button><div className="operator-entry"><button className="operator-toggle" aria-expanded={operatorOpen} aria-controls="operator" aria-label={ui.operator} title={ui.operator} onClick={() => setOperatorOpen(open => !open)}>⚙</button>
     {operatorOpen && <section id="operator" className="operator-popover" lang={language} dir={direction} aria-label={ui.operator}><div className="operator-head"><b>{ui.operator}</b><button className="quiet" onClick={() => setOperatorOpen(false)}>{copy.close}</button></div><div className="operator-grid">
           <p className="status-line">{runtime?.mode === 'on-device' ? ui.onDevice : ui.localPreview}<br /><bdi dir="ltr">{runtime?.modelName ?? ui.checking}{runtime?.backend && ` · ${runtime.backend.toUpperCase()}`}</bdi> · {runtime?.modelReady ? (runtime.mode === 'on-device' ? ui.fileReady : ui.modelReady) : ui.modelNeeded}</p>
           {runtime?.mode !== 'on-device' && <><code dir="ltr">{INTAKE_API_URL}</code><label>{ui.previewModel}<select dir="ltr" value={model} disabled={(!!busy || recoveryPending)} onChange={event => { setModel(event.target.value); setPreviewModel(event.target.value); void refreshRuntime(); }}>{previewModels.map(item => <option key={item}>{item}</option>)}</select></label><small>{ui.previewNote}</small></>}
@@ -467,7 +552,7 @@ export default function App() {
           {BenchPanel && <Suspense fallback={null}><BenchPanel runtime={runtime} disabled={(!!busy || recoveryPending) || importing} language={language} /></Suspense>}
         </div></section>}</div></div></header>
     <div className="workspace">
-      <aside className="sidebar"><p className="overline">DARI / 01</p><h2>{copy.sidebar}</h2><ol className="steps">{steps.map((item, index) => <li key={item.id} className={stage === item.id ? 'current-step' : undefined}><button className={stage === item.id ? 'active' : ''} aria-current={stage === item.id ? 'step' : undefined} aria-disabled={item.id === 'draft' && !session.draftRevision} onClick={() => navigateToStep(item.id)}><span className="step-number">{String(index + 1).padStart(2, '0')}</span><span>{item.label}</span></button></li>)}</ol>{stageNotice && <div className="step-notice" role="status"><span>{stageNotice}</span><button className="quiet" onClick={() => setStageNotice('')}>{copy.close}</button></div>}<div className="sidebar-note"><p>{copy.pace}</p><small>{copy.memory}</small></div><div className="sidebar-footer">DARI</div></aside>
+      <aside className="sidebar"><p className="overline">DARI / 01</p><h2>{copy.sidebar}</h2><ol className="steps">{steps.map((item, index) => <li key={item.id} className={stage === item.id ? 'current-step' : progress.passed(item.id) ? 'done-step' : undefined}><button className={stage === item.id ? 'active' : ''} aria-current={stage === item.id ? 'step' : undefined} aria-disabled={item.id === 'draft' && !session.draftRevision} onClick={() => navigateToStep(item.id)}><span className="step-number">{String(index + 1).padStart(2, '0')}</span><span>{item.label}</span></button></li>)}</ol><div className="step-progress" role="progressbar" aria-label={copy.sidebar} aria-valuemin={0} aria-valuemax={progress.total} aria-valuenow={progress.current}><span style={{ width: `${progress.percent}%` }} /></div>{stageNotice && <div className="step-notice" role="status"><span>{stageNotice}</span><button className="quiet" onClick={() => setStageNotice('')}>{copy.close}</button></div>}<div className="sidebar-note"><p>{copy.pace}</p><small>{copy.memory}</small></div><div className="sidebar-footer">DARI</div></aside>
       {processingStatus(stage !== 'conversation' || !showComposer)}
       <main id="main" ref={main} tabIndex={-1}>
         {(restoredNotice || recoveryPending || storageFailed || initialWork.problem === 'invalid') && <div className="session-status" role="status">
@@ -482,7 +567,7 @@ export default function App() {
         {runtime && (!runtime.available || !runtime.modelReady) && (narrativeOpened || stage === 'facts') && <div className="notice"><p>{copy.unavailable}</p><button className="quiet" onClick={openOperator}>{ui.operator}</button></div>}
         {stage === 'basics' && <div className="content-grid"><section className="start-panel">{started && <p className="micro">{copy.factsIntro}</p>}<div className="actions" style={started ? undefined : { marginTop: 0 }}><button className="primary full" onClick={start}>{started ? copy.continue : copy.start}<span aria-hidden="true">{direction === 'rtl' ? '←' : '→'}</span></button></div></section><aside className="support-card"><h2>{copy.pace}</h2><p>{copy.chatIntro}</p><p className="micro">{copy.memory}</p></aside></div>}
         {stage === 'form' && <fieldset className="form-stage-guard" disabled={!!busy || recoveryPending}><FormStage language={language} answers={session.form} page={formPage} copy={sc} back={copy.back} next={copy.continue}
-          onChange={form => { setReviewed(false); setSession(current => ({ ...invalidateDraft(current), form })); }} onPage={setFormPage} onDone={() => setStage('conversation')} /></fieldset>}
+          onChange={form => { setReviewed(false); setSession(current => ({ ...invalidateDraft(current), form })); }} onPage={page => { setOverviewTarget(null); setFormPage(page); }} onDone={() => setStage('conversation')} focusField={overviewFormField} hiddenFieldNotice={overviewCopy.hiddenFieldEditing} /></fieldset>}
         {stage === 'conversation' && <div className="content-grid"><div><section className="panel chat-panel"><div className="chat-toolbar"><details className="chat-options"><summary>{ui.more}</summary><div className="chat-options-sheet" onClick={event => { if ((event.target as HTMLElement).closest('button')) { const details = event.currentTarget.closest('details'); if (details) details.open = false; } }}><TopicProgress session={session} language={language} />{session.scope === 'test' && <div className="actions test-actions"><button className="secondary" disabled={(!!busy || recoveryPending) || !!input.trim() || session.messages.at(-1)?.role !== 'assistant' || session.messages.at(-1)?.ask?.kind === 'done'} onClick={() => void generateExample()}>{generatingExample ? ui.exampleGenerating : ui.exampleGenerate}</button><button className="secondary" disabled={(!!busy || recoveryPending) || !!input.trim()} onClick={endConversation}>{ui.finish}</button></div>}<button className="secondary" disabled={(!!busy || recoveryPending) || !!input.trim()} onClick={() => setStage('facts')}>{copy.review}</button>{inNarrative && <div className="conversation-controls">
                   {session.narrativeDone ? <><button className="quiet" disabled={(!!busy || recoveryPending) || !!input.trim()} onClick={() => deferTopic('unknown')}>{sc.unknown}</button><button className="quiet" disabled={(!!busy || recoveryPending) || !!input.trim()} onClick={() => deferTopic('skipped')}>{sc.skip}</button></> : <button className="secondary" disabled={(!!busy || recoveryPending) || !!input.trim()} onClick={() => setSession(current => sync(finishNarrative(current)))}>{ui.finishStory}</button>}
                   {session.narrativeDone && <button className="secondary" disabled={(!!busy || recoveryPending) || !!input.trim()} onClick={endConversation}>{ui.finishQuestions}</button>}
@@ -494,7 +579,7 @@ export default function App() {
                     : (askRequirement?.options ?? []).map(option => ({ value: option.value, label: optionLabel(option) }))}
                   multi={ask.kind === 'field' && askRequirement?.type === 'multi'}
                   selected={picked} onPick={values => { setPicked(values); if (!values.includes(OTHER_OPTION) && picked.includes(OTHER_OPTION) && otherText.trim()) setOtherText(''); }}
-                  otherValue={ask.kind === 'field' && askOther ? OTHER_OPTION : undefined} otherText={otherText} onOtherText={setOtherText} otherLabel={sc.otherLabel}
+                  otherValue={ask.kind === 'field' && askOther ? OTHER_OPTION : undefined} otherText={otherText} onOtherText={setOtherText} otherLabel={sc.otherLabel} moreLabel={sc.moreChoices} lessLabel={sc.fewerChoices} hiddenSelectedLabel={sc.hiddenSelected}
                   disabled={!!busy || recoveryPending} submitLabel={sc.choose} clearLabel={sc.clearChoice} hint={sc.choiceHint}
                   onAnswer={values => {
                     if (ask.kind === 'table') answer(values[0] === 'have' ? { text: sc.have, status: 'answered' } : { text: sc.none, status: 'not_applicable' });
@@ -529,18 +614,18 @@ export default function App() {
           </details>)}</div>
           </details>
           <details className="details"><summary>{copy.missing} · {pending.length}</summary><div className="details-content"><ul className="pending-list">{pending.map(item => <li key={item.requirementId}>{requirementLabel(item.requirementId)} — {statusWords[language]?.[item.status]}</li>)}</ul></div></details>
-          {narrativeOpened && <form className="panel" style={{ marginTop: 22 }} onSubmit={event => { event.preventDefault(); void send(input, session, true); }}><label>{copy.correction}<textarea dir="auto" value={input} rows={3} maxLength={12000} placeholder={copy.correctionPlaceholder} onChange={event => setInput(event.target.value)} disabled={(!!busy || recoveryPending)} /></label><div className="actions"><button className="secondary" disabled={!input.trim() || (!!busy || recoveryPending)}>{copy.send}</button></div></form>}
+          {(narrativeOpened || overviewTarget?.kind === 'fact' || overviewTarget?.kind === 'conversation') && <form className="panel" data-overview-correction style={{ marginTop: 22 }} onSubmit={event => { event.preventDefault(); void sendCorrection(); }}><label>{copy.correction}{(overviewFact || overviewTopic) && <span className="micro">{overviewFact ? requirementLabel(overviewFact.requirementId) : localizedLabel(language, overviewTopic!.ko, overviewTopic!.en)}</span>}<textarea dir="auto" value={input} rows={3} maxLength={12000} placeholder={copy.correctionPlaceholder} onChange={event => setInput(event.target.value)} disabled={(!!busy || recoveryPending)} /></label><div className="actions"><button className="secondary" disabled={!input.trim() || (!!busy || recoveryPending)}>{copy.send}</button></div></form>}
           <div className="review-bar">{facts.length > 0 && <label className="check-row"><input type="checkbox" checked={bundlesReviewed} onChange={event => { setReviewed(event.target.checked); setSession(current => ({ ...current, facts: current.facts.map(f => ({ ...f, confirmed: event.target.checked })) })); }} disabled={(!!busy || recoveryPending)} />{ui.reviewedAll}</label>}
           <div className="actions"><button className="secondary" disabled={(!!busy || recoveryPending)} onClick={() => setStage('conversation')}>{copy.back}</button><button className="primary" disabled={!bundlesReviewed || (!!busy || recoveryPending) || !facts.some(item => item.status === 'answered')} onClick={() => void draft()}>{busy === 'draft' ? copy.drafting : copy.draftAction}</button>{busy && <button className="secondary" onClick={() => void stop()}>{copy.stop}</button>}</div></div>
         </>}
         {stage === 'draft' && <>
           <div className="notice">{copy.draftNote}</div>
-          <div className="output-tabs" aria-label={copy.draft}>{(['draft', 'source', 'metadata'] as Output[]).map(item => <button key={item} aria-pressed={output === item} onClick={() => setOutput(item)}>{item === 'draft' ? copy.draft : item === 'source' ? copy.original : copy.metadata}</button>)}</div>
+          <div className="output-tabs" aria-label={copy.draft}>{visibleOutputs(DEV_TOOLS).map(item => <button key={item} aria-pressed={output === item} onClick={() => setOutput(item)}>{item === 'draft' ? copy.draft : item === 'source' ? copy.original : copy.metadata}</button>)}</div>
           {output === 'draft' && <section className="panel q14-draft" lang={language} dir={direction}>
             <div className="section-title"><h2>{ui.q14Title}</h2><span className="small-tag">{ui.editableDraft}</span></div>
             <p className="micro">{ui.draftIntro}</p>
             {language === 'en' && <p className="micro">{ui.backtranslationNote}</p>}
-            {question14Steps.map(step => { const visible = step.fields.filter(field => isFieldVisible(field, answers14) && (session.scope !== 'test' || /^14\.[123](?:-|$)/.test(field.id))); return visible.length > 0 && <div className="q14-step" key={step.id}>
+            {question14Steps.map(step => { const visible = step.fields.filter(field => (isFieldVisible(field, answers14) && (session.scope !== 'test' || /^14\.[123](?:-|$)/.test(field.id))) || (overviewTarget?.kind === 'draft' && overviewTarget.fieldId === field.id)); return visible.length > 0 && <div className="q14-step" key={step.id}>
               <h3>{draftSectionTitle(step, language)}</h3>
               {visible.map(field => { const section = sectionsByField.get(field.id); const derived = derived14.find(item => item.id === field.id); return <div className="q14-field" key={field.id}>
                 <h4 className="q14-id">{localizedLabel(language, field.ko, field.en)}</h4>
@@ -565,7 +650,7 @@ export default function App() {
           </section>}
           {output === 'draft' && formFacts.length > 0 && <section className="panel draft-card" lang={language} dir={direction}><div className="section-title"><h2>{ui.formValues}</h2><span className="small-tag">{ui.asEntered}</span></div><dl className="form-values">{formFacts.map(fact => <div key={fact.id}><dt><bdi dir="ltr">{fact.requirementId}</bdi> · {requirementLabel(fact.requirementId)}{fact.eventId && <bdi dir="ltr"> ({fact.eventId})</bdi>}</dt><dd dir="auto">{factValue(fact.requirementId, fact.value)}</dd></div>)}</dl></section>}
           {output === 'source' && <div className="fact-list">{session.messages.map(message => <article className="fact-card" key={message.id}><small>{message.role === 'user' ? copy.input : 'DARI'} · {message.id}</small><p dir="auto">{message.content}</p></article>)}</div>}
-          {output === 'metadata' && <section className="panel"><p className="developer-label">{ui.metadataDeveloper}</p><div className="details-content" dir="ltr"><pre>{JSON.stringify(JSON.parse(exportSession(session)).metadata, null, 2)}</pre></div></section>}
+          {DEV_TOOLS && output === 'metadata' && <section className="panel"><p className="developer-label">{ui.metadataDeveloper}</p><div className="details-content" dir="ltr"><pre>{JSON.stringify(JSON.parse(exportSession(session)).metadata, null, 2)}</pre></div></section>}
           {output === 'draft' && <fieldset className="stage-readonly" disabled={!!busy || recoveryPending}><FinalCheck session={session} language={language} checked={finalReviewed} ready={englishReady} onCheck={checked => setFinalReviewedText(checked ? reviewTextKey : '')} onReturn={() => setStage('facts')} /></fieldset>}
           {savedNotice && <p role="status">{savedNotice}</p>}
           <div className="actions"><button className="secondary" onClick={() => setStage('facts')}>{copy.back}</button><button className="primary" disabled={!!busy} onClick={() => setExportOpen(true)}>{ui.exportApplication}</button><button className="secondary" onClick={exportAll}>{ui.saveRecord}</button><HwpDownloadButton session={session} reviewed={finalReviewed && englishReady} language={language} label={copy.downloadText} disabled={!!busy} onNotice={setSavedNotice} onError={setError} /></div>
@@ -574,6 +659,7 @@ export default function App() {
       </main>
     </div>
     <footer className="site-footer"><span>{copy.tagline}</span><span>{copy.memory}</span></footer>
+    {overviewOpen && <SessionOverview session={session} language={language} pendingText={[input, ...picked.map(value => optionLabel(askRequirement?.options?.find(option => option.value === value) ?? { ko: value, en: value }))].filter(Boolean).join('\n')} busy={!!busy || recoveryPending} onClose={() => setOverviewOpen(false)} onEdit={editFromOverview} />}
     <dialog ref={dialog} className="help-dialog" onCancel={closeDialog} onClose={closeDialog}><h2>{showHelp ? copy.help : copy.source}</h2>{showHelp ? <><p>{copy.helpBody}</p><p>{copy.memory}</p><button className="secondary" disabled={!!busy} onClick={resetWork}>{ux.newSession}</button></> : session.messages.filter(item => item.role === 'user' && sourceIds.includes(item.id)).map(item => <div key={item.id}><p dir="auto" style={{ whiteSpace: 'pre-wrap' }}>{item.content}</p></div>)}<div className="actions"><button className="primary" onClick={closeDialog}>{copy.close}</button></div></dialog>
   </div>;
 }
