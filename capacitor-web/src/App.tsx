@@ -230,6 +230,12 @@ export default function App() {
     return [...groups.entries()].sort((a, b) => a[1].order - b[1].order).map(([key, group]) => ({ key, ...group,
       events: [...new Set(group.facts.map(fact => fact.eventId ?? ''))].map(eventId => ({ eventId, facts: group.facts.filter(fact => (fact.eventId ?? '') === eventId) })) }));
   }
+  /** Each drafted sentence with the applicant's own quoted words (not form entries). */
+  function sentenceOrigins(section?: { sentences?: { text: string; factIds: string[]; sourceIds: string[] }[] }) {
+    const userIds = new Set(session.messages.filter(message => message.role === 'user').map(message => message.id));
+    return (section?.sentences ?? []).map(item => ({ text: item.text, quotes: item.factIds.flatMap(id => session.facts.find(fact => fact.id === id)?.sourceQuotes ?? [])
+      .filter(quote => userIds.has(quote.sourceId)).map(quote => quote.quote) }));
+  }
   function optionLabel(option: { ko: string; en: string }) { return language === 'en' ? option.en : localize(language, option.ko); }
   /** The applicant's message for a confirmed choice; “기타” text stays verbatim. */
   function pickedText(options: { value: string; ko: string; en: string }[]) {
@@ -543,7 +549,7 @@ export default function App() {
                     <button className="secondary" disabled={!!busy || recoveryPending} onClick={() => setEditingField(field.id)}>{ui.refine}</button>
                     <button className="secondary" disabled={!section?.sourceIds.some(id => session.messages.some(message => message.id === id && message.role === 'user'))} onClick={() => setSourceIds(section?.sourceIds ?? [])}>{ui.sources}</button>
                   </div>
-                  {editingField === field.id && <EditorModal uiLanguage={language} title={ui.sentenceEditor} closeLabel={copy.close} onClose={() => setEditingField(null)}><SentenceReview uiLanguage={language} key={`${session.id}-${session.draftRevision}-${field.id}`} text={(answers14[field.id] as { text: string }).text} saved={session.draftReviews?.[field.id]} onChange={(doc, expected) => setSession(current => {
+                  {editingField === field.id && <EditorModal uiLanguage={language} title={ui.sentenceEditor} closeLabel={copy.close} onClose={() => setEditingField(null)}><SentenceReview uiLanguage={language} sourceLanguage={session.language} origins={sentenceOrigins(section)} key={`${session.id}-${session.draftRevision}-${field.id}`} text={(answers14[field.id] as { text: string }).text} saved={session.draftReviews?.[field.id]} onChange={(doc, expected) => setSession(current => {
                     const answer = current.question14?.[field.id];
                     if (!current.draftRevision || answer?.kind !== 'text' || answer.text !== expected) return current;
                     return saveDraftReview(current, field.id, expected, doc);

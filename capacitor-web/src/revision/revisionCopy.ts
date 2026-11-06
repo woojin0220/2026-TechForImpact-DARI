@@ -1,5 +1,11 @@
 /** UI copy only. Original statements, Korean drafts and model replies are not translated here. */
 const en = {
+  compareView: 'Compare with my original words', sentenceView: 'Show the draft only', compareHint: 'Each Korean sentence is shown next to the words you used in the conversation. Compare them and correct anything that does not match what you meant.',
+  originalWords: 'Your original words', draftSentence: 'Korean draft sentence', noOriginal: 'No original words are linked to this sentence. Please check it against what you said.',
+  confirmedTag: 'Confirmed', unconfirmedTag: 'Not yet confirmed', confirmSentence: 'This sentence matches what I meant', unconfirmSentence: 'Mark as not confirmed',
+  confirmedCount: '{n} of {total} sentences confirmed', editDirect: 'Edit this sentence myself', directEditLabel: 'Korean sentence', saveEdit: 'Save my edit', cancelEdit: 'Cancel',
+  candidatesHint: 'Suggestions are only wording options. Choose one, edit the sentence yourself, or keep it as it is.',
+  notLegal: 'This screen helps you compare wording. It does not give legal advice or decide what is correct for your application.',
   instructions: 'Select a sentence and tell us what you would like to change. Nothing is applied until you approve it. For factual corrections, return to the intake conversation and regenerate the draft.',
   koreanDraft: 'Korean draft', selectSentence: 'Select a sentence', sentenceToEdit: 'Sentence to edit',
   editedHint: 'Underlined sentences have been edited.', selectedSentence: 'Selected sentence',
@@ -23,6 +29,12 @@ const en = {
 };
 export type RevisionCopy = { [K in keyof typeof en]: string };
 const ko: RevisionCopy = {
+  compareView: '내가 한 말과 나란히 보기', sentenceView: '초안만 보기', compareHint: '한국어 초안의 각 문장 옆에 대화에서 직접 하신 말을 함께 보여 드립니다. 비교해 보시고 뜻이 다른 부분은 고쳐 주세요.',
+  originalWords: '내가 한 말 (원문)', draftSentence: '한국어 초안 문장', noOriginal: '이 문장에 연결된 원문이 없습니다. 직접 하신 말과 맞는지 확인해 주세요.',
+  confirmedTag: '확정', unconfirmedTag: '확정 전', confirmSentence: '내 뜻과 맞아요 (확정)', unconfirmSentence: '확정 취소',
+  confirmedCount: '{total}문장 중 {n}문장 확정', editDirect: '이 문장 직접 고치기', directEditLabel: '한국어 문장', saveEdit: '고친 문장 저장', cancelEdit: '취소',
+  candidatesHint: '수정안은 표현의 후보일 뿐입니다. 하나를 고르거나, 직접 고치거나, 그대로 두셔도 됩니다.',
+  notLegal: '이 화면은 표현을 비교하도록 돕는 도구입니다. 법률적 판단을 하거나 신청서의 정답을 알려 주지 않습니다.',
   instructions: '수정할 문장을 선택하고 요청해 주세요. 승인하기 전에는 본문이 바뀌지 않습니다. 사실관계가 달라졌다면 대화 수집 단계에서 정정한 뒤 초안을 다시 작성해 주세요.',
   koreanDraft: '한국어 초안', selectSentence: '클릭해 문장 선택', sentenceToEdit: '수정할 문장',
   editedHint: '밑줄이 있는 문장은 원문에서 수정된 문장입니다.', selectedSentence: '선택한 문장',
@@ -45,6 +57,12 @@ const ko: RevisionCopy = {
   meaningRetry: '영어 확인본 다시 시도', meaningLanguage: '이 확인본은 영어입니다. 아랍어 의미 확인은 아직 지원되지 않습니다.',
 };
 const ar: RevisionCopy = {
+  compareView: 'المقارنة بكلماتي الأصلية', sentenceView: 'عرض المسودة فقط', compareHint: 'تظهر كل جملة كورية بجانب الكلمات التي استخدمتها في المحادثة. قارن بينهما وصحّح ما لا يطابق ما قصدته.',
+  originalWords: 'كلماتك الأصلية', draftSentence: 'جملة المسودة الكورية', noOriginal: 'لا توجد كلمات أصلية مرتبطة بهذه الجملة. يرجى التحقق منها مقارنةً بما قلته.',
+  confirmedTag: 'مؤكَّدة', unconfirmedTag: 'لم تُؤكَّد بعد', confirmSentence: 'هذه الجملة تطابق ما قصدته', unconfirmSentence: 'إلغاء التأكيد',
+  confirmedCount: 'أُكِّدت {n} من أصل {total} جملة', editDirect: 'تعديل هذه الجملة بنفسي', directEditLabel: 'الجملة الكورية', saveEdit: 'حفظ تعديلي', cancelEdit: 'إلغاء',
+  candidatesHint: 'الاقتراحات مجرد خيارات للصياغة. اختر أحدها، أو عدّل الجملة بنفسك، أو اتركها كما هي.',
+  notLegal: 'تساعدك هذه الشاشة على مقارنة الصياغة فقط. لا تقدّم استشارة قانونية ولا تحدد ما هو الصحيح في طلبك.',
   instructions: 'اختر جملة واكتب ما تريد تعديله. لن يتغير النص قبل موافقتك. لتصحيح الوقائع، ارجع إلى محادثة جمع المعلومات ثم أعد إعداد المسودة.',
   koreanDraft: 'المسودة الكورية', selectSentence: 'اختر جملة', sentenceToEdit: 'الجملة المطلوب تعديلها',
   editedHint: 'الجمل التي تحتها خط عُدّلت عن نصها الأصلي.', selectedSentence: 'الجملة المختارة',

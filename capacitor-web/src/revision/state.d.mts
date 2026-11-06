@@ -2,8 +2,8 @@ export type Sentence = {kind:'sentence';id:string;text:string;originalText:strin
 export type Piece = Sentence|{kind:'gap';text:string};
 export type Suggestion = {before:string;after:string;baseRevision:number;status:'pending'|'applied'|'stale'|'dismissed'};
 export type Message = {id:string;role:'user'|'assistant';content:string;createdAt:string;proposal?:Suggestion};
-export type Change = {id:string;sentenceId:string;before:string;after:string;kind:'apply'|'undo';createdAt:string};
-export type TxtDocument = {format:'dari-txt-project-v1';id:string;name:string;language:string;createdAt:string;updatedAt:string;revision:number;pieces:Piece[];threads:Record<string,Message[]>;history:Change[];undo:Change[];translations:Record<string,{target:string;text:string;revision:number}>};
+export type Change = {id:string;sentenceId:string;before:string;after:string;kind:'apply'|'undo'|'edit';createdAt:string};
+export type TxtDocument = {format:'dari-txt-project-v1';id:string;name:string;language:string;createdAt:string;updatedAt:string;revision:number;pieces:Piece[];threads:Record<string,Message[]>;history:Change[];undo:Change[];translations:Record<string,{target:string;text:string;revision:number}>;confirmed?:Record<string,number>};
 export type Reply = {type:'proposal'|'answer';message:string;replacement:string};
 export const MAX_TEXT:number;
 export const MAX_FILE_BYTES:number;
@@ -18,6 +18,9 @@ export function addAssistantMessage(doc:TxtDocument,id:string,reply:Reply,baseRe
 export function applySuggestion(doc:TxtDocument,id:string,messageId:string):TxtDocument;
 export function dismissSuggestion(doc:TxtDocument,id:string,messageId:string):TxtDocument;
 export function undoChange(doc:TxtDocument):TxtDocument;
+export function editSentence(doc:TxtDocument,id:string,text:string):TxtDocument;
+export function isConfirmed(doc:TxtDocument,id:string):boolean;
+export function setConfirmed(doc:TxtDocument,id:string,confirmed:boolean):TxtDocument;
 export function storeTranslation(doc:TxtDocument,id:string,target:string,text:string,baseRevision:number):TxtDocument;
 export function currentTranslation(doc:TxtDocument,id:string,target:string):string|null;
 export function validateDocument(doc:unknown):TxtDocument;

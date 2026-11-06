@@ -70,3 +70,25 @@
 .revision-document[lang="ko"], .revision-sentences[lang="ko"], .revision-proposal [lang="ko"] { direction:ltr; unicode-bidi:isolate; text-align:start; }
 .english-meaning[lang="ar"], .selected-meaning[lang="ar"] { direction:rtl; text-align:start; }
 .revision-composer textarea { text-align:start; }
+
+/* Original words beside the Korean draft, direct edits and confirmation (issue #8). */
+.revision-disclaimer { margin:0 0 10px; color:#555; }
+.revision-toolbar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 14px; font-size:13px; }
+.revision-compare { list-style:none; margin:0; padding:0; display:grid; gap:0; }
+.revision-compare > li { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; padding:12px 0; border-top:1px solid var(--line,#e1e1e1); }
+.revision-compare > li.current { background:#f7f7f5; box-shadow:inset 3px 0 0 #171717; padding-inline:10px; }
+.revision-compare small { display:block; font-size:10px; color:#666; margin-bottom:4px; }
+.revision-compare .revision-sentences { line-height:1.9; font-size:15px; }
+.original-words { margin:0; padding-inline-start:18px; font-size:14px; line-height:1.8; overflow-wrap:anywhere; }
+.original-words li + li { margin-top:4px; }
+.selected-original { margin-top:14px; }
+.selected-actions { margin-top:14px; align-items:center; flex-wrap:wrap; }
+.selected-actions .primary,.selected-actions .secondary { min-height:38px; font-size:12px; padding:8px 12px; }
+.direct-edit { margin-top:14px; display:grid; gap:8px; font-size:12px; }
+.direct-edit textarea { width:100%; font-size:14px; line-height:1.8; }
+.status-confirmed { color:#11743b; font-weight:600; }
+.status-pending { color:#8a5a00; }
+.revision-sentences button.confirmed { background:#eaf6ee; }
+.revision-sentences button.confirmed::before { content:"✓ "; color:#11743b; }
+.candidates-hint { padding:10px 22px 0; margin:0; }
+@media(max-width:700px) { .revision-compare > li { grid-template-columns:1fr; gap:8px; } }

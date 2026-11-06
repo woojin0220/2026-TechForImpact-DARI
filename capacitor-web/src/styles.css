@@ -220,5 +220,5 @@ input[dir="ltr"], textarea[dir="ltr"], .operator-grid code { direction:ltr; unic
 /* Choice answers: “기타” free text and clearing a selection (issue #5). */
 .other-input{display:grid;gap:6px;margin-top:10px;font-size:14px;width:100%}
 .other-input input{width:100%}
-.clear-choice{margin-top:6px;min-height:32px;padding:0}
+.clear-choice{margin-top:6px;min-height:32px;padding:0;align-self:flex-start;justify-self:start;width:auto}
 .choice-hint{flex-basis:100%;color:#666;font-size:12px}
