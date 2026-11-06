@@ -231,6 +231,9 @@ input[dir="ltr"], textarea[dir="ltr"], .operator-grid code { direction:ltr; unic
 .choice-row:hover:not(:disabled){background:#f6f6f4}
 .choice-row:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 .choice-row-wrap.on{background:#f3f3f1}
+.choice-toggle{color:var(--muted,#5f5f5a);font-size:14px}
+.choice-toggle .choice-marker{border:0;background:transparent;font-size:18px}
+.choice-hidden-selected{color:var(--ink);font-weight:600}
 .choice-marker{flex:none;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;background:#f0f0ee;color:#555;font-size:12px;font-weight:600}
 .choice-rows.multi .choice-marker{border-radius:50%;background:#fff;border:1.5px solid #c9c9c5}
 .choice-row-wrap.on .choice-marker{background:var(--ink);border-color:var(--ink);color:#fff}
@@ -254,3 +257,9 @@ input[dir="ltr"], textarea[dir="ltr"], .operator-grid code { direction:ltr; unic
 .choice-other-row .choice-marker{font-size:13px}
 @media(max-width:650px){.choice-other-row input{font-size:16px}}
 .choice-card>.choice-rows,.choice-card>*{flex:none}
+
+/* Step progress (issue #3) */
+.steps .done-step .step-number{background:#e9e9e6;border-color:#c9c9c5;color:var(--ink)}
+.step-progress{height:3px;background:var(--line,#e3e3e0);border-radius:2px;overflow:hidden;margin:6px 0 0}
+.step-progress>span{display:block;height:100%;background:var(--ink);transition:width .25s ease}
+[dir="rtl"] .step-progress>span{margin-inline-start:0}

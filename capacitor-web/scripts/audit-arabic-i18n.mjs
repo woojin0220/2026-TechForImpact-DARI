@@ -96,7 +96,7 @@ const result = {
     missingKeys: issues.length, hardcodedLiteralUiProse: literalFindings.length },
   scope: 'Arabic UI chrome, known official labels, metadata, errors/loading and RTL. Other language dictionaries retain their pre-existing coverage.',
   preservedData: ['verbatim user input and source quotations', 'Korean draft text', 'model names, URLs, IDs and raw developer JSON'],
-  explicitLimitations: ['Arabic final meaning/backtranslation remains unsupported and approval remains disabled.', 'English-only developer quick test is explicitly labelled and hidden from the ordinary production start screen.', 'Script detection cannot prove the linguistic quality of generated Arabic.', 'LegacyApp.tsx is not imported by main.tsx and is outside the active user route.'],
+  explicitLimitations: ['Arabic final meaning/backtranslation remains unsupported and approval remains disabled.', 'English-only developer quick test is explicitly labelled and hidden from the ordinary production start screen.', 'Script detection cannot prove the linguistic quality of generated Arabic.'],
   issues, literalFindings, entries, labelOccurrences,
 };
 const output = resolve(root, '../docs/arabic-fix/TRANSLATION_AUDIT.json');

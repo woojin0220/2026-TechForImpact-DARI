@@ -31,9 +31,10 @@ import { formRowIndex } from './sessionOverview/navigation';
 const BenchPanel = import.meta.env.DEV || import.meta.env.VITE_DARI_BENCH === '1' ? lazy(() => import('./bench/BenchPanel')) : null;
 const ApplicationExport = lazy(() => import('./export/ApplicationExport'));
 
-import { clearWorkingCopy, readWorkingCopy, writeWorkingCopy, type WorkingCopy, type Stage, type Output } from './workingCopy';
+import { clearWorkingCopy, readWorkingCopy, writeWorkingCopy, initialOutput, visibleOutputs, type WorkingCopy, type Stage, type Output } from './workingCopy';
 import { sessionUxCopy } from './sessionUxCopy';
 import { ProcessingStatus } from './ProcessingStatus';
+import { stepProgress } from './stepProgress';
 import { estimateProcessingTime, type ProcessingTask } from './processingTime';
 const demoAnswer = '이것은 기능 테스트를 위한 가상 이야기입니다. 저는 정치적 의견 때문에 보호를 신청하려고 합니다. 2025년 봄쯤 제 나라의 작은 도시에서 평화적인 집회에 참여한 뒤 경찰 제복을 입은 두 사람이 집에 찾아왔습니다. 정확한 날짜는 기억나지 않습니다. 그들은 저에게 집회에 다시 나가지 말라고 말했고 저는 무서웠습니다. 저는 구금되거나 다치지는 않았습니다. 이 일이 정치적 의견 때문이라고 생각하지만 그들의 실제 소속은 확인하지 못했습니다. 그 뒤 다른 도시의 친구 집으로 옮겼습니다. 가족이 직접 피해를 입은 일은 없습니다. 돌아가면 다시 위협받을까 두렵습니다. 무기를 보지는 못했습니다.';
 
@@ -78,7 +79,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
   const [meaningReady, setMeaningReady] = useState<Record<string, string>>({});
   const [finalReviewedText, setFinalReviewedText] = useState(initialWork.work?.finalReviewedText ?? '');
   const [savedNotice, setSavedNotice] = useState('');
-  const [output, setOutput] = useState<Output>(initialWork.work?.output ?? 'draft');
+  const [output, setOutput] = useState<Output>(initialOutput(initialWork.work?.output, DEV_TOOLS));
   const [editingField, setEditingField] = useState<string | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [sourceIds, setSourceIds] = useState<string[]>([]);
@@ -122,6 +123,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
   const formFacts = facts.filter(fact => fact.status !== 'conflict' && !draftedQuestions.has(requirementsById.get(fact.requirementId)?.questionId ?? '') && !requirementsById.get(fact.requirementId)?.questionId.startsWith('14'));
   const derived14 = deriveQuestion14(session);
   const steps: { id: Stage; label: string }[] = [{ id: 'basics', label: copy.basics }, ...(session.scope === 'test' ? [] : [{ id: 'form' as Stage, label: sc.formStep }]), { id: 'conversation', label: copy.conversation }, { id: 'facts', label: copy.facts }, { id: 'draft', label: copy.draft }];
+  const progress = stepProgress(steps.map(item => item.id), stage);
   const workingCopy = useMemo<WorkingCopy>(() => ({
     version: 1, session, language, stage, formPage, input, picked, demo, finalReviewedText, output,
     pendingTask: recoveryPending ? initialWork.work?.pendingTask ?? null : generatingExample ? null : busy,
@@ -550,7 +552,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
           {BenchPanel && <Suspense fallback={null}><BenchPanel runtime={runtime} disabled={(!!busy || recoveryPending) || importing} language={language} /></Suspense>}
         </div></section>}</div></div></header>
     <div className="workspace">
-      <aside className="sidebar"><p className="overline">DARI / 01</p><h2>{copy.sidebar}</h2><ol className="steps">{steps.map((item, index) => <li key={item.id} className={stage === item.id ? 'current-step' : undefined}><button className={stage === item.id ? 'active' : ''} aria-current={stage === item.id ? 'step' : undefined} aria-disabled={item.id === 'draft' && !session.draftRevision} onClick={() => navigateToStep(item.id)}><span className="step-number">{String(index + 1).padStart(2, '0')}</span><span>{item.label}</span></button></li>)}</ol>{stageNotice && <div className="step-notice" role="status"><span>{stageNotice}</span><button className="quiet" onClick={() => setStageNotice('')}>{copy.close}</button></div>}<div className="sidebar-note"><p>{copy.pace}</p><small>{copy.memory}</small></div><div className="sidebar-footer">DARI</div></aside>
+      <aside className="sidebar"><p className="overline">DARI / 01</p><h2>{copy.sidebar}</h2><ol className="steps">{steps.map((item, index) => <li key={item.id} className={stage === item.id ? 'current-step' : progress.passed(item.id) ? 'done-step' : undefined}><button className={stage === item.id ? 'active' : ''} aria-current={stage === item.id ? 'step' : undefined} aria-disabled={item.id === 'draft' && !session.draftRevision} onClick={() => navigateToStep(item.id)}><span className="step-number">{String(index + 1).padStart(2, '0')}</span><span>{item.label}</span></button></li>)}</ol><div className="step-progress" role="progressbar" aria-label={copy.sidebar} aria-valuemin={0} aria-valuemax={progress.total} aria-valuenow={progress.current}><span style={{ width: `${progress.percent}%` }} /></div>{stageNotice && <div className="step-notice" role="status"><span>{stageNotice}</span><button className="quiet" onClick={() => setStageNotice('')}>{copy.close}</button></div>}<div className="sidebar-note"><p>{copy.pace}</p><small>{copy.memory}</small></div><div className="sidebar-footer">DARI</div></aside>
       {processingStatus(stage !== 'conversation' || !showComposer)}
       <main id="main" ref={main} tabIndex={-1}>
         {(restoredNotice || recoveryPending || storageFailed || initialWork.problem === 'invalid') && <div className="session-status" role="status">
@@ -577,7 +579,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
                     : (askRequirement?.options ?? []).map(option => ({ value: option.value, label: optionLabel(option) }))}
                   multi={ask.kind === 'field' && askRequirement?.type === 'multi'}
                   selected={picked} onPick={values => { setPicked(values); if (!values.includes(OTHER_OPTION) && picked.includes(OTHER_OPTION) && otherText.trim()) setOtherText(''); }}
-                  otherValue={ask.kind === 'field' && askOther ? OTHER_OPTION : undefined} otherText={otherText} onOtherText={setOtherText} otherLabel={sc.otherLabel}
+                  otherValue={ask.kind === 'field' && askOther ? OTHER_OPTION : undefined} otherText={otherText} onOtherText={setOtherText} otherLabel={sc.otherLabel} moreLabel={sc.moreChoices} lessLabel={sc.fewerChoices} hiddenSelectedLabel={sc.hiddenSelected}
                   disabled={!!busy || recoveryPending} submitLabel={sc.choose} clearLabel={sc.clearChoice} hint={sc.choiceHint}
                   onAnswer={values => {
                     if (ask.kind === 'table') answer(values[0] === 'have' ? { text: sc.have, status: 'answered' } : { text: sc.none, status: 'not_applicable' });
@@ -618,7 +620,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
         </>}
         {stage === 'draft' && <>
           <div className="notice">{copy.draftNote}</div>
-          <div className="output-tabs" aria-label={copy.draft}>{(['draft', 'source', 'metadata'] as Output[]).map(item => <button key={item} aria-pressed={output === item} onClick={() => setOutput(item)}>{item === 'draft' ? copy.draft : item === 'source' ? copy.original : copy.metadata}</button>)}</div>
+          <div className="output-tabs" aria-label={copy.draft}>{visibleOutputs(DEV_TOOLS).map(item => <button key={item} aria-pressed={output === item} onClick={() => setOutput(item)}>{item === 'draft' ? copy.draft : item === 'source' ? copy.original : copy.metadata}</button>)}</div>
           {output === 'draft' && <section className="panel q14-draft" lang={language} dir={direction}>
             <div className="section-title"><h2>{ui.q14Title}</h2><span className="small-tag">{ui.editableDraft}</span></div>
             <p className="micro">{ui.draftIntro}</p>
@@ -648,7 +650,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
           </section>}
           {output === 'draft' && formFacts.length > 0 && <section className="panel draft-card" lang={language} dir={direction}><div className="section-title"><h2>{ui.formValues}</h2><span className="small-tag">{ui.asEntered}</span></div><dl className="form-values">{formFacts.map(fact => <div key={fact.id}><dt><bdi dir="ltr">{fact.requirementId}</bdi> · {requirementLabel(fact.requirementId)}{fact.eventId && <bdi dir="ltr"> ({fact.eventId})</bdi>}</dt><dd dir="auto">{factValue(fact.requirementId, fact.value)}</dd></div>)}</dl></section>}
           {output === 'source' && <div className="fact-list">{session.messages.map(message => <article className="fact-card" key={message.id}><small>{message.role === 'user' ? copy.input : 'DARI'} · {message.id}</small><p dir="auto">{message.content}</p></article>)}</div>}
-          {output === 'metadata' && <section className="panel"><p className="developer-label">{ui.metadataDeveloper}</p><div className="details-content" dir="ltr"><pre>{JSON.stringify(JSON.parse(exportSession(session)).metadata, null, 2)}</pre></div></section>}
+          {DEV_TOOLS && output === 'metadata' && <section className="panel"><p className="developer-label">{ui.metadataDeveloper}</p><div className="details-content" dir="ltr"><pre>{JSON.stringify(JSON.parse(exportSession(session)).metadata, null, 2)}</pre></div></section>}
           {output === 'draft' && <fieldset className="stage-readonly" disabled={!!busy || recoveryPending}><FinalCheck session={session} language={language} checked={finalReviewed} ready={englishReady} onCheck={checked => setFinalReviewedText(checked ? reviewTextKey : '')} onReturn={() => setStage('facts')} /></fieldset>}
           {savedNotice && <p role="status">{savedNotice}</p>}
           <div className="actions"><button className="secondary" onClick={() => setStage('facts')}>{copy.back}</button><button className="primary" disabled={!!busy} onClick={() => setExportOpen(true)}>{ui.exportApplication}</button><button className="secondary" onClick={exportAll}>{ui.saveRecord}</button><HwpDownloadButton session={session} reviewed={finalReviewed && englishReady} language={language} label={copy.downloadText} disabled={!!busy} onNotice={setSavedNotice} onError={setError} /></div>

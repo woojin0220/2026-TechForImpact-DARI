@@ -76,7 +76,7 @@ export function FieldInput({ field, language, valueLanguage, value, copy, onChan
     {(field.type === 'single' || field.type === 'multi') && <ChoiceList label={label} multi={field.type === 'multi'} selected={selected}
       items={(field.options ?? []).map(option => ({ value: option.value, label: text(language, option.ko, option.en) }))}
       onToggle={value => { const on = selected.includes(value); choose(field.type === 'multi' ? (on ? selected.filter(item => item !== value) : [...selected, value]) : (on ? [] : [value])); }}
-      otherValue={takesOtherText(field.id, field.options) ? OTHER_OPTION : undefined} otherText={other} otherLabel={copy.otherLabel}
+      otherValue={takesOtherText(field.id, field.options) ? OTHER_OPTION : undefined} otherText={other} otherLabel={copy.otherLabel} moreLabel={copy.moreChoices} lessLabel={copy.fewerChoices} hiddenSelectedLabel={copy.hiddenSelected}
       onOtherText={value => { const values = withOtherText(selected, OTHER_OPTION, value, field.type === 'multi'); onChange(values.length || value ? { kind: 'choice', values, ...(value ? { other: value } : {}) } : undefined); }} />}
     {(field.type === 'single' || field.type === 'multi') && selected.length > 0 && <button className="quiet clear-choice" onClick={() => onChange(undefined)}>{copy.clearChoice}</button>}
     {(field.type === 'short' || field.type === 'date') && <input lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : field.type === 'date' ? 'ltr' : 'auto'} value={value?.kind === 'text' ? value.text : ''} placeholder={field.type === 'date' ? copy.datePlaceholder : ''} title={field.type === 'date' ? copy.dateFormat : undefined} aria-label={label}

@@ -8,7 +8,7 @@
       "command": "npm test",
       "passed": 145,
       "failed": 0,
-      "log": "../../arabic-test-results.txt"
+      "log": "arabic-test-results.txt"
     },
     "arabic_audit": {
       "uiKeys": 320,

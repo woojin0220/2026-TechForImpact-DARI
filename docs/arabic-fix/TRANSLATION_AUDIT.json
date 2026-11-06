@@ -2,7 +2,7 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 401,
+    "uiKeys": 404,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
@@ -11,7 +11,7 @@
       "overview": 57,
       "intake": 58,
       "process": 11,
-      "scripted": 35,
+      "scripted": 38,
       "statuses": 7
     },
     "officialSteps": 35,
@@ -31,8 +31,7 @@
   "explicitLimitations": [
     "Arabic final meaning/backtranslation remains unsupported and approval remains disabled.",
     "English-only developer quick test is explicitly labelled and hidden from the ordinary production start screen.",
-    "Script detection cannot prove the linguistic quality of generated Arabic.",
-    "LegacyApp.tsx is not imported by main.tsx and is outside the active user route."
+    "Script detection cannot prove the linguistic quality of generated Arabic."
   ],
   "issues": [],
   "literalFindings": [],
@@ -2622,6 +2621,13 @@
     },
     {
       "namespace": "scripted",
+      "key": "fewerChoices",
+      "en": "Show fewer",
+      "ko": "접기",
+      "ar": "عرض أقل"
+    },
+    {
+      "namespace": "scripted",
       "key": "finishStory",
       "en": "Finish the story and go to the next questions",
       "ko": "이야기는 여기까지 하고 다음 질문으로",
@@ -2668,6 +2674,20 @@
       "en": "Yes, there is something to list",
       "ko": "적을 내용이 있어요",
       "ar": "نعم، هناك ما أذكره"
+    },
+    {
+      "namespace": "scripted",
+      "key": "hiddenSelected",
+      "en": "{n} selected among hidden choices",
+      "ko": "숨긴 선택지 중 {n}개 선택됨",
+      "ar": "تم اختيار {n} من الخيارات المخفية"
+    },
+    {
+      "namespace": "scripted",
+      "key": "moreChoices",
+      "en": "Show more choices ({n})",
+      "ko": "선택지 더 보기 ({n})",
+      "ar": "عرض المزيد من الخيارات ({n})"
     },
     {
       "namespace": "scripted",
