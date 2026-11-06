@@ -2,12 +2,13 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 344,
+    "uiKeys": 401,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
       "revision": 51,
       "bench": 48,
+      "overview": 57,
       "intake": 58,
       "process": 11,
       "scripted": 35,
@@ -1666,6 +1667,405 @@
       "en": "Turn p90 (seconds)",
       "ko": "턴 p90 (초)",
       "ar": "المئين التسعون لزمن الدور (ثوانٍ)"
+    },
+    {
+      "namespace": "overview",
+      "key": "after",
+      "en": "After",
+      "ko": "변경 후",
+      "ar": "بعد التعديل"
+    },
+    {
+      "namespace": "overview",
+      "key": "answered",
+      "en": "Answer recorded",
+      "ko": "답변 기록됨",
+      "ar": "تم تسجيل الإجابة"
+    },
+    {
+      "namespace": "overview",
+      "key": "appliedProposal",
+      "en": "Applied suggestion",
+      "ko": "반영된 제안",
+      "ar": "اقتراح مُطبّق"
+    },
+    {
+      "namespace": "overview",
+      "key": "assistant",
+      "en": "DARI",
+      "ko": "DARI",
+      "ar": "داري"
+    },
+    {
+      "namespace": "overview",
+      "key": "before",
+      "en": "Before",
+      "ko": "변경 전",
+      "ar": "قبل التعديل"
+    },
+    {
+      "namespace": "overview",
+      "key": "busyNote",
+      "en": "You can read all entries while processing continues. Editing is available when processing finishes.",
+      "ko": "처리 중에도 전체 내용을 읽을 수 있습니다. 수정 화면 이동은 처리가 끝나면 가능합니다.",
+      "ar": "يمكنك قراءة جميع المدخلات أثناء استمرار المعالجة. يتاح الانتقال إلى التعديل بعد انتهائها."
+    },
+    {
+      "namespace": "overview",
+      "key": "changes",
+      "en": "Recorded wording changes",
+      "ko": "기록된 문구 변경",
+      "ar": "تغييرات الصياغة المسجلة"
+    },
+    {
+      "namespace": "overview",
+      "key": "close",
+      "en": "Close",
+      "ko": "닫기",
+      "ar": "إغلاق"
+    },
+    {
+      "namespace": "overview",
+      "key": "collected",
+      "en": "Collected answers by topic",
+      "ko": "주제별 수집 답변",
+      "ar": "الإجابات المجمعة حسب الموضوع"
+    },
+    {
+      "namespace": "overview",
+      "key": "collectedNote",
+      "en": "Only answers marked as confirmed below have been confirmed by you. Collected information may still need correction.",
+      "ko": "사용자가 확인한 답변에만 확인 표시가 붙습니다. 수집된 정보는 아직 정정이 필요할 수 있습니다.",
+      "ar": "تظهر علامة التأكيد فقط على الإجابات التي أكّدتها بنفسك. قد تظل المعلومات المجمعة بحاجة إلى تصحيح."
+    },
+    {
+      "namespace": "overview",
+      "key": "confirmed",
+      "en": "Confirmed by you",
+      "ko": "사용자 확인 완료",
+      "ar": "أكّدتها بنفسك"
+    },
+    {
+      "namespace": "overview",
+      "key": "conflict",
+      "en": "Needs clarification",
+      "ko": "다시 확인 필요",
+      "ar": "يحتاج إلى توضيح"
+    },
+    {
+      "namespace": "overview",
+      "key": "contents",
+      "en": "Overview sections",
+      "ko": "전체 내용의 구분",
+      "ar": "أقسام العرض الكامل"
+    },
+    {
+      "namespace": "overview",
+      "key": "continueConversation",
+      "en": "Go to conversation",
+      "ko": "대화 화면으로 이동",
+      "ar": "الانتقال إلى المحادثة"
+    },
+    {
+      "namespace": "overview",
+      "key": "conversation",
+      "en": "Full original conversation",
+      "ko": "전체 대화 원문",
+      "ar": "المحادثة الأصلية الكاملة"
+    },
+    {
+      "namespace": "overview",
+      "key": "conversationNote",
+      "en": "Every recorded message is shown in order. Original messages are preserved when an answer is corrected.",
+      "ko": "기록된 모든 대화를 순서대로 표시합니다. 답변을 정정해도 이전 대화 원문은 보존됩니다.",
+      "ar": "تظهر جميع الرسائل المسجلة بالترتيب. تُحفظ الرسائل الأصلية عند تصحيح أي إجابة."
+    },
+    {
+      "namespace": "overview",
+      "key": "currentSentence",
+      "en": "Current draft sentence",
+      "ko": "현재 초안 문장",
+      "ar": "جملة المسودة الحالية"
+    },
+    {
+      "namespace": "overview",
+      "key": "decisions",
+      "en": "Topics you left unknown or deferred",
+      "ko": "모름·보류로 남긴 주제",
+      "ar": "المواضيع التي تركتها غير معروفة أو مؤجلة"
+    },
+    {
+      "namespace": "overview",
+      "key": "dismissedProposal",
+      "en": "Declined suggestion",
+      "ko": "반영하지 않은 제안",
+      "ar": "اقتراح لم يُعتمد"
+    },
+    {
+      "namespace": "overview",
+      "key": "drafts",
+      "en": "Korean draft and edits",
+      "ko": "한국어 초안과 수정 내용",
+      "ar": "المسودة الكورية والتعديلات"
+    },
+    {
+      "namespace": "overview",
+      "key": "draftsNote",
+      "en": "Draft wording is separate from your original messages. A draft or an edit is not automatically a confirmed answer.",
+      "ko": "초안 문구는 사용자 대화 원문과 구분됩니다. 초안이나 수정 내용이 자동으로 확정 답변이 되는 것은 아닙니다.",
+      "ar": "صياغة المسودة منفصلة عن رسائلك الأصلية. لا تُعد المسودة أو التعديلات إجابة مؤكدة تلقائيًا."
+    },
+    {
+      "namespace": "overview",
+      "key": "edit",
+      "en": "Go to edit",
+      "ko": "수정 화면으로 이동",
+      "ar": "الانتقال إلى التعديل"
+    },
+    {
+      "namespace": "overview",
+      "key": "editedAnswers",
+      "en": "Current draft answers",
+      "ko": "현재 초안 답변",
+      "ar": "إجابات المسودة الحالية"
+    },
+    {
+      "namespace": "overview",
+      "key": "empty",
+      "en": "You have not entered any information yet.",
+      "ko": "아직 입력한 내용이 없습니다.",
+      "ar": "لم تُدخل أي معلومات بعد."
+    },
+    {
+      "namespace": "overview",
+      "key": "forms",
+      "en": "Answers entered in the form",
+      "ko": "양식에 직접 입력한 답변",
+      "ar": "الإجابات التي أدخلتها في النموذج"
+    },
+    {
+      "namespace": "overview",
+      "key": "formsNote",
+      "en": "These are the values you entered directly. They are separate from collected answers and confirmation.",
+      "ko": "사용자가 직접 입력한 값입니다. 수집된 답변 및 사용자 확인 여부와 구분됩니다.",
+      "ar": "هذه قيم أدخلتها بنفسك، وهي منفصلة عن الإجابات المجمعة وعن تأكيدك لها."
+    },
+    {
+      "namespace": "overview",
+      "key": "general",
+      "en": "Other information",
+      "ko": "기타 정보",
+      "ar": "معلومات أخرى"
+    },
+    {
+      "namespace": "overview",
+      "key": "generatedDraft",
+      "en": "Generated draft",
+      "ko": "생성된 초안",
+      "ar": "المسودة المُنشأة"
+    },
+    {
+      "namespace": "overview",
+      "key": "hiddenAnswer",
+      "en": "Saved answer outside the current form conditions",
+      "ko": "현재 양식 조건에서는 표시되지 않는 저장된 답변",
+      "ar": "إجابة محفوظة لا تظهر وفق شروط النموذج الحالية"
+    },
+    {
+      "namespace": "overview",
+      "key": "hiddenFieldEditing",
+      "en": "This saved field is hidden by the current form conditions. You can review or edit its value.",
+      "ko": "현재 양식 조건에서 숨겨진 항목입니다. 입력 내용을 확인하거나 수정할 수 있습니다.",
+      "ar": "هذا الحقل المحفوظ مخفي وفق شروط النموذج الحالية. يمكنك مراجعة قيمته أو تعديلها."
+    },
+    {
+      "namespace": "overview",
+      "key": "history",
+      "en": "Previous collected records",
+      "ko": "이전 수집 기록",
+      "ar": "السجلات المجمعة السابقة"
+    },
+    {
+      "namespace": "overview",
+      "key": "historyNote",
+      "en": "These records were replaced or withdrawn and are not current confirmed answers.",
+      "ko": "다른 답변으로 교체되거나 철회된 기록이며 현재 확정된 답변이 아닙니다.",
+      "ar": "استُبدلت هذه السجلات أو سُحبت، وهي ليست إجابات حالية مؤكدة."
+    },
+    {
+      "namespace": "overview",
+      "key": "intro",
+      "en": "Review what you entered, what was collected, and what you have confirmed. Your original words remain unchanged.",
+      "ko": "직접 입력한 내용, 수집된 답변, 사용자 확인 여부를 함께 살펴보세요. 사용자 원문은 그대로 보존됩니다.",
+      "ar": "راجع ما أدخلته والمعلومات المجمعة وما أكدته بنفسك. تبقى كلماتك الأصلية دون تغيير."
+    },
+    {
+      "namespace": "overview",
+      "key": "noValue",
+      "en": "No value entered",
+      "ko": "입력한 값 없음",
+      "ar": "لم تُدخل قيمة"
+    },
+    {
+      "namespace": "overview",
+      "key": "notApplicable",
+      "en": "Not applicable",
+      "ko": "해당 없음",
+      "ar": "لا ينطبق"
+    },
+    {
+      "namespace": "overview",
+      "key": "open",
+      "en": "View all entries",
+      "ko": "전체 내용 보기",
+      "ar": "عرض جميع المدخلات"
+    },
+    {
+      "namespace": "overview",
+      "key": "original",
+      "en": "Your original words",
+      "ko": "사용자 원문",
+      "ar": "كلماتك الأصلية"
+    },
+    {
+      "namespace": "overview",
+      "key": "originalSentence",
+      "en": "Original draft sentence",
+      "ko": "최초 초안 문장",
+      "ar": "جملة المسودة الأصلية"
+    },
+    {
+      "namespace": "overview",
+      "key": "pending",
+      "en": "Text being written",
+      "ko": "작성 중인 내용",
+      "ar": "النص الجاري كتابته"
+    },
+    {
+      "namespace": "overview",
+      "key": "pendingNote",
+      "en": "This text has not been sent yet.",
+      "ko": "아직 전송하지 않은 내용입니다.",
+      "ar": "لم يُرسل هذا النص بعد."
+    },
+    {
+      "namespace": "overview",
+      "key": "pendingProposal",
+      "en": "Pending suggestion",
+      "ko": "아직 반영하지 않은 제안",
+      "ar": "اقتراح لم يُطبّق بعد"
+    },
+    {
+      "namespace": "overview",
+      "key": "previousRecord",
+      "en": "Previous record",
+      "ko": "이전 기록",
+      "ar": "سجل سابق"
+    },
+    {
+      "namespace": "overview",
+      "key": "proposal",
+      "en": "Suggested wording",
+      "ko": "수정 제안 문구",
+      "ar": "الصياغة المقترحة"
+    },
+    {
+      "namespace": "overview",
+      "key": "question",
+      "en": "Question",
+      "ko": "질문",
+      "ar": "السؤال"
+    },
+    {
+      "namespace": "overview",
+      "key": "reviewHistory",
+      "en": "Sentence edit conversations and changes",
+      "ko": "문장 수정 대화와 변경 기록",
+      "ar": "محادثات تعديل الجمل وسجل التغييرات"
+    },
+    {
+      "namespace": "overview",
+      "key": "row",
+      "en": "Entry",
+      "ko": "항목",
+      "ar": "البند"
+    },
+    {
+      "namespace": "overview",
+      "key": "skipped",
+      "en": "Deferred",
+      "ko": "답변 보류",
+      "ar": "مؤجل"
+    },
+    {
+      "namespace": "overview",
+      "key": "sourceQuotes",
+      "en": "Original words linked to this answer",
+      "ko": "이 답변에 연결된 사용자 원문",
+      "ar": "كلماتك الأصلية المرتبطة بهذه الإجابة"
+    },
+    {
+      "namespace": "overview",
+      "key": "staleProposal",
+      "en": "Outdated suggestion",
+      "ko": "현재 문장과 맞지 않는 이전 제안",
+      "ar": "اقتراح سابق لا يطابق الجملة الحالية"
+    },
+    {
+      "namespace": "overview",
+      "key": "tableEmpty",
+      "en": "No entries in this table",
+      "ko": "이 표에 입력한 항목 없음",
+      "ar": "لا توجد بنود في هذا الجدول"
+    },
+    {
+      "namespace": "overview",
+      "key": "thread",
+      "en": "Edit conversation",
+      "ko": "수정 대화",
+      "ar": "محادثة التعديل"
+    },
+    {
+      "namespace": "overview",
+      "key": "title",
+      "en": "All your entries",
+      "ko": "지금까지 입력한 전체 내용",
+      "ar": "جميع المعلومات التي أدخلتها"
+    },
+    {
+      "namespace": "overview",
+      "key": "topic",
+      "en": "Topic",
+      "ko": "주제",
+      "ar": "الموضوع"
+    },
+    {
+      "namespace": "overview",
+      "key": "translations",
+      "en": "Stored review translations",
+      "ko": "저장된 검토용 번역",
+      "ar": "ترجمات المراجعة المحفوظة"
+    },
+    {
+      "namespace": "overview",
+      "key": "unconfirmed",
+      "en": "Not yet confirmed",
+      "ko": "아직 확인하지 않음",
+      "ar": "لم تؤكَّد بعد"
+    },
+    {
+      "namespace": "overview",
+      "key": "unknown",
+      "en": "I do not know",
+      "ko": "모름",
+      "ar": "لا أعرف"
+    },
+    {
+      "namespace": "overview",
+      "key": "unsupportedEdit",
+      "en": "This saved item has no matching edit screen in this version. Its original value is preserved here.",
+      "ko": "이 버전에는 이 저장 항목의 수정 화면이 없습니다. 입력 값은 여기에 그대로 표시합니다.",
+      "ar": "لا توجد شاشة تعديل مطابقة لهذا البند المحفوظ في هذا الإصدار. تبقى قيمته الأصلية معروضة هنا."
     },
     {
       "namespace": "intake",

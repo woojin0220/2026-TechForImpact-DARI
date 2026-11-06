@@ -1,0 +1,98 @@
+{
+  "checked_at": "2026-11-05T01:03:24.976387+09:00",
+  "arabic_base_branch": "fix/arabic-localization-rtl",
+  "arabic_remote_commit": "8b0a62653fe2df71aed49e5ec3e54ecee5b36430",
+  "feature_branch": "feat/session-overview",
+  "automated": {
+    "tests": 163,
+    "passed": 163,
+    "failed": 0,
+    "typecheck_and_build": "passed",
+    "arabic_ui_keys": 377,
+    "arabic_missing_keys": 0,
+    "known_label_keys": 426,
+    "label_occurrences": 772,
+    "new_overview_locale_keys": 57,
+    "new_overview_locales": [
+      "ko",
+      "en",
+      "ar",
+      "fr",
+      "ru",
+      "fa"
+    ],
+    "build_warning": "Vite main chunk exceeds 500kB; build succeeded"
+  },
+  "browser": {
+    "environment": "Mac in-app browser; synthetic records only; no physical mobile device",
+    "checks": [
+      {
+        "check": "Saved raw forms visible before leaving form",
+        "result": "passed; surname/given-name preserved; edit focuses exact field"
+      },
+      {
+        "check": "Large form overview",
+        "result": "passed; 92 raw form fields and 84 collected answers displayed"
+      },
+      {
+        "check": "User confirmation distinct from original and collected data",
+        "result": "passed; synthetic fixture shows 1 confirmed fact and remaining unconfirmed facts"
+      },
+      {
+        "check": "Original conversation",
+        "result": "passed; all four source messages, in order, once each; review conversation displayed separately"
+      },
+      {
+        "check": "Unsent input",
+        "result": "passed; visible in overview and retained when jumping to correction"
+      },
+      {
+        "check": "Draft edit jump",
+        "result": "passed; field 14.2-detail focused with existing Korean text, lang=ko and dir=ltr"
+      },
+      {
+        "check": "Conditional hidden field",
+        "result": "passed; 9.2 value retained and revealed with explanation when selected for edit"
+      },
+      {
+        "check": "Scripted choice correction",
+        "result": "passed; existing option controls opened and focused, no inference on navigation"
+      },
+      {
+        "check": "Table with blank first row",
+        "result": "passed; collected row-1 maps to raw second table row and correct country input"
+      },
+      {
+        "check": "Deferred-topic correction",
+        "result": "passed; correct topic label and correction textarea focused"
+      },
+      {
+        "check": "390px mobile scrolling",
+        "result": "passed; dialog and document width 390, scroll height 35916, client height 740, scrollTop reached 35175.5, close button remained visible"
+      },
+      {
+        "check": "Arabic RTL",
+        "result": "passed; dialog lang=ar, computed rtl, document width390, raw form entries preserved"
+      },
+      {
+        "check": "Russian long header",
+        "result": "passed after wrapping fix; document and header width390"
+      },
+      {
+        "check": "Close and Escape",
+        "result": "passed; dialog removed, body scrolling restored, focus returned to overview trigger"
+      },
+      {
+        "check": "Reopen overview while editing",
+        "result": "passed; conditional field remains visible, selected correction topic and unsent text remain intact; focus returns to trigger when closing without navigation"
+      }
+    ]
+  },
+  "boundaries": [
+    "No external inference is required to open the overview.",
+    "Overview does not mark answers confirmed or rewrite source messages.",
+    "Entries outside the current schema remain visible with an unsupported-edit notice.",
+    "This adds no persistence or refresh recovery; existing session lifetime is unchanged.",
+    "Arabic final meaning approval remains unsupported as documented in the Arabic fix."
+  ]
+}
