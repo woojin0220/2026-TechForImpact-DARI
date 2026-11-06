@@ -1,6 +1,6 @@
 import { dummyFormAnswers, formSteps, isFieldVisible, requirementsById, type FormAnswers, type FormValue } from './intake';
 import type { FormField } from './form/schema';
-import { hasQuestionPhrase, localize } from './form/localize';
+import { localizedLabel } from './form/localize';
 import type { ScriptedCopy } from './intakeCopy';
 import { samePrompt } from './form/presentation';
 
@@ -8,9 +8,7 @@ import { samePrompt } from './form/presentation';
 export const DEV_TOOLS = import.meta.env.DEV || import.meta.env.VITE_DARI_DEV_TOOLS === 'true';
 
 function text(language: string, ko: string, en: string) {
-  if (language === 'ko') return ko;
-  if (language === 'en') return en;
-  return hasQuestionPhrase(ko) ? localize(language, ko) : en;
+  return localizedLabel(language, ko, en);
 }
 
 export function formPageOf(requirementId: string): number {
@@ -46,7 +44,7 @@ export function FormStage({ language, answers, page, copy, back, next, onChange,
       <span dir="ltr">{page + 1} / {formSteps.length}</span>
     </div>
     <div className="form-progress" aria-hidden="true"><span style={{ width: `${100 * (page + 1) / formSteps.length}%` }} /></div>
-    {DEV_TOOLS && <button className="quiet dev-fill" onClick={() => onChange(dummyFormAnswers())}>개발용 · 더미 데이터로 자동 채우기</button>}
+    {DEV_TOOLS && <button className="quiet dev-fill" onClick={() => onChange(dummyFormAnswers())}>{copy.devFill}</button>}
     <section className="panel form-card" key={step.id}>
       <h2>{title}</h2>
       {visibleFields.map(field =>
@@ -54,12 +52,12 @@ export function FormStage({ language, answers, page, copy, back, next, onChange,
     </section>
     <div className="form-nav">
       <button className="secondary" disabled={page === 0} onClick={() => onPage(page - 1)}>{back}</button>
-      <button className="primary" onClick={() => last ? onDone() : onPage(page + 1)}>{last ? copy.toConversation : next}<span aria-hidden="true">→</span></button>
+      <button className="primary" onClick={() => last ? onDone() : onPage(page + 1)}>{last ? copy.toConversation : next}<span aria-hidden="true">{['ar', 'fa'].includes(language) ? '←' : '→'}</span></button>
     </div>
   </div>;
 }
 
-export function FieldInput({ field, language, value, copy, onChange, showStatus = true, showLabel = true }: { field: FormField; language: string; value?: FormValue; copy: ScriptedCopy; onChange: (value: FormValue | undefined) => void; showStatus?: boolean; showLabel?: boolean }) {
+export function FieldInput({ field, language, valueLanguage, value, copy, onChange, showStatus = true, showLabel = true }: { field: FormField; language: string; valueLanguage?: string; value?: FormValue; copy: ScriptedCopy; onChange: (value: FormValue | undefined) => void; showStatus?: boolean; showLabel?: boolean }) {
   const label = text(language, field.ko, field.en);
   const selected = value?.kind === 'choice' ? value.values : [];
   const status = value?.kind === 'status' ? value.status : undefined;
@@ -73,9 +71,9 @@ export function FieldInput({ field, language, value, copy, onChange, showStatus 
         return <button key={option.value} aria-pressed={on} onClick={() => onChange(values.length ? { kind: 'choice', values } : undefined)}>{text(language, option.ko, option.en)}</button>;
       })}
     </div>}
-    {(field.type === 'short' || field.type === 'date') && <input dir="auto" value={value?.kind === 'text' ? value.text : ''} placeholder={field.type === 'date' ? 'yyyy/mm/dd' : ''} aria-label={label}
+    {(field.type === 'short' || field.type === 'date') && <input lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : field.type === 'date' ? 'ltr' : 'auto'} value={value?.kind === 'text' ? value.text : ''} placeholder={field.type === 'date' ? copy.datePlaceholder : ''} title={field.type === 'date' ? copy.dateFormat : undefined} aria-label={label}
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}
-    {field.type === 'long' && <textarea dir="auto" rows={4} value={value?.kind === 'text' ? value.text : ''} aria-label={label}
+    {field.type === 'long' && <textarea lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : 'auto'} rows={4} value={value?.kind === 'text' ? value.text : ''} aria-label={label}
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}
     {field.type === 'table' && <TableInput field={field} language={language} value={value} copy={copy} onChange={onChange} />}
     {showStatus && field.type !== 'table' && <div className="status-toggles">
@@ -93,9 +91,9 @@ function TableInput({ field, language, value, copy, onChange }: { field: FormFie
     <label className="check-row"><input type="checkbox" checked={none} onChange={event => onChange(event.target.checked ? { kind: 'table', rows: [] } : undefined)} />{copy.tableNone}</label>
     {!none && <>
       {rows.map((row, index) => <div className="table-entry" key={index}>
-        <div className="table-entry-head"><b>{copy.row.replace('{n}', String(index + 1))}</b>{rows.length > 1 && <button className="quiet" onClick={() => update(rows.filter((_, item) => item !== index))}>{copy.removeRow}</button>}</div>
+        <div className="table-entry-head"><b>{copy.row.split('{n}')[0]}<bdi dir="ltr">{index + 1}</bdi>{copy.row.split('{n}')[1]}</b>{rows.length > 1 && <button className="quiet" onClick={() => update(rows.filter((_, item) => item !== index))}>{copy.removeRow}</button>}</div>
         {field.columns?.map(column => <label key={column.id}>{text(language, column.ko, column.en)}
-          <input dir="auto" value={row[column.id] ?? ''} placeholder={column.kind === 'date' ? 'yyyy/mm/dd' : ''}
+          <input dir={column.kind === 'date' ? 'ltr' : 'auto'} value={row[column.id] ?? ''} placeholder={column.kind === 'date' ? copy.datePlaceholder : ''} title={column.kind === 'date' ? copy.dateFormat : undefined}
             onChange={event => update(rows.map((item, rowIndex) => rowIndex === index ? { ...item, [column.id]: event.target.value } : item))} /></label>)}
       </div>)}
       <button className="secondary" onClick={() => update([...rows, {}])}>{copy.addRow}</button>

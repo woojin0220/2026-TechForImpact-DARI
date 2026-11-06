@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "test": "node --experimental-strip-types scripts/audit-arabic-i18n.mjs && node --experimental-strip-types --test tests/*.test.mjs",
     "preview": "vite preview",
     "cap:sync": "npx cap sync",
     "cap:add:android": "npx cap add android",
-    "cap:add:ios": "npx cap add ios"
+    "cap:add:ios": "npx cap add ios",
+    "audit:ar": "node --experimental-strip-types scripts/audit-arabic-i18n.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.1.0",

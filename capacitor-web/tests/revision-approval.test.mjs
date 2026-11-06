@@ -21,3 +21,9 @@ test('stale, dismissed, applied, changed-source and busy suggestions cannot be a
 test('Korean readers can approve a current suggestion without a back-translation', () => {
   assert.equal(canApproveSuggestion(proposal, 1, proposal.before, 'ko'), true);
 });
+
+test('unsupported review languages never bypass the meaning-review gate', () => {
+  for (const language of ['ar', 'fa', 'fr', 'ru', 'invalid']) {
+    assert.equal(canApproveSuggestion(proposal, 1, proposal.before, language, proposal.after), false);
+  }
+});

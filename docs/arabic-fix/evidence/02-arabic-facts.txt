@@ -1,0 +1,149 @@
+Browser tab: 6, Title: "DARI | 난민인정신청서 작성 지원", URL: "http://127.0.0.1:5173/".
+0 AXWebArea DARI | 난민인정신청서 작성 지원, URL: 127.0.0.1:5173/
+	1 container root
+		2 link Description: متابعة, Value: 127.0.0.1:5173/#main
+		3 container
+			4 button DARI لكي تصل كلماتك
+				5 text DARI
+				6 text لكي تصل كلماتك
+			7 button العربية
+			8 button ? المساعدة
+				9 text ?
+				10 text المساعدة
+			11 button (collapsed) Description: إعدادات المشغّل والمطوّر, Secondary Actions: Expand
+		12 content list
+			13 button 01 البداية
+				14 text 01
+				42 text البداية
+			16 button 02 البيانات الأساسية
+				17 text 02
+				43 text البيانات الأساسية
+			19 button 03 المحادثة
+				20 text 03
+				44 text المحادثة
+			22 button 04 المعلومات المجمعة
+				23 text 04
+				45 text المعلومات المجمعة
+			25 button (disabled) 05 المسودة الكورية
+				26 text 05 المسودة الكورية
+		46 container main
+			47 text 04
+			48 text  /
+			49 text 05
+			50 text  ·
+			51 text المعلومات المجمعة
+			52 heading هل فهمنا كلامك بشكل صحيح؟, Value: 1
+				53 text هل فهمنا كلامك بشكل صحيح؟
+			54 text جُمعت هذه المعلومات من إجاباتك. أخبرنا في المحادثة إن كان هناك نقص أو خطأ.
+			55 container
+				56 text يحتاج توضيحًا  ·  1 جُمعت هذه المعلومات من إجاباتك. أخبرنا في المحادثة إن كان هناك نقص أو خطأ.
+			57 container مراجعة إفادتك
+				58 text هذه المعلومات مرتبة حسب الموضوع والواقعة. صحّح أي معلومة لا تعكس ما قصدته، وأكّد المعلومات الصحيحة.
+				59 container
+					60 heading سبب طلبك للحماية, Value: 3
+						61 text سبب طلبك للحماية
+					62 text بعض المعلومات غير واضحة. يرجى التحقق من المعنى الذي قصدته.
+					63 definition list
+						64 container أي من الأسباب التالية دفعك إلى طلب الاعتراف بصفة اللاجئ؟
+							65 text أي من الأسباب التالية دفعك إلى طلب الاعتراف بصفة اللاجئ؟
+						66 container
+							67 text أخرى
+							68 button تصحيح
+					69 checkbox (settable, integer) Description: تأكيد المعلومات 1, Value: 0
+					70 text هذه المعلومات تعكس إجابتي بشكل صحيح.
+				71 container
+					72 heading ما الذي حدث لك, Value: 3
+						73 text ما الذي حدث لك
+					74 definition list
+						75 container هل تعرضت للأذى في الماضي؟
+							76 text هل تعرضت للأذى في الماضي؟
+						77 container
+							78 text لا
+							79 button تصحيح
+					80 checkbox (settable, integer) Description: تأكيد المعلومات 2, Value: 0
+					81 text هذه المعلومات تعكس إجابتي بشكل صحيح.
+				82 container
+					83 heading ما الذي حدث لك · الواقعة 1, Value: 3
+						84 text ما الذي حدث لك  ·  الواقعة 1
+					85 text بعض المعلومات غير واضحة. يرجى التحقق من المعنى الذي قصدته.
+					86 definition list
+						87 container ما الذي حدث
+							88 text ما الذي حدث
+						89 container
+							90 text في أبريل 2025 هددني شخصان قرب منزلي
+							91 button تصحيح
+						92 container نوع الأذى
+							93 text نوع الأذى
+						94 container
+							95 text التهديد
+							96 button تصحيح
+						97 container متى
+							98 text متى
+						99 container
+							100 text أبريل 2025
+							101 button تصحيح
+						102 container أين
+							103 text أين
+						104 container
+							105 text قرب منزلي
+							106 button تصحيح
+						107 container مَن كان متورطًا
+							108 text مَن كان متورطًا
+						109 container
+							110 text شخصان
+							111 button تصحيح
+						112 container لماذا تعتقد ذلك
+							113 text لماذا تعتقد ذلك
+						114 container
+							115 text لا أعرف من هما غير معروف
+							116 button تصحيح
+						117 container كيف أُفرج عنك
+							118 text كيف أُفرج عنك
+						119 container
+							120 text لم أُعتقل أو أُحتجز
+							121 button تصحيح
+					122 checkbox (settable, integer) Description: تأكيد المعلومات 3, Value: 0
+					123 text هذه المعلومات تعكس إجابتي بشكل صحيح.
+				124 container
+					125 heading ما يقلقك بشأن العودة, Value: 3
+						126 text ما يقلقك بشأن العودة
+					127 text بعض المعلومات غير واضحة. يرجى التحقق من المعنى الذي قصدته.
+					128 definition list
+						129 container هل تخشى العودة؟
+							130 text هل تخشى العودة؟
+						131 container
+							132 text نعم
+							133 button تصحيح
+						134 container ما الذي تخشاه
+							135 text ما الذي تخشاه
+						136 container
+							137 text يهدد
+							138 button تصحيح
+						139 container مَن كان متورطًا
+							140 text مَن كان متورطًا
+						141 container
+							142 text لا تُعرف
+							143 button تصحيح
+						144 container لماذا تعتقد ذلك
+							145 text لماذا تعتقد ذلك
+						146 container
+							147 text إذا عدت
+							148 button تصحيح
+					149 checkbox (settable, integer) Description: تأكيد المعلومات 4, Value: 0
+					150 text هذه المعلومات تعكس إجابتي بشكل صحيح.
+			151 button (collapsed) المعلومات التفصيلية والمصادر الأصلية, Secondary Actions: Expand
+				152 text المعلومات التفصيلية والمصادر الأصلية
+			153 button (collapsed) ما زال للمناقشة · 12, Secondary Actions: Expand
+				154 text ما زال للمناقشة
+				155 text  ·
+				156 text 12
+			157 container
+				158 text إضافة أو تصحيح
+				159 text entry area (settable) إضافة أو تصحيح
+				160 button (disabled) إرسال
+			161 container
+				162 checkbox (settable, integer) Description: راجعت جميع المعلومات أعلاه., Value: 0
+				163 button رجوع
+				164 button (disabled) إعداد المسودة الكورية
+
+The focused UI element is 46 container main

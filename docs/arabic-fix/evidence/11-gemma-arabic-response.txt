@@ -1,0 +1,48 @@
+- link "متابعة":
+  - /url: "#main"
+- banner:
+  - button "DARI لكي تصل كلماتك":
+    - strong: DARI
+    - generic: لكي تصل كلماتك
+  - button "العربية"
+  - button "? المساعدة":
+    - generic: "?"
+    - text: المساعدة
+  - button "إعدادات المشغّل والمطوّر": ⚙
+- complementary:
+  - list:
+    - button "01 البداية":
+      - generic: "01"
+      - generic: البداية
+    - button "02 البيانات الأساسية":
+      - generic: "02"
+      - generic: البيانات الأساسية
+    - button "03 المحادثة":
+      - generic: "03"
+      - generic: المحادثة
+    - button "04 المعلومات المجمعة":
+      - generic: "04"
+      - generic: المعلومات المجمعة
+    - button "05 المسودة الكورية" [disabled]:
+      - generic: "05"
+      - generic: المسودة الكورية
+- main:
+  - generic "المزيد"
+  - log "المحادثة":
+    - article:
+      - generic: DARI
+      - paragraph: احكِ بكلماتك لماذا غادرت بلدك وتطلب الحماية. يمكنك أن تقول إنك لا تتذكر شيئًا أو لا ترغب في الحديث عنه الآن.
+    - article:
+      - generic: إجابتك
+      - paragraph: في أبريل 2025 هددني شخصان قرب منزلي. لا أعرف هويتهما ولا أتذكر اليوم بالضبط. لم أُعتقل أو أُحتجز. أخشى أن يهدداني مرة أخرى إذا عدت.
+    - article:
+      - generic: DARI
+      - paragraph: أنا أستمع إليك وأتفهم ما مررت به.
+    - article:
+      - generic: DARI
+      - paragraph: هل يمكنك أن تخبرني لماذا تطلب الحماية؟
+  - generic: إجابتك
+  - textbox "إجابتك":
+    - /placeholder: اكتب إجابتك هنا…
+  - generic: خذ وقتك.
+  - button "إرسال" [disabled]:

@@ -1,0 +1,96 @@
+- link "متابعة":
+  - /url: "#main"
+- banner:
+  - button "DARI لكي تصل كلماتك":
+    - strong: DARI
+    - generic: لكي تصل كلماتك
+  - button "العربية"
+  - button "? المساعدة":
+    - generic: "?"
+    - text: المساعدة
+  - button "إعدادات المشغّل والمطوّر": ⚙
+- complementary:
+  - list:
+    - button "01 البداية":
+      - generic: "01"
+      - generic: البداية
+    - button "02 البيانات الأساسية":
+      - generic: "02"
+      - generic: البيانات الأساسية
+    - button "03 المحادثة":
+      - generic: "03"
+      - generic: المحادثة
+    - button "04 المعلومات المجمعة":
+      - generic: "04"
+      - generic: المعلومات المجمعة
+    - button "05 المسودة الكورية" [disabled]:
+      - generic: "05"
+      - generic: المسودة الكورية
+- main [active]:
+  - paragraph: 04 / 05 · المعلومات المجمعة
+  - heading "هل فهمنا كلامك بشكل صحيح؟" [level=1]
+  - paragraph: جُمعت هذه المعلومات من إجاباتك. أخبرنا في المحادثة إن كان هناك نقص أو خطأ.
+  - region "مراجعة إفادتك":
+    - paragraph: هذه المعلومات مرتبة حسب الموضوع والواقعة. صحّح أي معلومة لا تعكس ما قصدته، وأكّد المعلومات الصحيحة.
+    - article:
+      - heading "ما الذي حدث لك" [level=3]
+      - paragraph: بعض المعلومات غير واضحة. يرجى التحقق من المعنى الذي قصدته.
+      - term: هل تعرضت للأذى في الماضي؟
+      - definition:
+        - text: نعم
+        - button "تصحيح"
+      - checkbox "تأكيد المعلومات 1"
+      - text: هذه المعلومات تعكس إجابتي بشكل صحيح.
+    - article:
+      - heading "ما الذي حدث لك · الواقعة 1" [level=3]
+      - paragraph: بعض المعلومات غير واضحة. يرجى التحقق من المعنى الذي قصدته.
+      - term: ما الذي حدث
+      - definition:
+        - text: هددني شخصان قرب منزلي.
+        - button "تصحيح"
+      - term: نوع الأذى
+      - definition:
+        - text: التهديد
+        - button "تصحيح"
+      - term: متى
+      - definition:
+        - text: أبريل 2025
+        - button "تصحيح"
+      - term: أين
+      - definition:
+        - text: قرب منزلي
+        - button "تصحيح"
+      - checkbox "تأكيد المعلومات 2"
+      - text: هذه المعلومات تعكس إجابتي بشكل صحيح.
+    - article:
+      - heading "ما يقلقك بشأن العودة" [level=3]
+      - paragraph: بعض المعلومات غير واضحة. يرجى التحقق من المعنى الذي قصدته.
+      - term: هل تخشى العودة؟
+      - definition:
+        - text: نعم
+        - button "تصحيح"
+      - term: ما الذي تخشاه
+      - definition:
+        - text: أن يهدداني مرة أخرى
+        - button "تصحيح"
+      - term: مَن كان متورطًا
+      - definition:
+        - text: الشخصان اللذان هدداني سابقاً.
+        - button "تصحيح"
+      - term: لماذا تعتقد ذلك
+      - definition:
+        - text: التهديد السابق.
+        - button "تصحيح"
+      - checkbox "تأكيد المعلومات 3"
+      - text: هذه المعلومات تعكس إجابتي بشكل صحيح.
+  - generic "المعلومات التفصيلية والمصادر الأصلية"
+  - text: − −
+  - generic "ما زال للمناقشة · 7"
+  - text: إضافة أو تصحيح
+  - textbox "إضافة أو تصحيح":
+    - /placeholder: اكتب ما تريد إضافته أو تصحيحه…
+  - button "إرسال" [disabled]
+  - checkbox "راجعت جميع المعلومات أعلاه."
+  - text: راجعت جميع المعلومات أعلاه.
+  - button "رجوع"
+  - button "إعداد المسودة الكورية" [disabled]

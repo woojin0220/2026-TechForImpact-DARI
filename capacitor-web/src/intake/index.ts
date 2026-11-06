@@ -1,3 +1,4 @@
+import { requireReplyLanguage } from './replyLanguage.ts';
 import { isFormSection, isNarrative, requirementCatalog, requirementsById, requirementsForScope, type IntakeScope, type Requirement } from './catalog.ts';
 import { IntakeError, type CoverageEntry, type CoverageStatus, type DraftSection, type DraftSentence, type IntakeFact, type IntakeSession, type MessageAsk, type ModelAdapter, type ScriptedAsk, type SourceMessage } from './types.ts';
 import { intakeResponseSchema, intakeCompactSchema, draftResponseSchema, sentencesOf } from './responseSchemas.ts';
@@ -571,7 +572,7 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
       facts = [...facts, ...parseFacts(detail.facts, partial, group).filter(fact => !(requirementsById.get(fact.requirementId)?.gate && fact.value === 'no')
         || fact.sourceQuotes.some(quote => NEGATION.test(quote.quote)))];
     }
-    const reply = text(data.reply, '모델의 대화 답변', 6000);
+    const reply = requireReplyLanguage(text(data.reply, '모델의 대화 답변', 6000), session.language);
     const next = { ...session, facts: [...session.facts, ...facts], messages: [...session.messages, message('assistant', reply, session.messages.length + 1)], draft: [], updatedAt: now() };
     return { ...next, coverage: calculateCoverage(next) };
   } catch (error) {
@@ -760,7 +761,7 @@ export async function clarifyStatement(session: IntakeSession, factId: string, a
     responseSchema: { type: 'object', additionalProperties: false, required: ['reply'], properties: { reply: { type: 'string', minLength: 1, maxLength: 600 } } },
   }));
   if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
-  return appendAssistantMessage(session, text(response.reply, '확인 질문', 600), { kind: 'narrative', topics: [groupOf(fact.requirementId)], clarifies: [fact.id] });
+  return appendAssistantMessage(session, requireReplyLanguage(text(response.reply, '확인 질문', 600), session.language), { kind: 'narrative', topics: [groupOf(fact.requirementId)], clarifies: [fact.id] });
 }
 
 /** Topics that belong together in one natural question (what happened and the fear it caused;
@@ -807,7 +808,7 @@ export async function guideConversation(session: IntakeSession, adapter: ModelAd
       prompt: boundedPrompt({ language: session.language, askAbout: topics }),
       responseSchema: { type: 'object', additionalProperties: false, required: ['reply'], properties: { reply: { type: 'string', minLength: 1, maxLength: 600 } } },
     }));
-    const reply = text(data.reply, '모델의 질문', 2000);
+    const reply = requireReplyLanguage(text(data.reply, '모델의 질문', 2000), session.language);
     // A small model may copy an earlier question; never show the same question twice.
     if (session.messages.some(item => item.role === 'assistant' && normalize(item.content) === normalize(reply))) throw new Error('이전과 같은 질문이 만들어졌습니다.');
     return openTopic(session, targets, reply);

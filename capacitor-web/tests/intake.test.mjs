@@ -82,10 +82,10 @@ test('self-corrections and "I don\'t remember" are recognized in every candidate
     fa: 'قبلاً گفتم مارس، اما اشتباه گفتم. آوریل بود.',
   };
   for (const [lang, text] of Object.entries(corrections)) {
-    const first = await advanceConversation(createSession(lang), 'March 2025.', async () => response([fact('grounds.summary', 'March 2025', 'March 2025')]));
+    const first = await advanceConversation(createSession(lang), 'March 2025.', async () => response([fact('grounds.summary', 'March 2025', 'March 2025')], lang === 'ar' ? 'شكرًا.' : undefined));
     // The model omitted supersedes: the applicant's own correction still replaces the old value.
     const latest = fact('grounds.summary', 'April 2025', text, { sourceIds: ['message-4'], sourceQuotes: [{ sourceId: 'message-4', quote: text }] });
-    const corrected = await advanceConversation(first, text, async () => response([latest]));
+    const corrected = await advanceConversation(first, text, async () => response([latest], lang === 'ar' ? 'شكرًا.' : undefined));
     assert.equal(corrected.coverage.find(item => item.requirementId === 'grounds.summary').status, 'answered', lang);
     assert.deepEqual(getActiveFacts(corrected).map(item => item.value), ['April 2025'], lang);
   }
@@ -94,7 +94,7 @@ test('self-corrections and "I don\'t remember" are recognized in every candidate
     ar: 'لا أتذكر متى كان ذلك بالضبط.', fa: 'دقیقاً یادم نیست کی بود.',
   };
   for (const [lang, text] of Object.entries(forgotten)) {
-    const session = await advanceConversation(createSession(lang), text, async () => response([fact('grounds.summary', text, text)]));
+    const session = await advanceConversation(createSession(lang), text, async () => response([fact('grounds.summary', text, text)], lang === 'ar' ? 'شكرًا.' : undefined));
     assert.equal(getActiveFacts(session)[0].status, 'unknown', lang);
   }
 });
@@ -248,9 +248,9 @@ test('auxiliary passes can be turned off to save model calls', async () => {
 });
 
 test('selective auxiliary passes check topics only after an unrecorded denial', async () => {
-  const counted = first => { let count = 0; const topics = []; return [() => count, topics, async request => { count += 1;
+  const counted = (first, language = 'ko') => { let count = 0; const topics = []; return [() => count, topics, async request => { count += 1;
     if (request.system.startsWith('List every topic')) { topics.push(request); return '{"groups":["protection"]}'; }
-    return response(count === 1 ? first : []); }]; };
+    return response(count === 1 ? first : [], language === 'ar' ? 'شكرًا.' : undefined); }]; };
   setAuxiliaryPasses('selective');
   try {
     // "could not ask the police" left nothing recorded: the topic check and a focused pass run.
@@ -277,10 +277,10 @@ test('selective auxiliary passes check topics only after an unrecorded denial', 
   setAuxiliaryPasses('selective');
   try {
     for (const [lang, negated, plainText] of cases) {
-      const [, negatedTopics, negatedAdapter] = counted([]);
+      const [, negatedTopics, negatedAdapter] = counted([], lang);
       await advanceConversation(fullSession(lang), negated, negatedAdapter);
       assert.equal(negatedTopics.length, 1, `${lang} negation starts the topic check`);
-      const [, plainTopics, plainAdapter] = counted([]);
+      const [, plainTopics, plainAdapter] = counted([], lang);
       await advanceConversation(fullSession(lang), plainText, plainAdapter);
       assert.equal(plainTopics.length, 0, `${lang} look-alike is not a negation`);
     }
