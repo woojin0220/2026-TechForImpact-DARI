@@ -85,8 +85,8 @@ export function FieldInput({ field, language, valueLanguage, value, copy, onChan
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}
     {field.type === 'table' && <TableInput field={field} language={language} value={value} copy={copy} onChange={onChange} />}
     {showStatus && field.type !== 'table' && <div className="status-toggles">
-      <button className="quiet" aria-pressed={status === 'unknown'} onClick={() => toggleStatus('unknown')}>{copy.unknown}</button>
-      <button className="quiet" aria-pressed={status === 'not_applicable'} onClick={() => toggleStatus('not_applicable')}>{copy.notApplicable}</button>
+      <button className="quiet status-toggle" aria-pressed={status === 'unknown'} onClick={() => toggleStatus('unknown')}>{copy.unknown}</button>
+      <button className="quiet status-toggle" aria-pressed={status === 'not_applicable'} onClick={() => toggleStatus('not_applicable')}>{copy.notApplicable}</button>
     </div>}
   </div>;
 }

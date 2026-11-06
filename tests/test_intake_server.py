@@ -63,6 +63,13 @@ class IntakeServerTests(unittest.TestCase):
             server.generate_intake(self.payload())
         self.assertFalse(server.INTAKE_LOCK.locked())
 
+    def test_model_stays_loaded_between_slow_answers(self):
+        response = io.BytesIO(json.dumps({"message": {"content": '{"reply":"ok"}'}}).encode())
+        with patch.object(server, "urlopen", return_value=response) as mocked:
+            server.generate_intake(self.payload())
+        body = json.loads(mocked.call_args[0][0].data)
+        self.assertEqual(body["keep_alive"], server.KEEP_ALIVE)
+
     def test_busy_model_does_not_start_another_request(self):
         server.INTAKE_LOCK.acquire()
         try:
