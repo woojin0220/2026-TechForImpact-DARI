@@ -1,0 +1,49 @@
+Browser tab: 7, Title: "DARI | 난민인정신청서 작성 지원", URL: "http://127.0.0.1:5173/".
+0 AXWebArea DARI | 난민인정신청서 작성 지원, URL: 127.0.0.1:5173/
+	1 container root
+		2 link Description: متابعة, Value: 127.0.0.1:5173/#main
+		3 container
+			4 button DARI لكي تصل كلماتك
+				5 text DARI
+				6 text لكي تصل كلماتك
+			7 button العربية
+			8 button ? المساعدة
+				9 text ?
+				10 text المساعدة
+			11 button (collapsed) Description: إعدادات المشغّل والمطوّر, Secondary Actions: Expand
+		12 content list
+			13 button 01 البداية
+				14 text 01
+				15 text البداية
+			16 button 02 البيانات الأساسية
+				17 text 02
+				18 text البيانات الأساسية
+			19 button 03 المحادثة
+				20 text 03
+				21 text المحادثة
+			22 button 04 المعلومات المجمعة
+				23 text 04
+				24 text المعلومات المجمعة
+			25 button (disabled) 05 المسودة الكورية
+				26 text 05 المسودة الكورية
+		27 container main
+			41 container
+				42 text النموذج المحدّد غير متاح. تحقّق من تثبيته في إعدادات المشغّل.
+				43 button المحاولة مجددًا
+			28 text النموذج غير جاهز. تحقق من الاتصال في إعدادات المشغّل.
+			29 button إعدادات المشغّل والمطوّر
+			30 container
+				31 button (collapsed) المزيد, Secondary Actions: Expand
+					32 text المزيد
+				33 container المحادثة
+					34 container
+						35 text DARI احكِ بكلماتك لماذا غادرت بلدك وتطلب الحماية. يمكنك أن تقول إنك لا تتذكر شيئًا أو لا ترغب في الحديث عنه الآن.
+					44 container
+						45 text إجابتك هذه بيانات خيالية لاختبار رسالة الخطأ.
+				36 container
+					37 text إجابتك
+					38 text entry area (settable) إجابتك
+				39 text خذ وقتك.
+				40 button (disabled) إرسال
+
+The focused UI element is 0 AXWebArea DARI | 난민인정신청서 작성 지원, URL: 127.0.0.1:5173/

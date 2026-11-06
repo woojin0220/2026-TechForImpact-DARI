@@ -1,9 +1,11 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { revisionDirection } from './revisionCopy';
 
-export function EditorModal({ title, closeLabel, onClose, children }: {
-  title: string; closeLabel: string; onClose: () => void; children: ReactNode;
+export function EditorModal({ title, closeLabel, onClose, children, uiLanguage }: {
+  title: string; closeLabel: string; onClose: () => void; children: ReactNode; uiLanguage?: string;
 }) {
+  const language = uiLanguage ?? (typeof document === 'undefined' ? 'en' : document.documentElement.lang || 'en');
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const element = dialog.current!;
@@ -17,7 +19,7 @@ export function EditorModal({ title, closeLabel, onClose, children }: {
       if (previousFocus?.isConnected) previousFocus.focus();
     };
   }, []);
-  return createPortal(<dialog ref={dialog} className="sentence-editor-modal" aria-labelledby="sentence-editor-title"
+  return createPortal(<dialog ref={dialog} className="sentence-editor-modal" lang={language} dir={revisionDirection(language)} aria-labelledby="sentence-editor-title"
     onCancel={event => { event.preventDefault(); onClose(); }}>
     <header className="sentence-editor-header"><h2 id="sentence-editor-title">{title}</h2><button autoFocus className="secondary" onClick={onClose}>{closeLabel}</button></header>
     <div className="sentence-editor-body">{children}</div>

@@ -36,6 +36,8 @@ export type IntakeFact = {
   /** Additional narrative fields this same fact supports; never a duplicate fact. */
   relatedRequirementIds?: string[];
   clarification?: ('roles' | 'polarity' | 'structure')[];
+  /** Applicant's own words for a chosen “기타 / Other” option, kept verbatim. */
+  otherText?: string;
 };
 export type CoverageEntry = { requirementId: string; status: CoverageStatus; factIds: string[] };
 export type DraftSentence = { text: string; factIds: string[]; sourceIds: string[] };

@@ -1,0 +1,151 @@
+{
+  "checked_at": "2026-11-04T03:26:32.509130+09:00",
+  "base_commit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
+  "target_language": "ar",
+  "scope": "Active main.tsx -> App.tsx browser UI. LegacyApp is not imported. Physical native mobile runtime and other languages are outside this audit.",
+  "automated": {
+    "tests": {
+      "command": "npm test",
+      "passed": 145,
+      "failed": 0,
+      "log": "../../arabic-test-results.txt"
+    },
+    "arabic_audit": {
+      "uiKeys": 320,
+      "uiKeysByNamespace": {
+        "app": 70,
+        "journey": 61,
+        "revision": 34,
+        "bench": 48,
+        "intake": 58,
+        "process": 11,
+        "scripted": 31,
+        "statuses": 7
+      },
+      "officialSteps": 35,
+      "requirements": 233,
+      "metadataGroups": 16,
+      "uniqueLabelKeys": 426,
+      "labelOccurrences": 772,
+      "missingKeys": 0,
+      "hardcodedLiteralUiProse": 0
+    },
+    "build": {
+      "command": "npm run build",
+      "typescript": "passed",
+      "vite": "passed",
+      "warning": "Vite emitted an over-500-kB chunk-size warning."
+    },
+    "diff_whitespace": "passed",
+    "patch_against_base": "git apply --check passed"
+  },
+  "runtime": {
+    "platform": "macOS arm64",
+    "memory_GiB": 16,
+    "ollama_version": "0.40.12",
+    "model": {
+      "name": "gemma4:e4b",
+      "model": "gemma4:e4b",
+      "modified_at": "2026-11-04T03:22:17.420019633+09:00",
+      "size": 9461576343,
+      "digest": "eb2177adf7646d15faead94fdad6d3e170dc8015653418a3b7d5d52a6380be5b",
+      "details": {
+        "parent_model": "",
+        "format": "safetensors",
+        "family": "",
+        "families": null,
+        "parameter_size": "",
+        "quantization_level": "",
+        "runner": "mlx"
+      },
+      "capabilities": [
+        "completion",
+        "vision",
+        "audio",
+        "tools",
+        "thinking"
+      ]
+    },
+    "model_download": "completed; original tag retained",
+    "readiness": {
+      "model": "gemma4:e4b",
+      "ready_probe": "passed",
+      "seconds": 16.67
+    },
+    "ui_url": "http://127.0.0.1:5188/?model=gemma4%3Ae4b",
+    "api_url": "http://127.0.0.1:8765",
+    "automatic_alternative_model": false,
+    "weights_in_zip": false,
+    "mac_launcher_selection_checks": {
+      "result": "passed",
+      "cases": "Gemma default with and without alternate model; Gemma absent raises; interactive and noninteractive; explicit --model remains allowed"
+    }
+  },
+  "browser_checks": [
+    {
+      "test": "Gemma ready in operator settings",
+      "model": "gemma4:e4b",
+      "result": "passed",
+      "evidence": "evidence/09-gemma-model.jpg"
+    },
+    {
+      "test": "Actual synthetic Arabic input -> Arabic reply and follow-up",
+      "model": "gemma4:e4b",
+      "result": "passed",
+      "evidence": "evidence/11-gemma-arabic-response.txt"
+    },
+    {
+      "test": "Gemma facts UI Arabic labels and controls",
+      "model": "gemma4:e4b",
+      "result": "passed",
+      "evidence": "evidence/12-gemma-arabic-facts.txt"
+    },
+    {
+      "test": "Gemma 390x844 responsive RTL",
+      "result": {
+        "lang": "ar",
+        "dir": "rtl",
+        "mainDirection": "rtl",
+        "viewport": 390,
+        "documentWidth": 390
+      },
+      "evidence": "evidence/13-gemma-arabic-narrow.jpg"
+    },
+    {
+      "test": "Initial Arabic conversation and follow-up",
+      "model": "qwen3:4b",
+      "result": "passed for language only",
+      "evidence": "evidence/02-arabic-facts.txt"
+    },
+    {
+      "test": "English-to-Arabic language change preserves basic input and LTR value",
+      "result": "passed",
+      "evidence": "evidence/04-language-preserved.jpg"
+    },
+    {
+      "test": "Model-not-installed real error and retry localized in Arabic",
+      "result": "passed",
+      "evidence": "evidence/05-arabic-error.txt"
+    },
+    {
+      "test": "Real EditorModal and SentenceReview, synthetic proposal, no model calls; Arabic RTL and Korean LTR; unsupported Arabic approval disabled",
+      "result": "passed desktop and 390x844",
+      "evidence": "evidence/06-arabic-editor.txt"
+    },
+    {
+      "test": "Arabic birthdate placeholder and title; date input LTR",
+      "result": "passed",
+      "evidence": "evidence/08-arabic-date.jpg"
+    }
+  ],
+  "synthetic_data_only": true,
+  "limitations": [
+    "Arabic backtranslation and meaning approval are not implemented; unsupported approval stays disabled with Arabic explanation.",
+    "The language guard only detects absence of Arabic script, not grammatical quality, fluent Arabic, mixed language or factual fidelity.",
+    "Initial Qwen run misclassified past harm despite a threat. Final Gemma sample collected yes but repeated an already-addressed question. This is not an accuracy benchmark.",
+    "Native Arabic review, physical mobile testing, all keyboards and screen readers were not performed.",
+    "Refresh recovery and JSON reimport remain unsupported.",
+    "Audit covers known dictionaries, schema/catalog labels and rendered string literals, not arbitrary future dynamic text or model-generated language."
+  ],
+  "publication_note": "This records local validation before branch publication, not main merge status."
+}

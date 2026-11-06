@@ -29,8 +29,8 @@
 .test-comparison { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:24px; }
 .test-comparison > div { min-width:0; }
 .test-comparison p { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.8; }
-.test-comparison > div + div { border-left:1px solid var(--line,#e1e1e1); padding-left:24px; }
-@media(max-width:700px) { .test-comparison { grid-template-columns:1fr; } .test-comparison > div + div { border-left:0; border-top:1px solid var(--line,#e1e1e1); padding:20px 0 0; } }
+.test-comparison > div + div { border-inline-start:1px solid var(--line,#e1e1e1); padding-inline-start:24px; }
+@media(max-width:700px) { .test-comparison { grid-template-columns:1fr; } .test-comparison > div + div { border-inline-start:0; border-top:1px solid var(--line,#e1e1e1); padding:20px 0 0; } }
 .sentence-review { margin-top: 1rem; color: #171717; }
 .revision-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.9fr); gap:22px; align-items:start; }
 .revision-document,.revision-chat { min-width:0; border:1px solid var(--line,#e1e1e1); border-radius:18px; background:#fff; }
@@ -63,3 +63,32 @@
 .revision-composer textarea { width:100%; min-height:86px; font-size:12px; }
 @media(max-width:980px) { .revision-grid { grid-template-columns:1fr; } .revision-thread { max-height:50svh; } }
 @media(max-width:650px) { .revision-document,.revision-selected,.revision-thread { padding:20px; } .revision-composer { padding:18px; } .revision-sentences { font-size:15px; } }
+
+/* Keep the Arabic discussion and controls RTL; only the actual Korean draft
+   and Korean replacement text are LTR. Logical rules mirror both layouts. */
+.sentence-review { text-align:start; }
+.revision-document[lang="ko"], .revision-sentences[lang="ko"], .revision-proposal [lang="ko"] { direction:ltr; unicode-bidi:isolate; text-align:start; }
+.english-meaning[lang="ar"], .selected-meaning[lang="ar"] { direction:rtl; text-align:start; }
+.revision-composer textarea { text-align:start; }
+
+/* Original words beside the Korean draft, direct edits and confirmation (issue #8). */
+.revision-disclaimer { margin:0 0 10px; color:#555; }
+.revision-toolbar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 14px; font-size:13px; }
+.revision-compare { list-style:none; margin:0; padding:0; display:grid; gap:0; }
+.revision-compare > li { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; padding:12px 0; border-top:1px solid var(--line,#e1e1e1); }
+.revision-compare > li.current { background:#f7f7f5; box-shadow:inset 3px 0 0 #171717; padding-inline:10px; }
+.revision-compare small { display:block; font-size:10px; color:#666; margin-bottom:4px; }
+.revision-compare .revision-sentences { line-height:1.9; font-size:15px; }
+.original-words { margin:0; padding-inline-start:18px; font-size:14px; line-height:1.8; overflow-wrap:anywhere; }
+.original-words li + li { margin-top:4px; }
+.selected-original { margin-top:14px; }
+.selected-actions { margin-top:14px; align-items:center; flex-wrap:wrap; }
+.selected-actions .primary,.selected-actions .secondary { min-height:38px; font-size:12px; padding:8px 12px; }
+.direct-edit { margin-top:14px; display:grid; gap:8px; font-size:12px; }
+.direct-edit textarea { width:100%; font-size:14px; line-height:1.8; }
+.status-confirmed { color:#11743b; font-weight:600; }
+.status-pending { color:#8a5a00; }
+.revision-sentences button.confirmed { background:#eaf6ee; }
+.revision-sentences button.confirmed::before { content:"✓ "; color:#11743b; }
+.candidates-hint { padding:10px 22px 0; margin:0; }
+@media(max-width:700px) { .revision-compare > li { grid-template-columns:1fr; gap:8px; } }

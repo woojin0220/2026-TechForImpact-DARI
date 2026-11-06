@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DARI export - Aleksei Sokolov (fictional)</title></head><body><div id="root"></div><script type="module">
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import ApplicationExport from '../src/export/ApplicationExport.tsx';
+import {EditorModal} from '../src/revision/EditorModal.tsx';
+import '../src/styles.css';
+import {fullExportFixture} from './export-full-fixture.mjs';
+import {HwpDownloadButton} from '../src/export/HwpDownloadButton.tsx';
+if(!import.meta.env.DEV) throw new Error('Development fixture only');
+function Qa(){
+  const [session]=React.useState(fullExportFixture),[notice,setNotice]=React.useState(''),[error,setError]=React.useState('');
+  return React.createElement(EditorModal,{title:'Aleksei Sokolov — fictional application',closeLabel:'Close',onClose:()=>location.assign('/')},
+    React.createElement(HwpDownloadButton,{session,reviewed:true,language:'en',label:'Save Korean draft',disabled:false,onNotice:setNotice,onError:setError}),
+    notice&&React.createElement('p',{role:'status'},notice),error&&React.createElement('p',{role:'alert'},error),
+    React.createElement(ApplicationExport,{session,reviewed:true,language:'en'}));
+}
+createRoot(document.getElementById('root')).render(React.createElement(Qa));
+</script></body></html>

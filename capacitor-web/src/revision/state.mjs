@@ -74,6 +74,28 @@ export function undoChange(doc) {
     threads:{...doc.threads,[row.id]:(doc.threads[row.id]??[]).map(x=>x.proposal?.status==='pending'?{...x,proposal:{...x.proposal,status:'stale'}}:x)},
     history:[...doc.history,{id:id(),sentenceId:row.id,before:row.text,after:last.before,kind:'undo',createdAt:now()}],undo:doc.undo.slice(0,-1)});
 }
+/** The applicant's own wording for one sentence. Recorded like an applied
+ * suggestion, so it can be undone and appears in the edit history. */
+export function editSentence(doc,sentenceId,text) {
+  const row=sentence(doc,sentenceId),after=typeof text==='string'?text.trim():'';
+  if(!after||after.length>8000)fail('수정할 문장을 8,000자 이내로 적어 주세요.');
+  if(/[\r\n]/.test(after))fail('한 문장만 입력해 주세요.');
+  if(after===row.text)return doc;
+  const record={id:id(),sentenceId,before:row.text,after,kind:'edit',createdAt:now()};
+  return change(doc,{pieces:doc.pieces.map(x=>x===row?{...x,text:after,revision:x.revision+1}:x),
+    threads:{...doc.threads,[sentenceId]:(doc.threads[sentenceId]??[]).map(x=>x.proposal?.status==='pending'?{...x,proposal:{...x.proposal,status:'stale'}}:x)},
+    history:[...doc.history,record],undo:[...doc.undo,record]});
+}
+/** Confirmation belongs to one revision of a sentence: any later change unconfirms it. */
+export function isConfirmed(doc,sentenceId) {
+  const row=sentence(doc,sentenceId);
+  return doc.confirmed?.[sentenceId]===row.revision;
+}
+export function setConfirmed(doc,sentenceId,confirmed) {
+  const row=sentence(doc,sentenceId),next={...(doc.confirmed??{})};
+  if(confirmed)next[sentenceId]=row.revision;else delete next[sentenceId];
+  return change(doc,{confirmed:next});
+}
 export function storeTranslation(doc,sentenceId,target,text,baseRevision) {
   const row=sentence(doc,sentenceId);
   if(row.revision!==baseRevision)fail('번역 중 문장이 변경되었습니다.');
@@ -110,7 +132,8 @@ export function validateDocument(doc) {
       if(m.proposal){const p=m.proposal;if(m.role!=='assistant'||!object(p)||!string(p.before)||!string(p.after,8000)||!p.after.trim()||!number(p.baseRevision)||!['pending','applied','stale','dismissed'].includes(p.status))invalid();}
     }
   }
-  for(const record of [...doc.history,...doc.undo])if(!object(record)||!ids.has(record.sentenceId)||!string(record.id,100)||!string(record.before)||!string(record.after,8000)||!['apply','undo'].includes(record.kind)||!string(record.createdAt,100))invalid();
+  if(doc.confirmed!==undefined&&(!object(doc.confirmed)||Object.entries(doc.confirmed).some(([key,value])=>!ids.has(key)||!number(value))))invalid();
+  for(const record of [...doc.history,...doc.undo])if(!object(record)||!ids.has(record.sentenceId)||!string(record.id,100)||!string(record.before)||!string(record.after,8000)||!['apply','undo','edit'].includes(record.kind)||!string(record.createdAt,100))invalid();
   for(const [key,t]of Object.entries(doc.translations))if(!ids.has(key)||!object(t)||!languages[t.target]||!string(t.text,8000)||!number(t.revision))invalid();
   return doc;
 }
