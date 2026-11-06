@@ -30,7 +30,7 @@ function validForm(value: unknown): boolean {
   return object(value) && Object.values(value).every(item => {
     if (!object(item)) return false;
     if (item.kind === 'text') return typeof item.text === 'string';
-    if (item.kind === 'choice') return strings(item.values);
+    if (item.kind === 'choice') return strings(item.values) && (item.other === undefined || typeof item.other === 'string');
     if (item.kind === 'status') return ['unknown', 'not_applicable'].includes(item.status);
     return item.kind === 'table' && Array.isArray(item.rows)
       && item.rows.every((row: unknown) => object(row) && Object.values(row).every(cell => typeof cell === 'string'));

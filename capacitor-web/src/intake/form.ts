@@ -2,10 +2,11 @@ import { applicationSteps, type FormField, type FormStep } from '../form/schema.
 import { calculateCoverage, getActiveFacts, invalidateDraft, nextFactId } from './index.ts';
 import { isFormSection, requirementsById } from './catalog.ts';
 import type { FactStatus, IntakeFact, IntakeSession } from './types.ts';
+import { koreanChoiceText, OTHER_OPTION, takesOtherText } from '../form/otherChoice.ts';
 
 /** Form answers for questions 1–13. `rows: []` means the applicant said the table is empty. */
 export type FormValue =
-  | { kind: 'choice'; values: string[] }
+  | { kind: 'choice'; values: string[]; other?: string }
   | { kind: 'text'; text: string }
   | { kind: 'table'; rows: Record<string, string>[] }
   | { kind: 'status'; status: 'unknown' | 'not_applicable' };
@@ -27,10 +28,10 @@ export function isFieldVisible(field: FormField, answers: FormAnswers, seen = ne
   });
 }
 
-type Desired = { requirementId: string; eventId?: string; value: string | string[]; status: FactStatus; quote: string };
+type Desired = { requirementId: string; eventId?: string; value: string | string[]; status: FactStatus; quote: string; otherText?: string };
 
-function optionLabels(field: FormField, values: string[]) {
-  return values.map(value => field.options?.find(option => option.value === value)?.ko ?? value).join(', ');
+function optionLabels(field: FormField, values: string[], other?: string) {
+  return koreanChoiceText(field.options, values, other);
 }
 
 /** Turn visible, filled form fields into fact candidates. Empty or hidden fields stay missing. */
@@ -43,7 +44,8 @@ function desiredFacts(answers: FormAnswers): Desired[] {
       const quote = answer.status === 'unknown' ? '모름' : '해당 없음';
       result.push({ requirementId: field.id, value: quote, status: answer.status, quote });
     } else if (answer.kind === 'choice' && answer.values.length) {
-      result.push({ requirementId: field.id, value: field.type === 'multi' ? answer.values : answer.values[0], status: 'answered', quote: optionLabels(field, answer.values) });
+      const otherText = takesOtherText(field.id, field.options) && answer.values.includes(OTHER_OPTION) ? answer.other?.trim() || undefined : undefined;
+      result.push({ requirementId: field.id, value: field.type === 'multi' ? answer.values : answer.values[0], status: 'answered', quote: optionLabels(field, answer.values, otherText), otherText });
     } else if (answer.kind === 'text' && answer.text.trim()) {
       result.push({ requirementId: field.id, value: answer.text.trim(), status: 'answered', quote: answer.text.trim() });
     } else if (answer.kind === 'table') {
@@ -97,13 +99,14 @@ export function applyFormAnswers(session: IntakeSession, answers: FormAnswers): 
   }
   for (const item of desired) {
     const existing = current.get(key(item.requirementId, item.eventId));
-    if (existing && existing.status === item.status && JSON.stringify(existing.value) === JSON.stringify(item.value)) { kept.add(existing.id); continue; }
+    if (existing && existing.status === item.status && JSON.stringify(existing.value) === JSON.stringify(item.value) && (existing.otherText ?? '') === (item.otherText ?? '')) { kept.add(existing.id); continue; }
     added.push({
       id: nextFactId([...session.facts, ...added]), requirementId: item.requirementId, value: item.value,
       sourceIds: [FORM_SOURCE_ID], sourceQuotes: [{ sourceId: FORM_SOURCE_ID, quote: item.quote }],
       status: item.status, certainty: 'exact', knowledge: 'unspecified',
       eventId: requirementsById.get(item.requirementId)?.repeatable ? item.eventId : undefined,
       supersedes: existing ? [existing.id] : [], confirmed: false,
+      ...(item.otherText ? { otherText: item.otherText } : {}),
     });
     if (existing) kept.add(existing.id);
   }

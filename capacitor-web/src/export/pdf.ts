@@ -91,6 +91,8 @@ export async function createApplicationPdf(plan: ApplicationPlan, supplied?: { t
         page.drawLine({ start: {x:(x-3)*sx,y:page.getHeight()-y*sy}, end:{x:(x-1)*sx,y:page.getHeight()-(y+3)*sy}, thickness:1 });
         page.drawLine({ start: {x:(x-1)*sx,y:page.getHeight()-(y+3)*sy}, end:{x:(x+4)*sx,y:page.getHeight()-(y-4)*sy}, thickness:1 });
       }
+      // The applicant's own “기타” wording has no box on the form: keep it on a numbered sheet.
+      if (entry.value.other?.trim() && entry.value.values.includes('other')) annexes.push({entry, number: ++appendixCount});
       continue;
     }
     const size = 9, lineHeight = 13;

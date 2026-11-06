@@ -1,5 +1,6 @@
 import { applicationSteps, type FormField } from '../form/schema.ts';
 import type { FormAnswers, FormValue } from './form.ts';
+import { koreanChoiceText } from '../form/otherChoice.ts';
 import { getActiveFacts } from './index.ts';
 import { requirementsById } from './catalog.ts';
 import type { IntakeFact, IntakeSession } from './types.ts';
@@ -117,7 +118,7 @@ export function buildQuestion14Answers(session: IntakeSession): FormAnswers {
     if (value === '예' || value === '아니요') answers[questionId] = { kind: 'choice', values: [value === '예' ? 'yes' : 'no'] };
   }
   const category = facts.find(fact => fact.requirementId === 'grounds.category' && fact.status === 'answered');
-  if (category) answers['14.1'] = { kind: 'choice', values: Array.isArray(category.value) ? category.value : [category.value] };
+  if (category) answers['14.1'] = { kind: 'choice', values: Array.isArray(category.value) ? category.value : [category.value], ...(category.otherText ? { other: category.otherText } : {}) };
   const departure = facts.find(fact => fact.requirementId === 'departure.date' && fact.status === 'answered');
   if (departure) answers['14.7'] = { kind: 'text', text: String(departure.value) };
   for (const [tableId] of tables) {
@@ -140,7 +141,7 @@ export function buildQuestion14Answers(session: IntakeSession): FormAnswers {
 export function formatFormAnswer(field: FormField, value: FormValue | undefined): string {
   if (!value) return '';
   if (value.kind === 'status') return value.status === 'unknown' ? '모름' : '해당 없음';
-  if (value.kind === 'choice') return value.values.map(item => field.options?.find(option => option.value === item)?.ko ?? item).join(', ');
+  if (value.kind === 'choice') return koreanChoiceText(field.options, value.values, value.other);
   if (value.kind === 'table') return value.rows.length ? value.rows.map((row, index) => `${index + 1}. ${(field.columns ?? []).map(column => `${column.ko}: ${row[column.id] ?? ''}`).join(' / ')}`).join('\n') : '없음';
   return value.text;
 }

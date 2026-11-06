@@ -17,7 +17,7 @@ export function TopicProgress({ session, language }: { session: IntakeSession; l
 
 export function ReviewSummaries({ session, language, busy, value, label, onConfirm, onCorrect }: {
   session: IntakeSession; language: string; busy: boolean;
-  value: (id: string, value: string | string[]) => string; label: (id: string) => string;
+  value: (id: string, value: string | string[], other?: string) => string; label: (id: string) => string;
   onConfirm: (ids: string[]) => void; onCorrect: (fact: IntakeFact) => void;
 }) {
   const copy = journeyCopyFor(language);
@@ -29,11 +29,11 @@ export function ReviewSummaries({ session, language, busy, value, label, onConfi
     {bundles.map((bundle, index) => {
       // Values and evidence remain verbatim; only application-owned labels are localized.
       const seen = new Set<string>();
-      const items = bundle.facts.filter(fact => { const text = value(fact.requirementId, fact.value); const key = `${fact.status}/${text}`; if (seen.has(key)) return false; seen.add(key); return true; });
+      const items = bundle.facts.filter(fact => { const text = value(fact.requirementId, fact.value, fact.otherText); const key = `${fact.status}/${text}`; if (seen.has(key)) return false; seen.add(key); return true; });
       return <article className="story-summary" key={bundle.id}>
         <h3>{journeyTopicTitle(bundle.topic, language === 'ko' ? bundle.labelKo : bundle.labelEn, language)}{bundle.eventId && <> · {copy.entry} <bdi>{bundles.filter(b => b.topic === bundle.topic && b.eventId).findIndex(b => b.id === bundle.id) + 1}</bdi></>}</h3>
         {bundle.needsClarification && <p className="draft-missing">{copy.needsClarification}</p>}
-        <dl>{items.map(fact => <div key={fact.id}><dt>{journeyDetailTitle(fact.requirementId, label(fact.requirementId), language)}</dt><dd><bdi dir="auto">{value(fact.requirementId, fact.value)}</bdi>
+        <dl>{items.map(fact => <div key={fact.id}><dt>{journeyDetailTitle(fact.requirementId, label(fact.requirementId), language)}</dt><dd><bdi dir="auto">{value(fact.requirementId, fact.value, fact.otherText)}</bdi>
           {fact.status !== 'answered' && <small className="summary-qualifier">{journeyStatusLabel(fact.status, language)}</small>}
           {fact.certainty !== 'exact' && <small className="summary-qualifier">{fact.certainty === 'uncertain' ? copy.uncertain : copy.approximate}</small>}
           {['heard', 'inferred'].includes(fact.knowledge) && <small className="summary-qualifier">{fact.knowledge === 'heard' ? copy.heard : copy.inferred}</small>}

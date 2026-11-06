@@ -3,6 +3,7 @@ import type { FormField } from './form/schema';
 import { localizedLabel } from './form/localize';
 import type { ScriptedCopy } from './intakeCopy';
 import { samePrompt } from './form/presentation';
+import { OTHER_OPTION, takesOtherText } from './form/otherChoice';
 
 // Development builds, or a build made with VITE_DARI_DEV_TOOLS=true, show test helpers.
 export const DEV_TOOLS = import.meta.env.DEV || import.meta.env.VITE_DARI_DEV_TOOLS === 'true';
@@ -60,7 +61,11 @@ export function FormStage({ language, answers, page, copy, back, next, onChange,
 export function FieldInput({ field, language, valueLanguage, value, copy, onChange, showStatus = true, showLabel = true }: { field: FormField; language: string; valueLanguage?: string; value?: FormValue; copy: ScriptedCopy; onChange: (value: FormValue | undefined) => void; showStatus?: boolean; showLabel?: boolean }) {
   const label = text(language, field.ko, field.en);
   const selected = value?.kind === 'choice' ? value.values : [];
+  const other = value?.kind === 'choice' ? value.other ?? '' : '';
   const status = value?.kind === 'status' ? value.status : undefined;
+  const otherOpen = takesOtherText(field.id, field.options) && selected.includes(OTHER_OPTION);
+  // The “기타” text belongs to the Other option: deselecting Other drops it.
+  const choose = (values: string[]) => onChange(values.length ? { kind: 'choice', values, ...(values.includes(OTHER_OPTION) && other ? { other } : {}) } : undefined);
   const toggleStatus = (next: 'unknown' | 'not_applicable') => onChange(status === next ? undefined : { kind: 'status', status: next });
   return <div className="form-field">
     {showLabel && <p className="form-label">{label}</p>}
@@ -68,9 +73,13 @@ export function FieldInput({ field, language, valueLanguage, value, copy, onChan
       {field.options?.map(option => {
         const on = selected.includes(option.value);
         const values = field.type === 'multi' ? (on ? selected.filter(item => item !== option.value) : [...selected, option.value]) : (on ? [] : [option.value]);
-        return <button key={option.value} aria-pressed={on} onClick={() => onChange(values.length ? { kind: 'choice', values } : undefined)}>{text(language, option.ko, option.en)}</button>;
+        return <button key={option.value} aria-pressed={on} onClick={() => choose(values)}>{text(language, option.ko, option.en)}</button>;
       })}
     </div>}
+    {otherOpen && <label className="other-input">{copy.otherLabel}
+      <input dir="auto" value={other} maxLength={500} placeholder={copy.otherPlaceholder}
+        onChange={event => onChange({ kind: 'choice', values: selected, ...(event.target.value ? { other: event.target.value } : {}) })} /></label>}
+    {(field.type === 'single' || field.type === 'multi') && selected.length > 0 && <button className="quiet clear-choice" onClick={() => onChange(undefined)}>{copy.clearChoice}</button>}
     {(field.type === 'short' || field.type === 'date') && <input lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : field.type === 'date' ? 'ltr' : 'auto'} value={value?.kind === 'text' ? value.text : ''} placeholder={field.type === 'date' ? copy.datePlaceholder : ''} title={field.type === 'date' ? copy.dateFormat : undefined} aria-label={label}
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}
     {field.type === 'long' && <textarea lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : 'auto'} rows={4} value={value?.kind === 'text' ? value.text : ''} aria-label={label}

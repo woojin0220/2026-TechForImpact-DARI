@@ -3,6 +3,7 @@ import { applyFormAnswers, guideConversation, needsTopicQuestion, deriveQuestion
 import { cancelIntakeGeneration, generateIntakeModel, getIntakeRuntimeStatus, getPreviewModel, importIntakeModel, INTAKE_API_URL, previewModels, setPreviewModel, type IntakeRuntimeStatus } from './lib/intakeModel';
 import { intakeCopies, intakeLanguages, intakeProcessCopy, scriptedCopy } from './intakeCopy';
 import { localize, localizedLabel, localizedRequirementLabel } from './form/localize';
+import { koreanChoiceText, OTHER_OPTION, takesOtherText } from './form/otherChoice';
 import { appCopyFor, localizeAppError } from './appCopy';
 import { statusWords } from './statusCopy';
 import { DEV_TOOLS, FieldInput, FormStage, formPageOf } from './FormStage';
@@ -102,6 +103,8 @@ export default function App() {
   const pending = coverage.filter(item => item.status !== 'answered' && item.status !== 'not_applicable');
   const ask = pendingAsk(session);
   const askRequirement = ask && requirementsById.get(ask.requirementId);
+  const askOther = !!askRequirement && takesOtherText(askRequirement.id, askRequirement.options);
+  const [otherText, setOtherText] = useState('');
   const inNarrative = !ask && nextStep(session).kind === 'narrative';
   const showComposer = nextStep(session).kind !== 'done' && (!ask || (ask.kind === 'field' && !askRequirement?.options));
   const narrativeOpened = session.messages.some(item => item.ask?.kind === 'narrative');
@@ -200,12 +203,13 @@ export default function App() {
     const requirement = requirementsById.get(id);
     return requirement ? localizedRequirementLabel(requirement, language) : id;
   }
-  function factValue(id: string, value: string | string[]) {
+  function factValue(id: string, value: string | string[], other?: string) {
     const options = requirementsById.get(id)?.options ?? [];
     return (Array.isArray(value) ? value : [value]).map(item => {
       const option = options.find(choice => choice.value === item);
       if (!option) return item;
-      return language === 'en' ? option.en : localize(language, option.ko);
+      const label = language === 'en' ? option.en : localize(language, option.ko);
+      return item === OTHER_OPTION && other ? `${label}: ${other}` : label;
     }).join(' · ');
   }
   /** Review list: question 14 groups first (from the conversation), then form sections; incidents kept apart. */
@@ -227,6 +231,11 @@ export default function App() {
       events: [...new Set(group.facts.map(fact => fact.eventId ?? ''))].map(eventId => ({ eventId, facts: group.facts.filter(fact => (fact.eventId ?? '') === eventId) })) }));
   }
   function optionLabel(option: { ko: string; en: string }) { return language === 'en' ? option.en : localize(language, option.ko); }
+  /** The applicant's message for a confirmed choice; “기타” text stays verbatim. */
+  function pickedText(options: { value: string; ko: string; en: string }[]) {
+    const detail = askOther && picked.includes(OTHER_OPTION) ? otherText.trim() : '';
+    return options.filter(option => picked.includes(option.value)).map(option => option.value === OTHER_OPTION && detail ? `${optionLabel(option)}: ${detail}` : optionLabel(option)).join(', ');
+  }
   function questionText(item: ScriptedAsk, row?: number) {
     const label = requirementLabel(item.requirementId);
     if (item.kind === 'table') return `${label} — ${sc.tableAsk}`;
@@ -254,7 +263,7 @@ export default function App() {
     if (busy) return;
     try {
       setSession(sync(answerScripted(session, reply)));
-      setInput(''); setPicked([]); setReviewed(false); setError(''); setStage('conversation');
+      setInput(''); setPicked([]); setOtherText(''); setReviewed(false); setError(''); setStage('conversation');
     } catch (failure) { setError(failure instanceof Error ? failure.message : String(failure)); }
   }
   function reask(fact: IntakeFact) {
@@ -267,7 +276,7 @@ export default function App() {
   }
   function koreanValue(fact: IntakeFact) {
     const options = requirementsById.get(fact.requirementId)?.options ?? [];
-    const value = (Array.isArray(fact.value) ? fact.value : [fact.value]).map(item => options.find(choice => choice.value === item)?.ko ?? item).join(', ');
+    const value = koreanChoiceText(options, Array.isArray(fact.value) ? fact.value : [fact.value], fact.otherText);
     return fact.status === 'answered' ? value : `${statusWords.ko[fact.status]} (${value})`;
   }
   const answers14 = session.question14 ?? {};
@@ -473,8 +482,13 @@ export default function App() {
                 </div>}</div></details></div><div className="chat-thread" ref={thread} role="log" aria-label={copy.conversation} aria-live="polite">{session.messages.map(message => <article className={`chat-message ${message.role}`} key={message.id}><small className="sr-only">{message.role === 'assistant' ? 'DARI' : copy.input}</small><p dir="auto">{message.content}</p></article>)}</div>{ask && (ask.kind !== 'field' || askRequirement?.options) && <div className="answer-choices">
                   {ask.kind === 'table' && <><button className="secondary" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: sc.have, status: 'answered' })}>{sc.have}</button><button className="secondary" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: sc.none, status: 'not_applicable' })}>{sc.none}</button></>}
                   {ask.kind === 'more' && <><button className="secondary" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: sc.yes, status: 'answered', value: 'yes' })}>{sc.yes}</button><button className="secondary" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: sc.no, status: 'answered', value: 'no' })}>{sc.no}</button></>}
-                  {ask.kind === 'field' && askRequirement?.type === 'single' && askRequirement.options?.map(option => <button key={option.value} className="secondary" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: optionLabel(option), status: 'answered', value: option.value })}>{optionLabel(option)}</button>)}
-                  {ask.kind === 'field' && askRequirement?.type === 'multi' && <>{askRequirement.options?.map(option => <button key={option.value} className="chip" aria-pressed={picked.includes(option.value)} disabled={(!!busy || recoveryPending)} onClick={() => setPicked(current => current.includes(option.value) ? current.filter(item => item !== option.value) : [...current, option.value])}>{optionLabel(option)}</button>)}<button className="primary" disabled={!picked.length || (!!busy || recoveryPending)} onClick={() => answer({ text: askRequirement.options!.filter(option => picked.includes(option.value)).map(optionLabel).join(', '), status: 'answered', value: picked })}>{sc.choose}</button></>}
+                  {ask.kind === 'field' && askRequirement?.type === 'single' && <>{askRequirement.options?.map(option => askOther && option.value === OTHER_OPTION
+                    ? <button key={option.value} className="chip" aria-pressed={picked.includes(option.value)} disabled={(!!busy || recoveryPending)} onClick={() => setPicked(current => current.includes(option.value) ? [] : [option.value])}>{optionLabel(option)}</button>
+                    : <button key={option.value} className="secondary" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: optionLabel(option), status: 'answered', value: option.value })}>{optionLabel(option)}</button>)}
+                    {picked.includes(OTHER_OPTION) && <button className="primary" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: pickedText(askRequirement.options!), status: 'answered', value: OTHER_OPTION, other: otherText })}>{sc.choose}</button>}</>}
+                  {ask.kind === 'field' && askRequirement?.type === 'multi' && <>{askRequirement.options?.map(option => <button key={option.value} className="chip" aria-pressed={picked.includes(option.value)} disabled={(!!busy || recoveryPending)} onClick={() => setPicked(current => current.includes(option.value) ? current.filter(item => item !== option.value) : [...current, option.value])}>{optionLabel(option)}</button>)}<button className="primary" disabled={!picked.length || (!!busy || recoveryPending)} onClick={() => answer({ text: pickedText(askRequirement.options!), status: 'answered', value: picked, other: otherText })}>{sc.choose}</button>{!picked.length && <small className="choice-hint">{sc.choiceHint}</small>}</>}
+                  {ask.kind === 'field' && askOther && picked.includes(OTHER_OPTION) && <label className="other-input">{sc.otherLabel}<input dir="auto" value={otherText} maxLength={500} placeholder={sc.otherPlaceholder} disabled={(!!busy || recoveryPending)} onChange={event => setOtherText(event.target.value)} /></label>}
+                  {ask.kind === 'field' && picked.length > 0 && <button className="quiet clear-choice" disabled={(!!busy || recoveryPending)} onClick={() => { setPicked([]); setOtherText(''); }}>{sc.clearChoice}</button>}
                 </div>}
                 {ask && ask.kind !== 'more' && <div className="answer-choices quiet-choices"><button className="quiet" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: sc.unknown, status: 'unknown' })}>{sc.unknown}</button><button className="quiet" disabled={(!!busy || recoveryPending)} onClick={() => answer({ text: sc.skip, status: 'skipped' })}>{sc.skip}</button></div>}
                 {nextStep(session).kind === 'done' && <div className="actions"><button className="primary" disabled={(!!busy || recoveryPending) || !!input.trim()} onClick={() => setStage('facts')}>{ui.continueReview}</button></div>}
@@ -491,7 +505,7 @@ export default function App() {
               {eventId && group.events.filter(item => item.eventId).length > 0 && <p className="event-label">{sc.row.replace('{n}', String(group.events.filter(item => item.eventId).findIndex(item => item.eventId === eventId) + 1))}</p>}
               {eventsToReview.filter(event => event.eventId === eventId && event.groupId === group.key && event.missingRequirementIds.length > 0).map(event => <details className="fact-more" key={`${event.groupId}/${eventId}`}><summary>{ui.eventMissing} · {event.missingRequirementIds.length}</summary><ul>{event.missingRequirementIds.map(id => <li key={id}>{requirementLabel(id)}</li>)}</ul></details>)}
               {items.map(fact => { const status = conflicts.has(fact.requirementId) ? 'conflict' : fact.status; return <article className="fact-row" key={fact.id}>
-                <div className="fact-row-main"><small>{requirementLabel(fact.requirementId)}</small><p dir="auto">{factValue(fact.requirementId, fact.value)}</p></div>
+                <div className="fact-row-main"><small>{requirementLabel(fact.requirementId)}</small><p dir="auto">{factValue(fact.requirementId, fact.value, fact.otherText)}</p></div>
                 {status !== 'answered' && <span className={`small-tag status-${status}`}>{statusWords[language]?.[status] ?? status}</span>}
                 {isNarrative(requirementsById.get(fact.requirementId)!) && !requirementsById.get(fact.requirementId)?.gate && <StatementDetails fact={fact} language={language} disabled={(!!busy || recoveryPending)} onClarify={() => void clarify(fact)} />}
                 <details className="fact-more"><summary>{copy.source}</summary>

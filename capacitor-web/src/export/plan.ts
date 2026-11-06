@@ -1,6 +1,7 @@
 import { applicationSteps, type FormField } from '../form/schema.ts';
 import type { FormAnswers, FormValue } from '../intake/form.ts';
 import type { IntakeSession } from '../intake/types.ts';
+import { koreanChoiceText } from '../form/otherChoice.ts';
 
 export const templateVersion = '2019.12.31';
 export type ExportEntry = { field: FormField; section: string; value?: FormValue; text: string; state: 'answered' | 'missing' | 'unknown' | 'not_applicable' | 'review' };
@@ -17,7 +18,7 @@ export function answerText(field: FormField, value?: FormValue): string {
   if (!value) return '';
   if (value.kind === 'status') return value.status === 'unknown' ? '모름 / 기억 또는 정보 불확실' : '해당 없음';
   if (value.kind === 'text') return value.text.replace(/\r\n?/g, '\n').trim();
-  if (value.kind === 'choice') return value.values.map(key => field.options?.find(option => option.value === key)?.ko ?? key).join(', ');
+  if (value.kind === 'choice') return koreanChoiceText(field.options, value.values, value.other);
   if (!value.rows.length) return '해당 없음';
   return value.rows.map((row, index) => `${index + 1}. ${(field.columns ?? []).map(column => `${column.ko}: ${row[column.id]?.trim() || '[미작성]'}`).join(' / ')}`).join('\n');
 }

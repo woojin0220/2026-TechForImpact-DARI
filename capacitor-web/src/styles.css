@@ -216,3 +216,9 @@ input[dir="ltr"], textarea[dir="ltr"], .operator-grid code { direction:ltr; unic
 .form-progress { direction:inherit; }
 .form-progress span { margin-inline-end:auto; }
 .status-toggles { flex-wrap:wrap; }
+
+/* Choice answers: “기타” free text and clearing a selection (issue #5). */
+.other-input{display:grid;gap:6px;margin-top:10px;font-size:14px;width:100%}
+.other-input input{width:100%}
+.clear-choice{margin-top:6px;min-height:32px;padding:0}
+.choice-hint{flex-basis:100%;color:#666;font-size:12px}

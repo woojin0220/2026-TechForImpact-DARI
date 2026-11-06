@@ -123,6 +123,8 @@ export async function createApplicationHwp(plan:ApplicationPlan,supplied?:Uint8A
         const target=checkboxTarget(entry,key,all),r=rs[target.para.textIndex];
         const text=decode(r.data);r.data=utf16(text.slice(0,target.offset)+'✓'+text.slice(target.offset+1));
       }
+      // The applicant's own “기타” wording has no box on the form: keep it on a numbered sheet.
+      if(entry.value.other?.trim()&&entry.value.values.includes('other'))annexes.push({entry,number:++annexNo});
       continue;
     }
     if(entry.value?.kind==='status'&&(entry.field.type==='single'||entry.field.type==='multi')) {

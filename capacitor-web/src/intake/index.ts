@@ -10,6 +10,7 @@ export * from './catalog.ts';
 export * from './form.ts';
 export * from './derive14.ts';
 import { buildQuestion14Answers } from './derive14.ts';
+import { OTHER_OPTION, takesOtherText } from '../form/otherChoice.ts';
 export { metadataGroups } from './metadata14.ts';
 import { metadataGroups } from './metadata14.ts';
 
@@ -682,7 +683,7 @@ export function pendingAsk(session: IntakeSession): ScriptedAsk | undefined {
   return last?.role === 'assistant' && last.ask && ['field', 'table', 'more'].includes(last.ask.kind) ? last.ask as ScriptedAsk : undefined;
 }
 
-export type ScriptedAnswer = { text: string; status: 'answered' | 'unknown' | 'skipped' | 'not_applicable'; value?: string | string[] };
+export type ScriptedAnswer = { text: string; status: 'answered' | 'unknown' | 'skipped' | 'not_applicable'; value?: string | string[]; other?: string };
 
 /** Record the applicant's answer to the pending fixed question without any model call.
  * The answer message is the verbatim source; a repeated question supersedes the old value. */
@@ -711,11 +712,14 @@ export function answerScripted(session: IntakeSession, answer: ScriptedAnswer): 
       }
     }
     const supersedes = getActiveFacts(session).filter(fact => fact.requirementId === requirement.id && fact.eventId === eventId).map(fact => fact.id);
+    const chosen = Array.isArray(value) ? value : [value];
+    const otherText = answer.status === 'answered' && chosen.includes(OTHER_OPTION) && takesOtherText(requirement.id, requirement.options) ? answer.other?.trim() || undefined : undefined;
     facts = [...facts, {
       id: nextFactId(session.facts), requirementId: requirement.id, value,
       sourceIds: [source.id], sourceQuotes: [{ sourceId: source.id, quote: source.content }],
       status: answer.status, certainty: 'exact', knowledge: 'unspecified',
       eventId, supersedes, confirmed: false,
+      ...(otherText ? { otherText } : {}),
     }];
     if (ask.kind === 'table' && answer.status === 'answered' && !tableRowIds(session, requirement.id).length) tableRows[requirement.id] = 1;
   }
@@ -880,7 +884,7 @@ export async function generateDraft(session: IntakeSession, adapter: ModelAdapte
         .map(old => ({ field: fact.requirementId, eventId: fact.eventId, old: old.value as string, now: fact.value as string })));
       const prompt = boundedPrompt({
         language: 'ko', questionId,
-        contextFacts: facts.map(({ id, requirementId, value, certainty, knowledge, eventId }) => ({ id, requirementId, value, certainty, knowledge, eventId })),
+        contextFacts: facts.map(({ id, requirementId, value, certainty, knowledge, eventId, otherText }) => ({ id, requirementId, value, certainty, knowledge, eventId, ...(otherText ? { otherText } : {}) })),
         contextRule: 'Facts are shared applicant statements. Explicit questionUses link a statement to one or more narrative questions; never reinterpret an unrelated fact to fill a gap. Only cite the supplied facts. Preserve all per-statement roles, polarity, certainty and knowledge; do not turn an identity belief into an identity or reverse subject and object.',
         questionUses: uses.filter(use => use.questionId === questionId),
         writingTask: '아래 확인된 사실을 모두 반영하여 신청인이 직접 말하는 형식의 자연스러운 한국어 진술문을 작성하세요. 사건 경위를 문장으로 서술하고 단순한 예/아니요 답변으로 끝내지 마세요. 모든 requiredFactIds를 적어도 한 문장의 근거로 연결하세요.',
@@ -888,8 +892,8 @@ export async function generateDraft(session: IntakeSession, adapter: ModelAdapte
         requirements: requirementCatalog.filter(item => questionFacts.some(fact => fact.requirementId === item.id)).map(({ id, label, labelEn, options }) => ({ id, label, labelEn, ...(options ? { options } : {}) })),
         // Only the confirmed facts and their own quotes: full source messages may still
         // contain values the applicant later corrected, which the draft must not reuse.
-        facts: questionFacts.map(({ id, requirementId, eventId, value, status, certainty, knowledge, sourceIds: ids, sourceQuotes, statements, clarification }) =>
-          ({ id, requirementId, eventId, value, status, certainty, knowledge, sourceIds: ids, quotes: sourceQuotes.map(quote => quote.quote), statements, clarification })),
+        facts: questionFacts.map(({ id, requirementId, eventId, value, status, certainty, knowledge, sourceIds: ids, sourceQuotes, statements, clarification, otherText }) =>
+          ({ id, requirementId, eventId, value, status, certainty, knowledge, sourceIds: ids, quotes: sourceQuotes.map(quote => quote.quote), statements, clarification, ...(otherText ? { otherText } : {}) })),
         ...(corrections.length ? { corrections, correctionRule: 'The applicant corrected these values. Use only "now"; never write any "old" value, even where another fact still quotes it.' } : {}),
       });
       const request = { task: 'draft' as const, system: draftSystem, prompt, signal,
