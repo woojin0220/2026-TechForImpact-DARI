@@ -493,8 +493,8 @@ export default function App() {
                     : ask.kind === 'more' ? [{ value: 'yes', label: sc.yes }, { value: 'no', label: sc.no }]
                     : (askRequirement?.options ?? []).map(option => ({ value: option.value, label: optionLabel(option) }))}
                   multi={ask.kind === 'field' && askRequirement?.type === 'multi'}
-                  selected={picked} onPick={values => { setPicked(values); if (!values.includes(OTHER_OPTION)) setOtherText(''); }}
-                  otherValue={ask.kind === 'field' && askOther ? OTHER_OPTION : undefined} otherText={otherText} onOtherText={setOtherText} otherLabel={sc.otherLabel} otherPlaceholder={sc.otherPlaceholder}
+                  selected={picked} onPick={values => { setPicked(values); if (!values.includes(OTHER_OPTION) && picked.includes(OTHER_OPTION) && otherText.trim()) setOtherText(''); }}
+                  otherValue={ask.kind === 'field' && askOther ? OTHER_OPTION : undefined} otherText={otherText} onOtherText={setOtherText} otherLabel={sc.otherLabel}
                   disabled={!!busy || recoveryPending} submitLabel={sc.choose} clearLabel={sc.clearChoice} hint={sc.choiceHint}
                   onAnswer={values => {
                     if (ask.kind === 'table') answer(values[0] === 'have' ? { text: sc.have, status: 'answered' } : { text: sc.none, status: 'not_applicable' });

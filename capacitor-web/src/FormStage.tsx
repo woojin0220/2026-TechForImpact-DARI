@@ -4,7 +4,7 @@ import { localizedLabel } from './form/localize';
 import type { ScriptedCopy } from './intakeCopy';
 import { samePrompt } from './form/presentation';
 import { OTHER_OPTION, takesOtherText } from './form/otherChoice';
-import { ChoiceList } from './ChoiceList';
+import { ChoiceList, withOtherText } from './ChoiceList';
 
 // Development builds, or a build made with VITE_DARI_DEV_TOOLS=true, show test helpers.
 export const DEV_TOOLS = import.meta.env.DEV || import.meta.env.VITE_DARI_DEV_TOOLS === 'true';
@@ -72,8 +72,8 @@ export function FieldInput({ field, language, valueLanguage, value, copy, onChan
     {(field.type === 'single' || field.type === 'multi') && <ChoiceList label={label} multi={field.type === 'multi'} selected={selected}
       items={(field.options ?? []).map(option => ({ value: option.value, label: text(language, option.ko, option.en) }))}
       onToggle={value => { const on = selected.includes(value); choose(field.type === 'multi' ? (on ? selected.filter(item => item !== value) : [...selected, value]) : (on ? [] : [value])); }}
-      otherValue={takesOtherText(field.id, field.options) ? OTHER_OPTION : undefined} otherText={other} otherLabel={copy.otherLabel} otherPlaceholder={copy.otherPlaceholder}
-      onOtherText={value => onChange({ kind: 'choice', values: selected, ...(value ? { other: value } : {}) })} />}
+      otherValue={takesOtherText(field.id, field.options) ? OTHER_OPTION : undefined} otherText={other} otherLabel={copy.otherLabel}
+      onOtherText={value => { const values = withOtherText(selected, OTHER_OPTION, value, field.type === 'multi'); onChange(values.length || value ? { kind: 'choice', values, ...(value ? { other: value } : {}) } : undefined); }} />}
     {(field.type === 'single' || field.type === 'multi') && selected.length > 0 && <button className="quiet clear-choice" onClick={() => onChange(undefined)}>{copy.clearChoice}</button>}
     {(field.type === 'short' || field.type === 'date') && <input lang={valueLanguage} dir={valueLanguage ? (['ar', 'fa'].includes(valueLanguage) ? 'rtl' : 'ltr') : field.type === 'date' ? 'ltr' : 'auto'} value={value?.kind === 'text' ? value.text : ''} placeholder={field.type === 'date' ? copy.datePlaceholder : ''} title={field.type === 'date' ? copy.dateFormat : undefined} aria-label={label}
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}

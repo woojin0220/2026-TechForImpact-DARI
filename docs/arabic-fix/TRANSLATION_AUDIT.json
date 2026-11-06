@@ -2293,9 +2293,9 @@
     {
       "namespace": "scripted",
       "key": "otherLabel",
-      "en": "Describe “Other” in your own words",
-      "ko": "기타 내용 직접 입력",
-      "ar": "اكتب «غير ذلك» بكلماتك"
+      "en": "Other (type your answer)",
+      "ko": "기타 (직접 입력)",
+      "ar": "غير ذلك (اكتب إجابتك)"
     },
     {
       "namespace": "scripted",
