@@ -14,6 +14,12 @@ export type FormAnswers = Record<string, FormValue>;
 
 export const FORM_SOURCE_ID = 'form';
 export const formSteps: FormStep[] = applicationSteps.filter(step => step.fields.every(field => isFormSection(field.id)));
+
+/** The form page that holds a requirement (or its table column). */
+export function formPageOf(requirementId: string): number {
+  const fieldId = requirementsById.get(requirementId)?.parentId ?? requirementId;
+  return Math.max(0, formSteps.findIndex(step => step.fields.some(field => field.id === fieldId)));
+}
 const fields = new Map(formSteps.flatMap(step => step.fields).map(field => [field.id, field]));
 
 export function isFieldVisible(field: FormField, answers: FormAnswers, seen = new Set<string>()): boolean {
