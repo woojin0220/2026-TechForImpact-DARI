@@ -1,5 +1,6 @@
 import { applicationSteps, type FormField, type FormStep } from '../form/schema.ts';
-import { calculateCoverage, getActiveFacts, invalidateDraft, nextFactId } from './index.ts';
+import { getActiveFacts, invalidateDraft, nextFactId } from './session.ts';
+import { calculateCoverage } from './coverage.ts';
 import { isFormSection, requirementsById } from './catalog.ts';
 import type { FactStatus, IntakeFact, IntakeSession } from './types.ts';
 import { koreanChoiceText, OTHER_OPTION, takesOtherText } from '../form/otherChoice.ts';
