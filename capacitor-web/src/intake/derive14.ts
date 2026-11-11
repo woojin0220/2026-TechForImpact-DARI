@@ -1,7 +1,7 @@
 import { applicationSteps, type FormField } from '../form/schema.ts';
 import type { FormAnswers, FormValue } from './form.ts';
 import { koreanChoiceText } from '../form/otherChoice.ts';
-import { getActiveFacts } from './index.ts';
+import { getActiveFacts } from './session.ts';
 import { requirementsById } from './catalog.ts';
 import type { IntakeFact, IntakeSession } from './types.ts';
 import { onlyDenials } from './statements.ts';
