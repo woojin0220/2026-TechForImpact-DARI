@@ -144,8 +144,8 @@ npm run build
 .
 ├── capacitor-web/
 │   ├── src/          # 웹 화면, 대화 수집, 메타데이터, 초안과 수정
-│   │   ├── App.tsx   # 화면 배치만 담당
-│   │   ├── app/      # 상태·동작(useDariApp)과 단계별 화면(헤더, 대화, 수집 내용, 초안)
+│   │   ├── App.tsx   # 화면 배치와 단계별 동작 조합
+│   │   ├── app/      # 단계별 화면과 상태·모델 작업·저장·뷰포트 훅
 │   │   └── intake/   # 대화 엔진: session, extraction, flow, draft 모듈 (index.ts가 공개 API)
 │   ├── android/      # 현재 Capacitor Android 앱과 네이티브 플러그인
 │   ├── ios/          # 현재 Capacitor iOS 앱과 네이티브 플러그인

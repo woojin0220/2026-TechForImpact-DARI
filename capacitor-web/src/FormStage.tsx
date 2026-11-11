@@ -1,4 +1,4 @@
-import { dummyFormAnswers, formSteps, isFieldVisible, requirementsById, type FormAnswers, type FormValue } from './intake';
+import { dummyFormAnswers, formSteps, isFieldVisible, type FormAnswers, type FormValue } from './intake';
 import type { FormField } from './form/schema';
 import { localizedLabel } from './form/localize';
 import type { ScriptedCopy } from './intakeCopy';
@@ -11,11 +11,6 @@ export const DEV_TOOLS = import.meta.env.DEV || import.meta.env.VITE_DARI_DEV_TO
 
 function text(language: string, ko: string, en: string) {
   return localizedLabel(language, ko, en);
-}
-
-export function formPageOf(requirementId: string): number {
-  const fieldId = requirementsById.get(requirementId)?.parentId ?? requirementId;
-  return Math.max(0, formSteps.findIndex(step => step.fields.some(field => field.id === fieldId)));
 }
 
 type Props = {

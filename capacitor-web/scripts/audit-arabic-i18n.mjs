@@ -51,7 +51,8 @@ for (const group of metadataGroups) label(group.ko, group.en, `${group.id}:group
 
 // Static prose in actually reachable components must use a translation key.
 // Brand names and explicitly technical CPU/GPU values are not translated.
-const components = ['App.tsx', 'app/AppHeader.tsx', 'app/ConversationStage.tsx', 'app/FactsStage.tsx', 'app/DraftStage.tsx', 'app/useDariApp.tsx', 'FormStage.tsx', 'JourneyPanels.tsx', 'StatementDetails.tsx',
+const components = ['App.tsx', 'app/LanguageEntry.tsx', 'app/OperatorPanel.tsx', 'app/StepSidebar.tsx', 'app/ConversationStage.tsx', 'app/FactsStage.tsx', 'app/DraftStage.tsx',
+  'FormStage.tsx', 'JourneyPanels.tsx', 'StatementDetails.tsx',
   'sessionOverview/SessionOverview.tsx', 'revision/SentenceReview.tsx', 'revision/EnglishMeaning.tsx', 'revision/EditorModal.tsx', 'bench/BenchPanel.tsx'];
 const literalFindings = [];
 function renderedStrings(node) {
