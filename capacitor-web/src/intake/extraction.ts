@@ -410,4 +410,3 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
 export async function advanceConversation(session: IntakeSession, userText: string, adapter: ModelAdapter, signal?: AbortSignal): Promise<IntakeSession> {
   return continueConversation(appendUserMessage(session, userText), adapter, signal);
 }
-

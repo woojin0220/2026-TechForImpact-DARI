@@ -16,7 +16,7 @@ export type IntakeRuntimeStatus = {
   device?: Record<string, unknown>;
 };
 
-const browserHost = window.location.hostname === 'localhost' ? 'localhost' : '127.0.0.1';
+const browserHost = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'localhost' : '127.0.0.1';
 export const INTAKE_API_URL = (import.meta.env.VITE_DARI_INTAKE_API_URL ?? `http://${browserHost}:8765`).replace(/\/$/, '');
 export const previewModels = ['gemma4:e4b', 'gemma4:e2b', 'gemma3n:e4b', 'qwen3:4b', 'llama3.2:3b'];
 let previewModel = 'gemma4:e4b';
