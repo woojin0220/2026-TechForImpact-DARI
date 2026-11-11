@@ -1,13 +1,8 @@
 import type { ModelRequest } from '../intake/types.ts';
 import { generateIntakeModel } from '../lib/intakeModel';
 
-// Serialize automatic back-translations and edit requests on the same local model.
-let tail: Promise<unknown> = Promise.resolve();
+// Back-translations and edit requests use the app-wide model queue in lib/intakeModel.
+// Callers mark automatic work as background so the applicant's own requests go first.
 export function generateReviewModel(request: ModelRequest): Promise<string> {
-  const job = tail.then(() => {
-    if (request.signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
-    return generateIntakeModel(request);
-  });
-  tail = job.catch(() => undefined);
-  return job;
+  return generateIntakeModel(request);
 }
