@@ -24,6 +24,8 @@ ALLOWED_ORIGINS = {
     "http://127.0.0.1:5188", "https://localhost", "capacitor://localhost",
     "http://localhost:5188", "http://127.0.0.1:5173",
     "http://localhost:5191", "http://127.0.0.1:5191",
+    "http://localhost:5192", "http://127.0.0.1:5192",
+    "http://localhost:5193", "http://127.0.0.1:5193",
 }
 
 

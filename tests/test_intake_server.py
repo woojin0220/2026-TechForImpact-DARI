@@ -1,12 +1,35 @@
 import io
 import json
 import unittest
+import threading
+from urllib.request import Request, urlopen
 from unittest.mock import patch
 
 import local_verification_server as server
 
 
 class IntakeServerTests(unittest.TestCase):
+    def test_integration_origins_receive_cors_for_status_and_preflight(self):
+        httpd = server.ThreadingHTTPServer(('127.0.0.1', 0), server.Handler)
+        worker = threading.Thread(target=httpd.serve_forever, daemon=True)
+        worker.start()
+        base = f'http://127.0.0.1:{httpd.server_address[1]}'
+        try:
+            for origin in ['http://127.0.0.1:5192', 'http://localhost:5192', 'http://127.0.0.1:5193', 'http://localhost:5193']:
+                with self.subTest(origin=origin), patch.object(server, 'intake_status', return_value={'models': ['gemma4:e4b'], 'busy': False}):
+                    with urlopen(Request(base + '/v1/intake/status', headers={'Origin': origin}), timeout=3) as response:
+                        self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), origin)
+                    with urlopen(Request(base + '/v1/intake/generate', method='OPTIONS', headers={'Origin': origin, 'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'content-type'}), timeout=3) as response:
+                        self.assertEqual(response.status, 204)
+                        self.assertEqual(response.headers.get('Access-Control-Allow-Origin'), origin)
+                        self.assertIn('POST', response.headers.get('Access-Control-Allow-Methods'))
+            with urlopen(Request(base + '/health', headers={'Origin': 'https://untrusted.example'}), timeout=3) as response:
+                self.assertIsNone(response.headers.get('Access-Control-Allow-Origin'))
+        finally:
+            httpd.shutdown()
+            httpd.server_close()
+            worker.join(timeout=3)
+
     def payload(self):
         return {"task": "intake", "model": "gemma4:e4b", "system": "collect facts", "prompt": "fictional example"}
 
