@@ -2,13 +2,14 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 404,
+    "uiKeys": 412,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
       "revision": 51,
       "bench": 48,
       "overview": 57,
+      "tabs": 8,
       "intake": 58,
       "process": 11,
       "scripted": 38,
@@ -2065,6 +2066,62 @@
       "en": "This saved item has no matching edit screen in this version. Its original value is preserved here.",
       "ko": "이 버전에는 이 저장 항목의 수정 화면이 없습니다. 입력 값은 여기에 그대로 표시합니다.",
       "ar": "لا توجد شاشة تعديل مطابقة لهذا البند المحفوظ في هذا الإصدار. تبقى قيمته الأصلية معروضة هنا."
+    },
+    {
+      "namespace": "tabs",
+      "key": "application",
+      "en": "Application",
+      "ko": "신청서",
+      "ar": "الطلب"
+    },
+    {
+      "namespace": "tabs",
+      "key": "backToApplication",
+      "en": "Back to application",
+      "ko": "신청서로 돌아가기",
+      "ar": "العودة إلى الطلب"
+    },
+    {
+      "namespace": "tabs",
+      "key": "comingSoon",
+      "en": "This feature is being prepared. Your application work is kept while you visit this tab.",
+      "ko": "준비 중인 기능이에요. 이 탭을 보는 동안에도 작성 중인 신청서는 그대로 유지돼요.",
+      "ar": "هذه الميزة قيد الإعداد. يبقى طلبك الحالي محفوظًا أثناء تصفحك لهذا القسم."
+    },
+    {
+      "namespace": "tabs",
+      "key": "community",
+      "en": "Community",
+      "ko": "커뮤니티",
+      "ar": "المجتمع"
+    },
+    {
+      "namespace": "tabs",
+      "key": "communityTitle",
+      "en": "Community",
+      "ko": "커뮤니티",
+      "ar": "المجتمع"
+    },
+    {
+      "namespace": "tabs",
+      "key": "navigation",
+      "en": "Main menu",
+      "ko": "주 메뉴",
+      "ar": "القائمة الرئيسية"
+    },
+    {
+      "namespace": "tabs",
+      "key": "scheduler",
+      "en": "Schedule",
+      "ko": "스케줄러",
+      "ar": "المواعيد"
+    },
+    {
+      "namespace": "tabs",
+      "key": "schedulerTitle",
+      "en": "Schedule",
+      "ko": "스케줄러",
+      "ar": "المواعيد"
     },
     {
       "namespace": "intake",
