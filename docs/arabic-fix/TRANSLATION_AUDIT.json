@@ -2,7 +2,7 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 412,
+    "uiKeys": 455,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
@@ -10,6 +10,7 @@
       "bench": 48,
       "overview": 57,
       "tabs": 8,
+      "account": 43,
       "intake": 58,
       "process": 11,
       "scripted": 38,
@@ -2122,6 +2123,307 @@
       "en": "Schedule",
       "ko": "스케줄러",
       "ar": "المواعيد"
+    },
+    {
+      "namespace": "account",
+      "key": "accountTitle",
+      "en": "My account",
+      "ko": "내 정보",
+      "ar": "حسابي"
+    },
+    {
+      "namespace": "account",
+      "key": "ageConfirm",
+      "en": "I am 14 years old or older.",
+      "ko": "만 14세 이상입니다.",
+      "ar": "عمري 14 سنة أو أكثر."
+    },
+    {
+      "namespace": "account",
+      "key": "agreeCommunity",
+      "en": "I will not post names, contact details or case details that could identify me or anyone else.",
+      "ko": "나나 다른 사람을 알아볼 수 있는 이름, 연락처, 사건 내용을 올리지 않겠습니다.",
+      "ar": "لن أنشر أسماء أو بيانات اتصال أو تفاصيل قضية قد تكشف هويتي أو هوية غيري."
+    },
+    {
+      "namespace": "account",
+      "key": "agreePrivacy",
+      "en": "I agree to the collection and use of my email and nickname as described in the Privacy Policy.",
+      "ko": "개인정보 처리방침에 따른 이메일·닉네임 수집과 이용에 동의합니다.",
+      "ar": "أوافق على جمع واستخدام بريدي واسمي المستعار وفق سياسة الخصوصية."
+    },
+    {
+      "namespace": "account",
+      "key": "agreeTerms",
+      "en": "I agree to the Terms of Use.",
+      "ko": "이용약관에 동의합니다.",
+      "ar": "أوافق على شروط الاستخدام."
+    },
+    {
+      "namespace": "account",
+      "key": "back",
+      "en": "Back",
+      "ko": "뒤로",
+      "ar": "رجوع"
+    },
+    {
+      "namespace": "account",
+      "key": "changeEmail",
+      "en": "Use a different email",
+      "ko": "다른 이메일 사용",
+      "ar": "استخدام بريد آخر"
+    },
+    {
+      "namespace": "account",
+      "key": "code",
+      "en": "Sign-in code",
+      "ko": "로그인 코드",
+      "ar": "رمز الدخول"
+    },
+    {
+      "namespace": "account",
+      "key": "codeSent",
+      "en": "We sent a sign-in code to {email}. Enter it below.",
+      "ko": "{email}(으)로 로그인 코드를 보냈어요. 아래에 입력해 주세요.",
+      "ar": "أرسلنا رمز الدخول إلى {email}. أدخله أدناه."
+    },
+    {
+      "namespace": "account",
+      "key": "deleteAccount",
+      "en": "Delete account",
+      "ko": "회원 탈퇴",
+      "ar": "حذف الحساب"
+    },
+    {
+      "namespace": "account",
+      "key": "deleteConfirm",
+      "en": "Delete your account and community data? This cannot be undone. Your application on this device is not affected.",
+      "ko": "계정과 커뮤니티 데이터를 삭제할까요? 되돌릴 수 없어요. 이 기기의 신청서에는 영향이 없어요.",
+      "ar": "هل تريد حذف حسابك وبيانات المجتمع؟ لا يمكن التراجع عن ذلك. لن يتأثر طلبك على هذا الجهاز."
+    },
+    {
+      "namespace": "account",
+      "key": "email",
+      "en": "Email",
+      "ko": "이메일",
+      "ar": "البريد الإلكتروني"
+    },
+    {
+      "namespace": "account",
+      "key": "errorCode",
+      "en": "The code is incorrect or has expired.",
+      "ko": "코드가 틀렸거나 만료되었어요.",
+      "ar": "الرمز غير صحيح أو انتهت صلاحيته."
+    },
+    {
+      "namespace": "account",
+      "key": "errorEmail",
+      "en": "Enter a valid email address.",
+      "ko": "올바른 이메일 주소를 입력해 주세요.",
+      "ar": "أدخل بريدًا إلكترونيًا صحيحًا."
+    },
+    {
+      "namespace": "account",
+      "key": "errorGeneric",
+      "en": "Something went wrong. Please try again.",
+      "ko": "문제가 생겼어요. 다시 시도해 주세요.",
+      "ar": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    },
+    {
+      "namespace": "account",
+      "key": "errorNickname",
+      "en": "Use 2–20 letters, numbers, spaces, - or _.",
+      "ko": "2~20자의 글자, 숫자, 공백, - 또는 _만 쓸 수 있어요.",
+      "ar": "استخدم من 2 إلى 20 حرفًا أو رقمًا أو مسافة أو - أو _."
+    },
+    {
+      "namespace": "account",
+      "key": "errorNicknameTaken",
+      "en": "This nickname is already in use.",
+      "ko": "이미 사용 중인 닉네임이에요.",
+      "ar": "هذا الاسم المستعار مستخدم بالفعل."
+    },
+    {
+      "namespace": "account",
+      "key": "errorRateLimit",
+      "en": "Too many attempts. Wait a minute and try again.",
+      "ko": "시도가 너무 많아요. 1분 뒤에 다시 시도해 주세요.",
+      "ar": "محاولات كثيرة جدًا. انتظر دقيقة ثم حاول مرة أخرى."
+    },
+    {
+      "namespace": "account",
+      "key": "finish",
+      "en": "Start",
+      "ko": "시작하기",
+      "ar": "ابدأ"
+    },
+    {
+      "namespace": "account",
+      "key": "loadFailed",
+      "en": "Your account could not be loaded.",
+      "ko": "계정 정보를 불러오지 못했어요.",
+      "ar": "تعذّر تحميل حسابك."
+    },
+    {
+      "namespace": "account",
+      "key": "myAccount",
+      "en": "My account",
+      "ko": "내 정보",
+      "ar": "حسابي"
+    },
+    {
+      "namespace": "account",
+      "key": "nickname",
+      "en": "Nickname",
+      "ko": "닉네임",
+      "ar": "الاسم المستعار"
+    },
+    {
+      "namespace": "account",
+      "key": "nicknameHint",
+      "en": "2–20 characters: letters, numbers, spaces, - or _.",
+      "ko": "2~20자. 글자, 숫자, 공백, - 또는 _를 쓸 수 있어요.",
+      "ar": "من 2 إلى 20 حرفًا: حروف أو أرقام أو مسافات أو - أو _."
+    },
+    {
+      "namespace": "account",
+      "key": "notConfigured",
+      "en": "Sign-in is not set up in this version of the app yet.",
+      "ko": "이 버전의 앱에는 아직 로그인이 설정되지 않았어요.",
+      "ar": "لم يتم إعداد تسجيل الدخول في هذا الإصدار من التطبيق بعد."
+    },
+    {
+      "namespace": "account",
+      "key": "onboardingIntro",
+      "en": "Do not use your real name. Other members only see your nickname.",
+      "ko": "실명은 쓰지 마세요. 다른 사람에게는 닉네임만 보여요.",
+      "ar": "لا تستخدم اسمك الحقيقي. يرى الأعضاء الآخرون اسمك المستعار فقط."
+    },
+    {
+      "namespace": "account",
+      "key": "onboardingTitle",
+      "en": "Set up your account",
+      "ko": "계정 설정",
+      "ar": "إعداد الحساب"
+    },
+    {
+      "namespace": "account",
+      "key": "resend",
+      "en": "Send a new code",
+      "ko": "코드 다시 받기",
+      "ar": "إرسال رمز جديد"
+    },
+    {
+      "namespace": "account",
+      "key": "retry",
+      "en": "Try again",
+      "ko": "다시 시도",
+      "ar": "إعادة المحاولة"
+    },
+    {
+      "namespace": "account",
+      "key": "role",
+      "en": "Role",
+      "ko": "역할",
+      "ar": "الدور"
+    },
+    {
+      "namespace": "account",
+      "key": "roleAdmin",
+      "en": "Administrator",
+      "ko": "관리자",
+      "ar": "مدير"
+    },
+    {
+      "namespace": "account",
+      "key": "roleModerator",
+      "en": "Moderator",
+      "ko": "모더레이터",
+      "ar": "مشرف"
+    },
+    {
+      "namespace": "account",
+      "key": "roleSupporter",
+      "en": "Support organization",
+      "ko": "지원기관",
+      "ar": "جهة دعم"
+    },
+    {
+      "namespace": "account",
+      "key": "roleUser",
+      "en": "Member",
+      "ko": "일반 회원",
+      "ar": "عضو"
+    },
+    {
+      "namespace": "account",
+      "key": "save",
+      "en": "Save",
+      "ko": "저장",
+      "ar": "حفظ"
+    },
+    {
+      "namespace": "account",
+      "key": "saved",
+      "en": "Saved.",
+      "ko": "저장했어요.",
+      "ar": "تم الحفظ."
+    },
+    {
+      "namespace": "account",
+      "key": "sendCode",
+      "en": "Send code",
+      "ko": "인증코드 받기",
+      "ar": "إرسال الرمز"
+    },
+    {
+      "namespace": "account",
+      "key": "signInIntro",
+      "en": "Sign in to use the community. Your application stays on this device and is never linked to your account.",
+      "ko": "커뮤니티를 이용하려면 로그인해 주세요. 신청서는 이 기기에만 남고 계정과 연결되지 않아요.",
+      "ar": "سجّل الدخول لاستخدام المجتمع. يبقى طلبك على هذا الجهاز ولا يُربط بحسابك أبدًا."
+    },
+    {
+      "namespace": "account",
+      "key": "signInTitle",
+      "en": "Sign in",
+      "ko": "로그인",
+      "ar": "تسجيل الدخول"
+    },
+    {
+      "namespace": "account",
+      "key": "signOut",
+      "en": "Sign out",
+      "ko": "로그아웃",
+      "ar": "تسجيل الخروج"
+    },
+    {
+      "namespace": "account",
+      "key": "signedInAs",
+      "en": "Signed in as {email}",
+      "ko": "{email}(으)로 로그인됨",
+      "ar": "تم الدخول باسم {email}"
+    },
+    {
+      "namespace": "account",
+      "key": "suspended",
+      "en": "Your account is suspended. Contact the operators if you need help.",
+      "ko": "계정이 정지되었어요. 도움이 필요하면 운영자에게 문의해 주세요.",
+      "ar": "تم إيقاف حسابك. تواصل مع فريق التشغيل إذا احتجت إلى مساعدة."
+    },
+    {
+      "namespace": "account",
+      "key": "verify",
+      "en": "Sign in",
+      "ko": "로그인",
+      "ar": "دخول"
+    },
+    {
+      "namespace": "account",
+      "key": "working",
+      "en": "Please wait…",
+      "ko": "잠시만 기다려 주세요…",
+      "ar": "يرجى الانتظار…"
     },
     {
       "namespace": "intake",

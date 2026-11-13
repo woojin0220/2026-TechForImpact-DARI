@@ -1,0 +1,15 @@
+main.account-main,[dir="rtl"] main.account-main{max-width:560px;margin:0 auto;padding:calc(32px + env(safe-area-inset-top)) 24px 32px;min-height:calc(100dvh - var(--dari-tabbar-height,0px))}
+.account-screen{display:grid;gap:16px}
+.account-screen h1{margin:0}
+.account-screen form{display:grid;gap:14px}
+.account-screen .check-row{margin-top:0}
+.account-intro{font-size:14px;margin:0}
+.account-field small{color:#555}
+.account-error{margin:0;font-size:13px;border:1px solid var(--ink);border-radius:10px;padding:10px 12px}
+.account-saved{margin:0;font-size:13px}
+.account-links,.account-actions{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center}
+.account-actions{border-top:1px solid var(--line);padding-top:16px;margin-top:8px}
+.account-danger{text-decoration:underline;text-underline-offset:4px}
+.account-screen>.quiet:first-child{justify-self:start;padding:0}
+.account-facts{margin:0}.account-facts div{display:flex;gap:12px;font-size:14px}.account-facts dt{color:#555}.account-facts dd{margin:0;font-weight:600}
+.tab-account-button{justify-self:end}

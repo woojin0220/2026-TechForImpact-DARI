@@ -9,6 +9,7 @@ import { revisionCopies } from '../src/revision/revisionCopy.ts';
 import { benchCopies } from '../src/bench/benchCopy.ts';
 import { overviewCopies } from '../src/sessionOverview/copy.ts';
 import { tabsCopies } from '../src/shell/tabsCopy.ts';
+import { accountCopies } from '../src/platform/accountCopy.ts';
 import { intakeCopies, intakeProcessCopy, scriptedCopy } from '../src/intakeCopy.ts';
 import { applicationSteps } from '../src/form/schema.ts';
 import { requirementCatalog } from '../src/intake/catalog.ts';
@@ -17,7 +18,7 @@ import { hasLocalizedPhrase, localizedLabel } from '../src/form/localize.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dictionaries = { app: { en: appEnglish, ko: appKorean, ar: appArabic }, journey: journeyCopies,
-  revision: revisionCopies, bench: benchCopies, overview: overviewCopies, tabs: tabsCopies, intake: intakeCopies, process: intakeProcessCopy, scripted: scriptedCopy, statuses: statusWords };
+  revision: revisionCopies, bench: benchCopies, overview: overviewCopies, tabs: tabsCopies, account: accountCopies, intake: intakeCopies, process: intakeProcessCopy, scripted: scriptedCopy, statuses: statusWords };
 const issues = [], entries = [];
 for (const [namespace, copies] of Object.entries(dictionaries)) {
   const keys = Object.keys(copies.en).sort();
@@ -54,7 +55,7 @@ for (const group of metadataGroups) label(group.ko, group.en, `${group.id}:group
 // Brand names and explicitly technical CPU/GPU values are not translated.
 const components = ['App.tsx', 'app/LanguageEntry.tsx', 'app/OperatorPanel.tsx', 'app/StepSidebar.tsx', 'app/ConversationStage.tsx', 'app/FactsStage.tsx', 'app/DraftStage.tsx',
   'FormStage.tsx', 'JourneyPanels.tsx', 'StatementDetails.tsx',
-  'sessionOverview/SessionOverview.tsx', 'shell/AppTabs.tsx', 'shell/TabBar.tsx', 'revision/SentenceReview.tsx', 'revision/EnglishMeaning.tsx', 'revision/EditorModal.tsx', 'bench/BenchPanel.tsx'];
+  'sessionOverview/SessionOverview.tsx', 'shell/AppTabs.tsx', 'shell/TabBar.tsx', 'shell/CommunityTab.tsx', 'platform/AccountScreens.tsx', 'revision/SentenceReview.tsx', 'revision/EnglishMeaning.tsx', 'revision/EditorModal.tsx', 'bench/BenchPanel.tsx'];
 const literalFindings = [];
 function renderedStrings(node) {
   if (!node) return [];
