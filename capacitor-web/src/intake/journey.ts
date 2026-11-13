@@ -1,4 +1,7 @@
-import { appendUserMessage, calculateCoverage, getActiveFacts, invalidateDraft, nextStep, eventReview } from './index.ts';
+import { appendUserMessage, getActiveFacts, invalidateDraft } from './session.ts';
+import { calculateCoverage } from './coverage.ts';
+import { nextStep } from './flow.ts';
+import { eventReview } from './statements.ts';
 import { metadataGroups } from './metadata14.ts';
 import { requirementsById, requirementsForScope, isNarrative } from './catalog.ts';
 import type { IntakeSession } from './types.ts';

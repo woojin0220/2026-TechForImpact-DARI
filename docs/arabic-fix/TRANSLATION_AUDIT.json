@@ -2468,9 +2468,9 @@
     {
       "namespace": "intake",
       "key": "unavailable",
-      "en": "The model is not ready. Open operator settings to check the connection.",
-      "ko": "모델을 사용할 준비가 되지 않았습니다. 운영자 설정에서 연결 상태를 확인해 주세요.",
-      "ar": "النموذج غير جاهز. تحقق من الاتصال في إعدادات المشغّل."
+      "en": "AI features are not available right now. Everything you entered is still saved on this device. Please ask the person helping you to check the app setup.",
+      "ko": "지금은 AI 기능을 쓸 수 없습니다. 입력하신 내용은 이 기기에 그대로 남아 있습니다. 도와주시는 분께 앱 설정 확인을 부탁해 주세요.",
+      "ar": "ميزات الذكاء الاصطناعي غير متاحة الآن. كل ما أدخلته ما زال محفوظًا على هذا الجهاز. اطلب من الشخص الذي يساعدك التحقق من إعدادات التطبيق."
     },
     {
       "namespace": "process",

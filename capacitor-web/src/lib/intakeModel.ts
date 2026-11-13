@@ -1,6 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 import { onDeviceLlm as native } from './onDeviceLlm';
 import type { ModelStats, NativeBenchOptions } from '../bench/types';
+import { createModelQueue } from './modelQueue';
 
 export type IntakeRuntimeStatus = {
   platform: string;
@@ -15,7 +16,7 @@ export type IntakeRuntimeStatus = {
   device?: Record<string, unknown>;
 };
 
-const browserHost = window.location.hostname === 'localhost' ? 'localhost' : '127.0.0.1';
+const browserHost = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'localhost' : '127.0.0.1';
 export const INTAKE_API_URL = (import.meta.env.VITE_DARI_INTAKE_API_URL ?? `http://${browserHost}:8765`).replace(/\/$/, '');
 export const previewModels = ['gemma4:e4b', 'gemma4:e2b', 'gemma3n:e4b', 'qwen3:4b', 'llama3.2:3b'];
 let previewModel = 'gemma4:e4b';
@@ -86,14 +87,22 @@ async function waitUntilIdle(isBusy: () => Promise<boolean>, signal?: AbortSigna
 const serverBusy = async () => (await (await fetch(`${INTAKE_API_URL}/v1/intake/status`, { signal: AbortSignal.timeout(7000) })).json()).busy === true;
 const isBusyError = (error: unknown) => /이전 모델 요청|BUSY|작업 중/.test(error instanceof Error ? `${error.message} ${(error as { code?: string }).code ?? ''}` : String(error));
 
-type GenerateRequest = { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown> };
+type GenerateRequest = { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown>; priority?: 'foreground' | 'background' };
+
+// Every model call in the app shares this queue so overlapping requests wait their
+// turn instead of failing with "another request is running".
+const modelQueue = createModelQueue();
 
 export async function generateIntakeModel(request: GenerateRequest): Promise<string> {
   return (await generateIntakeModelWithStats(request)).text;
 }
 
 /** Same as generateIntakeModel, plus the runtime's latency/token/memory measurements. */
-export async function generateIntakeModelWithStats(request: GenerateRequest): Promise<{ text: string; stats?: ModelStats }> {
+export function generateIntakeModelWithStats(request: GenerateRequest): Promise<{ text: string; stats?: ModelStats }> {
+  return modelQueue.run(() => runModel(request), request.priority, request.signal);
+}
+
+async function runModel(request: GenerateRequest): Promise<{ text: string; stats?: ModelStats }> {
   if (request.signal?.aborted) throw new DOMException('요청을 취소했습니다.', 'AbortError');
   if (Capacitor.isNativePlatform()) {
     const cancel = () => { void native.cancel().catch(() => {}); };
@@ -114,7 +123,6 @@ export async function generateIntakeModelWithStats(request: GenerateRequest): Pr
       return result;
     } finally { request.signal?.removeEventListener('abort', cancel); }
   }
-  if (activeController) throw new Error('이전 요청을 처리하고 있습니다.');
   try { return await previewGenerate(request); }
   catch (error) {
     if (!isBusyError(error) || request.signal?.aborted) throw error;

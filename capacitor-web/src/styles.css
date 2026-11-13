@@ -263,3 +263,27 @@ input[dir="ltr"], textarea[dir="ltr"], .operator-grid code { direction:ltr; unic
 .step-progress{height:3px;background:var(--line,#e3e3e0);border-radius:2px;overflow:hidden;margin:6px 0 0}
 .step-progress>span{display:block;height:100%;background:var(--ink);transition:width .25s ease}
 [dir="rtl"] .step-progress>span{margin-inline-start:0}
+
+/* Applicant actions that used to sit behind "더 보기": always visible above the composer. */
+.quick-actions{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px 0}
+.quick-actions button{min-height:44px;padding:0 14px;border-radius:22px;font-size:14px;border:1px solid var(--line,#e3e3e0);background:#fff;color:var(--ink)}
+.quick-actions button.secondary{background:#f3f3f1}
+.quick-actions button:disabled{opacity:.45}
+
+/* Mobile: give the conversation more room and keep every control at least 44px. */
+.operator-toggle{width:44px;height:44px;min-height:44px}
+.status-toggle{min-height:44px;padding-inline:12px}
+@media(max-width:650px){
+  .site-header .brand span{display:none}
+  .chat-mode .site-header,.start-mode .site-header,.page-mode .site-header{padding-top:6px;padding-bottom:6px}
+  .header-actions{gap:4px}
+  .overview-trigger{min-height:44px;padding:0 12px;font-size:14px;border-radius:12px}
+}
+@media(max-width:650px){
+  .section-title{flex-wrap:wrap;row-gap:6px}
+  .section-title h2{flex:1 1 100%}
+}
+/* Touch targets: these text buttons were 32px tall. */
+.status-toggles .quiet.status-toggle,.fact-more .quiet,.clear-choice,.step-notice .quiet,.session-status .quiet{min-height:44px}
+.site-header .brand{min-height:44px}
+.story-summary summary,.details>summary{min-height:44px;display:flex;align-items:center}

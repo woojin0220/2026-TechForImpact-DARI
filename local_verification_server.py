@@ -16,6 +16,7 @@ OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 ALLOWED_MODELS = {"qwen3:4b", "llama3.2:3b"}
 INTAKE_MODELS = {"gemma4:e4b", "gemma4:e2b", "gemma3n:e4b", "qwen3:4b", "llama3.2:3b"}
 INTAKE_LOCK = threading.Lock()
+KEEP_ALIVE = "30m"
 TRANSLATION_TARGETS = {"en", "ko", "ru", "ar", "fr", "fa"}
 LANGUAGE_NAMES = {"en": "English", "ko": "Korean", "ru": "Russian", "ar": "Arabic", "fr": "French", "fa": "Persian"}
 ALLOWED_ORIGINS = {
@@ -23,6 +24,8 @@ ALLOWED_ORIGINS = {
     "http://127.0.0.1:5188", "https://localhost", "capacitor://localhost",
     "http://localhost:5188", "http://127.0.0.1:5173",
     "http://localhost:5191", "http://127.0.0.1:5191",
+    "http://localhost:5192", "http://127.0.0.1:5192",
+    "http://localhost:5193", "http://127.0.0.1:5193",
 }
 
 
@@ -56,7 +59,9 @@ def generate_intake(payload):
     if not INTAKE_LOCK.acquire(blocking=False):
         raise ValueError("이전 모델 요청을 처리하고 있습니다. 잠시 후 다시 시도해 주세요.")
     try:
-        body = {"model": model, "stream": False,
+        # keep_alive: applicants often take minutes per answer; without it Ollama unloads
+        # the model after 5 idle minutes and the next turn pays the load time again.
+        body = {"model": model, "stream": False, "keep_alive": KEEP_ALIVE,
                 "messages": [{"role": "system", "content": system},
                              {"role": "user", "content": prompt}],
                 "options": {"temperature": 0.1, "num_ctx": 16384,
@@ -107,7 +112,7 @@ def call_ollama(model, prompt, timeout=120, num_predict=None, think=None):
     if num_predict is not None:
         options["num_predict"] = num_predict
     body = {
-        "model": model, "prompt": prompt, "stream": False,
+        "model": model, "prompt": prompt, "stream": False, "keep_alive": KEEP_ALIVE,
         "format": "json", "options": options,
     }
     if think is not None:

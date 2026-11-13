@@ -1,4 +1,4 @@
-import { dummyFormAnswers, formSteps, isFieldVisible, requirementsById, type FormAnswers, type FormValue } from './intake';
+import { dummyFormAnswers, formSteps, isFieldVisible, type FormAnswers, type FormValue } from './intake';
 import type { FormField } from './form/schema';
 import { localizedLabel } from './form/localize';
 import type { ScriptedCopy } from './intakeCopy';
@@ -11,11 +11,6 @@ export const DEV_TOOLS = import.meta.env.DEV || import.meta.env.VITE_DARI_DEV_TO
 
 function text(language: string, ko: string, en: string) {
   return localizedLabel(language, ko, en);
-}
-
-export function formPageOf(requirementId: string): number {
-  const fieldId = requirementsById.get(requirementId)?.parentId ?? requirementId;
-  return Math.max(0, formSteps.findIndex(step => step.fields.some(field => field.id === fieldId)));
 }
 
 type Props = {
@@ -85,8 +80,8 @@ export function FieldInput({ field, language, valueLanguage, value, copy, onChan
       onChange={event => onChange(event.target.value ? { kind: 'text', text: event.target.value } : undefined)} />}
     {field.type === 'table' && <TableInput field={field} language={language} value={value} copy={copy} onChange={onChange} />}
     {showStatus && field.type !== 'table' && <div className="status-toggles">
-      <button className="quiet" aria-pressed={status === 'unknown'} onClick={() => toggleStatus('unknown')}>{copy.unknown}</button>
-      <button className="quiet" aria-pressed={status === 'not_applicable'} onClick={() => toggleStatus('not_applicable')}>{copy.notApplicable}</button>
+      <button className="quiet status-toggle" aria-pressed={status === 'unknown'} onClick={() => toggleStatus('unknown')}>{copy.unknown}</button>
+      <button className="quiet status-toggle" aria-pressed={status === 'not_applicable'} onClick={() => toggleStatus('not_applicable')}>{copy.notApplicable}</button>
     </div>}
   </div>;
 }

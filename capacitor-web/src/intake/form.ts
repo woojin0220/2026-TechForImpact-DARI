@@ -1,5 +1,6 @@
 import { applicationSteps, type FormField, type FormStep } from '../form/schema.ts';
-import { calculateCoverage, getActiveFacts, invalidateDraft, nextFactId } from './index.ts';
+import { getActiveFacts, invalidateDraft, nextFactId } from './session.ts';
+import { calculateCoverage } from './coverage.ts';
 import { isFormSection, requirementsById } from './catalog.ts';
 import type { FactStatus, IntakeFact, IntakeSession } from './types.ts';
 import { koreanChoiceText, OTHER_OPTION, takesOtherText } from '../form/otherChoice.ts';
@@ -14,6 +15,12 @@ export type FormAnswers = Record<string, FormValue>;
 
 export const FORM_SOURCE_ID = 'form';
 export const formSteps: FormStep[] = applicationSteps.filter(step => step.fields.every(field => isFormSection(field.id)));
+
+/** The form page that holds a requirement (or its table column). */
+export function formPageOf(requirementId: string): number {
+  const fieldId = requirementsById.get(requirementId)?.parentId ?? requirementId;
+  return Math.max(0, formSteps.findIndex(step => step.fields.some(field => field.id === fieldId)));
+}
 const fields = new Map(formSteps.flatMap(step => step.fields).map(field => [field.id, field]));
 
 export function isFieldVisible(field: FormField, answers: FormAnswers, seen = new Set<string>()): boolean {

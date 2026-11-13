@@ -49,7 +49,7 @@ cancel(): Promise<void>
 
 `responseSchema`(JSON 스키마 강제 디코딩), `maxNumTokens`(문맥 한도), `backend`(`gpu`/`cpu`)는 벤치마크용 옵션입니다. 앱은 기본값(제약 없음, 16k, GPU)으로만 호출합니다. 문맥 한도나 백엔드가 바뀌면 엔진을 다시 불러옵니다. `stats`는 엔진 로딩 시간, TTFT, prefill·decode 토큰 수와 초당 토큰, 메모리, 발열을 담습니다. `getStatus()`는 기기 정보(`device`)를 함께 돌려줍니다. 자세한 내용은 [경량화 벤치마크](BENCHMARK.md)를 참고하세요.
 
-가져오기 또는 생성은 한 번에 하나만 실행하며 다음 요청은 `BUSY`로 거절합니다. 취소는 runtime의 cancellation API로 전달합니다. 초기 모델 로딩 도중에는 즉시 중단되지 않을 수 있으나 로딩이 끝나면 취소 여부를 확인해 생성을 시작하지 않습니다. Android는 네이티브 conversation 해제와 취소가 겹치지 않도록 잠금을 사용합니다. iOS는 동일 잠금 아래 참조를 유지하며 Swift ARC가 conversation을 정리합니다.
+가져오기 또는 생성은 한 번에 하나만 실행하며 다음 요청은 `BUSY`로 거절합니다. 앱은 모든 모델 요청을 `src/lib/modelQueue.ts`의 대기열로 한 번에 하나씩 보내므로, 화면에서 요청이 겹쳐도 실패하지 않고 순서를 기다립니다. 신청자가 기다리는 요청(답변, 초안, 수정)이 자동 역번역보다 먼저 실행됩니다. 취소는 runtime의 cancellation API로 전달합니다. 초기 모델 로딩 도중에는 즉시 중단되지 않을 수 있으나 로딩이 끝나면 취소 여부를 확인해 생성을 시작하지 않습니다. Android는 네이티브 conversation 해제와 취소가 겹치지 않도록 잠금을 사용합니다. iOS는 동일 잠금 아래 참조를 유지하며 Swift ARC가 conversation을 정리합니다.
 
 ## 현재 확인 범위
 
