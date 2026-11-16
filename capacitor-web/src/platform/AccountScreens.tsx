@@ -1,12 +1,13 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
-import { accountErrorKind, isValidCode, isValidEmail, isValidNickname, missingConsents, onboardingNeeds, primaryRole, type Account, type AccountErrorKind, type AppRole } from './account';
+import { accountErrorKind, canVerifyBadges, isValidBadgeCode, isValidCode, isValidEmail, isValidNickname, missingConsents, onboardingNeeds, primaryRole, type Account, type AccountErrorKind, type AppRole, type BadgeType } from './account';
 import type { AccountCopy } from './accountCopy';
 import type { PlatformApi } from './api';
 import { useAuth } from './AuthContext';
 
 const errorKeys: Record<AccountErrorKind, keyof AccountCopy> = {
-  email: 'errorEmail', code: 'errorCode', nickname: 'errorNickname', nicknameTaken: 'errorNicknameTaken', rateLimit: 'errorRateLimit', generic: 'errorGeneric',
+  email: 'errorEmail', code: 'errorCode', nickname: 'errorNickname', nicknameTaken: 'errorNicknameTaken', rateLimit: 'errorRateLimit', badgeCode: 'errorBadgeCode', badgeSelf: 'errorBadgeSelf', generic: 'errorGeneric',
 };
+const badgeKeys: Record<BadgeType, keyof AccountCopy> = { recognized_refugee: 'badgeRecognizedRefugee' };
 const roleKeys: Record<AppRole, keyof AccountCopy> = { user: 'roleUser', supporter: 'roleSupporter', moderator: 'roleModerator', admin: 'roleAdmin' };
 
 function fill(text: string, values: Record<string, string>) { return text.replace(/\{(\w+)\}/g, (_, key) => values[key] ?? ''); }
@@ -86,7 +87,69 @@ export function OnboardingScreen({ copy, account, api, language, onDone }: { cop
   </section>;
 }
 
-export function AccountScreen({ copy, account, api, onBack, onChanged }: { copy: AccountCopy; account: Account; api: PlatformApi; onBack: () => void; onChanged: () => void }) {
+/** A verified badge chip, for profiles and (later) community posts. */
+export function MemberBadge({ badge, copy }: { badge: BadgeType; copy: AccountCopy }) {
+  return <span className="member-badge"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1.5 13.5 4v4c0 3.2-2.3 5.6-5.5 6.5C4.8 13.6 2.5 11.2 2.5 8V4z" /><path d="m5.5 8 1.8 1.8L10.8 6.3" /></svg>{copy[badgeKeys[badge]]}</span>;
+}
+
+function expiryTime(iso: string, language: string) {
+  try { return new Intl.DateTimeFormat(language, { hour: '2-digit', minute: '2-digit' }).format(new Date(iso)); } catch { return new Date(iso).toLocaleTimeString(); }
+}
+
+function BadgeSection({ copy, account, api, language, onChanged }: { copy: AccountCopy; account: Account; api: PlatformApi; language: string; onChanged: () => void }) {
+  const badge: BadgeType = 'recognized_refugee';
+  const held = account.badges.find(item => item.badge === badge);
+  const [issued, setIssued] = useState<{ code: string; expires_at: string } | null>(null);
+  const [shown, setShown] = useState(held?.visible ?? false);
+  const request = useRequest(copy);
+  async function getCode() { await request.run(async () => setIssued(await api.requestBadgeCode(badge))); }
+  async function toggle(show: boolean) {
+    setShown(show);
+    if (await request.run(() => api.setBadgeVisibility(badge, show))) onChanged(); else setShown(!show);
+  }
+  async function remove() {
+    if (!window.confirm(copy.badgeRemoveConfirm)) return;
+    if (await request.run(() => api.removeBadge(account.profile.user_id, badge))) onChanged();
+  }
+  return <section className="account-section" aria-labelledby="badges-title">
+    <h2 id="badges-title">{copy.badgesTitle}</h2>
+    {held ? <>
+      <MemberBadge badge={badge} copy={copy} />
+      <label className="check-row"><input type="checkbox" checked={shown} disabled={request.pending} onChange={event => void toggle(event.target.checked)} /><span>{copy.badgeVisible}<small>{copy.badgeVisibleNote}</small></span></label>
+      <ErrorLine text={request.error} />
+      <div className="account-links"><button type="button" className="quiet account-danger" disabled={request.pending} onClick={() => void remove()}>{copy.badgeRemove}</button></div>
+    </> : <>
+      <p className="account-intro">{copy.badgeAbout}</p>
+      {issued && <div className="badge-code" role="status"><strong dir="ltr">{issued.code}</strong><p>{fill(copy.badgeCodeShow, { time: expiryTime(issued.expires_at, language) })}</p></div>}
+      <ErrorLine text={request.error} />
+      <div className="account-links"><button type="button" className="secondary" disabled={request.pending} onClick={() => void getCode()}>{issued ? copy.badgeNewCode : copy.badgeRequest}</button></div>
+    </>}
+  </section>;
+}
+
+function VerifySection({ copy, api }: { copy: AccountCopy; api: PlatformApi }) {
+  const [code, setCode] = useState('');
+  const [done, setDone] = useState('');
+  const request = useRequest(copy);
+  async function submit(event: FormEvent) {
+    event.preventDefault(); setDone('');
+    if (!isValidBadgeCode(code)) { request.setError(copy.errorBadgeCode); return; }
+    let nickname: string | null = null;
+    if (await request.run(async () => { nickname = await api.grantBadge(code); })) { setDone(fill(copy.verifyDone, { nickname: nickname ?? '' })); setCode(''); }
+  }
+  return <section className="account-section" aria-labelledby="verify-title">
+    <h2 id="verify-title">{copy.verifyTitle}</h2>
+    <p className="account-intro">{copy.verifyIntro}</p>
+    <form onSubmit={submit}>
+      <label className="account-field">{copy.verifyCode}<input inputMode="numeric" autoComplete="off" dir="ltr" maxLength={6} value={code} onChange={event => { setCode(event.target.value.replace(/\D/g, '')); setDone(''); }} /></label>
+      <ErrorLine text={request.error} />
+      {done && <p className="account-saved" role="status">{done}</p>}
+      <button className="secondary" disabled={request.pending || code.length !== 6}>{copy.verifySubmit}</button>
+    </form>
+  </section>;
+}
+
+export function AccountScreen({ copy, account, api, language = 'ko', onBack, onChanged }: { copy: AccountCopy; account: Account; api: PlatformApi; language?: string; onBack: () => void; onChanged: () => void }) {
   const [nickname, setNickname] = useState(account.profile.nickname ?? '');
   const [saved, setSaved] = useState(false);
   const request = useRequest(copy);
@@ -110,6 +173,8 @@ export function AccountScreen({ copy, account, api, onBack, onChanged }: { copy:
       {saved && <p className="account-saved" role="status">{copy.saved}</p>}
       <button className="secondary" disabled={request.pending || nickname === account.profile.nickname}>{copy.save}</button>
     </form>
+    <BadgeSection copy={copy} account={account} api={api} language={language} onChanged={onChanged} />
+    {canVerifyBadges(account.roles) && <VerifySection copy={copy} api={api} />}
     <div className="account-actions">
       <button type="button" className="secondary" disabled={request.pending} onClick={() => void request.run(() => api.signOut())}>{copy.signOut}</button>
       <button type="button" className="quiet account-danger" disabled={request.pending} onClick={() => void remove()}>{copy.deleteAccount}</button>

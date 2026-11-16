@@ -13,6 +13,7 @@
 | 위치 | 내용 |
 | --- | --- |
 | `supabase/migrations/20261113000000_platform.sql` | 테이블, 역할, 권한 규칙, 가입 트리거, 관리 함수 |
+| `supabase/migrations/20261116000000_member_badges.sql` | 회원 뱃지(난민 인정), 대면 인증 코드, 부여·표시·회수 함수 |
 | `supabase/functions/delete-account` | 회원 탈퇴(본인 auth 계정 삭제, 관련 행은 cascade 삭제) |
 | `supabase/tests/` | 로컬 Postgres용 auth 스텁과 권한 테스트 |
 | `capacitor-web/src/platform/` | 설정, Supabase 클라이언트, 데이터 함수, 인증 상태(`AuthProvider`/`useAuth`), 로그인·가입·내 정보 화면, 6개 언어 문구 |
@@ -39,6 +40,22 @@
 insert into public.user_roles (user_id, role) values ('<관리자 user id>', 'admin');
 ```
 
+## 난민 인정 뱃지
+
+난민으로 인정받은 회원에게 지원기관이 직접 확인한 뒤 붙여 주는 뱃지입니다. 역할(권한)과는 별개이고, 권한을 더 주지 않습니다.
+
+1. 회원이 내 정보 → 뱃지 → **인증 코드 받기**를 누르면 6자리 코드가 나옵니다(10분 유효, 새 코드를 받으면 이전 코드는 폐기).
+2. 회원이 지원기관 담당자(`supporter` 역할) 또는 관리자를 만나 난민 인정 사실을 보여 줍니다. 담당자는 내 정보 → **뱃지 인증하기**에 코드를 입력합니다.
+3. 부여되면 담당자 화면에 회원 닉네임이 나와 맞는 사람인지 확인할 수 있고, 감사 로그에 `badge.grant`가 남습니다.
+
+안전 장치
+
+- 서류 사진, 외국인등록번호, 체류자격·인정 번호는 받지도 저장하지도 않습니다. 저장하는 것은 뱃지 종류, 확인한 담당자, 확인 시각뿐입니다.
+- 뱃지는 기본으로 **숨김**입니다. 본인이 "다른 회원에게 뱃지 보이기"를 켜야 `public_profiles.badges`에 나타납니다. 체류 상황이 드러나는 정보라서 본인 선택에 맡깁니다.
+- 본인은 언제든 뱃지를 지울 수 있고, 모더레이터 이상은 잘못 부여된 뱃지를 회수할 수 있습니다(`revoke_badge`, 감사 로그 `badge.revoke`).
+- 코드는 회원 본인만 만들 수 있고, 담당자는 자기 자신을 인증할 수 없습니다. 코드 표(`badge_requests`)는 앱에서 직접 읽을 수 없습니다.
+- 운영 전에 정할 것: 어느 기관 담당자에게 `supporter` 역할을 줄지, 무엇을 보고 확인할지(예: 난민인정증명서 원본 확인 후 즉시 반환), 뱃지 이름을 화면에 어떻게 보여 줄지.
+
 ## 가입·로그인 흐름
 
 1. 이메일 입력 → 인증코드 발송(`signInWithOtp`). 비밀번호는 없습니다.
@@ -59,13 +76,15 @@ insert into public.user_roles (user_id, role) values ('<관리자 user id>', 'ad
 
 ## 로컬 권한 테스트
 
-Postgres 16에서 Supabase 없이 권한 규칙을 확인합니다.
+Postgres 16에서 Supabase 없이 권한 규칙을 확인합니다. 테스트마다 새 DB를 씁니다.
 
 ```sh
-createdb dari_test
-psql -d dari_test -f supabase/tests/local_auth_stub.sql
-psql -d dari_test -f supabase/migrations/20261113000000_platform.sql
-psql -d dari_test -f supabase/tests/platform_rls_test.sql   # 마지막 줄: platform RLS tests passed
+for test in platform_rls_test member_badges_test; do
+  dropdb --if-exists dari_test && createdb dari_test
+  psql -v ON_ERROR_STOP=1 -d dari_test -f supabase/tests/local_auth_stub.sql
+  for file in supabase/migrations/*.sql; do psql -v ON_ERROR_STOP=1 -d dari_test -f "$file"; done
+  psql -v ON_ERROR_STOP=1 -d dari_test -f supabase/tests/$test.sql   # 마지막 줄: ... tests passed
+done
 ```
 
 ## 가정과 남은 일

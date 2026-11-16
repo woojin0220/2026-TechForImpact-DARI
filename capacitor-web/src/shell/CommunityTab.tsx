@@ -18,7 +18,7 @@ function CommunityHome({ account, copy, language }: { account: Account; copy: Ta
   const { api, refresh } = useAuth();
   const accountCopy = accountCopyFor(language);
   const [accountOpen, setAccountOpen] = useState(false);
-  if (accountOpen && api) return <AccountScreen copy={accountCopy} account={account} api={api} onBack={() => setAccountOpen(false)} onChanged={() => void refresh()} />;
+  if (accountOpen && api) return <AccountScreen copy={accountCopy} account={account} api={api} language={language} onBack={() => setAccountOpen(false)} onChanged={() => void refresh()} />;
   return <section className="account-screen">
     <button type="button" className="secondary tab-account-button" onClick={() => setAccountOpen(true)}>{accountCopy.myAccount}</button>
     <h1>{copy.communityTitle}</h1>

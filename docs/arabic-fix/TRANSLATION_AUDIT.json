@@ -2,7 +2,7 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 455,
+    "uiKeys": 472,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
@@ -10,7 +10,7 @@
       "bench": 48,
       "overview": 57,
       "tabs": 8,
-      "account": 43,
+      "account": 60,
       "intake": 58,
       "process": 11,
       "scripted": 38,
@@ -2168,6 +2168,76 @@
     },
     {
       "namespace": "account",
+      "key": "badgeAbout",
+      "en": "If you have been recognized as a refugee, a support organization can check this in person and give you a badge. No documents or ID numbers are stored.",
+      "ko": "난민으로 인정받았다면 지원기관이 직접 확인한 뒤 뱃지를 드려요. 서류나 등록번호는 저장하지 않아요.",
+      "ar": "إذا تم الاعتراف بك كلاجئ، يمكن لجهة دعم التحقق من ذلك شخصيًا ومنحك شارة. لا نحفظ أي وثائق أو أرقام هوية."
+    },
+    {
+      "namespace": "account",
+      "key": "badgeCodeShow",
+      "en": "Show this code to the support organization staff member. It expires at {time}.",
+      "ko": "지원기관 담당자에게 이 코드를 보여 주세요. {time}까지 쓸 수 있어요.",
+      "ar": "اعرض هذا الرمز على موظف جهة الدعم. ينتهي عند {time}."
+    },
+    {
+      "namespace": "account",
+      "key": "badgeNewCode",
+      "en": "Get a new code",
+      "ko": "새 코드 받기",
+      "ar": "الحصول على رمز جديد"
+    },
+    {
+      "namespace": "account",
+      "key": "badgeRecognizedRefugee",
+      "en": "Recognized refugee",
+      "ko": "난민 인정",
+      "ar": "لاجئ معترف به"
+    },
+    {
+      "namespace": "account",
+      "key": "badgeRemove",
+      "en": "Remove badge",
+      "ko": "뱃지 삭제",
+      "ar": "حذف الشارة"
+    },
+    {
+      "namespace": "account",
+      "key": "badgeRemoveConfirm",
+      "en": "Remove this badge? A support organization will have to verify you again to get it back.",
+      "ko": "뱃지를 삭제할까요? 다시 받으려면 지원기관의 확인을 다시 받아야 해요.",
+      "ar": "هل تريد حذف هذه الشارة؟ ستحتاج إلى تحقق جهة الدعم مرة أخرى لاستعادتها."
+    },
+    {
+      "namespace": "account",
+      "key": "badgeRequest",
+      "en": "Get a verification code",
+      "ko": "인증 코드 받기",
+      "ar": "الحصول على رمز التحقق"
+    },
+    {
+      "namespace": "account",
+      "key": "badgeVisible",
+      "en": "Show this badge to other members",
+      "ko": "다른 회원에게 뱃지 보이기",
+      "ar": "إظهار الشارة للأعضاء الآخرين"
+    },
+    {
+      "namespace": "account",
+      "key": "badgeVisibleNote",
+      "en": "Off by default. When it is on, other members can see your status, so turn it on only if you are comfortable.",
+      "ko": "기본은 꺼져 있어요. 켜면 다른 회원이 내 체류 상황을 알 수 있으니 괜찮을 때만 켜 주세요.",
+      "ar": "مخفية افتراضيًا. عند تفعيلها يعرف الأعضاء الآخرون وضعك، فلا تفعّلها إلا إذا كنت مرتاحًا لذلك."
+    },
+    {
+      "namespace": "account",
+      "key": "badgesTitle",
+      "en": "Badges",
+      "ko": "뱃지",
+      "ar": "الشارات"
+    },
+    {
+      "namespace": "account",
       "key": "changeEmail",
       "en": "Use a different email",
       "ko": "다른 이메일 사용",
@@ -2207,6 +2277,20 @@
       "en": "Email",
       "ko": "이메일",
       "ar": "البريد الإلكتروني"
+    },
+    {
+      "namespace": "account",
+      "key": "errorBadgeCode",
+      "en": "The code is wrong or has expired. Ask the member for a new code.",
+      "ko": "코드가 틀렸거나 만료되었어요. 회원에게 새 코드를 받아 주세요.",
+      "ar": "الرمز غير صحيح أو انتهت صلاحيته. اطلب من العضو رمزًا جديدًا."
+    },
+    {
+      "namespace": "account",
+      "key": "errorBadgeSelf",
+      "en": "You cannot verify your own badge.",
+      "ko": "자기 자신의 뱃지는 인증할 수 없어요.",
+      "ar": "لا يمكنك التحقق من شارتك بنفسك."
     },
     {
       "namespace": "account",
@@ -2417,6 +2501,41 @@
       "en": "Sign in",
       "ko": "로그인",
       "ar": "دخول"
+    },
+    {
+      "namespace": "account",
+      "key": "verifyCode",
+      "en": "Member’s code",
+      "ko": "회원 코드",
+      "ar": "رمز العضو"
+    },
+    {
+      "namespace": "account",
+      "key": "verifyDone",
+      "en": "Badge given to {nickname}.",
+      "ko": "{nickname} 님에게 뱃지를 부여했어요.",
+      "ar": "تم منح الشارة إلى {nickname}."
+    },
+    {
+      "namespace": "account",
+      "key": "verifyIntro",
+      "en": "Check the member’s refugee recognition in person, then enter the code on their phone. Do not record document or ID numbers.",
+      "ko": "회원의 난민 인정 사실을 직접 확인한 뒤, 회원 휴대폰에 보이는 코드를 입력하세요. 서류 번호나 등록번호는 기록하지 마세요.",
+      "ar": "تحقق شخصيًا من الاعتراف بالعضو كلاجئ، ثم أدخل الرمز الظاهر على هاتفه. لا تسجّل أرقام الوثائق أو الهوية."
+    },
+    {
+      "namespace": "account",
+      "key": "verifySubmit",
+      "en": "Verify",
+      "ko": "인증",
+      "ar": "تحقق"
+    },
+    {
+      "namespace": "account",
+      "key": "verifyTitle",
+      "en": "Verify a badge",
+      "ko": "뱃지 인증하기",
+      "ar": "التحقق من شارة"
     },
     {
       "namespace": "account",

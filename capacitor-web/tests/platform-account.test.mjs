@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
-import { accountErrorKind, consentVersions, isValidCode, isValidEmail, isValidNickname, missingConsents, normalizeNickname, onboardingNeeds, primaryRole } from '../src/platform/account.ts';
+import { accountErrorKind, canVerifyBadges, isValidBadgeCode, consentVersions, isValidCode, isValidEmail, isValidNickname, missingConsents, normalizeNickname, onboardingNeeds, primaryRole } from '../src/platform/account.ts';
 import { accountCopies, accountCopyFor } from '../src/platform/accountCopy.ts';
 import { readPlatformConfig } from '../src/platform/config.ts';
 import { intakeLanguages } from '../src/intakeCopy.ts';
@@ -70,11 +70,12 @@ const compiled = await build({
     import { AccountScreen, AuthGate, OnboardingScreen, SignInScreen } from './src/platform/AccountScreens';
     import { accountCopyFor } from './src/platform/accountCopy';
     const api = new Proxy({}, { get: () => async () => {} });
-    const account = (overrides = {}) => ({ email: 'member@example.org', roles: ['user', 'supporter'], consents: [],
+    const account = (overrides = {}, extra = {}) => ({ email: 'member@example.org', roles: ['user', 'supporter'], consents: [], badges: [], ...extra,
       profile: { user_id: 'u1', nickname: 'alpha', preferred_language: 'ko', age_confirmed_at: null, status: 'active', ...overrides } });
     export const signIn = language => renderToStaticMarkup(<SignInScreen copy={accountCopyFor(language)} api={api} />);
     export const onboarding = language => renderToStaticMarkup(<OnboardingScreen copy={accountCopyFor(language)} account={account()} api={api} language={language} onDone={() => {}} />);
     export const accountPage = language => renderToStaticMarkup(<AccountScreen copy={accountCopyFor(language)} account={account()} api={api} onBack={() => {}} onChanged={() => {}} />);
+    export const memberPage = (language, badges) => renderToStaticMarkup(<AccountScreen copy={accountCopyFor(language)} account={account({}, { roles: ['user'], badges })} api={api} language={language} onBack={() => {}} onChanged={() => {}} />);
     export const gate = language => renderToStaticMarkup(<AuthGate copy={accountCopyFor(language)} language={language}>{() => <p>secret</p>}</AuthGate>);
   ` },
   bundle: true, platform: 'node', format: 'cjs', jsx: 'automatic', write: false,
@@ -110,4 +111,37 @@ test('without platform settings the gate never shows protected content', () => {
   const html = mod.exports.gate('ko');
   assert.match(html, /로그인이 설정되지 않았어요/);
   assert.doesNotMatch(html, /secret/);
+});
+
+test('badge codes are six digits and only supporters or admins verify', () => {
+  assert.ok(isValidBadgeCode(' 012345 '));
+  assert.ok(!isValidBadgeCode('12345'));
+  assert.ok(!isValidBadgeCode('1234567'));
+  assert.ok(canVerifyBadges(['user', 'supporter']));
+  assert.ok(canVerifyBadges(['admin']));
+  assert.ok(!canVerifyBadges(['user', 'moderator']));
+  assert.equal(accountErrorKind({ message: 'invalid or expired code' }), 'badgeCode');
+  assert.equal(accountErrorKind({ message: 'cannot verify yourself' }), 'badgeSelf');
+});
+
+test('a member without a badge can request a code and does not see the verifier form', () => {
+  const html = mod.exports.memberPage('ko', []);
+  assert.match(html, /인증 코드 받기/);
+  assert.match(html, /서류나 등록번호는 저장하지 않아요/);
+  assert.doesNotMatch(html, /뱃지 인증하기/);
+  assert.doesNotMatch(html, /member-badge/);
+});
+
+test('a held badge shows the chip with display off by default wording and a remove action', () => {
+  const html = mod.exports.memberPage('ar', [{ badge: 'recognized_refugee', visible: false, verified_at: '2026-11-16T00:00:00Z' }]);
+  assert.match(html, /class="member-badge"/);
+  assert.match(html, /لاجئ معترف به/);
+  assert.match(html, /<input type="checkbox"\/>/);
+  assert.match(html, /حذف الشارة/);
+});
+
+test('support organization staff see the badge verification form', () => {
+  const html = mod.exports.accountPage('en');
+  assert.match(html, /Verify a badge/);
+  assert.match(html, /Do not record document or ID numbers/);
 });

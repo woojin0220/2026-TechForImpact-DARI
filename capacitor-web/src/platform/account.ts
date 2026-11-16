@@ -15,7 +15,14 @@ export type Profile = {
   status: 'active' | 'suspended';
 };
 export type ConsentRecord = { document: ConsentDocument; version: string; withdrawn_at: string | null };
-export type Account = { email: string; profile: Profile; roles: AppRole[]; consents: ConsentRecord[] };
+export type BadgeType = 'recognized_refugee';
+export const badgeTypes: BadgeType[] = ['recognized_refugee'];
+export type MemberBadge = { badge: BadgeType; visible: boolean; verified_at: string };
+export type Account = { email: string; profile: Profile; roles: AppRole[]; consents: ConsentRecord[]; badges: MemberBadge[] };
+
+/** Support organization staff and administrators verify badges in person. */
+export function canVerifyBadges(roles: AppRole[]) { return roles.includes('supporter') || roles.includes('admin'); }
+export function isValidBadgeCode(value: string) { return /^\d{6}$/.test(value.trim()); }
 
 export type OnboardingNeed = 'age' | 'consent' | 'nickname';
 
@@ -45,7 +52,7 @@ export function isValidCode(value: string) { return /^\d{6,8}$/.test(value.trim(
 const rank: AppRole[] = ['admin', 'moderator', 'supporter', 'user'];
 export function primaryRole(roles: AppRole[]): AppRole { return rank.find(role => roles.includes(role)) ?? 'user'; }
 
-export type AccountErrorKind = 'email' | 'code' | 'nickname' | 'nicknameTaken' | 'rateLimit' | 'generic';
+export type AccountErrorKind = 'email' | 'code' | 'nickname' | 'nicknameTaken' | 'rateLimit' | 'badgeCode' | 'badgeSelf' | 'generic';
 
 /** Maps Supabase/Postgres errors to a translated message key without exposing raw server text. */
 export function accountErrorKind(error: unknown): AccountErrorKind {
@@ -53,6 +60,8 @@ export function accountErrorKind(error: unknown): AccountErrorKind {
   if (!value) return 'generic';
   if (value.status === 429 || value.code === 'over_email_send_rate_limit' || value.code === 'over_request_rate_limit') return 'rateLimit';
   if (value.code === 'otp_expired' || value.code === 'invalid_otp') return 'code';
+  if (value.message === 'invalid or expired code') return 'badgeCode';
+  if (value.message === 'cannot verify yourself') return 'badgeSelf';
   if (value.code === '23505') return 'nicknameTaken';
   if (value.code === '23514') return 'nickname';
   return 'generic';
