@@ -23,11 +23,15 @@ export function useKeyboardOpen() {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!window.matchMedia?.('(pointer: coarse)').matches) return;
-    const update = () => setOpen(isTextEntry(document.activeElement));
-    const onFocusOut = () => requestAnimationFrame(update);
-    document.addEventListener('focusin', update);
-    document.addEventListener('focusout', onFocusOut);
-    return () => { document.removeEventListener('focusin', update); document.removeEventListener('focusout', onFocusOut); };
+    let timer = 0;
+    const update = () => { window.clearTimeout(timer); setOpen(isTextEntry(document.activeElement)); };
+    // Bringing the bar back moves content near the bottom. Wait until a tap that blurred
+    // the field (e.g. on a submit button) has finished, so the tap still lands.
+    const later = () => { window.clearTimeout(timer); timer = window.setTimeout(update, 300); };
+    const onFocusIn = (event: FocusEvent) => isTextEntry(event.target) ? update() : later();
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', later);
+    return () => { window.clearTimeout(timer); document.removeEventListener('focusin', onFocusIn); document.removeEventListener('focusout', later); };
   }, []);
   return open;
 }

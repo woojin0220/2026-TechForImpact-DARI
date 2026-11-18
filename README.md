@@ -166,6 +166,7 @@ npm run build
 - [성능 측정과 벤치마크](docs/BENCHMARK.md)
 - [테스트 시나리오](docs/TEST_SCENARIOS.md)
 - [향후 논의·결정 사항](docs/OPEN_DECISIONS.md)
+- [통합 운영 기반: 로그인·계정·권한](docs/PLATFORM_AUTH.md)
 - [초기 번역·검증 프로토타입 기록](docs/IMPLEMENTATION.md)
 - [Capacitor 전환 당시 기록](docs/CAPACITOR_MIGRATION.md)
 
@@ -193,7 +194,7 @@ npm run build
 - 모국어로 검수된 문항 번역. 웹 앱의 문항 문면은 공식 서식 한국어·영어입니다
 - 공무원 기재란, 자필 서명, 공식 서식 파일 출력
 - Word 또는 공식 신청서 형식 출력
-- 운영용 인증·HTTPS·접근 권한 관리
+- 운영용 HTTPS·접근 권한 관리 (계정 로그인·역할 기반은 [PLATFORM_AUTH](docs/PLATFORM_AUTH.md)에 추가, Supabase 프로젝트 연결 필요)
 - 국가별 개인정보 탐지
 - 검증 모델 평가셋과 품질 기준
 - 통역가·법률가 검토 및 수정 이력
