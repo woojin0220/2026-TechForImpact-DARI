@@ -62,9 +62,19 @@ insert into public.user_roles (user_id, role) values ('<관리자 user id>', 'ad
 
 1. 이메일 입력 → 인증코드 발송(`signInWithOtp`). 비밀번호는 없습니다.
 2. 코드 입력 → 세션 생성(`verifyOtp`). 첫 로그인이면 트리거가 프로필·기본 역할·알림 설정을 만듭니다.
-3. 만 14세 이상 확인, 이용약관·개인정보 처리방침·커뮤니티 규칙 동의, 닉네임 설정.
+3. 만 14세 이상 확인, 이용약관·개인정보 처리방침·커뮤니티 규칙 동의, 닉네임 설정, 회원 유형 선택(일반·지원기관·인정 난민).
 4. 문서 버전(`consentVersions`)을 올리면 다음 진입 때 다시 동의를 받습니다.
 5. 각 탭 헤더 오른쪽의 사용자 버튼(닉네임 첫 글자)을 누르면 내 프로필이 열립니다. 여기서 닉네임 변경, 뱃지, 로그아웃, 회원 탈퇴를 합니다. 로그아웃하면 로그인 화면으로 돌아갑니다.
+
+## 회원 유형
+
+가입할 때 일반 회원, 지원기관, 인정 난민 중 하나를 고릅니다(`profiles.member_type`). 고르는 것만으로는 아무 권한도 생기지 않습니다. 본인이 적은 내용은 확인할 방법이 없기 때문입니다.
+
+- **일반 회원**: 추가 절차 없음.
+- **지원기관**: 기관 이름을 적으면 `supporter_applications`에 신청이 들어갑니다(상태 pending). 관리자가 `review_supporter_application(신청 id, true)`로 승인하면 그때 `supporter` 역할이 생기고, 감사 기록(`supporter.approve`/`supporter.reject`)이 남습니다. 승인 전에는 프로필에 "승인 대기 중"이 보이고, 거절되면 기관 이름을 고쳐 다시 신청할 수 있습니다. 회원은 자기 신청만 보고, 승인된 신청은 지울 수 없습니다.
+- **인정 난민**: 프로필에서 안내가 나오고, 기존 뱃지 절차(인증 코드를 받아 지원기관 담당자에게 대면 확인)를 그대로 거칩니다. 유형 선택만으로 뱃지가 붙지 않습니다.
+
+관리자 화면은 아직 없습니다. 당분간 SQL 편집기에서 `select * from supporter_applications where status = 'pending';`로 보고 함수로 승인합니다.
 
 ## 설정 방법 (사람 손이 필요한 일)
 
@@ -81,7 +91,7 @@ insert into public.user_roles (user_id, role) values ('<관리자 user id>', 'ad
 Postgres 16에서 Supabase 없이 권한 규칙을 확인합니다. 테스트마다 새 DB를 씁니다.
 
 ```sh
-for test in platform_rls_test member_badges_test; do
+for test in platform_rls_test member_badges_test member_types_test; do
   dropdb --if-exists dari_test && createdb dari_test
   psql -v ON_ERROR_STOP=1 -d dari_test -f supabase/tests/local_auth_stub.sql
   for file in supabase/migrations/*.sql; do psql -v ON_ERROR_STOP=1 -d dari_test -f "$file"; done

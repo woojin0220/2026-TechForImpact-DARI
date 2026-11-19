@@ -17,7 +17,7 @@ const { needsSignIn } = mod.exports;
 const account = (overrides = {}) => ({
   email: 'm@example.org', roles: ['user'], badges: [],
   consents: ['terms', 'privacy', 'community'].map(document => ({ document, version: '2026-11', withdrawn_at: null })),
-  profile: { user_id: 'u1', nickname: 'alpha', preferred_language: 'ko', age_confirmed_at: '2026-11-19T00:00:00Z', status: 'active' },
+  profile: { user_id: 'u1', nickname: 'alpha', preferred_language: 'ko', age_confirmed_at: '2026-11-19T00:00:00Z', status: 'active', member_type: 'general' },
   ...overrides,
 });
 
@@ -29,5 +29,6 @@ test('every tab waits for sign-in and a finished profile', () => {
   assert.equal(needsSignIn({ status: 'signedIn', session: {}, account: account() }), false);
   assert.equal(needsSignIn({ status: 'signedIn', session: {}, account: account({ profile: { ...account().profile, nickname: null } }) }), true);
   assert.equal(needsSignIn({ status: 'signedIn', session: {}, account: account({ consents: [] }) }), true);
+  assert.equal(needsSignIn({ status: 'signedIn', session: {}, account: account({ profile: { ...account().profile, member_type: null } }) }), true);
   assert.equal(needsSignIn({ status: 'signedIn', session: {}, account: account({ profile: { ...account().profile, status: 'suspended' } }) }), true);
 });
