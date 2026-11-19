@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { BoardFilter, BoardId, CommentItem, PostSummary, ReportReason } from './model';
+import type { BoardId, CommentItem, PostSummary, ReportReason } from './model';
 
 const feedColumns = 'id,board_id,author_id,title,body,language,status,created_at,comment_count,helpful_count,helped_by_me,author_nickname,author_is_supporter,author_badges';
 const commentColumns = 'id,post_id,author_id,body,language,status,created_at,author_nickname,author_is_supporter,author_badges';
@@ -13,9 +13,8 @@ export function communityApi(client: SupabaseClient) {
     return data;
   }
   return {
-    async listPosts(board: BoardFilter, before?: string): Promise<PostSummary[]> {
-      let query = client.from('post_feed').select(feedColumns).eq('status', 'visible').order('created_at', { ascending: false }).limit(pageSize);
-      if (board !== 'all') query = query.eq('board_id', board);
+    async listPosts(board: BoardId, before?: string): Promise<PostSummary[]> {
+      let query = client.from('post_feed').select(feedColumns).eq('status', 'visible').eq('board_id', board).order('created_at', { ascending: false }).limit(pageSize);
       if (before) query = query.lt('created_at', before);
       return await check(query) as unknown as PostSummary[];
     },

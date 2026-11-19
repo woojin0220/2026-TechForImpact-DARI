@@ -1,7 +1,6 @@
 /** Community data shapes and pure helpers. No network access here. */
 export type BoardId = 'qna' | 'life' | 'notice';
 export const boardIds: BoardId[] = ['qna', 'life', 'notice'];
-export type BoardFilter = BoardId | 'all';
 /** Boards only support organization staff and administrators may post to. */
 export const staffBoards: BoardId[] = ['notice'];
 

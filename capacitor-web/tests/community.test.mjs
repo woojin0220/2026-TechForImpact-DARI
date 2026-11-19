@@ -61,7 +61,7 @@ const compiled = await build({
     const account = roles => ({ email: 'm@example.org', roles, consents: [], badges: [],
       profile: { user_id: 'u1', nickname: 'alpha', preferred_language: 'ko', age_confirmed_at: 'x', status: 'active' } });
     const shared = (language, roles = ['user']) => ({ copy: communityCopyFor(language), accountCopy: accountCopyFor(language), api, account: account(roles), language });
-    export const home = language => renderToStaticMarkup(<CommunityHome {...shared(language)} board="all" onBoard={() => {}} onOpenPost={() => {}} onWrite={() => {}} onAccount={() => {}} />);
+    export const home = language => renderToStaticMarkup(<CommunityHome {...shared(language)} board="qna" onBoard={() => {}} onOpenPost={() => {}} onWrite={() => {}} onAccount={() => {}} />);
     export const composer = (language, roles) => renderToStaticMarkup(<PostComposer {...shared(language, roles)} initialBoard="notice" onDone={() => {}} onCancel={() => {}} />);
   ` },
   bundle: true, platform: 'node', format: 'cjs', jsx: 'automatic', write: false,
@@ -72,8 +72,8 @@ new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(requi
 
 test('home shows board tabs, the safety reminder and a write button', () => {
   const html = mod.exports.home('ko');
-  for (const label of ['전체', '질문과 답변', '생활 정보', '기관 공지']) assert.ok(html.includes(`>${label}</button>`), label);
-  assert.match(html, /aria-selected="true"[^>]*>전체/);
+  for (const label of ['Q&amp;A', '생활정보', '공지사항']) assert.ok(html.includes(`>${label}</button>`), label);
+  assert.match(html, /aria-selected="true"[^>]*>Q&amp;A/);
   assert.match(html, /이름, 연락처, 사건 내용은 올리지 마세요/);
   assert.match(html, /글쓰기/);
   assert.match(html, /내 정보/);
@@ -82,7 +82,7 @@ test('home shows board tabs, the safety reminder and a write button', () => {
 test('members cannot pick the notice board; support organizations can', () => {
   const member = mod.exports.composer('en', ['user']);
   assert.doesNotMatch(member, /Notices/);
-  assert.match(member, /<input type="radio" name="board" checked=""\/><span>Questions/);
+  assert.match(member, /<input type="radio" name="board" checked=""\/><span>Q&amp;A/);
   const supporter = mod.exports.composer('ar', ['user', 'supporter']);
   assert.match(supporter, /<input type="radio" name="board" checked=""\/><span>إعلانات/);
 });

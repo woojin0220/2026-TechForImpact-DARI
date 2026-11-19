@@ -7,7 +7,7 @@ import type { Account } from '../platform/account';
 import { communityApi } from '../community/api';
 import { communityCopyFor } from '../community/copy';
 import { CommunityHome, PostComposer, PostDetail } from '../community/CommunityScreens';
-import type { BoardFilter } from '../community/model';
+import type { BoardId } from '../community/model';
 import type { TabsCopy } from './tabsCopy';
 import '../platform/account.css';
 import '../community/community.css';
@@ -26,7 +26,7 @@ function CommunityRoutes({ account, language }: { account: Account; language: st
   const { api: platformApi, refresh } = useAuth();
   const api = useMemo(() => { const client = platformClient(); return client ? communityApi(client) : null; }, []);
   const [view, setView] = useState<View>({ kind: 'list' });
-  const [board, setBoard] = useState<BoardFilter>('all');
+  const [board, setBoard] = useState<BoardId>('qna');
   const copy = communityCopyFor(language);
   const accountCopy = accountCopyFor(language);
   if (!api || !platformApi) return null;

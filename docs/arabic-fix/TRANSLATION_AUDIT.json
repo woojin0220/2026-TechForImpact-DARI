@@ -2,7 +2,7 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 523,
+    "uiKeys": 522,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
@@ -11,7 +11,7 @@
       "overview": 57,
       "tabs": 8,
       "account": 60,
-      "community": 51,
+      "community": 50,
       "intake": 58,
       "process": 11,
       "scripted": 38,
@@ -2582,30 +2582,23 @@
     },
     {
       "namespace": "community",
-      "key": "boardAll",
-      "en": "All",
-      "ko": "전체",
-      "ar": "الكل"
-    },
-    {
-      "namespace": "community",
       "key": "board_life",
       "en": "Daily life",
-      "ko": "생활 정보",
+      "ko": "생활정보",
       "ar": "الحياة اليومية"
     },
     {
       "namespace": "community",
       "key": "board_notice",
       "en": "Notices",
-      "ko": "기관 공지",
+      "ko": "공지사항",
       "ar": "إعلانات"
     },
     {
       "namespace": "community",
       "key": "board_qna",
-      "en": "Questions",
-      "ko": "질문과 답변",
+      "en": "Q&A",
+      "ko": "Q&A",
       "ar": "أسئلة وأجوبة"
     },
     {

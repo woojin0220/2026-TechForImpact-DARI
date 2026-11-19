@@ -5,13 +5,29 @@ import type { AccountCopy } from '../platform/accountCopy';
 import type { CommunityApi } from './api';
 import { pageSize } from './api';
 import type { CommunityCopy } from './copy';
-import { boardIds, detectSensitive, excerpt, isValidBody, isValidTitle, relativeTime, reportReasons, writableBoards, type Author, type BoardFilter, type BoardId, type CommentItem, type PostSummary, type ReportReason } from './model';
+import { boardIds, detectSensitive, excerpt, isValidBody, isValidTitle, relativeTime, reportReasons, writableBoards, type Author, type BoardId, type CommentItem, type PostSummary, type ReportReason } from './model';
 
 type Shared = { copy: CommunityCopy; accountCopy: AccountCopy; api: CommunityApi; account: Account; language: string };
 
 const boardKey = (board: BoardId) => `board_${board}` as const;
 function fill(text: string, values: Record<string, string | number>) { return text.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? '')); }
 function isDuplicate(error: unknown) { return (error as { code?: string } | null)?.code === '23505'; }
+
+const iconProps = { viewBox: '0 0 24 24', 'aria-hidden': true, focusable: false } as const;
+const Icon = {
+  back: () => <svg {...iconProps}><path d="M15 5l-7 7 7 7" /></svg>,
+  close: () => <svg {...iconProps}><path d="M6 6l12 12M18 6L6 18" /></svg>,
+  shield: () => <svg {...iconProps}><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z" /><path d="M9 12l2 2 4-4" /></svg>,
+  comment: () => <svg {...iconProps}><path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.1A8 8 0 1 1 20 12z" /></svg>,
+  heart: () => <svg {...iconProps}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg>,
+  pencil: () => <svg {...iconProps}><path d="M4 20h4L19 9l-4-4L4 16z" /><path d="M13.5 6.5l4 4" /></svg>,
+  send: () => <svg {...iconProps}><path d="M5 12h13M13 6l6 6-6 6" /></svg>,
+};
+
+function Avatar({ name, supporter, size }: { name: string | null; supporter?: boolean; size?: 'small' }) {
+  const initial = name ? Array.from(name.trim())[0]?.toUpperCase() : '';
+  return <span className={`avatar${supporter ? ' supporter' : ''}${size ? ` ${size}` : ''}`} aria-hidden="true">{initial}</span>;
+}
 
 function AuthorLine({ item, copy, accountCopy, language }: { item: Author & { created_at: string }; copy: CommunityCopy; accountCopy: AccountCopy; language: string }) {
   return <p className="post-meta">
@@ -22,8 +38,15 @@ function AuthorLine({ item, copy, accountCopy, language }: { item: Author & { cr
   </p>;
 }
 
-export function CommunityHome({ copy, accountCopy, api, language, board, onBoard, onOpenPost, onWrite, onAccount }: Shared & {
-  board: BoardFilter; onBoard: (board: BoardFilter) => void; onOpenPost: (id: string) => void; onWrite: () => void; onAccount: () => void;
+function Stats({ copy, comments, helpful, helped }: { copy: CommunityCopy; comments: number; helpful: number; helped?: boolean }) {
+  return <span className="post-stats">
+    <span><Icon.comment /><span className="sr-only">{copy.commentsTitle}</span>{comments}</span>
+    <span className={helped ? 'on' : undefined}><Icon.heart /><span className="sr-only">{copy.helpful}</span>{helpful}</span>
+  </span>;
+}
+
+export function CommunityHome({ copy, accountCopy, api, account, language, board, onBoard, onOpenPost, onWrite, onAccount }: Shared & {
+  board: BoardId; onBoard: (board: BoardId) => void; onOpenPost: (id: string) => void; onWrite: () => void; onAccount: () => void;
 }) {
   const [posts, setPosts] = useState<PostSummary[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
@@ -38,30 +61,30 @@ export function CommunityHome({ copy, accountCopy, api, language, board, onBoard
     } catch { setStatus('error'); }
   }, [api, board]);
   useEffect(() => { void load(); }, [load]);
-  const filters: BoardFilter[] = ['all', ...boardIds];
-  return <section className="community">
-    <header className="community-header">
+  return <section className="community community-home">
+    <header className="community-topbar">
       <h1>{copy.title}</h1>
-      <button type="button" className="secondary" onClick={onAccount}>{accountCopy.myAccount}</button>
+      <button type="button" className="avatar-button" aria-label={accountCopy.myAccount} onClick={onAccount}><Avatar name={account.profile.nickname} /></button>
     </header>
-    <p className="account-intro">{copy.intro}</p>
     <div className="board-tabs" role="tablist" aria-label={copy.board}>
-      {filters.map(item => <button key={item} type="button" role="tab" aria-selected={board === item} onClick={() => onBoard(item)}>{item === 'all' ? copy.boardAll : copy[boardKey(item)]}</button>)}
+      {boardIds.map(item => <button key={item} type="button" role="tab" aria-selected={board === item} onClick={() => onBoard(item)}>{copy[boardKey(item)]}</button>)}
     </div>
-    {status === 'loading' && <p className="account-intro" aria-busy="true">{copy.loading}</p>}
-    {status === 'error' && <div className="account-actions"><p className="account-intro">{copy.loadFailed}</p><button type="button" className="secondary" onClick={() => void load()}>{copy.retry}</button></div>}
-    {status === 'ready' && !posts.length && <p className="community-empty">{copy.empty}</p>}
-    <ul className="post-list">
-      {posts.map(post => <li key={post.id}><button type="button" className="post-card" onClick={() => onOpenPost(post.id)}>
-        {board === 'all' && <span className="board-label">{copy[boardKey(post.board_id)]}</span>}
-        <strong dir="auto">{post.title}</strong>
-        <span className="post-excerpt" dir="auto">{excerpt(post.body)}</span>
-        <AuthorLine item={post} copy={copy} accountCopy={accountCopy} language={language} />
-        <span className="post-counts"><span>{fill(copy.comments, { count: post.comment_count })}</span><span>{copy.helpful} {post.helpful_count}</span></span>
+    <p className="safety-note"><Icon.shield /><span>{copy.intro}</span></p>
+    {status === 'loading' && <ul className="post-list" aria-busy="true" aria-label={copy.loading}>{[0, 1, 2].map(key => <li key={key} className="post-skeleton" />)}</ul>}
+    {status === 'error' && <div className="community-state"><p>{copy.loadFailed}</p><button type="button" className="secondary" onClick={() => void load()}>{copy.retry}</button></div>}
+    {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{copy.empty}</p></div>}
+    {status === 'ready' && posts.length > 0 && <ul className="post-list">
+      {posts.map(post => <li key={post.id}><button type="button" className={`post-card${post.board_id === 'notice' ? ' notice' : ''}`} onClick={() => onOpenPost(post.id)}>
+        <strong className="post-title" dir="auto">{post.title}</strong>
+        <span className="post-excerpt" dir="auto">{excerpt(post.body, 120)}</span>
+        <span className="post-foot">
+          <span className="post-byline"><Avatar name={post.author_nickname} supporter={post.author_is_supporter} size="small" /><AuthorLine item={post} copy={copy} accountCopy={accountCopy} language={language} /></span>
+          <Stats copy={copy} comments={post.comment_count} helpful={post.helpful_count} helped={post.helped_by_me} />
+        </span>
       </button></li>)}
-    </ul>
-    {status === 'ready' && hasMore && <button type="button" className="secondary" onClick={() => void load(posts.at(-1)?.created_at)}>{copy.loadMore}</button>}
-    <button type="button" className="primary write-button" onClick={onWrite}><span aria-hidden="true">+</span>{copy.write}</button>
+    </ul>}
+    {status === 'ready' && hasMore && <button type="button" className="secondary load-more" onClick={() => void load(posts.at(-1)?.created_at)}>{copy.loadMore}</button>}
+    {writableBoards(canVerifyBadges(account.roles)).includes(board) && <button type="button" className="write-button" onClick={onWrite}><Icon.pencil /><span>{copy.write}</span></button>}
   </section>;
 }
 
@@ -74,7 +97,7 @@ function ReportPanel({ copy, onSend, onCancel }: { copy: CommunityCopy; onSend: 
       {reportReasons.map(item => <label key={item} className="report-reason"><input type="radio" name="reason" checked={reason === item} onChange={() => setReason(item)} /><span>{copy[`reason_${item}`]}</span></label>)}
     </fieldset>
     <label className="account-field">{copy.reportDetail}<textarea rows={2} maxLength={500} dir="auto" value={detail} onChange={event => setDetail(event.target.value)} /></label>
-    <div className="account-links"><button className="secondary" disabled={!reason || pending}>{copy.reportSend}</button><button type="button" className="quiet" onClick={onCancel}>{copy.cancel}</button></div>
+    <div className="report-actions"><button type="button" className="secondary" onClick={onCancel}>{copy.cancel}</button><button className="primary solid" disabled={!reason || pending}>{copy.reportSend}</button></div>
   </form>;
 }
 
@@ -127,46 +150,51 @@ export function PostDetail({ copy, accountCopy, api, account, language, postId, 
     </div>;
   }
 
-  return <section className="community">
-    <button type="button" className="quiet community-back" onClick={onBack}>{copy.back}</button>
-    {post === undefined && <p className="account-intro" aria-busy="true">{copy.loading}</p>}
-    {post === null && <p className="account-intro">{error || copy.postNotFound}</p>}
+  return <section className="community community-detail">
+    <header className="detail-bar">
+      <button type="button" className="icon-button community-back" aria-label={copy.back} onClick={onBack}><Icon.back /></button>
+      {post && <span className="detail-board">{copy[boardKey(post.board_id)]}</span>}
+    </header>
+    {post === undefined && <div className="post-skeleton tall" aria-busy="true" aria-label={copy.loading} />}
+    {post === null && <div className="community-state"><p>{error || copy.postNotFound}</p></div>}
     {post && <>
       <article className="post-detail">
-        <span className="board-label">{copy[boardKey(post.board_id)]}</span>
         <h1 dir="auto">{post.title}</h1>
-        <AuthorLine item={post} copy={copy} accountCopy={accountCopy} language={language} />
+        <div className="post-byline large"><Avatar name={post.author_nickname} supporter={post.author_is_supporter} /><AuthorLine item={post} copy={copy} accountCopy={accountCopy} language={language} /></div>
         <p className="post-body" dir="auto">{post.body}</p>
         <div className="post-toolbar">
-          <button type="button" className={post.helped_by_me ? 'primary' : 'secondary'} aria-pressed={post.helped_by_me} disabled={pending || post.author_id === me} onClick={() => void toggleHelpful()}>{copy.helpful} {post.helpful_count}</button>
+          <button type="button" className="helpful-button" aria-pressed={post.helped_by_me} disabled={pending || post.author_id === me} onClick={() => void toggleHelpful()}><Icon.heart /><span>{copy.helpful}</span><b>{post.helpful_count}</b></button>
           <Actions target={{ type: 'post', id: post.id, authorId: post.author_id }} />
         </div>
       </article>
-      {notice && <p className="account-saved" role="status">{notice}</p>}
+      {notice && <p className="community-toast" role="status">{notice}</p>}
       {error && <p className="account-error" role="alert">{error}</p>}
       {reporting && <ReportPanel copy={copy} onCancel={() => setReporting(null)}
         onSend={async (reason, detail) => { if (await act(() => api.report(me, reporting.type, reporting.id, reason, detail), copy.reportDone)) setReporting(null); }} />}
       <section className="comments" aria-labelledby="comments-title">
         <h2 id="comments-title">{copy.commentsTitle} <span>{comments.length}</span></h2>
         {!comments.length && <p className="community-empty">{copy.noComments}</p>}
-        <ul>{comments.map(comment => <li key={comment.id} className="comment">
-          <AuthorLine item={comment} copy={copy} accountCopy={accountCopy} language={language} />
-          <p dir="auto">{comment.body}</p>
-          <Actions target={{ type: 'comment', id: comment.id, authorId: comment.author_id }} />
+        <ul>{comments.map(comment => <li key={comment.id} className={`comment${comment.author_id === me ? ' mine' : ''}`}>
+          <Avatar name={comment.author_nickname} supporter={comment.author_is_supporter} size="small" />
+          <div className="comment-body">
+            <AuthorLine item={comment} copy={copy} accountCopy={accountCopy} language={language} />
+            <p dir="auto">{comment.body}</p>
+            <Actions target={{ type: 'comment', id: comment.id, authorId: comment.author_id }} />
+          </div>
         </li>)}</ul>
-        <form className="comment-form" onSubmit={sendComment}>
-          <label className="sr-only" htmlFor="comment-input">{copy.commentLabel}</label>
-          <textarea id="comment-input" rows={2} maxLength={2000} dir="auto" placeholder={copy.commentLabel} value={draft} onChange={event => setDraft(event.target.value)} />
-          <button className="primary" disabled={pending || !draft.trim()}>{copy.commentSend}</button>
-        </form>
       </section>
+      <form className="comment-form" onSubmit={sendComment}>
+        <label className="sr-only" htmlFor="comment-input">{copy.commentLabel}</label>
+        <textarea id="comment-input" rows={1} maxLength={2000} dir="auto" placeholder={copy.commentLabel} value={draft} onChange={event => setDraft(event.target.value)} />
+        <button className="send-button" aria-label={copy.commentSend} disabled={pending || !draft.trim()}><Icon.send /></button>
+      </form>
     </>}
   </section>;
 }
 
-export function PostComposer({ copy, api, account, language, initialBoard, onDone, onCancel }: Shared & { initialBoard: BoardFilter; onDone: (id: string) => void; onCancel: () => void }) {
+export function PostComposer({ copy, api, account, language, initialBoard, onDone, onCancel }: Shared & { initialBoard: BoardId; onDone: (id: string) => void; onCancel: () => void }) {
   const boards = writableBoards(canVerifyBadges(account.roles));
-  const [board, setBoard] = useState<BoardId>(initialBoard !== 'all' && boards.includes(initialBoard) ? initialBoard : boards[0]);
+  const [board, setBoard] = useState<BoardId>(boards.includes(initialBoard) ? initialBoard : boards[0]);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [error, setError] = useState('');
@@ -183,19 +211,22 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
     try { onDone(await api.createPost(account.profile.user_id, { board, title, body, language })); }
     catch { setError(copy.errorGeneric); setPending(false); }
   }
-  return <section className="community">
-    <button type="button" className="quiet community-back" onClick={onCancel}>{copy.cancel}</button>
-    <h1>{copy.composeTitle}</h1>
-    <p className="account-intro">{copy.composeNote}</p>
-    <form className="compose-form" onSubmit={submit}>
+  const ready = isValidTitle(title) && isValidBody(body);
+  return <section className="community community-compose">
+    <header className="detail-bar">
+      <button type="button" className="icon-button community-back" aria-label={copy.cancel} onClick={onCancel}><Icon.close /></button>
+      <h1>{copy.composeTitle}</h1>
+      <button form="compose-form" className={`publish-button${ready ? ' ready' : ''}`} disabled={pending}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : copy.publish}</button>
+    </header>
+    <form id="compose-form" className="compose-form" onSubmit={submit}>
       <fieldset className="board-picker"><legend>{copy.board}</legend>
         {boards.map(item => <label key={item}><input type="radio" name="board" checked={board === item} onChange={() => setBoard(item)} /><span>{copy[boardKey(item)]}</span></label>)}
       </fieldset>
-      <label className="account-field">{copy.postTitle}<input maxLength={100} dir="auto" value={title} onChange={event => setTitle(event.target.value)} /></label>
-      <label className="account-field">{copy.postBody}<textarea rows={8} maxLength={5000} dir="auto" value={body} onChange={event => setBody(event.target.value)} /></label>
-      {sensitive.length > 0 && <p className="account-error" role="alert">{copy.sensitiveWarning}</p>}
+      <label className="compose-field"><span className="sr-only">{copy.postTitle}</span><input className="compose-title" maxLength={100} dir="auto" placeholder={copy.postTitle} value={title} onChange={event => setTitle(event.target.value)} /></label>
+      <label className="compose-field"><span className="sr-only">{copy.postBody}</span><textarea className="compose-body" rows={10} maxLength={5000} dir="auto" placeholder={copy.postBody} value={body} onChange={event => setBody(event.target.value)} /></label>
+      {sensitive.length > 0 && <p className="compose-warning" role="alert">{copy.sensitiveWarning}</p>}
       {error && <p className="account-error" role="alert">{error}</p>}
-      <button className="primary full" disabled={pending}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : copy.publish}</button>
+      <p className="safety-note"><Icon.shield /><span>{copy.composeNote}</span></p>
     </form>
   </section>;
 }

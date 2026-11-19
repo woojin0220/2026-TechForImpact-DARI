@@ -1,8 +1,7 @@
 const en = {
   title: "Community",
   intro: "Ask questions and share everyday information. Do not post names, contact details or case details.",
-  boardAll: "All",
-  board_qna: "Questions",
+  board_qna: "Q&A",
   board_life: "Daily life",
   board_notice: "Notices",
   write: "Write",
@@ -59,10 +58,9 @@ export const communityCopies: Record<string, CommunityCopy> = {
   ko: {
     title: "커뮤니티",
     intro: "궁금한 것을 묻고 생활 정보를 나눠요. 이름, 연락처, 사건 내용은 올리지 마세요.",
-    boardAll: "전체",
-    board_qna: "질문과 답변",
-    board_life: "생활 정보",
-    board_notice: "기관 공지",
+    board_qna: "Q&A",
+    board_life: "생활정보",
+    board_notice: "공지사항",
     write: "글쓰기",
     empty: "아직 글이 없어요. 첫 질문을 남겨 보세요.",
     loadMore: "더 보기",
@@ -112,7 +110,6 @@ export const communityCopies: Record<string, CommunityCopy> = {
   fr: {
     title: "Communauté",
     intro: "Posez vos questions et partagez des informations pratiques. Ne publiez ni noms, ni coordonnées, ni détails de dossier.",
-    boardAll: "Tout",
     board_qna: "Questions",
     board_life: "Vie quotidienne",
     board_notice: "Annonces",
@@ -165,7 +162,6 @@ export const communityCopies: Record<string, CommunityCopy> = {
   ru: {
     title: "Сообщество",
     intro: "Задавайте вопросы и делитесь полезной информацией. Не публикуйте имена, контакты и подробности дела.",
-    boardAll: "Все",
     board_qna: "Вопросы",
     board_life: "Повседневная жизнь",
     board_notice: "Объявления",
@@ -218,7 +214,6 @@ export const communityCopies: Record<string, CommunityCopy> = {
   ar: {
     title: "المجتمع",
     intro: "اطرح أسئلتك وشارك معلومات الحياة اليومية. لا تنشر أسماء أو بيانات اتصال أو تفاصيل قضية.",
-    boardAll: "الكل",
     board_qna: "أسئلة وأجوبة",
     board_life: "الحياة اليومية",
     board_notice: "إعلانات",
@@ -271,7 +266,6 @@ export const communityCopies: Record<string, CommunityCopy> = {
   fa: {
     title: "انجمن",
     intro: "سؤال بپرسید و اطلاعات روزمره را به اشتراک بگذارید. نام، اطلاعات تماس یا جزئیات پرونده منتشر نکنید.",
-    boardAll: "همه",
     board_qna: "پرسش و پاسخ",
     board_life: "زندگی روزمره",
     board_notice: "اطلاعیه‌ها",
