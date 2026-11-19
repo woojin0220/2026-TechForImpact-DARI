@@ -2,7 +2,7 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 472,
+    "uiKeys": 528,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
@@ -11,6 +11,7 @@
       "overview": 57,
       "tabs": 8,
       "account": 60,
+      "community": 56,
       "intake": 58,
       "process": 11,
       "scripted": 38,
@@ -2543,6 +2544,398 @@
       "en": "Please wait…",
       "ko": "잠시만 기다려 주세요…",
       "ar": "يرجى الانتظار…"
+    },
+    {
+      "namespace": "community",
+      "key": "back",
+      "en": "Back",
+      "ko": "뒤로",
+      "ar": "رجوع"
+    },
+    {
+      "namespace": "community",
+      "key": "block",
+      "en": "Block this member",
+      "ko": "이 회원 차단",
+      "ar": "حظر هذا العضو"
+    },
+    {
+      "namespace": "community",
+      "key": "blockConfirm",
+      "en": "Hide all posts and comments from this member? You can’t undo this in the app yet.",
+      "ko": "이 회원의 글과 댓글을 모두 숨길까요? 아직 앱에서 차단을 풀 수는 없어요.",
+      "ar": "هل تريد إخفاء كل منشورات هذا العضو وتعليقاته؟ لا يمكن إلغاء الحظر من التطبيق حاليًا."
+    },
+    {
+      "namespace": "community",
+      "key": "blockDone",
+      "en": "Blocked. You will no longer see this member.",
+      "ko": "차단했어요. 이제 이 회원의 글이 보이지 않아요.",
+      "ar": "تم الحظر. لن ترى منشورات هذا العضو بعد الآن."
+    },
+    {
+      "namespace": "community",
+      "key": "board",
+      "en": "Board",
+      "ko": "게시판",
+      "ar": "القسم"
+    },
+    {
+      "namespace": "community",
+      "key": "board_life",
+      "en": "Daily life",
+      "ko": "생활정보",
+      "ar": "الحياة اليومية"
+    },
+    {
+      "namespace": "community",
+      "key": "board_notice",
+      "en": "Notices",
+      "ko": "공지사항",
+      "ar": "إعلانات"
+    },
+    {
+      "namespace": "community",
+      "key": "board_qna",
+      "en": "Q&A",
+      "ko": "Q&A",
+      "ar": "أسئلة وأجوبة"
+    },
+    {
+      "namespace": "community",
+      "key": "cancel",
+      "en": "Cancel",
+      "ko": "취소",
+      "ar": "إلغاء"
+    },
+    {
+      "namespace": "community",
+      "key": "commentLabel",
+      "en": "Write a comment",
+      "ko": "댓글 쓰기",
+      "ar": "اكتب تعليقًا"
+    },
+    {
+      "namespace": "community",
+      "key": "commentSend",
+      "en": "Post",
+      "ko": "등록",
+      "ar": "نشر"
+    },
+    {
+      "namespace": "community",
+      "key": "comments",
+      "en": "{count} comments",
+      "ko": "댓글 {count}",
+      "ar": "{count} تعليقات"
+    },
+    {
+      "namespace": "community",
+      "key": "commentsTitle",
+      "en": "Comments",
+      "ko": "댓글",
+      "ar": "التعليقات"
+    },
+    {
+      "namespace": "community",
+      "key": "composeNote",
+      "en": "Other members see your nickname. Do not include names, phone numbers, addresses, ID or case numbers.",
+      "ko": "다른 회원에게는 닉네임이 보여요. 이름, 전화번호, 주소, 등록번호나 사건 번호는 쓰지 마세요.",
+      "ar": "يرى الأعضاء الآخرون اسمك المستعار. لا تكتب أسماء أو أرقام هواتف أو عناوين أو أرقام هوية أو قضايا."
+    },
+    {
+      "namespace": "community",
+      "key": "composeTitle",
+      "en": "New post",
+      "ko": "새 글",
+      "ar": "منشور جديد"
+    },
+    {
+      "namespace": "community",
+      "key": "delete",
+      "en": "Delete",
+      "ko": "삭제",
+      "ar": "حذف"
+    },
+    {
+      "namespace": "community",
+      "key": "deleteConfirm",
+      "en": "Delete this? It cannot be undone.",
+      "ko": "삭제할까요? 되돌릴 수 없어요.",
+      "ar": "هل تريد الحذف؟ لا يمكن التراجع عن ذلك."
+    },
+    {
+      "namespace": "community",
+      "key": "empty",
+      "en": "No posts yet. Be the first to ask.",
+      "ko": "아직 글이 없어요. 첫 질문을 남겨 보세요.",
+      "ar": "لا توجد منشورات بعد. اطرح أول سؤال."
+    },
+    {
+      "namespace": "community",
+      "key": "errorBody",
+      "en": "Enter the content.",
+      "ko": "내용을 써 주세요.",
+      "ar": "اكتب المحتوى."
+    },
+    {
+      "namespace": "community",
+      "key": "errorGeneric",
+      "en": "Something went wrong. Please try again.",
+      "ko": "문제가 생겼어요. 다시 시도해 주세요.",
+      "ar": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    },
+    {
+      "namespace": "community",
+      "key": "errorTitle",
+      "en": "Enter a title of 2–100 characters.",
+      "ko": "제목을 2~100자로 써 주세요.",
+      "ar": "اكتب عنوانًا من 2 إلى 100 حرف."
+    },
+    {
+      "namespace": "community",
+      "key": "formerMember",
+      "en": "Former member",
+      "ko": "탈퇴한 회원",
+      "ar": "عضو سابق"
+    },
+    {
+      "namespace": "community",
+      "key": "helpful",
+      "en": "Helpful",
+      "ko": "도움됐어요",
+      "ar": "مفيد"
+    },
+    {
+      "namespace": "community",
+      "key": "intro",
+      "en": "Ask questions and share everyday information. Do not post names, contact details or case details.",
+      "ko": "궁금한 것을 묻고 생활 정보를 나눠요. 이름, 연락처, 사건 내용은 올리지 마세요.",
+      "ar": "اطرح أسئلتك وشارك معلومات الحياة اليومية. لا تنشر أسماء أو بيانات اتصال أو تفاصيل قضية."
+    },
+    {
+      "namespace": "community",
+      "key": "loadFailed",
+      "en": "Posts could not be loaded.",
+      "ko": "글을 불러오지 못했어요.",
+      "ar": "تعذّر تحميل المنشورات."
+    },
+    {
+      "namespace": "community",
+      "key": "loadMore",
+      "en": "Show more",
+      "ko": "더 보기",
+      "ar": "عرض المزيد"
+    },
+    {
+      "namespace": "community",
+      "key": "loading",
+      "en": "Loading…",
+      "ko": "불러오는 중…",
+      "ar": "جارٍ التحميل…"
+    },
+    {
+      "namespace": "community",
+      "key": "more",
+      "en": "More actions",
+      "ko": "더 보기 메뉴",
+      "ar": "إجراءات أخرى"
+    },
+    {
+      "namespace": "community",
+      "key": "noComments",
+      "en": "No comments yet.",
+      "ko": "아직 댓글이 없어요.",
+      "ar": "لا توجد تعليقات بعد."
+    },
+    {
+      "namespace": "community",
+      "key": "postBody",
+      "en": "Content",
+      "ko": "내용",
+      "ar": "المحتوى"
+    },
+    {
+      "namespace": "community",
+      "key": "postNotFound",
+      "en": "This post is not available.",
+      "ko": "볼 수 없는 글이에요.",
+      "ar": "هذا المنشور غير متاح."
+    },
+    {
+      "namespace": "community",
+      "key": "postTitle",
+      "en": "Title",
+      "ko": "제목",
+      "ar": "العنوان"
+    },
+    {
+      "namespace": "community",
+      "key": "publish",
+      "en": "Post",
+      "ko": "등록",
+      "ar": "نشر"
+    },
+    {
+      "namespace": "community",
+      "key": "publishAnyway",
+      "en": "Post anyway",
+      "ko": "그래도 등록",
+      "ar": "النشر على أي حال"
+    },
+    {
+      "namespace": "community",
+      "key": "reason_hate",
+      "en": "Hate or harassment",
+      "ko": "혐오 표현이나 괴롭힘",
+      "ar": "كراهية أو مضايقة"
+    },
+    {
+      "namespace": "community",
+      "key": "reason_identity",
+      "en": "Reveals someone’s identity or case",
+      "ko": "다른 사람의 신원이나 사건을 드러냄",
+      "ar": "يكشف هوية شخص أو قضيته"
+    },
+    {
+      "namespace": "community",
+      "key": "reason_other",
+      "en": "Other",
+      "ko": "기타",
+      "ar": "سبب آخر"
+    },
+    {
+      "namespace": "community",
+      "key": "reason_scam",
+      "en": "Scam or request for money",
+      "ko": "사기 또는 돈 요구",
+      "ar": "احتيال أو طلب مال"
+    },
+    {
+      "namespace": "community",
+      "key": "reason_spam",
+      "en": "Spam or advertising",
+      "ko": "스팸 또는 광고",
+      "ar": "رسائل مزعجة أو إعلانات"
+    },
+    {
+      "namespace": "community",
+      "key": "report",
+      "en": "Report",
+      "ko": "신고",
+      "ar": "إبلاغ"
+    },
+    {
+      "namespace": "community",
+      "key": "reportAlready",
+      "en": "You have already reported this.",
+      "ko": "이미 신고한 글이에요.",
+      "ar": "لقد أبلغت عن هذا من قبل."
+    },
+    {
+      "namespace": "community",
+      "key": "reportDetail",
+      "en": "Details (optional)",
+      "ko": "자세한 내용(선택)",
+      "ar": "تفاصيل (اختياري)"
+    },
+    {
+      "namespace": "community",
+      "key": "reportDone",
+      "en": "Thank you. The operators will review it.",
+      "ko": "신고해 주셔서 고마워요. 운영자가 확인할게요.",
+      "ar": "شكرًا لك. سيراجعه فريق التشغيل."
+    },
+    {
+      "namespace": "community",
+      "key": "reportSend",
+      "en": "Send report",
+      "ko": "신고하기",
+      "ar": "إرسال البلاغ"
+    },
+    {
+      "namespace": "community",
+      "key": "reportTitle",
+      "en": "Why are you reporting this?",
+      "ko": "신고하는 이유를 골라 주세요.",
+      "ar": "لماذا تبلّغ عن هذا؟"
+    },
+    {
+      "namespace": "community",
+      "key": "retry",
+      "en": "Try again",
+      "ko": "다시 시도",
+      "ar": "إعادة المحاولة"
+    },
+    {
+      "namespace": "community",
+      "key": "sensitiveWarning",
+      "en": "This may contain a phone number, email or ID number. Remove it unless you are sure it is safe to share.",
+      "ko": "전화번호, 이메일, 등록번호로 보이는 내용이 있어요. 공개해도 괜찮은지 확실하지 않다면 지워 주세요.",
+      "ar": "قد يحتوي النص على رقم هاتف أو بريد إلكتروني أو رقم هوية. احذفه ما لم تكن متأكدًا من أن مشاركته آمنة."
+    },
+    {
+      "namespace": "community",
+      "key": "showOriginal",
+      "en": "Show original",
+      "ko": "원문 보기",
+      "ar": "عرض النص الأصلي"
+    },
+    {
+      "namespace": "community",
+      "key": "showTranslation",
+      "en": "Show translation",
+      "ko": "번역 보기",
+      "ar": "عرض الترجمة"
+    },
+    {
+      "namespace": "community",
+      "key": "supporterMark",
+      "en": "Support organization",
+      "ko": "지원기관",
+      "ar": "جهة دعم"
+    },
+    {
+      "namespace": "community",
+      "key": "title",
+      "en": "Community",
+      "ko": "커뮤니티",
+      "ar": "المجتمع"
+    },
+    {
+      "namespace": "community",
+      "key": "translateFailed",
+      "en": "Could not translate. Showing the original.",
+      "ko": "번역하지 못해 원문을 보여드려요.",
+      "ar": "تعذّرت الترجمة. يُعرض النص الأصلي."
+    },
+    {
+      "namespace": "community",
+      "key": "translatedFrom",
+      "en": "Translated from {language}",
+      "ko": "{language}에서 번역됨",
+      "ar": "مترجم من {language}"
+    },
+    {
+      "namespace": "community",
+      "key": "translatedMark",
+      "en": "Translated",
+      "ko": "번역됨",
+      "ar": "مترجم"
+    },
+    {
+      "namespace": "community",
+      "key": "translating",
+      "en": "Translating…",
+      "ko": "번역 중…",
+      "ar": "جارٍ الترجمة…"
+    },
+    {
+      "namespace": "community",
+      "key": "write",
+      "en": "Write",
+      "ko": "글쓰기",
+      "ar": "كتابة"
     },
     {
       "namespace": "intake",

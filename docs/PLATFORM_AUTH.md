@@ -17,7 +17,7 @@
 | `supabase/functions/delete-account` | 회원 탈퇴(본인 auth 계정 삭제, 관련 행은 cascade 삭제) |
 | `supabase/tests/` | 로컬 Postgres용 auth 스텁과 권한 테스트 |
 | `capacitor-web/src/platform/` | 설정, Supabase 클라이언트, 데이터 함수, 인증 상태(`AuthProvider`/`useAuth`), 로그인·가입·내 정보 화면, 6개 언어 문구 |
-| `capacitor-web/src/shell/CommunityTab.tsx` | 커뮤니티 탭: 로그인·가입을 마친 회원에게만 내용 표시 |
+| `capacitor-web/src/shell/CommunityTab.tsx` | 커뮤니티 탭: 로그인·가입을 마친 회원에게만 내용 표시 (게시판은 [COMMUNITY.md](COMMUNITY.md)) |
 
 ### 테이블
 
