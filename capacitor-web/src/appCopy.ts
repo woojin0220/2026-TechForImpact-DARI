@@ -1,6 +1,6 @@
 /** Applicant-facing application chrome. Arabic is exhaustive, never a partial English fallback. */
 export const appEnglish = {
-  languagePicker: 'Choose your language', quickEnglishTest: 'Conversation test in English → Korean', shortConversation: 'Try a short conversation in English',
+  settings: 'Settings', languagePicker: 'Choose your language', quickEnglishTest: 'Conversation test in English → Korean', shortConversation: 'Try a short conversation in English',
   shortTest: 'Short English test', exampleGenerating: 'Generating a fictional answer…', exampleGenerate: 'Generate an example', finish: 'Finish',
   exampleNotice: 'Generating a fictional example. It will be placed in the input box, not sent automatically.', exampleQuestion: 'Generating a fictional answer for this question…',
   operator: 'Operator and developer settings', onDevice: 'Running on this device', localPreview: 'Browser preview · computation on the connected local server', checking: 'Checking status',
@@ -37,7 +37,7 @@ export type AppCopyKey = keyof typeof appEnglish;
 export type AppCopy = Record<AppCopyKey, string>;
 
 export const appArabic: AppCopy = {
-  languagePicker: 'اختر لغتك', quickEnglishTest: 'اختبار محادثة بالإنجليزية إلى الكورية', shortConversation: 'تجربة محادثة قصيرة بالإنجليزية',
+  settings: 'الإعدادات', languagePicker: 'اختر لغتك', quickEnglishTest: 'اختبار محادثة بالإنجليزية إلى الكورية', shortConversation: 'تجربة محادثة قصيرة بالإنجليزية',
   shortTest: 'اختبار قصير بالإنجليزية', exampleGenerating: 'جارٍ إنشاء إجابة خيالية…', exampleGenerate: 'إنشاء مثال', finish: 'إنهاء',
   exampleNotice: 'جارٍ إنشاء مثال خيالي. سيظهر في مربع الكتابة ولن يُرسل تلقائيًا.', exampleQuestion: 'جارٍ إنشاء إجابة خيالية لهذا السؤال…',
   operator: 'إعدادات المشغّل والمطوّر', onDevice: 'يعمل على هذا الجهاز', localPreview: 'معاينة المتصفح · المعالجة على الخادم المحلي المتصل', checking: 'جارٍ التحقق من الحالة',
@@ -72,7 +72,7 @@ export const appArabic: AppCopy = {
 };
 
 export const appKorean: AppCopy = {
-  languagePicker: '언어 선택', quickEnglishTest: '영어 대화 · 한국어 초안 테스트', shortConversation: '영어로 짧은 대화 시험하기',
+  settings: '설정', languagePicker: '언어 선택', quickEnglishTest: '영어 대화 · 한국어 초안 테스트', shortConversation: '영어로 짧은 대화 시험하기',
   shortTest: '짧은 영어 테스트', exampleGenerating: '가상 답변 생성 중…', exampleGenerate: '예시 생성', finish: '마치기',
   exampleNotice: '가상 예시를 생성합니다. 입력란에만 표시하고 자동으로 보내지 않습니다.', exampleQuestion: '이 질문의 가상 답변을 생성합니다…',
   operator: '운영자·개발자 설정', onDevice: '이 기기에서 실행 · 온디바이스', localPreview: '브라우저 미리보기 · 연결된 로컬 서버에서 연산', checking: '상태 확인 중',

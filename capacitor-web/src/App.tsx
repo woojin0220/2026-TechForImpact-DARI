@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { HeaderActions } from './app/HeaderActions';
 import { answerScripted, appendAssistantMessage, appendUserMessage, applyFormAnswers, calculateCoverage, clarifyStatement, confirmFacts, continueConversation, createSession, deriveQuestion14, exportSession, finishNarrative, formPageOf, formSteps, generateDraft, getActiveFacts, guideConversation, IntakeError, invalidateDraft, isFormSection, metadataGroups, narrativeFieldFor, needsTopicQuestion, nextStep, openTopic, pendingAsk, question14Steps, reaskQuestion, requirementsById, tableRowIds, type FormValue, type IntakeFact, type IntakeScope, type IntakeSession, type ScriptedAnswer, type ScriptedAsk } from './intake';
 import { cancelIntakeGeneration, generateIntakeModel, getIntakeRuntimeStatus, getPreviewModel, type IntakeRuntimeStatus } from './lib/intakeModel';
 import { intakeLanguages } from './intakeCopy';
@@ -421,21 +422,17 @@ export default function App({ initialSession, initialStage }: { initialSession?:
   };
   const [title, intro] = titles[stage];
   const shellMode = stage === 'conversation' || stage === 'form' ? 'chat-mode' : stage === 'basics' ? 'start-mode' : 'page-mode';
-  return <div className={`app-shell ${shellMode}`}>
+  return <div className={`app-shell ${shellMode}${stage === 'form' ? ' form-mode' : ''}`}>
     <a className="skip-link" href="#main">{copy.continue}</a>
     <header className="site-header">
       <button className="brand" onClick={() => setStage('basics')}><strong lang="en" dir="ltr">DARI</strong><span>{copy.tagline}</span></button>
-      <div className="header-actions">
-        <button className="secondary overview-trigger" aria-haspopup="dialog" aria-expanded={overviewOpen} onClick={() => { setOperatorOpen(false); setOverviewOpen(true); }}>{texts.overview.open}</button>
-        <button className="quiet" onClick={() => { languageReturnStage.current = currentStage.current; setStage('language'); }}>{intakeLanguages.find(item => item.code === language)?.name}</button>
-        <button className="quiet" onClick={() => setShowHelp(true)}><span className="help-mark">?</span>{copy.help}</button>
-        {DEV_TOOLS && <div className="operator-entry">
-          <button className="operator-toggle" aria-expanded={operatorOpen} aria-controls="operator" aria-label={ui.operator} title={ui.operator} onClick={() => setOperatorOpen(open => !open)}>⚙</button>
-          {operatorOpen && <OperatorPanel texts={texts} language={language} runtime={runtime} onRuntime={setRuntime} refreshRuntime={refreshRuntime}
-            model={model} onModel={setModel} importing={importing} onImporting={setImporting} scope={scope} onScope={changeScope}
-            locked={locked} started={started} onError={setError} onStartDemo={() => void startDemo()} onExport={exportAll} onClose={() => setOperatorOpen(false)} />}
-        </div>}
-      </div>
+      <HeaderActions texts={texts} languageName={intakeLanguages.find(item => item.code === language)?.name ?? language}
+        overviewOpen={overviewOpen} onOverview={() => { setOperatorOpen(false); setOverviewOpen(true); }}
+        onLanguage={() => { languageReturnStage.current = currentStage.current; setStage('language'); }} onHelp={() => setShowHelp(true)}
+        showOperator={DEV_TOOLS} operatorOpen={operatorOpen} onOperator={() => setOperatorOpen(open => !open)} onCloseOperator={() => setOperatorOpen(false)}
+        operatorPanel={DEV_TOOLS && operatorOpen ? <OperatorPanel texts={texts} language={language} runtime={runtime} onRuntime={setRuntime} refreshRuntime={refreshRuntime}
+          model={model} onModel={setModel} importing={importing} onImporting={setImporting} scope={scope} onScope={changeScope}
+          locked={locked} started={started} onError={setError} onStartDemo={() => void startDemo()} onExport={exportAll} onClose={() => setOperatorOpen(false)} /> : null} />
     </header>
     <div className="workspace">
       <StepSidebar texts={texts} steps={steps} stage={stage} progress={progress} draftReady={!!session.draftRevision}
