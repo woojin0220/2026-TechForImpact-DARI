@@ -163,8 +163,10 @@ export function AccountScreen({ copy, account, api, language = 'ko', onBack, onC
     await request.run(() => api.deleteAccount());
   }
   return <section className="account-screen">
-    <button type="button" className="quiet" onClick={onBack}>{copy.back}</button>
-    <h1>{copy.profile}</h1>
+    <header className="account-bar">
+      <button type="button" className="account-back" aria-label={copy.back} onClick={onBack}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg></button>
+      <h1>{copy.profile}</h1>
+    </header>
     <div className="profile-card">
       <span className="profile-avatar" aria-hidden="true">{Array.from((account.profile.nickname ?? '').trim())[0]?.toUpperCase()}</span>
       <div className="profile-summary">
