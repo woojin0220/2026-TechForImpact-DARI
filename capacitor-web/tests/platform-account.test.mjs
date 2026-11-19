@@ -102,7 +102,8 @@ test('onboarding lists age and all three consents with the start button disabled
 test('account page shows email, highest role, sign out and delete', () => {
   const html = mod.exports.accountPage('en');
   assert.match(html, /Signed in as member@example.org/);
-  assert.match(html, /<dd>Support organization<\/dd>/);
+  assert.match(html, /Role · Support organization/);
+  assert.match(html, /<h1>Profile<\/h1>/);
   assert.match(html, /Sign out/);
   assert.match(html, /Delete account/);
 });

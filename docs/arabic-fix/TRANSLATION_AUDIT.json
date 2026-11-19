@@ -2,7 +2,7 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 528,
+    "uiKeys": 531,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
@@ -10,7 +10,7 @@
       "bench": 48,
       "overview": 57,
       "tabs": 8,
-      "account": 60,
+      "account": 63,
       "community": 56,
       "intake": 58,
       "process": 11,
@@ -2344,6 +2344,20 @@
     },
     {
       "namespace": "account",
+      "key": "frontIntro",
+      "en": "Sign in with your email to use DARI. A new email creates an account. Your application stays on this device and is never linked to your account.",
+      "ko": "이메일로 로그인하고 DARI를 시작하세요. 처음 쓰는 이메일이면 계정이 새로 만들어져요. 신청서는 이 기기에만 저장되고 계정과 연결되지 않아요.",
+      "ar": "سجّل الدخول ببريدك الإلكتروني لاستخدام DARI. البريد الجديد ينشئ حسابًا. يبقى طلبك على هذا الجهاز فقط ولا يرتبط بحسابك."
+    },
+    {
+      "namespace": "account",
+      "key": "frontTitle",
+      "en": "Sign in or sign up",
+      "ko": "로그인 또는 가입",
+      "ar": "تسجيل الدخول أو إنشاء حساب"
+    },
+    {
+      "namespace": "account",
       "key": "loadFailed",
       "en": "Your account could not be loaded.",
       "ko": "계정 정보를 불러오지 못했어요.",
@@ -2390,6 +2404,13 @@
       "en": "Set up your account",
       "ko": "계정 설정",
       "ar": "إعداد الحساب"
+    },
+    {
+      "namespace": "account",
+      "key": "profile",
+      "en": "Profile",
+      "ko": "내 프로필",
+      "ar": "الملف الشخصي"
     },
     {
       "namespace": "account",

@@ -25,7 +25,7 @@ function useRequest(copy: AccountCopy) {
 
 function ErrorLine({ text }: { text: string }) { return text ? <p className="account-error" role="alert">{text}</p> : null; }
 
-export function SignInScreen({ copy, api }: { copy: AccountCopy; api: PlatformApi }) {
+export function SignInScreen({ copy, api, title, intro }: { copy: AccountCopy; api: PlatformApi; title?: string; intro?: string }) {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [sentTo, setSentTo] = useState('');
@@ -41,8 +41,8 @@ export function SignInScreen({ copy, api }: { copy: AccountCopy; api: PlatformAp
     await request.run(() => api.verifyEmailCode(sentTo, code));
   }
   return <section className="account-screen">
-    <h1>{copy.signInTitle}</h1>
-    <p className="account-intro">{copy.signInIntro}</p>
+    <h1>{title ?? copy.signInTitle}</h1>
+    <p className="account-intro">{intro ?? copy.signInIntro}</p>
     {!sentTo ? <form onSubmit={sendCode}>
       <label>{copy.email}<input type="email" inputMode="email" autoComplete="email" dir="ltr" value={email} onChange={event => setEmail(event.target.value)} required /></label>
       <ErrorLine text={request.error} />
@@ -164,9 +164,16 @@ export function AccountScreen({ copy, account, api, language = 'ko', onBack, onC
   }
   return <section className="account-screen">
     <button type="button" className="quiet" onClick={onBack}>{copy.back}</button>
-    <h1>{copy.accountTitle}</h1>
-    <p className="account-intro">{fill(copy.signedInAs, { email: account.email })}</p>
-    <dl className="account-facts"><div><dt>{copy.role}</dt><dd>{copy[roleKeys[primaryRole(account.roles)]]}</dd></div></dl>
+    <h1>{copy.profile}</h1>
+    <div className="profile-card">
+      <span className="profile-avatar" aria-hidden="true">{Array.from((account.profile.nickname ?? '').trim())[0]?.toUpperCase()}</span>
+      <div className="profile-summary">
+        <strong dir="auto">{account.profile.nickname}</strong>
+        <span>{fill(copy.signedInAs, { email: account.email })}</span>
+        <span className="profile-role">{copy.role} · {copy[roleKeys[primaryRole(account.roles)]]}</span>
+        {account.badges.some(badge => badge.visible) && <span className="profile-badges">{account.badges.filter(badge => badge.visible).map(badge => <MemberBadge key={badge.badge} badge={badge.badge} copy={copy} />)}</span>}
+      </div>
+    </div>
     <form onSubmit={save}>
       <label className="account-field">{copy.nickname}<input maxLength={20} dir="auto" value={nickname} onChange={event => { setNickname(event.target.value); setSaved(false); }} /><small>{copy.nicknameHint}</small></label>
       <ErrorLine text={request.error} />
@@ -186,11 +193,11 @@ export function AccountScreen({ copy, account, api, language = 'ko', onBack, onC
  * Shows sign-in, onboarding or a status screen until the member may use the feature,
  * then renders `children` with the ready account.
  */
-export function AuthGate({ copy, language, children }: { copy: AccountCopy; language: string; children: (account: Account) => ReactNode }) {
+export function AuthGate({ copy, language, children, frontTitle, frontIntro }: { copy: AccountCopy; language: string; children: (account: Account) => ReactNode; frontTitle?: string; frontIntro?: string }) {
   const { state, api, refresh } = useAuth();
   if (state.status === 'unconfigured' || !api) return <section className="account-screen"><p className="account-intro">{copy.notConfigured}</p></section>;
   if (state.status === 'loading') return <section className="account-screen" aria-busy="true"><p className="account-intro">{copy.working}</p></section>;
-  if (state.status === 'signedOut') return <SignInScreen copy={copy} api={api} />;
+  if (state.status === 'signedOut') return <SignInScreen copy={copy} api={api} title={frontTitle} intro={frontIntro} />;
   if (state.status === 'error') return <section className="account-screen"><p className="account-intro">{copy.loadFailed}</p>
     <div className="account-actions"><button type="button" className="secondary" onClick={() => void refresh()}>{copy.retry}</button><button type="button" className="quiet" onClick={() => void api.signOut()}>{copy.signOut}</button></div></section>;
   const { account } = state;

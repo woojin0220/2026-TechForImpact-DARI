@@ -17,9 +17,9 @@ export function TabBar({ active, copy, onSelect }: { active: AppTab; copy: TabsC
   </nav>;
 }
 
-export function ComingSoon({ title, copy, onBack }: { title: string; copy: TabsCopy; onBack: () => void }) {
+export function ComingSoon({ title, copy, onBack, accessory }: { title: string; copy: TabsCopy; onBack: () => void; accessory?: ReactNode }) {
   return <main className="tab-placeholder" tabIndex={-1}>
-    <h1>{title}</h1>
+    <div className="tab-placeholder-head"><h1>{title}</h1>{accessory}</div>
     <p>{copy.comingSoon}</p>
     <button type="button" className="secondary" onClick={onBack}>{copy.backToApplication}</button>
   </main>;

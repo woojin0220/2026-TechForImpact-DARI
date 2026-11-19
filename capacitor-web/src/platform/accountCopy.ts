@@ -59,6 +59,9 @@ const en = {
   verifyDone: "Badge given to {nickname}.",
   errorBadgeCode: "The code is wrong or has expired. Ask the member for a new code.",
   errorBadgeSelf: "You cannot verify your own badge.",
+  frontTitle: "Sign in or sign up",
+  frontIntro: "Sign in with your email to use DARI. A new email creates an account. Your application stays on this device and is never linked to your account.",
+  profile: "Profile",
 };
 
 export type AccountCopy = typeof en;
@@ -66,6 +69,9 @@ export type AccountCopy = typeof en;
 export const accountCopies: Record<string, AccountCopy> = {
   en,
   ko: {
+    frontTitle: "로그인 또는 가입",
+    frontIntro: "이메일로 로그인하고 DARI를 시작하세요. 처음 쓰는 이메일이면 계정이 새로 만들어져요. 신청서는 이 기기에만 저장되고 계정과 연결되지 않아요.",
+    profile: "내 프로필",
     signInTitle: '로그인',
     signInIntro: '커뮤니티를 이용하려면 로그인해 주세요. 신청서는 이 기기에만 남고 계정과 연결되지 않아요.',
     email: '이메일',
@@ -128,6 +134,9 @@ export const accountCopies: Record<string, AccountCopy> = {
     errorBadgeSelf: "자기 자신의 뱃지는 인증할 수 없어요.",
   },
   fr: {
+    frontTitle: "Connexion ou inscription",
+    frontIntro: "Connectez-vous avec votre e-mail pour utiliser DARI. Un nouvel e-mail crée un compte. Votre demande reste sur cet appareil et n’est jamais liée à votre compte.",
+    profile: "Profil",
     signInTitle: 'Connexion',
     signInIntro: 'Connectez-vous pour utiliser la communauté. Votre demande reste sur cet appareil et n’est jamais liée à votre compte.',
     email: 'E-mail',
@@ -190,6 +199,9 @@ export const accountCopies: Record<string, AccountCopy> = {
     errorBadgeSelf: "Vous ne pouvez pas vérifier votre propre badge.",
   },
   ru: {
+    frontTitle: "Вход или регистрация",
+    frontIntro: "Войдите по электронной почте, чтобы пользоваться DARI. Новый адрес создаёт аккаунт. Ваше заявление хранится только на этом устройстве и не связано с аккаунтом.",
+    profile: "Профиль",
     signInTitle: 'Вход',
     signInIntro: 'Войдите, чтобы пользоваться сообществом. Ваше заявление остаётся на этом устройстве и никогда не связывается с аккаунтом.',
     email: 'Эл. почта',
@@ -252,6 +264,9 @@ export const accountCopies: Record<string, AccountCopy> = {
     errorBadgeSelf: "Нельзя проверить собственный значок.",
   },
   ar: {
+    frontTitle: "تسجيل الدخول أو إنشاء حساب",
+    frontIntro: "سجّل الدخول ببريدك الإلكتروني لاستخدام DARI. البريد الجديد ينشئ حسابًا. يبقى طلبك على هذا الجهاز فقط ولا يرتبط بحسابك.",
+    profile: "الملف الشخصي",
     signInTitle: 'تسجيل الدخول',
     signInIntro: 'سجّل الدخول لاستخدام المجتمع. يبقى طلبك على هذا الجهاز ولا يُربط بحسابك أبدًا.',
     email: 'البريد الإلكتروني',
@@ -314,6 +329,9 @@ export const accountCopies: Record<string, AccountCopy> = {
     errorBadgeSelf: "لا يمكنك التحقق من شارتك بنفسك.",
   },
   fa: {
+    frontTitle: "ورود یا ثبت‌نام",
+    frontIntro: "برای استفاده از DARI با ایمیل خود وارد شوید. ایمیل جدید یک حساب می‌سازد. درخواست شما فقط روی همین دستگاه می‌ماند و به حسابتان وصل نمی‌شود.",
+    profile: "نمایه",
     signInTitle: 'ورود',
     signInIntro: 'برای استفاده از انجمن وارد شوید. درخواست شما فقط روی این دستگاه می‌ماند و هرگز به حساب شما وصل نمی‌شود.',
     email: 'ایمیل',
