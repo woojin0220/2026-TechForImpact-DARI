@@ -5,9 +5,28 @@ import type { AccountCopy } from '../platform/accountCopy';
 import type { CommunityApi } from './api';
 import { pageSize } from './api';
 import type { CommunityCopy } from './copy';
+import { languageName, needsTranslation, type Translator } from './translation';
 import { boardIds, detectSensitive, excerpt, isValidBody, isValidTitle, relativeTime, reportReasons, writableBoards, type Author, type BoardId, type CommentItem, type PostSummary, type ReportReason } from './model';
 
-type Shared = { copy: CommunityCopy; accountCopy: AccountCopy; api: CommunityApi; account: Account; language: string };
+type Shared = { copy: CommunityCopy; accountCopy: AccountCopy; api: CommunityApi; account: Account; language: string; translator?: Translator | null };
+
+type Translated = { text: string; state: 'original' | 'translating' | 'translated' | 'failed' };
+
+/** Translates `text` from `source` into the reader's language when a device translator is available. */
+function useTranslated(translator: Translator | null | undefined, text: string, source: string, target: string): Translated {
+  const wanted = Boolean(translator) && needsTranslation(source, target) && Boolean(text.trim());
+  const [result, setResult] = useState<Translated>({ text, state: wanted ? 'translating' : 'original' });
+  useEffect(() => {
+    if (!wanted || !translator) { setResult({ text, state: 'original' }); return; }
+    let live = true;
+    setResult({ text, state: 'translating' });
+    translator.translate(text, source, target).then(
+      translated => { if (live) setResult({ text: translated, state: 'translated' }); },
+      () => { if (live) setResult({ text, state: 'failed' }); });
+    return () => { live = false; };
+  }, [translator, wanted, text, source, target]);
+  return result;
+}
 
 const boardKey = (board: BoardId) => `board_${board}` as const;
 function fill(text: string, values: Record<string, string | number>) { return text.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? '')); }
@@ -22,6 +41,7 @@ const Icon = {
   heart: () => <svg {...iconProps}><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" /></svg>,
   pencil: () => <svg {...iconProps}><path d="M4 20h4L19 9l-4-4L4 16z" /><path d="M13.5 6.5l4 4" /></svg>,
   send: () => <svg {...iconProps}><path d="M5 12h13M13 6l6 6-6 6" /></svg>,
+  globe: () => <svg {...iconProps}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" /></svg>,
 };
 
 function Avatar({ name, supporter, size }: { name: string | null; supporter?: boolean; size?: 'small' }) {
@@ -45,7 +65,17 @@ function Stats({ copy, comments, helpful, helped }: { copy: CommunityCopy; comme
   </span>;
 }
 
-export function CommunityHome({ copy, accountCopy, api, account, language, board, onBoard, onOpenPost, onWrite, onAccount }: Shared & {
+function PostCardText({ post, translator, language }: { post: PostSummary; translator?: Translator | null; language: string }) {
+  const fast = translator?.fast ? translator : null;
+  const title = useTranslated(fast, post.title, post.language, language);
+  const body = useTranslated(fast, excerpt(post.body, 160), post.language, language);
+  return <>
+    <strong className="post-title" dir="auto">{title.state === 'translated' && <Icon.globe />}{title.text}</strong>
+    <span className="post-excerpt" dir="auto">{body.text}</span>
+  </>;
+}
+
+export function CommunityHome({ copy, accountCopy, api, account, language, translator, board, onBoard, onOpenPost, onWrite, onAccount }: Shared & {
   board: BoardId; onBoard: (board: BoardId) => void; onOpenPost: (id: string) => void; onWrite: () => void; onAccount: () => void;
 }) {
   const [posts, setPosts] = useState<PostSummary[]>([]);
@@ -75,8 +105,7 @@ export function CommunityHome({ copy, accountCopy, api, account, language, board
     {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{copy.empty}</p></div>}
     {status === 'ready' && posts.length > 0 && <ul className="post-list">
       {posts.map(post => <li key={post.id}><button type="button" className={`post-card${post.board_id === 'notice' ? ' notice' : ''}`} onClick={() => onOpenPost(post.id)}>
-        <strong className="post-title" dir="auto">{post.title}</strong>
-        <span className="post-excerpt" dir="auto">{excerpt(post.body, 120)}</span>
+        <PostCardText post={post} translator={translator} language={language} />
         <span className="post-foot">
           <span className="post-byline"><Avatar name={post.author_nickname} supporter={post.author_is_supporter} size="small" /><AuthorLine item={post} copy={copy} accountCopy={accountCopy} language={language} /></span>
           <Stats copy={copy} comments={post.comment_count} helpful={post.helpful_count} helped={post.helped_by_me} />
@@ -103,7 +132,28 @@ function ReportPanel({ copy, onSend, onCancel }: { copy: CommunityCopy; onSend: 
 
 type Target = { type: 'post' | 'comment'; id: string; authorId: string };
 
-export function PostDetail({ copy, accountCopy, api, account, language, postId, onBack }: Shared & { postId: string; onBack: () => void }) {
+function TranslationBar({ copy, language, source, states, original, onToggle }: { copy: CommunityCopy; language: string; source: string; states: Translated['state'][]; original: boolean; onToggle: () => void }) {
+  if (states.every(state => state === 'original')) return null;
+  const failed = states.some(state => state === 'failed');
+  const busy = states.some(state => state === 'translating');
+  return <p className="translation-bar" role="status">
+    <Icon.globe />
+    <span>{failed ? copy.translateFailed : busy ? copy.translating : fill(copy.translatedFrom, { language: languageName(source, language) })}</span>
+    {!failed && !busy && <button type="button" className="quiet" aria-pressed={original} onClick={onToggle}>{original ? copy.showTranslation : copy.showOriginal}</button>}
+  </p>;
+}
+
+function CommentText({ comment, copy, translator, language }: { comment: CommentItem; copy: CommunityCopy; translator?: Translator | null; language: string }) {
+  const result = useTranslated(translator, comment.body, comment.language, language);
+  const [original, setOriginal] = useState(false);
+  return <>
+    <p dir="auto">{original ? comment.body : result.text}</p>
+    {result.state === 'translating' && <small className="translation-note">{copy.translating}</small>}
+    {result.state === 'translated' && <small className="translation-note"><Icon.globe />{copy.translatedMark}<button type="button" className="quiet" aria-pressed={original} onClick={() => setOriginal(value => !value)}>{original ? copy.showTranslation : copy.showOriginal}</button></small>}
+  </>;
+}
+
+export function PostDetail({ copy, accountCopy, api, account, language, translator, postId, onBack }: Shared & { postId: string; onBack: () => void }) {
   const me = account.profile.user_id;
   const [post, setPost] = useState<PostSummary | null | undefined>(undefined);
   const [comments, setComments] = useState<CommentItem[]>([]);
@@ -119,6 +169,10 @@ export function PostDetail({ copy, accountCopy, api, account, language, postId, 
     } catch { setPost(null); setError(copy.loadFailed); }
   }, [api, postId, copy]);
   useEffect(() => { void load(); }, [load]);
+
+  const [original, setOriginal] = useState(false);
+  const title = useTranslated(translator, post?.title ?? '', post?.language ?? language, language);
+  const body = useTranslated(translator, post?.body ?? '', post?.language ?? language, language);
 
   async function act(task: () => Promise<unknown>, done?: string) {
     setPending(true); setError(''); setNotice('');
@@ -159,9 +213,10 @@ export function PostDetail({ copy, accountCopy, api, account, language, postId, 
     {post === null && <div className="community-state"><p>{error || copy.postNotFound}</p></div>}
     {post && <>
       <article className="post-detail">
-        <h1 dir="auto">{post.title}</h1>
+        <h1 dir="auto">{original ? post.title : title.text}</h1>
         <div className="post-byline large"><Avatar name={post.author_nickname} supporter={post.author_is_supporter} /><AuthorLine item={post} copy={copy} accountCopy={accountCopy} language={language} /></div>
-        <p className="post-body" dir="auto">{post.body}</p>
+        <TranslationBar copy={copy} language={language} source={post.language} states={[title.state, body.state]} original={original} onToggle={() => setOriginal(value => !value)} />
+        <p className="post-body" dir="auto">{original ? post.body : body.text}</p>
         <div className="post-toolbar">
           <button type="button" className="helpful-button" aria-pressed={post.helped_by_me} disabled={pending || post.author_id === me} onClick={() => void toggleHelpful()}><Icon.heart /><span>{copy.helpful}</span><b>{post.helpful_count}</b></button>
           <Actions target={{ type: 'post', id: post.id, authorId: post.author_id }} />
@@ -178,7 +233,7 @@ export function PostDetail({ copy, accountCopy, api, account, language, postId, 
           <Avatar name={comment.author_nickname} supporter={comment.author_is_supporter} size="small" />
           <div className="comment-body">
             <AuthorLine item={comment} copy={copy} accountCopy={accountCopy} language={language} />
-            <p dir="auto">{comment.body}</p>
+            <CommentText comment={comment} copy={copy} translator={translator} language={language} />
             <Actions target={{ type: 'comment', id: comment.id, authorId: comment.author_id }} />
           </div>
         </li>)}</ul>

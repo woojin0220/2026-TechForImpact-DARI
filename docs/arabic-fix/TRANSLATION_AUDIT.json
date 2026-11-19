@@ -2,7 +2,7 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 522,
+    "uiKeys": 528,
     "uiKeysByNamespace": {
       "app": 73,
       "journey": 61,
@@ -11,7 +11,7 @@
       "overview": 57,
       "tabs": 8,
       "account": 60,
-      "community": 50,
+      "community": 56,
       "intake": 58,
       "process": 11,
       "scripted": 38,
@@ -2876,6 +2876,20 @@
     },
     {
       "namespace": "community",
+      "key": "showOriginal",
+      "en": "Show original",
+      "ko": "원문 보기",
+      "ar": "عرض النص الأصلي"
+    },
+    {
+      "namespace": "community",
+      "key": "showTranslation",
+      "en": "Show translation",
+      "ko": "번역 보기",
+      "ar": "عرض الترجمة"
+    },
+    {
+      "namespace": "community",
       "key": "supporterMark",
       "en": "Support organization",
       "ko": "지원기관",
@@ -2887,6 +2901,34 @@
       "en": "Community",
       "ko": "커뮤니티",
       "ar": "المجتمع"
+    },
+    {
+      "namespace": "community",
+      "key": "translateFailed",
+      "en": "Could not translate. Showing the original.",
+      "ko": "번역하지 못해 원문을 보여드려요.",
+      "ar": "تعذّرت الترجمة. يُعرض النص الأصلي."
+    },
+    {
+      "namespace": "community",
+      "key": "translatedFrom",
+      "en": "Translated from {language}",
+      "ko": "{language}에서 번역됨",
+      "ar": "مترجم من {language}"
+    },
+    {
+      "namespace": "community",
+      "key": "translatedMark",
+      "en": "Translated",
+      "ko": "번역됨",
+      "ar": "مترجم"
+    },
+    {
+      "namespace": "community",
+      "key": "translating",
+      "en": "Translating…",
+      "ko": "번역 중…",
+      "ar": "جارٍ الترجمة…"
     },
     {
       "namespace": "community",

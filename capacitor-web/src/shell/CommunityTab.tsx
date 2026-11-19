@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AccountScreen, AuthGate } from '../platform/AccountScreens';
 import { useAuth } from '../platform/AuthContext';
 import { accountCopyFor } from '../platform/accountCopy';
@@ -8,6 +8,8 @@ import { communityApi } from '../community/api';
 import { communityCopyFor } from '../community/copy';
 import { CommunityHome, PostComposer, PostDetail } from '../community/CommunityScreens';
 import type { BoardId } from '../community/model';
+import type { Translator } from '../community/translation';
+import { deviceTranslator } from '../community/translationEngine';
 import type { TabsCopy } from './tabsCopy';
 import '../platform/account.css';
 import '../community/community.css';
@@ -27,10 +29,12 @@ function CommunityRoutes({ account, language }: { account: Account; language: st
   const api = useMemo(() => { const client = platformClient(); return client ? communityApi(client) : null; }, []);
   const [view, setView] = useState<View>({ kind: 'list' });
   const [board, setBoard] = useState<BoardId>('qna');
+  const [translator, setTranslator] = useState<Translator | null>(null);
+  useEffect(() => { let live = true; void deviceTranslator().then(found => { if (live) setTranslator(found); }); return () => { live = false; }; }, []);
   const copy = communityCopyFor(language);
   const accountCopy = accountCopyFor(language);
   if (!api || !platformApi) return null;
-  const shared = { copy, accountCopy, api, account, language };
+  const shared = { copy, accountCopy, api, account, language, translator };
   function go(next: View) { setView(next); window.scrollTo(0, 0); }
   if (view.kind === 'account') return <AccountScreen copy={accountCopy} account={account} api={platformApi} language={language} onBack={() => go({ kind: 'list' })} onChanged={() => void refresh()} />;
   if (view.kind === 'post') return <PostDetail {...shared} postId={view.id} onBack={() => go({ kind: 'list' })} />;

@@ -49,6 +49,12 @@ const en = {
   errorBody: "Enter the content.",
   errorGeneric: "Something went wrong. Please try again.",
   more: "More actions",
+  translatedFrom: "Translated from {language}",
+  showOriginal: "Show original",
+  showTranslation: "Show translation",
+  translating: "Translating…",
+  translateFailed: "Could not translate. Showing the original.",
+  translatedMark: "Translated",
 };
 
 export type CommunityCopy = typeof en;
@@ -106,6 +112,12 @@ export const communityCopies: Record<string, CommunityCopy> = {
     errorBody: "내용을 써 주세요.",
     errorGeneric: "문제가 생겼어요. 다시 시도해 주세요.",
     more: "더 보기 메뉴",
+    translatedFrom: "{language}에서 번역됨",
+    showOriginal: "원문 보기",
+    showTranslation: "번역 보기",
+    translating: "번역 중…",
+    translateFailed: "번역하지 못해 원문을 보여드려요.",
+    translatedMark: "번역됨",
   },
   fr: {
     title: "Communauté",
@@ -158,6 +170,12 @@ export const communityCopies: Record<string, CommunityCopy> = {
     errorBody: "Saisissez le contenu.",
     errorGeneric: "Un problème est survenu. Veuillez réessayer.",
     more: "Plus d’actions",
+    translatedFrom: "Traduit du {language}",
+    showOriginal: "Voir l’original",
+    showTranslation: "Voir la traduction",
+    translating: "Traduction…",
+    translateFailed: "Traduction impossible. Texte original affiché.",
+    translatedMark: "Traduit",
   },
   ru: {
     title: "Сообщество",
@@ -210,6 +228,12 @@ export const communityCopies: Record<string, CommunityCopy> = {
     errorBody: "Введите текст.",
     errorGeneric: "Что-то пошло не так. Попробуйте ещё раз.",
     more: "Другие действия",
+    translatedFrom: "Переведено ({language})",
+    showOriginal: "Показать оригинал",
+    showTranslation: "Показать перевод",
+    translating: "Перевод…",
+    translateFailed: "Не удалось перевести. Показан оригинал.",
+    translatedMark: "Переведено",
   },
   ar: {
     title: "المجتمع",
@@ -262,6 +286,12 @@ export const communityCopies: Record<string, CommunityCopy> = {
     errorBody: "اكتب المحتوى.",
     errorGeneric: "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
     more: "إجراءات أخرى",
+    translatedFrom: "مترجم من {language}",
+    showOriginal: "عرض النص الأصلي",
+    showTranslation: "عرض الترجمة",
+    translating: "جارٍ الترجمة…",
+    translateFailed: "تعذّرت الترجمة. يُعرض النص الأصلي.",
+    translatedMark: "مترجم",
   },
   fa: {
     title: "انجمن",
@@ -314,6 +344,12 @@ export const communityCopies: Record<string, CommunityCopy> = {
     errorBody: "متن را بنویسید.",
     errorGeneric: "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
     more: "کارهای دیگر",
+    translatedFrom: "ترجمه‌شده از {language}",
+    showOriginal: "دیدن متن اصلی",
+    showTranslation: "دیدن ترجمه",
+    translating: "در حال ترجمه…",
+    translateFailed: "ترجمه نشد. متن اصلی نمایش داده می‌شود.",
+    translatedMark: "ترجمه‌شده",
   },
 };
 
