@@ -7,6 +7,8 @@ export function useDocumentLanguage() {
     const root = document.documentElement;
     const observer = new MutationObserver(() => setLanguage(root.lang || 'ko'));
     observer.observe(root, { attributes: true, attributeFilter: ['lang'] });
+    // App may restore its language before the parent's effect starts observing.
+    setLanguage(root.lang || 'ko');
     return () => observer.disconnect();
   }, []);
   return language;

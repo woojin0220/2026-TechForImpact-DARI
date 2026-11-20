@@ -1,0 +1,42 @@
+/* Long translations and RTL share the same compact five-stage diagram. */
+html{scrollbar-gutter:stable}
+.nav button,.tools-menu>summary,.stage-node strong,.location-strip button,.branch-node,.chip,.dialog-actions button{white-space:normal;overflow-wrap:anywhere;word-break:normal;hyphens:auto}
+.stage-node{height:auto;min-height:112px;justify-content:flex-start;padding-top:14px}
+.stage-node strong{padding-inline:0!important;line-height:1.45}
+.stage-node .step-no{flex:none}
+.task>div{min-width:0}
+.row>*{min-width:0}
+button.link,.answer-buttons button,.nav button,.branch-node,th,td{text-align:start}
+.location-strip button{flex-shrink:0;max-width:48%}
+.tools-list{max-width:calc(100vw - 36px)}
+.tools-list button{text-align:start}
+.dari-embedded .site-header{height:auto;min-height:60px;padding-block:8px}
+.dari-embedded .nav{min-width:0}
+.dari-embedded .nav button{line-height:1.5;min-width:0}
+[dir="rtl"] .flow-main>li:not(:last-child):after{right:auto;left:-17px;content:'←'}
+[dir="rtl"] .tools-list{right:auto;left:0}
+[dir="rtl"] .knowledge summary{padding-right:0;padding-left:10px}
+[dir="rtl"] .sources,[dir="rtl"] .review-grid ul{padding-right:20px;padding-left:0}
+[dir="rtl"] .storage-status.is-error{border-left:0;border-right:2px solid #444}
+[dir="rtl"] .here-label{right:auto;left:50%;transform:translateX(-50%)}
+[dir="rtl"] .mini-label,[dir="rtl"] .eyebrow,[dir="rtl"] .question-number{letter-spacing:normal}
+.institution .address{unicode-bidi:plaintext;overflow-wrap:anywhere}
+@media(max-width:700px){
+  .dari-embedded .site-header{grid-template-columns:minmax(0,1fr) auto;gap:8px;padding-inline:12px}
+  .dari-embedded .site-header>.nav{gap:7px;align-items:stretch}
+  .dari-embedded .site-header>.nav button{flex:1;padding-inline:1px;font-size:11px;white-space:normal}
+  .dari-embedded .header-tools{max-width:52px}
+  .dari-embedded .tools-menu>summary{line-height:1.4;font-size:10px}
+  .flow-main{gap:7px;align-items:stretch}
+  .stage-node{min-height:116px;height:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;padding:14px 2px 5px}
+  .stage-node strong{font-size:11px;line-height:1.4;width:100%;text-align:center}
+  .stage-node.is-current strong{padding-inline:0}
+  .flow-main>li:not(:last-child):after{top:28px;right:-8px;left:auto;bottom:auto;content:'→';font-size:11px}
+  [dir="rtl"] .flow-main>li:not(:last-child):after{left:-8px;right:auto;top:28px;content:'←'}
+  .here-label{font-size:9px;max-width:100%;overflow-wrap:anywhere;white-space:normal;line-height:1.1}
+  .location-strip{gap:10px}
+  .location-strip button{max-width:48%;font-size:11px;line-height:1.5;min-width:0}
+  .outcome-buttons{flex-wrap:wrap}
+  .outcome-buttons button{min-width:0;flex:1}
+  .roadmap-footer{gap:9px;flex-wrap:wrap}
+}
