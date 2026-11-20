@@ -2,9 +2,9 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 528,
+    "uiKeys": 529,
     "uiKeysByNamespace": {
-      "app": 73,
+      "app": 74,
       "journey": 61,
       "revision": 51,
       "bench": 48,
@@ -514,6 +514,13 @@
       "en": "Sentence editor",
       "ko": "문장 수정",
       "ar": "تعديل الجمل"
+    },
+    {
+      "namespace": "app",
+      "key": "settings",
+      "en": "Settings",
+      "ko": "설정",
+      "ar": "الإعدادات"
     },
     {
       "namespace": "app",

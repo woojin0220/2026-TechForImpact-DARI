@@ -287,3 +287,52 @@ input[dir="ltr"], textarea[dir="ltr"], .operator-grid code { direction:ltr; unic
 .status-toggles .quiet.status-toggle,.fact-more .quiet,.clear-choice,.step-notice .quiet,.session-status .quiet{min-height:44px}
 .site-header .brand{min-height:44px}
 .story-summary summary,.details>summary{min-height:44px;display:flex;align-items:center}
+
+
+/* Issue #23: one aligned gutter for the form; conversation remains edge-to-edge. */
+.app-shell.form-mode .workspace{padding-inline:42px}
+.app-shell.form-mode .form-stage{gap:12px}
+.form-head{line-height:1.5;font-size:12px;gap:16px}
+.form-head>span:first-child{min-width:0}
+.form-head>span:last-child{flex:none;font-size:11px;color:#6b6b68;white-space:nowrap}
+.form-progress{height:2px;margin-top:-5px;background:#eeefec}
+.form-stage .dev-fill{min-height:32px;max-width:100%;padding:5px 9px;border:1px dashed #dddeda;border-radius:7px;background:#fafaf8;color:#73736d;font-size:10px;line-height:1.5;text-align:start;text-decoration:none;white-space:normal}
+.form-stage .dev-fill:hover{background:#f1f1ee;color:var(--ink)}
+.form-stage .form-card{scrollbar-width:thin;scrollbar-color:#c8c8c3 transparent;scrollbar-gutter:stable;padding:20px;border-radius:16px}
+.form-nav{gap:10px;padding-top:2px}
+.form-nav .primary,.form-nav .secondary{min-height:48px;border-radius:12px}
+.form-nav .secondary{min-width:88px}
+.form-nav .primary{background:var(--ink);border-color:var(--ink);color:white}
+
+/* The header has two equally sized actions instead of four competing controls. */
+.app-shell .header-actions{gap:8px;flex-wrap:nowrap;flex:none;max-width:100%}
+.app-shell .overview-trigger{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:0 10px;border:0;border-radius:10px;font-size:12px;font-weight:500;background:transparent;white-space:nowrap;color:#454541}
+.overview-trigger:hover,.overview-trigger[aria-expanded="true"]{background:#f4f4f1;text-decoration:none}
+.header-actions svg{width:19px;height:19px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.header-settings{position:relative;flex:none}
+.settings-menu>summary{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0;border-radius:10px;color:#55554e;cursor:pointer;list-style:none}
+.settings-menu>summary::-webkit-details-marker{display:none}
+.settings-menu>summary:hover,.settings-menu[open]>summary{background:#f4f4f1}
+.settings-popover{position:absolute;inset-inline-end:0;top:calc(100% + 8px);z-index:35;width:min(280px,calc(100vw - 32px));padding:6px;border:1px solid var(--line);border-radius:14px;background:white;box-shadow:0 10px 30px #17171712}
+.settings-action{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:11px 12px;border:0;border-radius:9px;text-align:start;background:transparent;font-size:13px;line-height:1.5}
+.settings-action>span:not(.settings-chevron){min-width:0;overflow-wrap:anywhere}
+.settings-action:hover,.settings-action:focus-visible{background:#f4f4f1}
+.settings-action.developer-action{border-top:1px solid var(--line);border-start-start-radius:0;border-start-end-radius:0;margin-top:5px;padding-top:14px;color:#73736d;font-size:12px}
+.settings-chevron{margin-inline-start:auto;color:#888;font-size:20px}
+[dir="rtl"] .settings-chevron{transform:rotate(180deg)}
+.header-settings>.operator-entry{position:absolute;inset-inline-end:0;top:100%;width:0}
+.header-settings .operator-popover{border-color:var(--line);box-shadow:0 10px 30px #17171712}
+@media(max-width:1150px) and (min-width:651px){.app-shell.form-mode .workspace{padding-inline:30px}}
+@media(max-width:650px){
+  .app-shell{--page-gutter:clamp(16px,5vw,24px)}
+  .app-shell .site-header{padding-inline:var(--page-gutter);flex-wrap:nowrap;gap:12px}
+  .app-shell.form-mode .workspace{padding-inline:var(--page-gutter)}
+  .app-shell.form-mode .sidebar{padding-inline:0}
+  .app-shell.form-mode main{padding-top:14px;padding-bottom:14px}
+  .app-shell.form-mode .session-status,.app-shell.form-mode main>.notice{margin-inline:0}
+  .app-shell .header-actions{gap:4px}
+  .app-shell .overview-trigger{padding-inline:8px;font-size:12px}
+  .app-shell .overview-trigger svg{width:17px;height:17px}
+  .form-stage .form-card{padding:18px}
+}
+@media(max-width:359px){.app-shell .overview-trigger span{max-width:132px;overflow:hidden;text-overflow:ellipsis}}
