@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { HeaderActions } from './app/HeaderActions';
 import { answerScripted, appendAssistantMessage, appendUserMessage, applyFormAnswers, calculateCoverage, clarifyStatement, confirmFacts, continueConversation, createSession, deriveQuestion14, exportSession, finishNarrative, formPageOf, formSteps, generateDraft, getActiveFacts, guideConversation, IntakeError, invalidateDraft, isFormSection, metadataGroups, narrativeFieldFor, needsTopicQuestion, nextStep, openTopic, pendingAsk, question14Steps, reaskQuestion, requirementsById, tableRowIds, type FormValue, type IntakeFact, type IntakeScope, type IntakeSession, type ScriptedAnswer, type ScriptedAsk } from './intake';
 import { cancelIntakeGeneration, generateIntakeModel, getIntakeRuntimeStatus, getPreviewModel, type IntakeRuntimeStatus } from './lib/intakeModel';
@@ -35,7 +35,8 @@ import { FactsStage } from './app/FactsStage';
 import { DraftStage } from './app/DraftStage';
 
 // Optional initial data supports isolated UI verification; normal startup is unchanged.
-export default function App({ initialSession, initialStage }: { initialSession?: IntakeSession; initialStage?: Stage } = {}) {
+/** `gate` replaces the app after the language choice (e.g. sign-in); `headerAccessory` is added to the end of the header. */
+export default function App({ initialSession, initialStage, gate, headerAccessory }: { initialSession?: IntakeSession; initialStage?: Stage; gate?: ReactNode; headerAccessory?: ReactNode } = {}) {
   const [initialWork] = useState(() => initialSession ? { work: null } as ReturnType<typeof readWorkingCopy> : readWorkingCopy());
   const [stage, updateStage] = useState<Stage>(initialStage ?? initialWork.work?.stage ?? 'language');
   const currentStage = useRef(stage);
@@ -415,6 +416,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
   if (stage === 'language') return <LanguageEntry texts={texts} status={processingStatus()} locked={locked} onSelect={selectLanguage}
     onBack={busy ? () => setStageRaw(languageReturnStage.current) : undefined}
     onQuickTest={DEV_TOOLS && !started && !Object.keys(session.form).length ? startQuickTest : undefined} />;
+  if (gate) return <>{gate}</>;
 
   const titles: Record<Exclude<Stage, 'language'>, [string, string]> = {
     basics: [copy.startTitle, copy.startIntro], form: [sc.formTitle, sc.formIntro], conversation: [copy.chatTitle, copy.chatIntro],
@@ -427,6 +429,7 @@ export default function App({ initialSession, initialStage }: { initialSession?:
     <header className="site-header">
       <button className="brand" onClick={() => setStage('basics')}><strong lang="en" dir="ltr">DARI</strong><span>{copy.tagline}</span></button>
       <HeaderActions texts={texts} languageName={intakeLanguages.find(item => item.code === language)?.name ?? language}
+        accessory={headerAccessory}
         overviewOpen={overviewOpen} onOverview={() => { setOperatorOpen(false); setOverviewOpen(true); }}
         onLanguage={() => { languageReturnStage.current = currentStage.current; setStage('language'); }} onHelp={() => setShowHelp(true)}
         showOperator={DEV_TOOLS} operatorOpen={operatorOpen} onOperator={() => setOperatorOpen(open => !open)} onCloseOperator={() => setOperatorOpen(false)}

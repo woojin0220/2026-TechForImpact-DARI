@@ -13,18 +13,23 @@ export type Profile = {
   preferred_language: string;
   age_confirmed_at: string | null;
   status: 'active' | 'suspended';
+  /** Self-declared at sign-up. Grants nothing by itself: roles and badges are verified separately. */
+  member_type: MemberType | null;
 };
+export type MemberType = 'general' | 'supporter' | 'refugee';
+export const memberTypes: MemberType[] = ['general', 'supporter', 'refugee'];
+export type SupporterApplication = { organization_name: string; status: 'pending' | 'approved' | 'rejected'; created_at: string };
 export type ConsentRecord = { document: ConsentDocument; version: string; withdrawn_at: string | null };
 export type BadgeType = 'recognized_refugee';
 export const badgeTypes: BadgeType[] = ['recognized_refugee'];
 export type MemberBadge = { badge: BadgeType; visible: boolean; verified_at: string };
-export type Account = { email: string; profile: Profile; roles: AppRole[]; consents: ConsentRecord[]; badges: MemberBadge[] };
+export type Account = { email: string; profile: Profile; roles: AppRole[]; consents: ConsentRecord[]; badges: MemberBadge[]; supporterApplication?: SupporterApplication | null };
 
 /** Support organization staff and administrators verify badges in person. */
 export function canVerifyBadges(roles: AppRole[]) { return roles.includes('supporter') || roles.includes('admin'); }
 export function isValidBadgeCode(value: string) { return /^\d{6}$/.test(value.trim()); }
 
-export type OnboardingNeed = 'age' | 'consent' | 'nickname';
+export type OnboardingNeed = 'age' | 'consent' | 'nickname' | 'memberType';
 
 export function missingConsents(consents: ConsentRecord[]): ConsentDocument[] {
   return consentDocuments.filter(document => !consents.some(item => item.document === document && item.version === consentVersions[document] && !item.withdrawn_at));
@@ -36,8 +41,11 @@ export function onboardingNeeds(account: Pick<Account, 'profile' | 'consents'>):
   if (!account.profile.age_confirmed_at) needs.push('age');
   if (missingConsents(account.consents).length) needs.push('consent');
   if (!account.profile.nickname) needs.push('nickname');
+  if (!account.profile.member_type) needs.push('memberType');
   return needs;
 }
+
+export function isValidOrganizationName(value: string) { const length = value.trim().length; return length >= 2 && length <= 80; }
 
 export function normalizeNickname(value: string) { return value.normalize('NFC').trim().replace(/\s+/g, ' '); }
 

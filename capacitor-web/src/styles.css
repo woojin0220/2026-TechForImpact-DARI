@@ -336,3 +336,5 @@ input[dir="ltr"], textarea[dir="ltr"], .operator-grid code { direction:ltr; unic
   .form-stage .form-card{padding:18px}
 }
 @media(max-width:359px){.app-shell .overview-trigger span{max-width:132px;overflow:hidden;text-overflow:ellipsis}}
+/* Keep the overview, settings and profile actions clear of the brand on narrow phones. */
+@media(max-width:400px){.app-shell .header-actions:has(.user-button) .overview-trigger span{display:none}}

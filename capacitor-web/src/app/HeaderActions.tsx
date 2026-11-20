@@ -13,11 +13,12 @@ type Props = {
   onOperator: () => void;
   onCloseOperator: () => void;
   operatorPanel: ReactNode;
+  accessory?: ReactNode;
 };
 
 /** Keep frequent actions visible; language, help and developer tools share a quiet settings menu. */
 export function HeaderActions({ texts: { copy, ui, overview }, languageName, overviewOpen, onOverview, onLanguage, onHelp,
-  showOperator, operatorOpen, onOperator, onCloseOperator, operatorPanel }: Props) {
+  showOperator, operatorOpen, onOperator, onCloseOperator, operatorPanel, accessory }: Props) {
   const menu = useRef<HTMLDetailsElement>(null);
   const tools = useRef<HTMLDivElement>(null);
   const close = () => { if (menu.current) menu.current.open = false; };
@@ -59,5 +60,6 @@ export function HeaderActions({ texts: { copy, ui, overview }, languageName, ove
       </details>
       {operatorPanel && <div className="operator-entry">{operatorPanel}</div>}
     </div>
+    {accessory}
   </div>;
 }

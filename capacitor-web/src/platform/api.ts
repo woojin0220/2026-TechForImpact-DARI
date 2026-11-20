@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { consentDocuments, consentVersions, normalizeNickname, supportedProfileLanguages, type Account, type AppRole, type BadgeType, type ConsentRecord, type MemberBadge, type Profile } from './account';
+import { consentDocuments, consentVersions, normalizeNickname, supportedProfileLanguages, type Account, type AppRole, type BadgeType, type ConsentRecord, type MemberBadge, type MemberType, type Profile, type SupporterApplication } from './account';
 
 /** Thin data layer over Supabase. Every call relies on row-level security on the server. */
 export function platformApi(client: SupabaseClient) {
@@ -14,17 +14,20 @@ export function platformApi(client: SupabaseClient) {
     signOut: () => check(client.auth.signOut().then(result => ({ data: null, error: result.error }))),
 
     async loadAccount(userId: string, email: string): Promise<Account> {
-      const [profile, roles, consents, badges] = await Promise.all([
-        check(client.from('profiles').select('user_id,nickname,preferred_language,age_confirmed_at,status').eq('user_id', userId).single()),
+      const [profile, roles, consents, badges, applications] = await Promise.all([
+        check(client.from('profiles').select('user_id,nickname,preferred_language,age_confirmed_at,status,member_type').eq('user_id', userId).single()),
         check(client.from('user_roles').select('role').eq('user_id', userId)),
         check(client.from('consents').select('document,version,withdrawn_at').eq('user_id', userId)),
         check(client.from('member_badges').select('badge,visible,verified_at').eq('user_id', userId)),
+        check(client.from('supporter_applications').select('organization_name,status,created_at').eq('user_id', userId)),
       ]);
-      return { email, profile: profile as Profile, roles: (roles as { role: AppRole }[]).map(item => item.role), consents: consents as ConsentRecord[], badges: badges as MemberBadge[] };
+      return { email, profile: profile as Profile, roles: (roles as { role: AppRole }[]).map(item => item.role), consents: consents as ConsentRecord[], badges: badges as MemberBadge[],
+        supporterApplication: (applications as SupporterApplication[])[0] ?? null };
     },
 
-    /** Records age confirmation, the current consent versions and the nickname in one go. */
-    async completeOnboarding(userId: string, input: { nickname: string; language: string; missing: string[] }) {
+    /** Records age confirmation, consents, nickname and member type; a support organization type also files an application for review. */
+    async completeOnboarding(userId: string, input: { nickname: string; language: string; missing: string[]; memberType: MemberType; organization?: string }) {
+      if (input.memberType === 'supporter' && input.organization) await this.applyAsSupporter(userId, input.organization);
       if (input.missing.length) {
         await check(client.from('consents').insert(consentDocuments.filter(document => input.missing.includes(document))
           .map(document => ({ user_id: userId, document, version: consentVersions[document] }))));
@@ -32,7 +35,14 @@ export function platformApi(client: SupabaseClient) {
       await check(client.from('profiles').update({
         nickname: normalizeNickname(input.nickname), age_confirmed_at: new Date().toISOString(),
         preferred_language: supportedProfileLanguages.includes(input.language) ? input.language : 'ko',
+        member_type: input.memberType,
       }).eq('user_id', userId));
+    },
+
+    /** Files (or refiles after a rejection) a support organization application. An administrator approves it. */
+    async applyAsSupporter(userId: string, organization: string) {
+      await check(client.from('supporter_applications').delete().eq('user_id', userId).neq('status', 'approved'));
+      await check(client.from('supporter_applications').insert({ user_id: userId, organization_name: organization.trim() }));
     },
 
     updateNickname: (userId: string, nickname: string) => check(client.from('profiles').update({ nickname: normalizeNickname(nickname) }).eq('user_id', userId)),

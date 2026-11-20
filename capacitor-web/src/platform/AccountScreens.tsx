@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from 'react';
-import { accountErrorKind, canVerifyBadges, isValidBadgeCode, isValidCode, isValidEmail, isValidNickname, missingConsents, onboardingNeeds, primaryRole, type Account, type AccountErrorKind, type AppRole, type BadgeType } from './account';
+import { accountErrorKind, canVerifyBadges, isValidBadgeCode, isValidCode, isValidEmail, isValidNickname, isValidOrganizationName, memberTypes, missingConsents, onboardingNeeds, primaryRole, type Account, type AccountErrorKind, type AppRole, type BadgeType, type MemberType } from './account';
 import type { AccountCopy } from './accountCopy';
 import type { PlatformApi } from './api';
 import { useAuth } from './AuthContext';
@@ -25,7 +25,7 @@ function useRequest(copy: AccountCopy) {
 
 function ErrorLine({ text }: { text: string }) { return text ? <p className="account-error" role="alert">{text}</p> : null; }
 
-export function SignInScreen({ copy, api }: { copy: AccountCopy; api: PlatformApi }) {
+export function SignInScreen({ copy, api, title, intro }: { copy: AccountCopy; api: PlatformApi; title?: string; intro?: string }) {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [sentTo, setSentTo] = useState('');
@@ -41,8 +41,8 @@ export function SignInScreen({ copy, api }: { copy: AccountCopy; api: PlatformAp
     await request.run(() => api.verifyEmailCode(sentTo, code));
   }
   return <section className="account-screen">
-    <h1>{copy.signInTitle}</h1>
-    <p className="account-intro">{copy.signInIntro}</p>
+    <h1>{title ?? copy.signInTitle}</h1>
+    <p className="account-intro">{intro ?? copy.signInIntro}</p>
     {!sentTo ? <form onSubmit={sendCode}>
       <label>{copy.email}<input type="email" inputMode="email" autoComplete="email" dir="ltr" value={email} onChange={event => setEmail(event.target.value)} required /></label>
       <ErrorLine text={request.error} />
@@ -65,18 +65,29 @@ export function OnboardingScreen({ copy, account, api, language, onDone }: { cop
   const [age, setAge] = useState(!!account.profile.age_confirmed_at);
   const [agreed, setAgreed] = useState<string[]>([]);
   const [nickname, setNickname] = useState(account.profile.nickname ?? '');
+  const [memberType, setMemberType] = useState<MemberType | null>(account.profile.member_type);
+  const [organization, setOrganization] = useState('');
   const request = useRequest(copy);
   const consentText: Record<string, string> = { terms: copy.agreeTerms, privacy: copy.agreePrivacy, community: copy.agreeCommunity };
-  const ready = age && missing.every(item => agreed.includes(item)) && isValidNickname(nickname);
+  const ready = age && missing.every(item => agreed.includes(item)) && isValidNickname(nickname) && !!memberType;
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!isValidNickname(nickname)) { request.setError(copy.errorNickname); return; }
-    if (await request.run(() => api.completeOnboarding(account.profile.user_id, { nickname, language, missing }))) onDone();
+    if (!memberType) return;
+    if (memberType === 'supporter' && !isValidOrganizationName(organization)) { request.setError(copy.errorOrganization); return; }
+    if (await request.run(() => api.completeOnboarding(account.profile.user_id, { nickname, language, missing, memberType, organization }))) onDone();
   }
   return <section className="account-screen">
     <h1>{copy.onboardingTitle}</h1>
     <p className="account-intro">{copy.onboardingIntro}</p>
     <form onSubmit={submit}>
+      <fieldset className="member-type-picker"><legend>{copy.memberTypeTitle}</legend>
+        {memberTypes.map(type => <label key={type} className={`member-type-option${memberType === type ? ' selected' : ''}`}>
+          <input type="radio" name="member-type" checked={memberType === type} onChange={() => setMemberType(type)} />
+          <span><strong>{copy[`memberType_${type}`]}</strong><small>{copy[`memberTypeHint_${type}`]}</small></span>
+        </label>)}
+      </fieldset>
+      {memberType === 'supporter' && <label className="account-field">{copy.organizationName}<input autoComplete="organization" maxLength={80} dir="auto" value={organization} onChange={event => setOrganization(event.target.value)} /></label>}
       {!account.profile.age_confirmed_at && <label className="check-row"><input type="checkbox" checked={age} onChange={event => setAge(event.target.checked)} /><span>{copy.ageConfirm}</span></label>}
       {missing.map(document => <label key={document} className="check-row"><input type="checkbox" checked={agreed.includes(document)}
         onChange={event => setAgreed(current => event.target.checked ? [...current, document] : current.filter(item => item !== document))} /><span>{consentText[document]}</span></label>)}
@@ -163,10 +174,22 @@ export function AccountScreen({ copy, account, api, language = 'ko', onBack, onC
     await request.run(() => api.deleteAccount());
   }
   return <section className="account-screen">
-    <button type="button" className="quiet" onClick={onBack}>{copy.back}</button>
-    <h1>{copy.accountTitle}</h1>
-    <p className="account-intro">{fill(copy.signedInAs, { email: account.email })}</p>
-    <dl className="account-facts"><div><dt>{copy.role}</dt><dd>{copy[roleKeys[primaryRole(account.roles)]]}</dd></div></dl>
+    <header className="account-bar">
+      <button type="button" className="account-back" aria-label={copy.back} onClick={onBack}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg></button>
+      <h1>{copy.profile}</h1>
+    </header>
+    <div className="profile-card">
+      <span className="profile-avatar" aria-hidden="true">{Array.from((account.profile.nickname ?? '').trim())[0]?.toUpperCase()}</span>
+      <div className="profile-summary">
+        <strong dir="auto">{account.profile.nickname}</strong>
+        <span>{fill(copy.signedInAs, { email: account.email })}</span>
+        <span className="profile-role">{copy.role} · {copy[roleKeys[primaryRole(account.roles)]]}</span>
+        {account.profile.member_type && <span className="profile-role">{copy.memberTypeTitle} · {copy[`memberType_${account.profile.member_type}`]}</span>}
+        {account.badges.some(badge => badge.visible) && <span className="profile-badges">{account.badges.filter(badge => badge.visible).map(badge => <MemberBadge key={badge.badge} badge={badge.badge} copy={copy} />)}</span>}
+      </div>
+    </div>
+    <SupporterStatus copy={copy} account={account} api={api} onChanged={onChanged} />
+    {account.profile.member_type === 'refugee' && !account.badges.length && <p className="account-note">{copy.refugeeNext}</p>}
     <form onSubmit={save}>
       <label className="account-field">{copy.nickname}<input maxLength={20} dir="auto" value={nickname} onChange={event => { setNickname(event.target.value); setSaved(false); }} /><small>{copy.nicknameHint}</small></label>
       <ErrorLine text={request.error} />
@@ -182,15 +205,35 @@ export function AccountScreen({ copy, account, api, language = 'ko', onBack, onC
   </section>;
 }
 
+/** Support organization application status, with a way to apply again after a rejection. */
+function SupporterStatus({ copy, account, api, onChanged }: { copy: AccountCopy; account: Account; api: PlatformApi; onChanged: () => void }) {
+  const [organization, setOrganization] = useState(account.supporterApplication?.organization_name ?? '');
+  const request = useRequest(copy);
+  if (account.profile.member_type !== 'supporter' || account.roles.includes('supporter')) return null;
+  const status = account.supporterApplication?.status;
+  if (status === 'pending') return <p className="account-note" role="status">{copy.supporterPending}</p>;
+  async function apply(event: FormEvent) {
+    event.preventDefault();
+    if (!isValidOrganizationName(organization)) { request.setError(copy.errorOrganization); return; }
+    if (await request.run(() => api.applyAsSupporter(account.profile.user_id, organization))) onChanged();
+  }
+  return <form className="account-note" onSubmit={apply}>
+    {status === 'rejected' && <p>{copy.supporterRejected}</p>}
+    <label className="account-field">{copy.organizationName}<input autoComplete="organization" maxLength={80} dir="auto" value={organization} onChange={event => setOrganization(event.target.value)} /></label>
+    <ErrorLine text={request.error} />
+    <button className="secondary" disabled={request.pending}>{copy.reapply}</button>
+  </form>;
+}
+
 /**
  * Shows sign-in, onboarding or a status screen until the member may use the feature,
  * then renders `children` with the ready account.
  */
-export function AuthGate({ copy, language, children }: { copy: AccountCopy; language: string; children: (account: Account) => ReactNode }) {
+export function AuthGate({ copy, language, children, frontTitle, frontIntro }: { copy: AccountCopy; language: string; children: (account: Account) => ReactNode; frontTitle?: string; frontIntro?: string }) {
   const { state, api, refresh } = useAuth();
   if (state.status === 'unconfigured' || !api) return <section className="account-screen"><p className="account-intro">{copy.notConfigured}</p></section>;
   if (state.status === 'loading') return <section className="account-screen" aria-busy="true"><p className="account-intro">{copy.working}</p></section>;
-  if (state.status === 'signedOut') return <SignInScreen copy={copy} api={api} />;
+  if (state.status === 'signedOut') return <SignInScreen copy={copy} api={api} title={frontTitle} intro={frontIntro} />;
   if (state.status === 'error') return <section className="account-screen"><p className="account-intro">{copy.loadFailed}</p>
     <div className="account-actions"><button type="button" className="secondary" onClick={() => void refresh()}>{copy.retry}</button><button type="button" className="quiet" onClick={() => void api.signOut()}>{copy.signOut}</button></div></section>;
   const { account } = state;

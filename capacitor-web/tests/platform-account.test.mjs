@@ -3,17 +3,17 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
-import { accountErrorKind, canVerifyBadges, isValidBadgeCode, consentVersions, isValidCode, isValidEmail, isValidNickname, missingConsents, normalizeNickname, onboardingNeeds, primaryRole } from '../src/platform/account.ts';
+import { accountErrorKind, canVerifyBadges, isValidBadgeCode, consentVersions, isValidCode, isValidEmail, isValidNickname, isValidOrganizationName, memberTypes, missingConsents, normalizeNickname, onboardingNeeds, primaryRole } from '../src/platform/account.ts';
 import { accountCopies, accountCopyFor } from '../src/platform/accountCopy.ts';
 import { readPlatformConfig } from '../src/platform/config.ts';
 import { intakeLanguages } from '../src/intakeCopy.ts';
 
-const profile = { user_id: 'u1', nickname: null, preferred_language: 'ko', age_confirmed_at: null, status: 'active' };
+const profile = { user_id: 'u1', nickname: null, preferred_language: 'ko', age_confirmed_at: null, status: 'active', member_type: null };
 const current = Object.entries(consentVersions).map(([document, version]) => ({ document, version, withdrawn_at: null }));
 
 test('onboarding asks for age, every current consent and a nickname', () => {
-  assert.deepEqual(onboardingNeeds({ profile, consents: [] }), ['age', 'consent', 'nickname']);
-  const done = { ...profile, nickname: 'alpha', age_confirmed_at: '2026-11-13T00:00:00Z' };
+  assert.deepEqual(onboardingNeeds({ profile, consents: [] }), ['age', 'consent', 'nickname', 'memberType']);
+  const done = { ...profile, nickname: 'alpha', member_type: 'general', age_confirmed_at: '2026-11-13T00:00:00Z' };
   assert.deepEqual(onboardingNeeds({ profile: done, consents: current }), []);
   const outdated = current.map(item => item.document === 'privacy' ? { ...item, version: '2020-01' } : item);
   assert.deepEqual(missingConsents(outdated), ['privacy']);
@@ -25,6 +25,13 @@ test('nicknames allow any script but not symbols or blank names', () => {
   for (const ok of ['alpha', '다리 사용자', 'مستخدم_1', 'Ива-н', 'کاربر']) assert.ok(isValidNickname(ok), ok);
   for (const bad of ['a', '   ', '<script>', 'x'.repeat(21), '__', 'name@mail']) assert.ok(!isValidNickname(bad), bad);
   assert.equal(normalizeNickname('  two   words '), 'two words');
+});
+
+test('sign-up offers three member types and checks the organization name', () => {
+  assert.deepEqual([...memberTypes], ['general', 'supporter', 'refugee']);
+  assert.ok(isValidOrganizationName('  다리 지원센터 '));
+  assert.ok(!isValidOrganizationName('a'));
+  assert.ok(!isValidOrganizationName('x'.repeat(81)));
 });
 
 test('email and code checks', () => {
@@ -76,6 +83,8 @@ const compiled = await build({
     export const onboarding = language => renderToStaticMarkup(<OnboardingScreen copy={accountCopyFor(language)} account={account()} api={api} language={language} onDone={() => {}} />);
     export const accountPage = language => renderToStaticMarkup(<AccountScreen copy={accountCopyFor(language)} account={account()} api={api} onBack={() => {}} onChanged={() => {}} />);
     export const memberPage = (language, badges) => renderToStaticMarkup(<AccountScreen copy={accountCopyFor(language)} account={account({}, { roles: ['user'], badges })} api={api} language={language} onBack={() => {}} onChanged={() => {}} />);
+    export const pickType = (language, memberType = null) => renderToStaticMarkup(<OnboardingScreen copy={accountCopyFor(language)} account={account({ member_type: memberType })} api={api} language={language} onDone={() => {}} />);
+    export const pendingSupporter = language => renderToStaticMarkup(<AccountScreen copy={accountCopyFor(language)} account={account({ member_type: 'supporter' }, { roles: ['user'], supporterApplication: { organization_name: 'Bridge', status: 'pending', created_at: '2026-11-19T00:00:00Z' } })} api={api} language={language} onBack={() => {}} onChanged={() => {}} />);
     export const gate = language => renderToStaticMarkup(<AuthGate copy={accountCopyFor(language)} language={language}>{() => <p>secret</p>}</AuthGate>);
   ` },
   bundle: true, platform: 'node', format: 'cjs', jsx: 'automatic', write: false,
@@ -99,10 +108,24 @@ test('onboarding lists age and all three consents with the start button disabled
   assert.match(html, /<button class="primary full" disabled="">ابدأ<\/button>/);
 });
 
+test('sign-up shows the three member types and asks supporters for an organization', () => {
+  const plain = mod.exports.pickType('ko');
+  assert.equal((plain.match(/type="radio"/g) ?? []).length, 3);
+  for (const key of ['memberType_general', 'memberType_supporter', 'memberType_refugee']) assert.ok(plain.includes(accountCopies.ko[key]), key);
+  assert.ok(!plain.includes(accountCopies.ko.organizationName));
+  assert.ok(mod.exports.pickType('ko', 'supporter').includes(accountCopies.ko.organizationName));
+});
+
+test('a supporter waiting for approval sees the pending note, not supporter tools', () => {
+  const html = mod.exports.pendingSupporter('en');
+  assert.ok(html.includes(accountCopies.en.supporterPending));
+});
+
 test('account page shows email, highest role, sign out and delete', () => {
   const html = mod.exports.accountPage('en');
   assert.match(html, /Signed in as member@example.org/);
-  assert.match(html, /<dd>Support organization<\/dd>/);
+  assert.match(html, /Role · Support organization/);
+  assert.match(html, /<h1>Profile<\/h1>/);
   assert.match(html, /Sign out/);
   assert.match(html, /Delete account/);
 });

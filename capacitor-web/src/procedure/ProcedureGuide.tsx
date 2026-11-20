@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { procedureCopyFor } from './copy';
 import './procedure.css';
 
-type Props = { language: string; onBack: () => void };
+type Props = { language: string; onBack: () => void; headerAccessory?: ReactNode };
 
 /** Same-origin bundled guide. The frame never receives the applicant's writing session. */
-export function ProcedureGuide({ language, onBack }: Props) {
+export function ProcedureGuide({ language, onBack, headerAccessory }: Props) {
   const copy = procedureCopyFor(language);
   const frame = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number>();
@@ -43,7 +43,10 @@ export function ProcedureGuide({ language, onBack }: Props) {
   return <main className="procedure-view" aria-label={copy.title} lang={language} dir={direction}>
     <div className="procedure-toolbar">
       <strong>{copy.title}</strong>
-      <button type="button" className="secondary" onClick={onBack}>{copy.back}</button>
+      <div className="procedure-toolbar-actions">
+        <button type="button" className="secondary" onClick={onBack}>{copy.back}</button>
+        {headerAccessory}
+      </div>
     </div>
     {loadFailed && <div className="procedure-load-error" role="alert">
       <p>{copy.loadError}</p>
