@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { translationProblem, preserveOriginal } from '../src/application/translationQuality.ts';
+import { isCurrent } from '../src/application/model.ts';
+import { prepareDownload } from '../src/application/prepareDownload.ts';
+
+const saved = (source,korean=source,language='ru')=>({source,korean,language,translatedSource:source});
+test('copied or mostly Russian answers are not complete, including preexisting saved results',()=>{
+ const source='Не применимо: паспорт находится у меня.';
+ assert.equal(translationProblem(source,'ru',source),'UNTRANSLATED_ANSWER');
+ assert.equal(translationProblem(source,'ru','...'),'UNTRANSLATED_ANSWER');
+ assert.equal(isCurrent(saved(source),'9.8'),false);
+ assert.equal(translationProblem(source,'ru','해당 없음. Паспорт находится у меня.'),'UNTRANSLATED_ANSWER');
+});
+test('personal names, dates, emails and visa codes are preserved without calling a model',async()=>{
+ const values={'1.2':'ПРИМЕРОВ','1.3':'АЛЕКСЕЙ УЧЕБНЫЙ','9.3':'2024/01/10','10.3':'C-3','11.6':'demo-applicant@example.invalid'};
+ const answers=Object.fromEntries(Object.entries(values).map(([id,text])=>[id,{...saved(text,''),translatedSource:''}]));
+ const ready=await prepareDownload(answers,async()=>{throw Error('must not call model')},()=>{},()=>{});
+ for(const [id,value]of Object.entries(values)){assert.equal(ready[id].korean,value);assert.equal(isCurrent(ready[id],id),true)}
+ assert.equal(preserveOriginal('Не исповедую религию.','1.11'),false);
+ assert.equal(translationProblem('Русский.','ru','Русский.','1.12'),'UNTRANSLATED_ANSWER');
+});
+test('valid Korean can retain foreign names, acronyms and uncertainty',()=>{
+ assert.equal(translationProblem('Мать: Елена Примерова.','ru','어머니는 Елена Примерова입니다.'),null);
+ assert.equal(translationProblem('Мать: Елена Ивановна Примерова.','ru','어머니는 Елена Ивановна Примерова입니다.'),null);
+ assert.equal(translationProblem('Я не знаю, были ли они сотрудниками полиции.','ru','그들이 경찰관이었는지는 모릅니다.'),null);
+ assert.equal(translationProblem('UNHCR','en','유엔난민기구(UNHCR)'),null);
+});
+test('download retries cached untranslated sentences and stops before marking failed output complete',async()=>{
+ const source='Не применимо: паспорт находится у меня.';
+ let calls=0,savedAnswers;
+ const ready=await prepareDownload({'9.8':saved(source)},async()=>{calls++;return '해당 없음: 여권을 소지하고 있습니다.'},x=>savedAnswers=x,()=>{});
+ assert.equal(calls,1);assert.equal(isCurrent(ready['9.8'],'9.8'),true);assert.deepEqual(ready,savedAnswers);
+ const updates=[];
+ await assert.rejects(prepareDownload({'9.8':{...saved(source,''),translatedSource:''}},async()=>source,x=>updates.push(x),()=>{}),/UNTRANSLATED_ANSWER/);
+ assert.equal(updates.length,0);
+});

@@ -2,9 +2,9 @@
   "baseCommit": "2b298384f5e6914b48a77a969ed9f99c5c344073",
   "targetLanguage": "ar",
   "counts": {
-    "uiKeys": 545,
+    "uiKeys": 547,
     "uiKeysByNamespace": {
-      "app": 74,
+      "app": 76,
       "journey": 61,
       "revision": 51,
       "bench": 48,
@@ -269,6 +269,20 @@
       "en": "This operation could not be completed. Your answers remain on this page. Retry or ask an operator for help.",
       "ko": "작업을 완료하지 못했습니다. 답변은 이 화면에 남아 있습니다. 다시 시도하거나 운영자에게 도움을 요청해 주세요.",
       "ar": "تعذّر إتمام هذه العملية. ما زالت إجاباتك في هذه الصفحة. أعد المحاولة أو اطلب مساعدة المشغّل."
+    },
+    {
+      "namespace": "app",
+      "key": "hybrid",
+      "en": "Hybrid · local masking → Gemini → local restoration",
+      "ko": "하이브리드 · 로컬 마스킹 → Gemini → 로컬 복원",
+      "ar": "وضع هجين · إخفاء محلي ← Gemini ← استعادة محلية"
+    },
+    {
+      "namespace": "app",
+      "key": "hybridNote",
+      "en": "Masking runs on the connected local Mac server before sending to Gemini. Phone-side masking is not yet supported. Detection can miss information; use synthetic data for testing.",
+      "ko": "마스킹은 연결된 Mac 로컬 서버에서 실행됩니다. 휴대폰 자체 마스킹은 아직 지원하지 않습니다. 탐지 누락 가능성이 있어 합성 데이터로 시험해 주세요.",
+      "ar": "تُخفى البيانات على خادم Mac المحلي قبل إرسالها إلى Gemini. الإخفاء داخل الهاتف غير مدعوم بعد. قد يفوت الكاشف بعض المعلومات؛ استخدم بيانات اصطناعية للاختبار."
     },
     {
       "namespace": "app",

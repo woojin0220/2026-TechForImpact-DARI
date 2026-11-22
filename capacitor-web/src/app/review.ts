@@ -51,7 +51,7 @@ export function syncConversation(current: IntakeSession, language: string, copy:
     return appendAssistantMessage(current, questionText(step.ask, language, copy, step.row), step.ask);
   }
   if (step.kind === 'narrative') {
-    // Guided questions are written by the model (see the guidance effect).
+    // Guidance supplies model-phrased or local-template questions for this runtime.
     if (step.guided) return current;
     if (!current.messages.some(item => item.ask?.kind === 'narrative')) return appendAssistantMessage(current, narrativeOpening(current.language), { kind: 'narrative' });
     return last?.role === 'user' ? appendAssistantMessage(current, copy.resume, { kind: 'narrative' }) : current;

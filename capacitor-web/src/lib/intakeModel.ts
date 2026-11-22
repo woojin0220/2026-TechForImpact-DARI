@@ -5,7 +5,7 @@ import { createModelQueue } from './modelQueue';
 
 export type IntakeRuntimeStatus = {
   platform: string;
-  mode: 'on-device' | 'local-preview';
+  mode: 'on-device' | 'local-preview' | 'hybrid';
   available: boolean;
   modelReady: boolean;
   modelName?: string;
@@ -19,6 +19,10 @@ export type IntakeRuntimeStatus = {
 const browserHost = typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'localhost' : '127.0.0.1';
 export const INTAKE_API_URL = (import.meta.env.VITE_DARI_INTAKE_API_URL ?? `http://${browserHost}:8765`).replace(/\/$/, '');
 export const previewModels = ['gemma4:e4b', 'gemma4:e2b', 'gemma3n:e4b', 'qwen3:4b', 'llama3.2:3b'];
+const useHybrid = import.meta.env.VITE_DARI_LLM_MODE === 'hybrid';
+let maskValues: string[] = [];
+/** Known structured identity fields, kept only in memory and sent to the local gateway. */
+export function setIntakeMaskValues(values: string[]) { maskValues = [...new Set(values.filter(Boolean))]; }
 let previewModel = 'gemma4:e4b';
 let activeController: AbortController | null = null;
 let benchOptions: NativeBenchOptions = {};
@@ -38,7 +42,7 @@ export function setPreviewModel(model: string) {
 }
 
 export async function getIntakeRuntimeStatus(): Promise<IntakeRuntimeStatus> {
-  if (Capacitor.isNativePlatform()) {
+  if (Capacitor.isNativePlatform() && !useHybrid) {
     try { return { ...await native.getStatus(), mode: 'on-device' }; }
     catch (error) {
       return { platform: Capacitor.getPlatform(), mode: 'on-device', available: false, modelReady: false,
@@ -49,12 +53,14 @@ export async function getIntakeRuntimeStatus(): Promise<IntakeRuntimeStatus> {
     const response = await fetch(`${INTAKE_API_URL}/v1/intake/status`, { signal: AbortSignal.timeout(7000) });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || '로컬 미리보기 서버 연결 실패');
+    if ((result.mode === 'hybrid') !== useHybrid) throw new Error('앱의 VITE_DARI_LLM_MODE와 서버의 DARI_LLM_PROVIDER 설정이 일치하지 않습니다.');
+    if (useHybrid) return { ...result, platform: Capacitor.getPlatform(), available: true, mode: 'hybrid' };
     const models: string[] = result.models ?? [];
     return { platform: 'web', mode: 'local-preview', available: true,
       modelReady: models.includes(previewModel), modelName: previewModel, models, busy: result.busy,
       reason: models.includes(previewModel) ? undefined : `${previewModel} 모델을 Mac에 먼저 준비해 주세요.` };
   } catch (error) {
-    return { platform: 'web', mode: 'local-preview', available: false, modelReady: false,
+    return { platform: Capacitor.getPlatform(), mode: useHybrid ? 'hybrid' : 'local-preview', available: false, modelReady: false,
       modelName: previewModel, reason: error instanceof Error ? error.message : '로컬 미리보기 서버 연결 실패' };
   }
 }
@@ -67,7 +73,7 @@ export async function importIntakeModel(): Promise<IntakeRuntimeStatus> {
 
 export async function cancelIntakeGeneration(): Promise<void> {
   activeController?.abort();
-  if (Capacitor.isNativePlatform()) await native.cancel();
+  if (Capacitor.isNativePlatform() && !useHybrid) await native.cancel();
 }
 
 const pause = (ms: number, signal?: AbortSignal) => new Promise<void>((resolve, reject) => {
@@ -87,15 +93,15 @@ async function waitUntilIdle(isBusy: () => Promise<boolean>, signal?: AbortSigna
 const serverBusy = async () => (await (await fetch(`${INTAKE_API_URL}/v1/intake/status`, { signal: AbortSignal.timeout(7000) })).json()).busy === true;
 const isBusyError = (error: unknown) => /이전 모델 요청|BUSY|작업 중/.test(error instanceof Error ? `${error.message} ${(error as { code?: string }).code ?? ''}` : String(error));
 
-type GenerateRequest = { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown>; priority?: 'foreground' | 'background' };
+type GenerateRequest = { task: 'intake' | 'draft'; purpose?: 'example' | 'draft-batch'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown>; priority?: 'foreground' | 'background' };
 
 // Every model call in the app shares this queue so overlapping requests wait their
 // turn instead of failing with "another request is running".
 const modelQueue = createModelQueue();
-
-export async function generateIntakeModel(request: GenerateRequest): Promise<string> {
+export const generateIntakeModel = Object.assign(async (request: GenerateRequest): Promise<string> => {
   return (await generateIntakeModelWithStats(request)).text;
-}
+}, { conversationMode: useHybrid ? 'single-call' as const : undefined,
+  draftMode: useHybrid ? 'single-call' as const : undefined });
 
 /** Same as generateIntakeModel, plus the runtime's latency/token/memory measurements. */
 export function generateIntakeModelWithStats(request: GenerateRequest): Promise<{ text: string; stats?: ModelStats }> {
@@ -104,7 +110,7 @@ export function generateIntakeModelWithStats(request: GenerateRequest): Promise<
 
 async function runModel(request: GenerateRequest): Promise<{ text: string; stats?: ModelStats }> {
   if (request.signal?.aborted) throw new DOMException('요청을 취소했습니다.', 'AbortError');
-  if (Capacitor.isNativePlatform()) {
+  if (Capacitor.isNativePlatform() && !useHybrid) {
     const cancel = () => { void native.cancel().catch(() => {}); };
     request.signal?.addEventListener('abort', cancel, { once: true });
     try {
@@ -132,6 +138,18 @@ async function runModel(request: GenerateRequest): Promise<{ text: string; stats
 }
 
 async function previewGenerate(request: GenerateRequest): Promise<{ text: string; stats?: ModelStats }> {
+  // The development masking gateway must remain on this host / emulator host.
+  if (useHybrid) {
+    const url = new URL(INTAKE_API_URL);
+    if (!['localhost', '127.0.0.1', '10.0.2.2', '[::1]'].includes(url.hostname) || !['http:', 'https:'].includes(url.protocol) || url.username || url.password) {
+      throw new Error('하이브리드 개발 모드는 같은 컴퓨터의 로컬 게이트웨이만 지원합니다.');
+    }
+  }
+  // Refuse a provider mismatch before transmitting any source text.
+  const status = await getIntakeRuntimeStatus();
+  if (!status.available || !status.modelReady) throw new Error(status.reason || '모델 실행 준비가 필요합니다.');
+  if (request.signal?.aborted) throw new DOMException('요청을 취소했습니다.', 'AbortError');
+  if (activeController) throw new Error('이전 요청을 처리하고 있습니다.');
   const controller = new AbortController();
   activeController = controller;
   const cancel = () => controller.abort();
@@ -140,7 +158,7 @@ async function previewGenerate(request: GenerateRequest): Promise<{ text: string
   try {
     const response = await fetch(`${INTAKE_API_URL}/v1/intake/generate`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.signal,
-      body: JSON.stringify({ task: request.task, system: request.system, prompt: request.prompt, responseSchema: request.responseSchema, model: previewModel, format: previewFormat }),
+      body: JSON.stringify({ task: request.task, purpose: request.purpose, system: request.system, prompt: request.prompt, responseSchema: request.responseSchema, model: previewModel, format: previewFormat, ...(useHybrid ? { maskValues } : {}) }),
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || '대화 모델 요청에 실패했습니다.');

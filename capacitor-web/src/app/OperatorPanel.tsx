@@ -40,12 +40,13 @@ export function OperatorPanel({ texts, language, runtime, onRuntime, refreshRunt
   return <section id="operator" className="operator-popover" lang={language} dir={direction} aria-label={ui.operator}>
     <div className="operator-head"><b>{ui.operator}</b><button className="quiet" onClick={onClose}>{copy.close}</button></div>
     <div className="operator-grid">
-      <p className="status-line">{runtime?.mode === 'on-device' ? ui.onDevice : ui.localPreview}<br /><bdi dir="ltr">{runtime?.modelName ?? ui.checking}{runtime?.backend && ` · ${runtime.backend.toUpperCase()}`}</bdi> · {runtime?.modelReady ? (runtime.mode === 'on-device' ? ui.fileReady : ui.modelReady) : ui.modelNeeded}</p>
-      {runtime?.mode !== 'on-device' && <>
+      <p className="status-line">{runtime?.mode === 'hybrid' ? ui.hybrid : runtime?.mode === 'on-device' ? ui.onDevice : ui.localPreview}<br /><bdi dir="ltr">{runtime?.modelName ?? ui.checking}{runtime?.backend && ` · ${runtime.backend.toUpperCase()}`}</bdi> · {runtime?.modelReady ? (runtime.mode === 'on-device' ? ui.fileReady : ui.modelReady) : ui.modelNeeded}</p>
+      {runtime?.mode === 'local-preview' && <>
         <code dir="ltr">{INTAKE_API_URL}</code>
         <label>{ui.previewModel}<select dir="ltr" value={model} disabled={locked} onChange={event => { onModel(event.target.value); setPreviewModel(event.target.value); void refreshRuntime(); }}>{previewModels.map(item => <option key={item}>{item}</option>)}</select></label>
         <small>{ui.previewNote}</small>
       </>}
+      {runtime?.mode === 'hybrid' && <><code dir="ltr">{INTAKE_API_URL}</code><small>{ui.hybridNote}</small></>}
       {runtime?.reason && <p className="status-line">{localizeAppError(language, runtime.reason)}</p>}
       <div className="actions" style={{ marginTop: 0 }}>
         <button className="secondary" disabled={locked || importing} onClick={() => void refreshRuntime()}>{ui.refreshStatus}</button>

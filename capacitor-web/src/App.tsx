@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { HeaderActions } from './app/HeaderActions';
 import { answerScripted, appendAssistantMessage, appendUserMessage, applyFormAnswers, calculateCoverage, clarifyStatement, confirmFacts, continueConversation, createSession, deriveQuestion14, exportSession, finishNarrative, formPageOf, formSteps, generateDraft, getActiveFacts, guideConversation, IntakeError, invalidateDraft, isFormSection, metadataGroups, narrativeFieldFor, needsTopicQuestion, nextStep, openTopic, pendingAsk, question14Steps, reaskQuestion, requirementsById, tableRowIds, type FormValue, type IntakeFact, type IntakeScope, type IntakeSession, type ScriptedAnswer, type ScriptedAsk } from './intake';
-import { cancelIntakeGeneration, generateIntakeModel, getIntakeRuntimeStatus, getPreviewModel, type IntakeRuntimeStatus } from './lib/intakeModel';
+import { cancelIntakeGeneration, generateIntakeModel, getIntakeRuntimeStatus, getPreviewModel, setIntakeMaskValues, type IntakeRuntimeStatus } from './lib/intakeModel';
 import { intakeLanguages } from './intakeCopy';
 import { localizedLabel } from './form/localize';
 import { takesOtherText } from './form/otherChoice';
@@ -84,6 +84,14 @@ export default function App({ initialSession, initialStage, gate, headerAccessor
   const texts = appTexts(language);
   const { ux, copy, ui, sc, direction } = texts;
   const facts = getActiveFacts(session);
+  // Identity fields are deterministically masked even when NER misses them.
+  useEffect(() => {
+    const identityIds = new Set(['1.2', '1.3', '1.4', '1.5', '1.9', '1.10', '1.11', '1.12', '10.12', '10.13', '10.14']);
+    const values = Object.entries(session.form).flatMap(([id, answer]) =>
+      identityIds.has(id) && answer.kind === 'text' ? [answer.text.trim()] :
+      answer.kind === 'table' ? answer.rows.flatMap(row => Object.entries(row).filter(([key]) => /name|family|given|dob|address|phone|email|passport/i.test(key)).map(([, value]) => value.trim())) : []);
+    setIntakeMaskValues(values);
+  }, [session.form]);
   const started = session.messages.some(item => item.role === 'user');
   const coverage = calculateCoverage(session);
   const conflicts = new Set(coverage.filter(item => item.status === 'conflict').map(item => item.requirementId));
@@ -126,7 +134,7 @@ export default function App({ initialSession, initialStage, gate, headerAccessor
   useEffect(() => { document.documentElement.lang = language; document.documentElement.dir = direction; }, [language, direction]);
   useEffect(() => { if (session.scope === 'test' && language !== 'en') setLanguage('en'); }, [session.scope, language]);
   useEffect(() => { void refreshRuntime(); }, []);
-  // Guided question 14 conversation: when the next topic needs a question, ask the model once.
+  // Resume a pending guided question; hybrid mode phrases it locally without a model call.
   const guidedAt = useRef(-1);
   useEffect(() => {
     if (stage !== 'conversation' || busy || recoveryPending || controller.current || error || !session.narrativeDone || pendingAsk(session)) return;

@@ -112,3 +112,14 @@ export function draftResponseSchema(questionId: string, factIds: string[]): Reco
     }),
   } });
 }
+
+/** Compact transport grammar; per-question fact permissions are checked locally. */
+export function draftBatchResponseSchema(questionIds: string[], factIds: string[]): Record<string, unknown> {
+  const schema = draftResponseSchema(questionIds[0], factIds);
+  const sections = (schema.properties as Record<string, Record<string, unknown>>).sections;
+  sections.minItems = questionIds.length;
+  sections.maxItems = questionIds.length;
+  const item = sections.items as { properties: Record<string, unknown> };
+  item.properties.questionId = { type: 'string', enum: questionIds };
+  return schema;
+}

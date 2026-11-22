@@ -1,0 +1,7 @@
+# Tested on Python 3.11, CPU, macOS arm64.
+torch==2.15.0
+transformers==5.22.2
+gliner==0.2.30
+huggingface-hub==2.4.0
+sentencepiece
+protobuf

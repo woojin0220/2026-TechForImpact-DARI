@@ -7,6 +7,7 @@ import { boundedPrompt, enumValue, object, parseObject, stringArray, text } from
 import { appendUserMessage, getActiveFacts, MAX_USER_LENGTH, message, nextFactId, now } from './session.ts';
 import { calculateCoverage } from './coverage.ts';
 import { groupOf } from './flow.ts';
+import { guideConversation } from './guidance.ts';
 
 /** Turning the applicant's free answers into facts with a model call, then validating them. */
 
@@ -340,13 +341,15 @@ async function extract(session: IntakeSession, focused: Requirement[], adapter: 
     ...getActiveFacts(session).filter(item => focusedIds.has(item.requirementId)).flatMap(item => item.sourceIds),
   ]);
   const activeIds = getActiveFacts(session).map(item => item.id);
+  const singleCall = adapter.conversationMode === 'single-call'
+    ? '\nThis is the only extraction pass. Collect every explicitly stated topic and its supported details in this response, including negations and details under yes/no gates. Never infer unstated testimony. reply must be one short acknowledgement in the session language, without a question; the app chooses the next question locally.' : '';
   if (compact) {
     const refs = sentenceRefs(session.messages.slice(-6));
-    const data = parseObject(await adapter({ task: 'intake', system: compactSystem, prompt, signal,
+    const data = parseObject(await adapter({ task: 'intake', system: compactSystem + singleCall, prompt, signal,
       responseSchema: intakeCompactSchema(focused, [...refs.keys()], activeIds) }));
     return { ...data, facts: expandCompactFacts(data.facts, refs) };
   }
-  return parseObject(await adapter({ task: 'intake', system: intakeSystem, prompt, signal,
+  return parseObject(await adapter({ task: 'intake', system: intakeSystem + singleCall, prompt, signal,
     responseSchema: intakeResponseSchema([...focusedIds], session.messages.filter(item => item.role === 'user' && contextSourceIds.has(item.id)), activeIds),
   }));
 }
@@ -360,6 +363,7 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
     if (!session.narrativeDone && session.messages.some(item => item.ask?.kind === 'narrative')) session = { ...session, narrativeDone: true };
     const focused = narrativeRequirements(session);
     const data = await extract(session, focused, adapter, signal);
+    if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
     const latest = session.messages.at(-1)!.id;
     let facts = parseFacts(data.facts, session, focused);
     const previousAsk = session.messages.at(-2)?.ask;
@@ -386,10 +390,11 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
     const sentences = (answer.match(/[.!?。！？]/g) ?? []).length;
     // Several sentences but only one topic extracted is the typical sign of a missed topic.
     const longAnswer = answer.length >= 150 || sentences >= 3 || (sentences >= 2 && told.size <= 1);
-    const checkTopics = auxiliaryPasses === 'on' || (auxiliaryPasses === 'selective' && NEGATION.test(answer) && !denied.length);
+    const aux = adapter.conversationMode === 'single-call' ? 'off' : auxiliaryPasses;
+    const checkTopics = aux === 'on' || (aux === 'selective' && NEGATION.test(answer) && !denied.length);
     const mentioned = checkTopics && groups.length > 1 && longAnswer ? await mentionedGroups(session, groups, adapter, signal) : [];
     const yesWithoutDetail = facts.filter(fact => requirementsById.get(fact.requirementId)?.gate && fact.value === 'yes' && fact.sourceIds.includes(latest)).map(fact => fact.requirementId);
-    const thin = auxiliaryPasses !== 'off' ? groups.filter(group => (mentioned.includes(group) || yesWithoutDetail.includes(group)) && !told.has(group)).slice(0, 2) : [];
+    const thin = aux !== 'off' ? groups.filter(group => (mentioned.includes(group) || yesWithoutDetail.includes(group)) && !told.has(group)).slice(0, 2) : [];
     for (const name of thin) {
       const gate = { id: name };
       const group = focused.filter(item => groupOf(item.id) === name);
@@ -401,7 +406,8 @@ export async function continueConversation(session: IntakeSession, adapter: Mode
     }
     const reply = requireReplyLanguage(text(data.reply, '모델의 대화 답변', 6000), session.language);
     const next = { ...session, facts: [...session.facts, ...facts], messages: [...session.messages, message('assistant', reply, session.messages.length + 1)], draft: [], updatedAt: now() };
-    return { ...next, coverage: calculateCoverage(next) };
+    const result = { ...next, coverage: calculateCoverage(next) };
+    return adapter.conversationMode === 'single-call' ? await guideConversation(result, adapter, signal) : result;
   } catch (error) {
     throw new IntakeError(error instanceof Error ? error.message : '대화를 처리하지 못했습니다.', session);
   }
