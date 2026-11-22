@@ -1,0 +1,23 @@
+{
+  "models--LiquidAI--LFM2.5-Encoder-350M-PII-Detector": [
+    "b8c9cf3d2d6ae52501b35a27ba46f271449c9ce2"
+  ],
+  "models--microsoft--mdeberta-v3-base": [
+    "a0484667b22365f84929a935b5e50a51f71f159d"
+  ],
+  "models--Wismut--nym-pii-multilingual": [
+    "0ed0242d67a30ca6a83e5f118506ff1e1daf83ca"
+  ],
+  "models--urchade--gliner_multi_pii-v1": [
+    "1fcf13e85f4eef5394e1fcd406cf2ca9ea82351d"
+  ],
+  "models--openai--privacy-filter": [
+    "7ffa9a043d54d1be65afb281eddf0ffbe629385b"
+  ],
+  "models--fastino--gliner2-privacy-filter-PII-multi": [
+    "1cb4166094dc58fa8d836429f060d6c95f62b495"
+  ],
+  "models--knowledgator--gliner-pii-edge-v1.0": [
+    "9b7f39b0a2da971a5beea78d35f1539d4009c891"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "scope": "Russian-to-Korean fictional application scenarios on Mac; 3 shuffled rounds per version; no real applicant records or external LLM",
+  "final_dataset": "scenario-ru-v4",
+  "final_summary": {
+    "observations": 240,
+    "unique_cases": 80,
+    "model_calls": 180,
+    "passthroughs": 60,
+    "request_errors": 0,
+    "flagged_observations": 0,
+    "flagged_cases": [],
+    "varying_cases": [
+      "fresh-7",
+      "uncertain-6"
+    ],
+    "rounds": {
+      "1": {
+        "seconds": 27.779,
+        "errors": 0,
+        "flagged": 0
+      },
+      "2": {
+        "seconds": 27.3,
+        "errors": 0,
+        "flagged": 0
+      },
+      "3": {
+        "seconds": 25.63,
+        "errors": 0,
+        "flagged": 0
+      }
+    },
+    "model_latency_seconds": {
+      "median": 0.4377,
+      "p95": 0.6832
+    },
+    "meaning": "Rule flags require review. No flags does not certify factual accuracy."
+  },
+  "total_observations_across_four_iterations": 864,
+  "initial_outputs_rescored_with_final_rules": {
+    "overlapping_cases": 64,
+    "observations": 192,
+    "flagged_observations": 15,
+    "flagged_cases": [
+      "chronology-3",
+      "documents-5",
+      "family-4",
+      "uncertain-2",
+      "uncertain-4"
+    ],
+    "note": "Same source text, final regex review criteria. Flag counts are not semantic accuracy."
+  },
+  "changes": [
+    "Kinship terminology avoids inventing sibling age or speaker gender when the Russian source is unspecified.",
+    "Explicit younger brother and older sister keep the supplied relationship.",
+    "Source uncertainty stays a statement rather than becoming a question in the regression example.",
+    "Software and application attachments remain distinct even within one answer."
+  ],
+  "review": {
+    "reviewer": "coding assistant; not independent bilingual expert",
+    "unseen_scenario": "6 model-translated answers and 2 passthrough values, first tested after prompt freeze; all checked rules clear in all 3 rounds; reviewed against source meaning",
+    "variations": {
+      "uncertain-6": "Optional explicit first-person pronoun; no observed change to negated direct observation.",
+      "fresh-7": "Passive versus implicit-subject phrasing; July 2024 and uncertainty retained."
+    },
+    "limitations": [
+      "No guarantee of semantic correctness from regex checks or repeatability.",
+      "Korean kinship phrasing is deliberately neutral and can sound awkward.",
+      "Word checks cover answer text and original page assets, not a new visual layout review.",
+      "Russian only; phone runtime and other source languages are not evaluated."
+    ]
+  },
+  "word_export_check": {
+    "scenarios": 10,
+    "answers_checked": 80,
+    "original_pages_each": 22,
+    "missing_answer_text": 0,
+    "method": "In-memory DOCX generation and XML/image asset checks"
+  },
+  "checks": {
+    "backend_and_evaluator_unit_tests": 19,
+    "frontend_tests": 278,
+    "build": "passed"
+  }
+}

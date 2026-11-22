@@ -1,0 +1,41 @@
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 5 files: 100%|██████████| 5/5 [00:19<00:00,  3.83s/it]Fetching 5 files: 100%|██████████| 5/5 [00:19<00:00,  3.83s/it]
+W1117 16:17:31.735000 15766 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/140 [00:00<?, ?it/s]Loading weights:   1%|          | 1/140 [00:01<04:29,  1.94s/it]Loading weights:  16%|█▌        | 22/140 [00:02<00:09, 12.12it/s]Loading weights:  28%|██▊       | 39/140 [00:03<00:06, 14.73it/s]Loading weights:  40%|████      | 56/140 [00:03<00:04, 20.37it/s]Loading weights:  52%|█████▏    | 73/140 [00:04<00:03, 20.13it/s]Loading weights:  64%|██████▍   | 90/140 [00:05<00:02, 20.56it/s]Loading weights:  76%|███████▋  | 107/140 [00:05<00:01, 22.92it/s]Loading weights:  89%|████████▊ | 124/140 [00:06<00:00, 28.78it/s]Loading weights: 100%|██████████| 140/140 [00:06<00:00, 22.51it/s]
+{"event": "loaded", "model": "privacy_filter", "load_seconds": 9.335, "parameters": 1399486865}
+{"event": "case", "model": "privacy_filter", "id": "ko-1", "threshold": null, "ms": 145.4, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ko-2", "threshold": null, "ms": 306.1, "covered": 1, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "ko-3", "threshold": null, "ms": 269.0, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "ko-4", "threshold": null, "ms": 283.7, "covered": 0, "entities": 0}
+{"event": "case", "model": "privacy_filter", "id": "ko-5", "threshold": null, "ms": 190.4, "covered": 1, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ko-6", "threshold": null, "ms": 175.4, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "en-1", "threshold": null, "ms": 198.8, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "en-2", "threshold": null, "ms": 203.6, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "en-3", "threshold": null, "ms": 140.5, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "en-4", "threshold": null, "ms": 385.1, "covered": 0, "entities": 0}
+{"event": "case", "model": "privacy_filter", "id": "en-5", "threshold": null, "ms": 174.6, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "en-6", "threshold": null, "ms": 168.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "fr-1", "threshold": null, "ms": 212.5, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "fr-2", "threshold": null, "ms": 159.6, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "fr-3", "threshold": null, "ms": 137.0, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "fr-4", "threshold": null, "ms": 213.1, "covered": 0, "entities": 0}
+{"event": "case", "model": "privacy_filter", "id": "fr-5", "threshold": null, "ms": 139.9, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "fr-6", "threshold": null, "ms": 130.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ru-1", "threshold": null, "ms": 159.8, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ru-2", "threshold": null, "ms": 128.3, "covered": 1, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "ru-3", "threshold": null, "ms": 133.7, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "ru-4", "threshold": null, "ms": 212.9, "covered": 0, "entities": 0}
+{"event": "case", "model": "privacy_filter", "id": "ru-5", "threshold": null, "ms": 172.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ru-6", "threshold": null, "ms": 181.9, "covered": 2, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ar-1", "threshold": null, "ms": 194.5, "covered": 2, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ar-2", "threshold": null, "ms": 141.2, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "ar-3", "threshold": null, "ms": 147.4, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "ar-4", "threshold": null, "ms": 180.9, "covered": 0, "entities": 0}
+{"event": "case", "model": "privacy_filter", "id": "ar-5", "threshold": null, "ms": 186.8, "covered": 2, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "ar-6", "threshold": null, "ms": 169.1, "covered": 3, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "fa-1", "threshold": null, "ms": 168.1, "covered": 2, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "fa-2", "threshold": null, "ms": 151.9, "covered": 1, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "fa-3", "threshold": null, "ms": 159.2, "covered": 2, "entities": 2}
+{"event": "case", "model": "privacy_filter", "id": "fa-4", "threshold": null, "ms": 177.9, "covered": 0, "entities": 0}
+{"event": "case", "model": "privacy_filter", "id": "fa-5", "threshold": null, "ms": 194.7, "covered": 1, "entities": 3}
+{"event": "case", "model": "privacy_filter", "id": "fa-6", "threshold": null, "ms": 150.8, "covered": 2, "entities": 3}

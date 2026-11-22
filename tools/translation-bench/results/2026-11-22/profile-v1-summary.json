@@ -1,0 +1,23 @@
+{
+  "profile_version": "application-hymt-v1",
+  "model": "dari-hymt2:1.8b",
+  "method": "Fixed question subjects and scoped terminology; no weight training; one model call per translatable answer. Mac M1 Pro, 16 GiB. Single warm measurement; timings are not a controlled latency distribution.",
+  "before_seconds": 36.982574665918946,
+  "after_seconds": 23.858302333159372,
+  "model_calls": 69,
+  "failures": 0,
+  "untranslated_sentences": 0,
+  "corrected_examples": [
+    "1.12: Russian ethnic identity remains 러시아인.",
+    "14.13: no added age 19; accompanying children remain distinct from children elsewhere.",
+    "15: application testing no longer becomes appendix review.",
+    "Counterexample: actual appendix with photos remains an appendix, not software."
+  ],
+  "holdouts_checked": 17,
+  "limitations": [
+    "Qualitative review by coding assistant, not independently validated by bilingual experts.",
+    "Only Russian-to-Korean evaluated here; no phone benchmark.",
+    "Name transliteration and subtle wording still require review.",
+    "Earlier saved/manual translations are retained until explicitly translated again; no silent overwriting."
+  ]
+}

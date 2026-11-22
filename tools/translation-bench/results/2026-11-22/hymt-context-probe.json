@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1.12",
+    "context": "This is an answer on a refugee status application form. The question is: Race, ethnic or tribal group",
+    "source": "Русский.",
+    "translation": "러시아인.",
+    "seconds": 0.4140758339781314
+  },
+  {
+    "id": "9.10",
+    "context": "This is an answer on a refugee status application form. The question is: If yes, please fill out what you can get issued.",
+    "source": "Заграничный паспорт.",
+    "translation": "외국 여권.",
+    "seconds": 0.16361299995332956
+  },
+  {
+    "id": "10.2",
+    "context": "This is an answer on a refugee status application form. The question is: Which consulate/embassy did you apply at?",
+    "source": "Консульство Республики Корея в России.",
+    "translation": "러시아에 있는 대한민국 영사관.",
+    "seconds": 0.28784404206089675
+  },
+  {
+    "id": "14.13",
+    "context": "This is an answer on a refugee status application form. The question is: Did you apply for refugee status with a minor child under the age of 19?",
+    "source": "Нет. Несовершеннолетних детей со мной нет.",
+    "translation": "아니요. 19세 미만의 미성년 자녀는 없습니다.",
+    "seconds": 0.442567584104836
+  },
+  {
+    "id": "14.18",
+    "context": "This is an answer on a refugee status application form. The question is: If you have not applied for refugee status within one year after you arrived in Korea, please explain why.",
+    "source": "Не применимо: в этом примере заявление подаётся менее чем через год после въезда.",
+    "translation": "적용되지 않음: 이 예시에서는 입국 후 1년 이내에 신청서가 제출됩니다.",
+    "seconds": 0.5396542500238866
+  },
+  {
+    "id": "15",
+    "context": "This is an answer on a refugee status application form. The question is: If you would like to give an additional statement besides the answers above, please write it in detail.",
+    "source": "ЭТО ПОЛНОСТЬЮ ВЫМЫШЛЕННЫЙ УЧЕБНЫЙ ПРИМЕР ДЛЯ ПРОВЕРКИ ПРИЛОЖЕНИЯ. Он не является реальным заявлением. Все имена, адреса, организации и события придуманы. Прошу сохранить в переводе различие между личным опытом и рассказом матери.",
+    "translation": "이것은 부록 검토를 위한 가상의 교육 예시일 뿐입니다. 실제 신청서는 아닙니다. 모든 이름, 주소, 기관 및 사건은 창작된 것입니다. 개인적인 경험과 어머니의 이야기 사이의 차이를 번역에 반영해 주시기 바랍니다.",
+    "seconds": 3.8539812499657273
+  }
+]

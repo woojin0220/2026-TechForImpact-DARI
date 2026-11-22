@@ -1,0 +1,120 @@
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 1997.76it/s]
+W1119 00:08:41.948000 65226 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+[transformers] The tokenizer you are loading from 'microsoft/mdeberta-v3-base' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+{"event": "loaded", "model": "gliner", "decode": "raw", "parameters": 288949504}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-1", "mode": "whole", "status": "ok", "coverage": 3, "ms": 77.9}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-2", "mode": "whole", "status": "ok", "coverage": 2, "ms": 69.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-3", "mode": "whole", "status": "ok", "coverage": 2, "ms": 76.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-4", "mode": "whole", "status": "ok", "coverage": 0, "ms": 79.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-5", "mode": "whole", "status": "ok", "coverage": 3, "ms": 90.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-6", "mode": "whole", "status": "ok", "coverage": 3, "ms": 88.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-7", "mode": "whole", "status": "ok", "coverage": 1, "ms": 87.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-1", "mode": "whole", "status": "ok", "coverage": 3, "ms": 81.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-2", "mode": "whole", "status": "ok", "coverage": 2, "ms": 69.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-3", "mode": "whole", "status": "ok", "coverage": 2, "ms": 73.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-4", "mode": "whole", "status": "ok", "coverage": 0, "ms": 76.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-5", "mode": "whole", "status": "ok", "coverage": 3, "ms": 78.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-6", "mode": "whole", "status": "ok", "coverage": 3, "ms": 78.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-7", "mode": "whole", "status": "ok", "coverage": 3, "ms": 77.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-1", "mode": "whole", "status": "ok", "coverage": 3, "ms": 102.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-2", "mode": "whole", "status": "ok", "coverage": 2, "ms": 98.9}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-3", "mode": "whole", "status": "ok", "coverage": 2, "ms": 97.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-4", "mode": "whole", "status": "ok", "coverage": 0, "ms": 86.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-5", "mode": "whole", "status": "ok", "coverage": 3, "ms": 96.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-6", "mode": "whole", "status": "ok", "coverage": 3, "ms": 76.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-7", "mode": "whole", "status": "ok", "coverage": 3, "ms": 84.5}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-1", "mode": "whole", "status": "ok", "coverage": 3, "ms": 89.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-2", "mode": "whole", "status": "ok", "coverage": 1, "ms": 76.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-3", "mode": "whole", "status": "ok", "coverage": 2, "ms": 82.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-4", "mode": "whole", "status": "ok", "coverage": 0, "ms": 75.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-5", "mode": "whole", "status": "ok", "coverage": 3, "ms": 75.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-6", "mode": "whole", "status": "ok", "coverage": 3, "ms": 75.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-7", "mode": "whole", "status": "ok", "coverage": 3, "ms": 82.9}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-1", "mode": "whole", "status": "ok", "coverage": 3, "ms": 88.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-2", "mode": "whole", "status": "ok", "coverage": 2, "ms": 91.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-3", "mode": "whole", "status": "ok", "coverage": 2, "ms": 84.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-4", "mode": "whole", "status": "ok", "coverage": 0, "ms": 77.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-5", "mode": "whole", "status": "ok", "coverage": 3, "ms": 81.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-6", "mode": "whole", "status": "ok", "coverage": 3, "ms": 87.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-7", "mode": "whole", "status": "ok", "coverage": 3, "ms": 80.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-1", "mode": "whole", "status": "ok", "coverage": 3, "ms": 74.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-2", "mode": "whole", "status": "ok", "coverage": 2, "ms": 72.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-3", "mode": "whole", "status": "ok", "coverage": 2, "ms": 82.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-4", "mode": "whole", "status": "ok", "coverage": 0, "ms": 72.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-5", "mode": "whole", "status": "ok", "coverage": 3, "ms": 75.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-6", "mode": "whole", "status": "ok", "coverage": 3, "ms": 85.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-7", "mode": "whole", "status": "ok", "coverage": 2, "ms": 86.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-code_switch", "mode": "whole", "status": "ok", "coverage": 3, "ms": 89.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-noisy", "mode": "whole", "status": "ok", "coverage": 3, "ms": 90.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-dob_event", "mode": "whole", "status": "ok", "coverage": 1, "ms": 68.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-sensitive", "mode": "whole", "status": "ok", "coverage": 3, "ms": 77.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-negative", "mode": "whole", "status": "ok", "coverage": 0, "ms": 91.3}
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/gliner/data_processing/processor.py:427: UserWarning: Sentence of length 813 has been truncated to 384
+  batch = [self.preprocess_example(b["tokenized_text"], b[key], class_to_ids) for b in batch_list]
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-long", "mode": "whole", "status": "ok", "coverage": 1, "ms": 1203.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-long", "mode": "chunked", "status": "ok", "coverage": 3, "ms": 3011.5}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-boundary", "mode": "whole", "status": "ok", "coverage": 2, "ms": 155.9}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-boundary", "mode": "chunked", "status": "ok", "coverage": 2, "ms": 234.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ko-date_only", "mode": "whole", "status": "ok", "coverage": 0, "ms": 88.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-code_switch", "mode": "whole", "status": "ok", "coverage": 3, "ms": 86.9}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-noisy", "mode": "whole", "status": "ok", "coverage": 4, "ms": 98.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-dob_event", "mode": "whole", "status": "ok", "coverage": 1, "ms": 80.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-sensitive", "mode": "whole", "status": "ok", "coverage": 3, "ms": 96.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-negative", "mode": "whole", "status": "ok", "coverage": 0, "ms": 86.7}
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/gliner/data_processing/processor.py:427: UserWarning: Sentence of length 1287 has been truncated to 384
+  batch = [self.preprocess_example(b["tokenized_text"], b[key], class_to_ids) for b in batch_list]
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-long", "mode": "whole", "status": "ok", "coverage": 1, "ms": 397.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-long", "mode": "chunked", "status": "ok", "coverage": 3, "ms": 4206.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-boundary", "mode": "whole", "status": "ok", "coverage": 2, "ms": 112.9}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-boundary", "mode": "chunked", "status": "ok", "coverage": 2, "ms": 191.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "en-date_only", "mode": "whole", "status": "ok", "coverage": 0, "ms": 78.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-code_switch", "mode": "whole", "status": "ok", "coverage": 3, "ms": 81.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-noisy", "mode": "whole", "status": "ok", "coverage": 4, "ms": 92.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-dob_event", "mode": "whole", "status": "ok", "coverage": 1, "ms": 83.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-sensitive", "mode": "whole", "status": "ok", "coverage": 3, "ms": 93.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-negative", "mode": "whole", "status": "ok", "coverage": 0, "ms": 89.5}
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/gliner/data_processing/processor.py:427: UserWarning: Sentence of length 1578 has been truncated to 384
+  batch = [self.preprocess_example(b["tokenized_text"], b[key], class_to_ids) for b in batch_list]
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-long", "mode": "whole", "status": "ok", "coverage": 1, "ms": 485.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-long", "mode": "chunked", "status": "ok", "coverage": 3, "ms": 5083.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-boundary", "mode": "whole", "status": "ok", "coverage": 2, "ms": 130.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-boundary", "mode": "chunked", "status": "ok", "coverage": 2, "ms": 209.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fr-date_only", "mode": "whole", "status": "ok", "coverage": 0, "ms": 91.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-code_switch", "mode": "whole", "status": "ok", "coverage": 3, "ms": 100.5}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-noisy", "mode": "whole", "status": "ok", "coverage": 3, "ms": 96.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-dob_event", "mode": "whole", "status": "ok", "coverage": 1, "ms": 82.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-sensitive", "mode": "whole", "status": "ok", "coverage": 3, "ms": 111.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-negative", "mode": "whole", "status": "ok", "coverage": 0, "ms": 95.0}
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/gliner/data_processing/processor.py:427: UserWarning: Sentence of length 1175 has been truncated to 384
+  batch = [self.preprocess_example(b["tokenized_text"], b[key], class_to_ids) for b in batch_list]
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-long", "mode": "whole", "status": "ok", "coverage": 1, "ms": 584.5}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-long", "mode": "chunked", "status": "ok", "coverage": 3, "ms": 4611.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-boundary", "mode": "whole", "status": "ok", "coverage": 2, "ms": 127.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-boundary", "mode": "chunked", "status": "ok", "coverage": 2, "ms": 192.6}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ru-date_only", "mode": "whole", "status": "ok", "coverage": 0, "ms": 92.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-code_switch", "mode": "whole", "status": "ok", "coverage": 3, "ms": 97.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-noisy", "mode": "whole", "status": "ok", "coverage": 4, "ms": 100.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-dob_event", "mode": "whole", "status": "ok", "coverage": 1, "ms": 84.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-sensitive", "mode": "whole", "status": "ok", "coverage": 2, "ms": 121.0}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-negative", "mode": "whole", "status": "ok", "coverage": 0, "ms": 80.5}
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/gliner/data_processing/processor.py:427: UserWarning: Sentence of length 886 has been truncated to 384
+  batch = [self.preprocess_example(b["tokenized_text"], b[key], class_to_ids) for b in batch_list]
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-long", "mode": "whole", "status": "ok", "coverage": 1, "ms": 665.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-long", "mode": "chunked", "status": "ok", "coverage": 3, "ms": 3404.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-boundary", "mode": "whole", "status": "ok", "coverage": 2, "ms": 119.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-boundary", "mode": "chunked", "status": "ok", "coverage": 2, "ms": 200.3}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "ar-date_only", "mode": "whole", "status": "ok", "coverage": 0, "ms": 90.1}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-code_switch", "mode": "whole", "status": "ok", "coverage": 3, "ms": 79.5}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-noisy", "mode": "whole", "status": "ok", "coverage": 4, "ms": 92.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-dob_event", "mode": "whole", "status": "ok", "coverage": 1, "ms": 84.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-sensitive", "mode": "whole", "status": "ok", "coverage": 3, "ms": 90.2}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-negative", "mode": "whole", "status": "ok", "coverage": 0, "ms": 95.5}
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/gliner/data_processing/processor.py:427: UserWarning: Sentence of length 1396 has been truncated to 384
+  batch = [self.preprocess_example(b["tokenized_text"], b[key], class_to_ids) for b in batch_list]
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-long", "mode": "whole", "status": "ok", "coverage": 1, "ms": 630.8}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-long", "mode": "chunked", "status": "ok", "coverage": 3, "ms": 7005.9}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-boundary", "mode": "whole", "status": "ok", "coverage": 2, "ms": 145.7}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-boundary", "mode": "chunked", "status": "ok", "coverage": 2, "ms": 224.4}
+{"event": "case", "model": "gliner", "decode": "raw", "id": "fa-date_only", "mode": "whole", "status": "ok", "coverage": 0, "ms": 86.1}

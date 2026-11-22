@@ -1,0 +1,4993 @@
+[
+  {
+    "name": "gliner",
+    "model": "urchade/gliner_multi_pii-v1",
+    "revision": "1fcf13e85f4eef5394e1fcd406cf2ca9ea82351d",
+    "status": "complete",
+    "fixture_sha256": "227a81ae03bd1f4f9d2d771441480f80b54b41b3560a549ed435a241c6566cbf",
+    "rows": 102,
+    "parameters": 288949504,
+    "load_seconds": 9.803228665958159,
+    "latency_kind": "measured end-to-end per case; download/load excluded",
+    "short_identifiers": {
+      "tp": 1715,
+      "fp": 346,
+      "fn": 19,
+      "entities": 127,
+      "covered_entities": 123,
+      "core_covered_entities": 123,
+      "protected_hits": 14,
+      "protected_count": 42,
+      "cases": 66,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 7,
+      "full_span_recall": 0.968503937007874,
+      "core_entity_recall": 0.968503937007874,
+      "char_precision": 0.8321203299369239,
+      "char_recall": 0.989042675893887,
+      "positive_cases": 48,
+      "positive_leak_free": 45,
+      "p50_ms": 83.32997898105532,
+      "p90_ms": 96.3115420890972,
+      "non_deterministic": 0
+    },
+    "expanded_only": {
+      "tp": 647,
+      "fp": 255,
+      "fn": 15,
+      "entities": 49,
+      "covered_entities": 46,
+      "core_covered_entities": 46,
+      "protected_hits": 14,
+      "protected_count": 42,
+      "cases": 30,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 7,
+      "full_span_recall": 0.9387755102040817,
+      "core_entity_recall": 0.9387755102040817,
+      "char_precision": 0.7172949002217295,
+      "char_recall": 0.9773413897280967,
+      "positive_cases": 18,
+      "positive_leak_free": 16,
+      "p50_ms": 88.73372949892655,
+      "p90_ms": 99.31387496180832,
+      "non_deterministic": 0
+    },
+    "original_only": {
+      "tp": 1068,
+      "fp": 91,
+      "fn": 4,
+      "entities": 78,
+      "covered_entities": 77,
+      "core_covered_entities": 77,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 36,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.9871794871794872,
+      "core_entity_recall": 0.9871794871794872,
+      "char_precision": 0.9214840379637619,
+      "char_recall": 0.996268656716418,
+      "positive_cases": 30,
+      "positive_leak_free": 29,
+      "p50_ms": 79.78947897208855,
+      "p90_ms": 95.41779197752476,
+      "non_deterministic": 0
+    },
+    "sensitive": {
+      "tp": 462,
+      "fp": 10,
+      "fn": 19,
+      "entities": 36,
+      "covered_entities": 32,
+      "core_covered_entities": 32,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 12,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.8888888888888888,
+      "core_entity_recall": 0.8888888888888888,
+      "char_precision": 0.9788135593220338,
+      "char_recall": 0.9604989604989606,
+      "positive_cases": 12,
+      "positive_leak_free": 9,
+      "p50_ms": 87.20568747958168,
+      "p90_ms": 116.8084170203656,
+      "non_deterministic": 0
+    },
+    "long_whole": {
+      "tp": 60,
+      "fp": 53,
+      "fn": 191,
+      "entities": 18,
+      "covered_entities": 6,
+      "core_covered_entities": 6,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.3333333333333333,
+      "core_entity_recall": 0.3333333333333333,
+      "char_precision": 0.5309734513274337,
+      "char_recall": 0.23904382470119523,
+      "positive_cases": 6,
+      "positive_leak_free": 0,
+      "p50_ms": 620.7676665508188,
+      "p90_ms": 865.2512080734596,
+      "non_deterministic": 0
+    },
+    "long_chunked": {
+      "tp": 251,
+      "fp": 1508,
+      "fn": 0,
+      "entities": 18,
+      "covered_entities": 18,
+      "core_covered_entities": 18,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 1.0,
+      "core_entity_recall": 1.0,
+      "char_precision": 0.1426947129050597,
+      "char_recall": 1.0,
+      "positive_cases": 6,
+      "positive_leak_free": 6,
+      "p50_ms": 4332.611208490562,
+      "p90_ms": 5311.098042060621,
+      "non_deterministic": 0
+    },
+    "boundary_whole": {
+      "tp": 238,
+      "fp": 5,
+      "fn": 0,
+      "entities": 12,
+      "covered_entities": 12,
+      "core_covered_entities": 12,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 1.0,
+      "core_entity_recall": 1.0,
+      "char_precision": 0.9794238683127572,
+      "char_recall": 1.0,
+      "positive_cases": 6,
+      "positive_leak_free": 6,
+      "p50_ms": 127.4377090157941,
+      "p90_ms": 155.4735420504585,
+      "non_deterministic": 0
+    },
+    "boundary_chunked": {
+      "tp": 238,
+      "fp": 98,
+      "fn": 0,
+      "entities": 12,
+      "covered_entities": 12,
+      "core_covered_entities": 12,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 1.0,
+      "core_entity_recall": 1.0,
+      "char_precision": 0.7083333333333334,
+      "char_recall": 1.0,
+      "positive_cases": 6,
+      "positive_leak_free": 6,
+      "p50_ms": 204.02377098798752,
+      "p90_ms": 234.51929108705372,
+      "non_deterministic": 0
+    },
+    "languages": {
+      "ko": {
+        "tp": 229,
+        "fp": 65,
+        "fn": 4,
+        "entities": 22,
+        "covered_entities": 20,
+        "core_covered_entities": 20,
+        "protected_hits": 3,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 2,
+        "full_span_recall": 0.9090909090909091,
+        "core_entity_recall": 0.9090909090909091,
+        "char_precision": 0.7789115646258503,
+        "char_recall": 0.9828326180257511,
+        "positive_cases": 8,
+        "positive_leak_free": 7,
+        "p50_ms": 82.99347903812304,
+        "p90_ms": 93.94816600251943,
+        "non_deterministic": 0
+      },
+      "en": {
+        "tp": 306,
+        "fp": 33,
+        "fn": 0,
+        "entities": 21,
+        "covered_entities": 21,
+        "core_covered_entities": 21,
+        "protected_hits": 2,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 0.9026548672566371,
+        "char_recall": 1.0,
+        "positive_cases": 8,
+        "positive_leak_free": 8,
+        "p50_ms": 79.16835357900709,
+        "p90_ms": 88.4507920127362,
+        "non_deterministic": 0
+      },
+      "fr": {
+        "tp": 309,
+        "fp": 75,
+        "fn": 0,
+        "entities": 21,
+        "covered_entities": 21,
+        "core_covered_entities": 21,
+        "protected_hits": 3,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 1,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 0.8046875,
+        "char_recall": 1.0,
+        "positive_cases": 8,
+        "positive_leak_free": 8,
+        "p50_ms": 89.45875044446439,
+        "p90_ms": 105.3649999666959,
+        "non_deterministic": 0
+      },
+      "ru": {
+        "tp": 306,
+        "fp": 53,
+        "fn": 15,
+        "entities": 21,
+        "covered_entities": 19,
+        "core_covered_entities": 19,
+        "protected_hits": 2,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9047619047619048,
+        "core_entity_recall": 0.9047619047619048,
+        "char_precision": 0.8523676880222841,
+        "char_recall": 0.9532710280373832,
+        "positive_cases": 8,
+        "positive_leak_free": 6,
+        "p50_ms": 83.46277102828026,
+        "p90_ms": 96.15904092788696,
+        "non_deterministic": 0
+      },
+      "ar": {
+        "tp": 282,
+        "fp": 57,
+        "fn": 0,
+        "entities": 21,
+        "covered_entities": 21,
+        "core_covered_entities": 21,
+        "protected_hits": 2,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 2,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 0.831858407079646,
+        "char_recall": 1.0,
+        "positive_cases": 8,
+        "positive_leak_free": 8,
+        "p50_ms": 87.44937542360276,
+        "p90_ms": 95.64195899292827,
+        "non_deterministic": 0
+      },
+      "fa": {
+        "tp": 283,
+        "fp": 63,
+        "fn": 0,
+        "entities": 21,
+        "covered_entities": 21,
+        "core_covered_entities": 21,
+        "protected_hits": 2,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 2,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 0.8179190751445087,
+        "char_recall": 1.0,
+        "positive_cases": 8,
+        "positive_leak_free": 8,
+        "p50_ms": 82.52412499859929,
+        "p90_ms": 90.17670794855803,
+        "non_deterministic": 0
+      }
+    },
+    "groups": {
+      "original": {
+        "tp": 1332,
+        "fp": 92,
+        "fn": 19,
+        "entities": 96,
+        "covered_entities": 92,
+        "core_covered_entities": 92,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 42,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9583333333333334,
+        "core_entity_recall": 0.9583333333333334,
+        "char_precision": 0.9353932584269663,
+        "char_recall": 0.9859363434492968,
+        "positive_cases": 36,
+        "positive_leak_free": 33,
+        "p50_ms": 80.7047295384109,
+        "p90_ms": 93.94816600251943,
+        "non_deterministic": 0
+      },
+      "code_switch": {
+        "tp": 271,
+        "fp": 7,
+        "fn": 0,
+        "entities": 18,
+        "covered_entities": 18,
+        "core_covered_entities": 18,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 0.9748201438848921,
+        "char_recall": 1.0,
+        "positive_cases": 6,
+        "positive_leak_free": 6,
+        "p50_ms": 87.86735398462042,
+        "p90_ms": 102.50970802735537,
+        "non_deterministic": 0
+      },
+      "noisy": {
+        "tp": 305,
+        "fp": 0,
+        "fn": 15,
+        "entities": 25,
+        "covered_entities": 22,
+        "core_covered_entities": 22,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.88,
+        "core_entity_recall": 0.88,
+        "char_precision": 1.0,
+        "char_recall": 0.953125,
+        "positive_cases": 6,
+        "positive_leak_free": 4,
+        "p50_ms": 95.32685403246433,
+        "p90_ms": 99.31387496180832,
+        "non_deterministic": 0
+      },
+      "dob_event": {
+        "tp": 71,
+        "fp": 29,
+        "fn": 0,
+        "entities": 6,
+        "covered_entities": 6,
+        "core_covered_entities": 6,
+        "protected_hits": 3,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 0,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 0.71,
+        "char_recall": 1.0,
+        "positive_cases": 6,
+        "positive_leak_free": 6,
+        "p50_ms": 80.90160449501127,
+        "p90_ms": 89.0166669851169,
+        "non_deterministic": 0
+      },
+      "sensitive": {
+        "tp": 198,
+        "fp": 9,
+        "fn": 4,
+        "entities": 18,
+        "covered_entities": 17,
+        "core_covered_entities": 17,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9444444444444444,
+        "core_entity_recall": 0.9444444444444444,
+        "char_precision": 0.9565217391304348,
+        "char_recall": 0.9801980198019802,
+        "positive_cases": 6,
+        "positive_leak_free": 5,
+        "p50_ms": 94.54937546979636,
+        "p90_ms": 125.01545890700072,
+        "non_deterministic": 0
+      },
+      "negative": {
+        "tp": 0,
+        "fp": 82,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 5,
+        "protected_count": 18,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 1,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": 0.0,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 89.31374998064712,
+        "p90_ms": 100.8409169735387,
+        "non_deterministic": 0
+      },
+      "long": {
+        "tp": 60,
+        "fp": 53,
+        "fn": 191,
+        "entities": 18,
+        "covered_entities": 6,
+        "core_covered_entities": 6,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.3333333333333333,
+        "core_entity_recall": 0.3333333333333333,
+        "char_precision": 0.5309734513274337,
+        "char_recall": 0.23904382470119523,
+        "positive_cases": 6,
+        "positive_leak_free": 0,
+        "p50_ms": 620.7676665508188,
+        "p90_ms": 865.2512080734596,
+        "non_deterministic": 0
+      },
+      "boundary": {
+        "tp": 238,
+        "fp": 5,
+        "fn": 0,
+        "entities": 12,
+        "covered_entities": 12,
+        "core_covered_entities": 12,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 0.9794238683127572,
+        "char_recall": 1.0,
+        "positive_cases": 6,
+        "positive_leak_free": 6,
+        "p50_ms": 127.4377090157941,
+        "p90_ms": 155.4735420504585,
+        "non_deterministic": 0
+      },
+      "date_only": {
+        "tp": 0,
+        "fp": 137,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 6,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 12,
+        "protected_date_hits": 6,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": 0.0,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 88.70812499662861,
+        "p90_ms": 94.56541703548282,
+        "non_deterministic": 0
+      }
+    },
+    "misses": [
+      {
+        "id": "ko-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 16,
+            "end": 19,
+            "label": "political",
+            "text": "새빛당"
+          },
+          {
+            "start": 27,
+            "end": 39,
+            "label": "medical",
+            "text": "외상 후 스트레스 장애"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 52,
+            "end": 76,
+            "label": "medical",
+            "text": "اختلال استرس پس از سانحه"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 61,
+            "end": 63,
+            "label": "person",
+            "text": "남궁"
+          },
+          {
+            "start": 69,
+            "end": 71,
+            "label": "person",
+            "text": "혜린"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-negative",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 0,
+            "end": 2,
+            "label": "keep",
+            "text": "경찰"
+          }
+        ]
+      },
+      {
+        "id": "ko-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 1540,
+            "end": 1547,
+            "label": "person",
+            "text": "아미르 라히미"
+          },
+          {
+            "start": 3077,
+            "end": 3099,
+            "label": "email",
+            "text": "yuna.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-date_only",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "keep",
+            "text": "2022년 9월 18일"
+          },
+          {
+            "start": 20,
+            "end": 31,
+            "label": "keep",
+            "text": "2023년 1월 7일"
+          }
+        ]
+      },
+      {
+        "id": "en-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 72,
+            "end": 90,
+            "label": "keep",
+            "text": "I was not detained"
+          }
+        ]
+      },
+      {
+        "id": "en-negative",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 85,
+            "end": 115,
+            "label": "keep",
+            "text": "I was never directly assaulted"
+          }
+        ]
+      },
+      {
+        "id": "en-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 2951,
+            "end": 2962,
+            "label": "person",
+            "text": "Amir Rahimi"
+          },
+          {
+            "start": 5889,
+            "end": 5912,
+            "label": "email",
+            "text": "nadya.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 76,
+            "end": 99,
+            "label": "keep",
+            "text": "je n'ai pas été détenue"
+          }
+        ]
+      },
+      {
+        "id": "fr-negative",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 70,
+            "end": 79,
+            "label": "keep",
+            "text": "juin 2024"
+          },
+          {
+            "start": 83,
+            "end": 122,
+            "label": "keep",
+            "text": "je n'ai jamais été directement agressée"
+          }
+        ]
+      },
+      {
+        "id": "fr-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 2959,
+            "end": 2970,
+            "label": "person",
+            "text": "Amir Rahimi"
+          },
+          {
+            "start": 5896,
+            "end": 5919,
+            "label": "email",
+            "text": "nadia.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 97,
+            "end": 110,
+            "label": "person",
+            "text": "Надя Пет рова"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 72,
+            "end": 91,
+            "label": "keep",
+            "text": "меня не задерживали"
+          }
+        ]
+      },
+      {
+        "id": "ru-negative",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 82,
+            "end": 125,
+            "label": "keep",
+            "text": "я никогда не подвергалась прямому нападению"
+          }
+        ]
+      },
+      {
+        "id": "ru-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 2682,
+            "end": 2693,
+            "label": "person",
+            "text": "Амир Рахими"
+          },
+          {
+            "start": 5369,
+            "end": 5392,
+            "label": "email",
+            "text": "nadya.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 43,
+            "end": 66,
+            "label": "political",
+            "text": "لحزب التحالف الديمقراطي"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 2003,
+            "end": 2013,
+            "label": "person",
+            "text": "أمير رحيمي"
+          },
+          {
+            "start": 3994,
+            "end": 4017,
+            "label": "email",
+            "text": "nadia.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-date_only",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 15,
+            "end": 29,
+            "label": "keep",
+            "text": "١٨ سبتمبر ٢٠٢٢"
+          },
+          {
+            "start": 46,
+            "end": 58,
+            "label": "keep",
+            "text": "٧ يناير ٢٠٢٣"
+          }
+        ]
+      },
+      {
+        "id": "fa-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 2496,
+            "end": 2506,
+            "label": "person",
+            "text": "امیر رحیمی"
+          },
+          {
+            "start": 4976,
+            "end": 4999,
+            "label": "email",
+            "text": "nadia.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-date_only",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 3,
+            "end": 18,
+            "label": "keep",
+            "text": "۱۸ سپتامبر ۲۰۲۲"
+          },
+          {
+            "start": 41,
+            "end": 54,
+            "label": "keep",
+            "text": "۷ ژانویه ۲۰۲۳"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "liquid_raw",
+    "model": "LiquidAI/LFM2.5-Encoder-350M-PII-Detector",
+    "revision": "b8c9cf3d2d6ae52501b35a27ba46f271449c9ce2",
+    "status": "complete",
+    "fixture_sha256": "227a81ae03bd1f4f9d2d771441480f80b54b41b3560a549ed435a241c6566cbf",
+    "rows": 102,
+    "parameters": 354648993,
+    "load_seconds": 1.5784915409749374,
+    "latency_kind": "measured end-to-end per case; download/load excluded",
+    "short_identifiers": {
+      "tp": 1306,
+      "fp": 9,
+      "fn": 428,
+      "entities": 127,
+      "covered_entities": 78,
+      "core_covered_entities": 78,
+      "protected_hits": 1,
+      "protected_count": 42,
+      "cases": 66,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.6141732283464567,
+      "core_entity_recall": 0.6141732283464567,
+      "char_precision": 0.9931558935361217,
+      "char_recall": 0.7531718569780853,
+      "positive_cases": 48,
+      "positive_leak_free": 14,
+      "p50_ms": 352.47556201647967,
+      "p90_ms": 655.321832979098,
+      "non_deterministic": 0
+    },
+    "expanded_only": {
+      "tp": 523,
+      "fp": 9,
+      "fn": 139,
+      "entities": 49,
+      "covered_entities": 33,
+      "core_covered_entities": 33,
+      "protected_hits": 1,
+      "protected_count": 42,
+      "cases": 30,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.673469387755102,
+      "core_entity_recall": 0.673469387755102,
+      "char_precision": 0.9830827067669173,
+      "char_recall": 0.7900302114803626,
+      "positive_cases": 18,
+      "positive_leak_free": 5,
+      "p50_ms": 332.8794374829158,
+      "p90_ms": 411.8621250381693,
+      "non_deterministic": 0
+    },
+    "original_only": {
+      "tp": 783,
+      "fp": 0,
+      "fn": 289,
+      "entities": 78,
+      "covered_entities": 45,
+      "core_covered_entities": 45,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 36,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.5769230769230769,
+      "core_entity_recall": 0.5769230769230769,
+      "char_precision": 1.0,
+      "char_recall": 0.730410447761194,
+      "positive_cases": 30,
+      "positive_leak_free": 9,
+      "p50_ms": 381.5006875083782,
+      "p90_ms": 996.8661669408903,
+      "non_deterministic": 0
+    },
+    "sensitive": {
+      "tp": 64,
+      "fp": 0,
+      "fn": 417,
+      "entities": 36,
+      "covered_entities": 0,
+      "core_covered_entities": 0,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 12,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.0,
+      "core_entity_recall": 0.0,
+      "char_precision": 1.0,
+      "char_recall": 0.13305613305613306,
+      "positive_cases": 12,
+      "positive_leak_free": 0,
+      "p50_ms": 345.0047919759527,
+      "p90_ms": 450.02758398186415,
+      "non_deterministic": 0
+    },
+    "long_whole": {
+      "tp": 181,
+      "fp": 0,
+      "fn": 70,
+      "entities": 18,
+      "covered_entities": 10,
+      "core_covered_entities": 10,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.5555555555555556,
+      "core_entity_recall": 0.5555555555555556,
+      "char_precision": 1.0,
+      "char_recall": 0.7211155378486056,
+      "positive_cases": 6,
+      "positive_leak_free": 1,
+      "p50_ms": 2017.6057290518656,
+      "p90_ms": 3995.473209070042,
+      "non_deterministic": 0
+    },
+    "long_chunked": {
+      "tp": 220,
+      "fp": 224,
+      "fn": 31,
+      "entities": 18,
+      "covered_entities": 13,
+      "core_covered_entities": 13,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.7222222222222222,
+      "core_entity_recall": 0.7222222222222222,
+      "char_precision": 0.4954954954954955,
+      "char_recall": 0.8764940239043825,
+      "positive_cases": 6,
+      "positive_leak_free": 3,
+      "p50_ms": 13218.562021036632,
+      "p90_ms": 20606.79808293935,
+      "non_deterministic": 0
+    },
+    "boundary_whole": {
+      "tp": 216,
+      "fp": 18,
+      "fn": 22,
+      "entities": 12,
+      "covered_entities": 9,
+      "core_covered_entities": 9,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.75,
+      "core_entity_recall": 0.75,
+      "char_precision": 0.9230769230769231,
+      "char_recall": 0.907563025210084,
+      "positive_cases": 6,
+      "positive_leak_free": 3,
+      "p50_ms": 410.3957290062681,
+      "p90_ms": 492.76445794384927,
+      "non_deterministic": 0
+    },
+    "boundary_chunked": {
+      "tp": 219,
+      "fp": 18,
+      "fn": 19,
+      "entities": 12,
+      "covered_entities": 10,
+      "core_covered_entities": 10,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.8333333333333334,
+      "core_entity_recall": 0.8333333333333334,
+      "char_precision": 0.9240506329113924,
+      "char_recall": 0.9201680672268907,
+      "positive_cases": 6,
+      "positive_leak_free": 4,
+      "p50_ms": 779.5850625261664,
+      "p90_ms": 9487.81245900318,
+      "non_deterministic": 0
+    },
+    "languages": {
+      "ko": {
+        "tp": 177,
+        "fp": 0,
+        "fn": 56,
+        "entities": 22,
+        "covered_entities": 12,
+        "core_covered_entities": 12,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.5454545454545454,
+        "core_entity_recall": 0.5454545454545454,
+        "char_precision": 1.0,
+        "char_recall": 0.759656652360515,
+        "positive_cases": 8,
+        "positive_leak_free": 1,
+        "p50_ms": 382.42964597884566,
+        "p90_ms": 654.2410419788212,
+        "non_deterministic": 0
+      },
+      "en": {
+        "tp": 273,
+        "fp": 0,
+        "fn": 33,
+        "entities": 21,
+        "covered_entities": 18,
+        "core_covered_entities": 18,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.8571428571428571,
+        "core_entity_recall": 0.8571428571428571,
+        "char_precision": 1.0,
+        "char_recall": 0.8921568627450981,
+        "positive_cases": 8,
+        "positive_leak_free": 5,
+        "p50_ms": 324.148207961116,
+        "p90_ms": 655.321832979098,
+        "non_deterministic": 0
+      },
+      "fr": {
+        "tp": 260,
+        "fp": 0,
+        "fn": 49,
+        "entities": 21,
+        "covered_entities": 16,
+        "core_covered_entities": 16,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.7619047619047619,
+        "core_entity_recall": 0.7619047619047619,
+        "char_precision": 1.0,
+        "char_recall": 0.8414239482200647,
+        "positive_cases": 8,
+        "positive_leak_free": 4,
+        "p50_ms": 370.5806040088646,
+        "p90_ms": 2783.671500044875,
+        "non_deterministic": 0
+      },
+      "ru": {
+        "tp": 256,
+        "fp": 0,
+        "fn": 65,
+        "entities": 21,
+        "covered_entities": 14,
+        "core_covered_entities": 14,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.6666666666666666,
+        "core_entity_recall": 0.6666666666666666,
+        "char_precision": 1.0,
+        "char_recall": 0.7975077881619937,
+        "positive_cases": 8,
+        "positive_leak_free": 2,
+        "p50_ms": 372.6274169748649,
+        "p90_ms": 910.3435419965535,
+        "non_deterministic": 0
+      },
+      "ar": {
+        "tp": 193,
+        "fp": 0,
+        "fn": 89,
+        "entities": 21,
+        "covered_entities": 10,
+        "core_covered_entities": 10,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.47619047619047616,
+        "core_entity_recall": 0.47619047619047616,
+        "char_precision": 1.0,
+        "char_recall": 0.6843971631205674,
+        "positive_cases": 8,
+        "positive_leak_free": 1,
+        "p50_ms": 351.3182080350816,
+        "p90_ms": 402.4209160124883,
+        "non_deterministic": 0
+      },
+      "fa": {
+        "tp": 147,
+        "fp": 9,
+        "fn": 136,
+        "entities": 21,
+        "covered_entities": 8,
+        "core_covered_entities": 8,
+        "protected_hits": 1,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.38095238095238093,
+        "core_entity_recall": 0.38095238095238093,
+        "char_precision": 0.9423076923076923,
+        "char_recall": 0.519434628975265,
+        "positive_cases": 8,
+        "positive_leak_free": 1,
+        "p50_ms": 339.21450044726953,
+        "p90_ms": 393.84204207453877,
+        "non_deterministic": 0
+      }
+    },
+    "groups": {
+      "original": {
+        "tp": 799,
+        "fp": 0,
+        "fn": 552,
+        "entities": 96,
+        "covered_entities": 45,
+        "core_covered_entities": 45,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 42,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.46875,
+        "core_entity_recall": 0.46875,
+        "char_precision": 1.0,
+        "char_recall": 0.5914137675795706,
+        "positive_cases": 36,
+        "positive_leak_free": 9,
+        "p50_ms": 378.310561995022,
+        "p90_ms": 989.3428329378366,
+        "non_deterministic": 0
+      },
+      "code_switch": {
+        "tp": 204,
+        "fp": 0,
+        "fn": 67,
+        "entities": 18,
+        "covered_entities": 12,
+        "core_covered_entities": 12,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.6666666666666666,
+        "core_entity_recall": 0.6666666666666666,
+        "char_precision": 1.0,
+        "char_recall": 0.7527675276752768,
+        "positive_cases": 6,
+        "positive_leak_free": 1,
+        "p50_ms": 335.9483129461296,
+        "p90_ms": 363.88087493833154,
+        "non_deterministic": 0
+      },
+      "noisy": {
+        "tp": 282,
+        "fp": 0,
+        "fn": 38,
+        "entities": 25,
+        "covered_entities": 19,
+        "core_covered_entities": 19,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.76,
+        "core_entity_recall": 0.76,
+        "char_precision": 1.0,
+        "char_recall": 0.88125,
+        "positive_cases": 6,
+        "positive_leak_free": 2,
+        "p50_ms": 344.7549999691546,
+        "p90_ms": 392.62170798610896,
+        "non_deterministic": 0
+      },
+      "dob_event": {
+        "tp": 37,
+        "fp": 0,
+        "fn": 34,
+        "entities": 6,
+        "covered_entities": 2,
+        "core_covered_entities": 2,
+        "protected_hits": 0,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.3333333333333333,
+        "core_entity_recall": 0.3333333333333333,
+        "char_precision": 1.0,
+        "char_recall": 0.5211267605633803,
+        "positive_cases": 6,
+        "positive_leak_free": 2,
+        "p50_ms": 339.4377294462174,
+        "p90_ms": 372.23758397158235,
+        "non_deterministic": 0
+      },
+      "sensitive": {
+        "tp": 48,
+        "fp": 0,
+        "fn": 154,
+        "entities": 18,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.0,
+        "core_entity_recall": 0.0,
+        "char_precision": 1.0,
+        "char_recall": 0.2376237623762376,
+        "positive_cases": 6,
+        "positive_leak_free": 0,
+        "p50_ms": 369.1466039745137,
+        "p90_ms": 435.28995802626014,
+        "non_deterministic": 0
+      },
+      "negative": {
+        "tp": 0,
+        "fp": 9,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 1,
+        "protected_count": 18,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 0,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": 0.0,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 327.41206244099885,
+        "p90_ms": 380.92875003349036,
+        "non_deterministic": 0
+      },
+      "long": {
+        "tp": 181,
+        "fp": 0,
+        "fn": 70,
+        "entities": 18,
+        "covered_entities": 10,
+        "core_covered_entities": 10,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.5555555555555556,
+        "core_entity_recall": 0.5555555555555556,
+        "char_precision": 1.0,
+        "char_recall": 0.7211155378486056,
+        "positive_cases": 6,
+        "positive_leak_free": 1,
+        "p50_ms": 2017.6057290518656,
+        "p90_ms": 3995.473209070042,
+        "non_deterministic": 0
+      },
+      "boundary": {
+        "tp": 216,
+        "fp": 18,
+        "fn": 22,
+        "entities": 12,
+        "covered_entities": 9,
+        "core_covered_entities": 9,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.75,
+        "core_entity_recall": 0.75,
+        "char_precision": 0.9230769230769231,
+        "char_recall": 0.907563025210084,
+        "positive_cases": 6,
+        "positive_leak_free": 3,
+        "p50_ms": 410.3957290062681,
+        "p90_ms": 492.76445794384927,
+        "non_deterministic": 0
+      },
+      "date_only": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 0,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 12,
+        "protected_date_hits": 0,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": null,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 320.666583487764,
+        "p90_ms": 466.86725004110485,
+        "non_deterministic": 0
+      }
+    },
+    "misses": [
+      {
+        "id": "ko-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 8,
+            "end": 20,
+            "label": "dob",
+            "text": "1991년 8월 17일"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 3,
+            "end": 28,
+            "label": "address",
+            "text": "서울시 가상구 새봄로 27번길 14, 302호"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 0,
+            "end": 6,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 43,
+            "end": 49,
+            "label": "person",
+            "text": "사미르 하산"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 51,
+            "end": 73,
+            "label": "email",
+            "text": "new.seoyun@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "religion",
+            "text": "기독교"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "political",
+            "text": "새빛당"
+          },
+          {
+            "start": 27,
+            "end": 39,
+            "label": "medical",
+            "text": "외상 후 스트레스 장애"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-1",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 11,
+            "end": 22,
+            "label": "person",
+            "text": "Leila Nouri"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 10,
+            "end": 42,
+            "label": "address",
+            "text": "14 Willow Lane, Flat 302, London"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 89,
+            "end": 111,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 15,
+            "end": 27,
+            "label": "religion",
+            "text": "Christianity"
+          },
+          {
+            "start": 49,
+            "end": 63,
+            "label": "political",
+            "text": "New Dawn Party"
+          },
+          {
+            "start": 87,
+            "end": 117,
+            "label": "medical",
+            "text": "post-traumatic stress disorder"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 69,
+            "end": 81,
+            "label": "person",
+            "text": "Samir Hassan"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 51,
+            "end": 73,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 85,
+            "end": 107,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 23,
+            "end": 36,
+            "label": "religion",
+            "text": "christianisme"
+          },
+          {
+            "start": 53,
+            "end": 77,
+            "label": "political",
+            "text": "Parti de l'Aube Nouvelle"
+          },
+          {
+            "start": 104,
+            "end": 138,
+            "label": "medical",
+            "text": "trouble de stress post-traumatique"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 71,
+            "end": 82,
+            "label": "person",
+            "text": "Самир Хасан"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 87,
+            "end": 98,
+            "label": "person",
+            "text": "Самир Хасан"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 83,
+            "end": 105,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 9,
+            "end": 21,
+            "label": "religion",
+            "text": "христианство"
+          },
+          {
+            "start": 51,
+            "end": 73,
+            "label": "political",
+            "text": "Партии нового рассвета"
+          },
+          {
+            "start": 100,
+            "end": 142,
+            "label": "medical",
+            "text": "посттравматическое стрессовое расстройство"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 16,
+            "end": 29,
+            "label": "dob",
+            "text": "١٧ أغسطس ١٩٩١"
+          },
+          {
+            "start": 48,
+            "end": 57,
+            "label": "passport",
+            "text": "P73829164"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 8,
+            "end": 39,
+            "label": "address",
+            "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢"
+          },
+          {
+            "start": 45,
+            "end": 53,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 8,
+            "end": 17,
+            "label": "person",
+            "text": "ليلى نوري"
+          },
+          {
+            "start": 73,
+            "end": 81,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 14,
+            "label": "person",
+            "text": "مريم فرح"
+          },
+          {
+            "start": 79,
+            "end": 101,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 7,
+            "end": 15,
+            "label": "religion",
+            "text": "المسيحية"
+          },
+          {
+            "start": 31,
+            "end": 47,
+            "label": "political",
+            "text": "حزب الفجر الجديد"
+          },
+          {
+            "start": 64,
+            "end": 84,
+            "label": "medical",
+            "text": "اضطراب ما بعد الصدمة"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 14,
+            "end": 25,
+            "label": "dob",
+            "text": "۱۷ اوت ۱۹۹۱"
+          },
+          {
+            "start": 45,
+            "end": 54,
+            "label": "passport",
+            "text": "P73829164"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 42,
+            "label": "address",
+            "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲"
+          },
+          {
+            "start": 64,
+            "end": 72,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 0,
+            "end": 9,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 52,
+            "end": 61,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 78,
+            "end": 86,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 0,
+            "end": 8,
+            "label": "person",
+            "text": "مریم فرح"
+          },
+          {
+            "start": 76,
+            "end": 98,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 6,
+            "end": 12,
+            "label": "religion",
+            "text": "مسیحیت"
+          },
+          {
+            "start": 24,
+            "end": 36,
+            "label": "political",
+            "text": "حزب سپیده نو"
+          },
+          {
+            "start": 52,
+            "end": 76,
+            "label": "medical",
+            "text": "اختلال استرس پس از سانحه"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 21,
+            "end": 34,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 61,
+            "end": 63,
+            "label": "person",
+            "text": "남궁"
+          },
+          {
+            "start": 69,
+            "end": 71,
+            "label": "person",
+            "text": "혜린"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 3,
+            "end": 14,
+            "label": "dob",
+            "text": "1987년 2월 9일"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 8,
+            "end": 10,
+            "label": "religion",
+            "text": "불교"
+          },
+          {
+            "start": 21,
+            "end": 26,
+            "label": "political",
+            "text": "민주연합당"
+          },
+          {
+            "start": 53,
+            "end": 55,
+            "label": "medical",
+            "text": "간질"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 1540,
+            "end": 1547,
+            "label": "person",
+            "text": "아미르 라히미"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-long",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 1540,
+            "end": 1547,
+            "label": "person",
+            "text": "아미르 라히미"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-boundary",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 253,
+            "end": 256,
+            "label": "person",
+            "text": "서지후"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 18,
+            "end": 26,
+            "label": "religion",
+            "text": "Buddhism"
+          },
+          {
+            "start": 64,
+            "end": 89,
+            "label": "political",
+            "text": "Democratic Alliance Party"
+          },
+          {
+            "start": 123,
+            "end": 131,
+            "label": "medical",
+            "text": "epilepsy"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 34,
+            "end": 44,
+            "label": "person",
+            "text": "عمر الكريم"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 114,
+            "end": 128,
+            "label": "person",
+            "text": "Nadia Pet rova"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 25,
+            "end": 35,
+            "label": "religion",
+            "text": "bouddhisme"
+          },
+          {
+            "start": 74,
+            "end": 106,
+            "label": "political",
+            "text": "Parti de l'Alliance démocratique"
+          },
+          {
+            "start": 134,
+            "end": 143,
+            "label": "medical",
+            "text": "épilepsie"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 2959,
+            "end": 2970,
+            "label": "person",
+            "text": "Amir Rahimi"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 11,
+            "end": 25,
+            "label": "person",
+            "text": "Омар Аль-Карим"
+          },
+          {
+            "start": 55,
+            "end": 68,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 11,
+            "end": 30,
+            "label": "dob",
+            "text": "9 февраля 1987 года"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 22,
+            "end": 29,
+            "label": "religion",
+            "text": "буддизм"
+          },
+          {
+            "start": 57,
+            "end": 88,
+            "label": "political",
+            "text": "Партии демократического альянса"
+          },
+          {
+            "start": 110,
+            "end": 119,
+            "label": "medical",
+            "text": "эпилепсии"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 11,
+            "end": 23,
+            "label": "person",
+            "text": "Надя Петрова"
+          },
+          {
+            "start": 2682,
+            "end": 2693,
+            "label": "person",
+            "text": "Амир Рахими"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 24,
+            "end": 37,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 99,
+            "end": 112,
+            "label": "person",
+            "text": "نادية بتر وفا"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 9,
+            "end": 22,
+            "label": "dob",
+            "text": "٩ فبراير ١٩٨٧"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 10,
+            "end": 17,
+            "label": "religion",
+            "text": "البوذية"
+          },
+          {
+            "start": 43,
+            "end": 66,
+            "label": "political",
+            "text": "لحزب التحالف الديمقراطي"
+          },
+          {
+            "start": 88,
+            "end": 93,
+            "label": "medical",
+            "text": "الصرع"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 5,
+            "end": 17,
+            "label": "person",
+            "text": "نادية بتروفا"
+          },
+          {
+            "start": 2003,
+            "end": 2013,
+            "label": "person",
+            "text": "أمير رحيمي"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-long",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 5,
+            "end": 17,
+            "label": "person",
+            "text": "نادية بتروفا"
+          },
+          {
+            "start": 2003,
+            "end": 2013,
+            "label": "person",
+            "text": "أمير رحيمي"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-boundary",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 264,
+            "end": 275,
+            "label": "person",
+            "text": "يوناس ميريك"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-boundary",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 264,
+            "end": 275,
+            "label": "person",
+            "text": "يوناس ميريك"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 37,
+            "end": 50,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 28,
+            "end": 37,
+            "label": "passport",
+            "text": "N64918372"
+          },
+          {
+            "start": 92,
+            "end": 105,
+            "label": "person",
+            "text": "نادیا پتر ووا"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 18,
+            "label": "dob",
+            "text": "۹ فوریه ۱۹۸۷"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 13,
+            "end": 22,
+            "label": "religion",
+            "text": "آیین بودا"
+          },
+          {
+            "start": 45,
+            "end": 64,
+            "label": "political",
+            "text": "حزب اتحاد دموکراتیک"
+          },
+          {
+            "start": 88,
+            "end": 91,
+            "label": "medical",
+            "text": "صرع"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-negative",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 20,
+            "end": 30,
+            "label": "keep",
+            "text": "مأمور پلیس"
+          }
+        ]
+      },
+      {
+        "id": "fa-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 7,
+            "end": 19,
+            "label": "person",
+            "text": "نادیا پترووا"
+          },
+          {
+            "start": 2496,
+            "end": 2506,
+            "label": "person",
+            "text": "امیر رحیمی"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-long",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 7,
+            "end": 19,
+            "label": "person",
+            "text": "نادیا پترووا"
+          },
+          {
+            "start": 2496,
+            "end": 2506,
+            "label": "person",
+            "text": "امیر رحیمی"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-boundary",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 256,
+            "end": 266,
+            "label": "person",
+            "text": "یوناس میرک"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-boundary",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 256,
+            "end": 266,
+            "label": "person",
+            "text": "یوناس میرک"
+          }
+        ],
+        "protected_damaged": []
+      }
+    ]
+  },
+  {
+    "name": "liquid_hybrid",
+    "model": "LiquidAI/LFM2.5-Encoder-350M-PII-Detector",
+    "revision": "b8c9cf3d2d6ae52501b35a27ba46f271449c9ce2",
+    "status": "complete",
+    "fixture_sha256": "227a81ae03bd1f4f9d2d771441480f80b54b41b3560a549ed435a241c6566cbf",
+    "rows": 102,
+    "parameters": 354648993,
+    "load_seconds": 1.5784915409749374,
+    "latency_kind": "recorded raw inference plus separately measured postprocessing; not a second end-to-end run",
+    "short_identifiers": {
+      "tp": 1334,
+      "fp": 11,
+      "fn": 400,
+      "entities": 127,
+      "covered_entities": 84,
+      "core_covered_entities": 84,
+      "protected_hits": 1,
+      "protected_count": 42,
+      "cases": 66,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.6614173228346457,
+      "core_entity_recall": 0.6614173228346457,
+      "char_precision": 0.9918215613382899,
+      "char_recall": 0.7693194925028836,
+      "positive_cases": 48,
+      "positive_leak_free": 17,
+      "p50_ms": 352.892104012426,
+      "p90_ms": 655.7293749647215,
+      "non_deterministic": 0
+    },
+    "expanded_only": {
+      "tp": 499,
+      "fp": 9,
+      "fn": 163,
+      "entities": 49,
+      "covered_entities": 32,
+      "core_covered_entities": 32,
+      "protected_hits": 1,
+      "protected_count": 42,
+      "cases": 30,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.6530612244897959,
+      "core_entity_recall": 0.6530612244897959,
+      "char_precision": 0.9822834645669292,
+      "char_recall": 0.7537764350453172,
+      "positive_cases": 18,
+      "positive_leak_free": 5,
+      "p50_ms": 333.29783350927755,
+      "p90_ms": 412.21950005274266,
+      "non_deterministic": 0
+    },
+    "original_only": {
+      "tp": 835,
+      "fp": 2,
+      "fn": 237,
+      "entities": 78,
+      "covered_entities": 52,
+      "core_covered_entities": 52,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 36,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.6666666666666666,
+      "core_entity_recall": 0.6666666666666666,
+      "char_precision": 0.997610513739546,
+      "char_recall": 0.7789179104477612,
+      "positive_cases": 30,
+      "positive_leak_free": 12,
+      "p50_ms": 381.90118747297674,
+      "p90_ms": 997.2455009119585,
+      "non_deterministic": 0
+    },
+    "sensitive": {
+      "tp": 64,
+      "fp": 0,
+      "fn": 417,
+      "entities": 36,
+      "covered_entities": 0,
+      "core_covered_entities": 0,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 12,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.0,
+      "core_entity_recall": 0.0,
+      "char_precision": 1.0,
+      "char_recall": 0.13305613305613306,
+      "positive_cases": 12,
+      "positive_leak_free": 0,
+      "p50_ms": 345.39552143542096,
+      "p90_ms": 450.4856679122895,
+      "non_deterministic": 0
+    },
+    "long_whole": {
+      "tp": 159,
+      "fp": 0,
+      "fn": 92,
+      "entities": 18,
+      "covered_entities": 9,
+      "core_covered_entities": 9,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.5,
+      "core_entity_recall": 0.5,
+      "char_precision": 1.0,
+      "char_recall": 0.6334661354581673,
+      "positive_cases": 6,
+      "positive_leak_free": 1,
+      "p50_ms": 2032.4440205586143,
+      "p90_ms": 4011.2893760669976,
+      "non_deterministic": 0
+    },
+    "long_chunked": {
+      "tp": 198,
+      "fp": 211,
+      "fn": 53,
+      "entities": 18,
+      "covered_entities": 12,
+      "core_covered_entities": 12,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.6666666666666666,
+      "core_entity_recall": 0.6666666666666666,
+      "char_precision": 0.4841075794621027,
+      "char_recall": 0.7888446215139442,
+      "positive_cases": 6,
+      "positive_leak_free": 3,
+      "p50_ms": 13236.863458529115,
+      "p90_ms": 20626.162290922366,
+      "non_deterministic": 0
+    },
+    "boundary_whole": {
+      "tp": 216,
+      "fp": 18,
+      "fn": 22,
+      "entities": 12,
+      "covered_entities": 9,
+      "core_covered_entities": 9,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.75,
+      "core_entity_recall": 0.75,
+      "char_precision": 0.9230769230769231,
+      "char_recall": 0.907563025210084,
+      "positive_cases": 6,
+      "positive_leak_free": 3,
+      "p50_ms": 411.29983350401744,
+      "p90_ms": 493.7323749763891,
+      "non_deterministic": 0
+    },
+    "boundary_chunked": {
+      "tp": 219,
+      "fp": 18,
+      "fn": 19,
+      "entities": 12,
+      "covered_entities": 10,
+      "core_covered_entities": 10,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.8333333333333334,
+      "core_entity_recall": 0.8333333333333334,
+      "char_precision": 0.9240506329113924,
+      "char_recall": 0.9201680672268907,
+      "positive_cases": 6,
+      "positive_leak_free": 4,
+      "p50_ms": 780.5193545646034,
+      "p90_ms": 9488.774791941978,
+      "non_deterministic": 0
+    },
+    "languages": {
+      "ko": {
+        "tp": 113,
+        "fp": 0,
+        "fn": 120,
+        "entities": 22,
+        "covered_entities": 10,
+        "core_covered_entities": 10,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.45454545454545453,
+        "core_entity_recall": 0.45454545454545453,
+        "char_precision": 1.0,
+        "char_recall": 0.48497854077253216,
+        "positive_cases": 8,
+        "positive_leak_free": 0,
+        "p50_ms": 382.7182504464872,
+        "p90_ms": 654.7470419900492,
+        "non_deterministic": 0
+      },
+      "en": {
+        "tp": 295,
+        "fp": 2,
+        "fn": 11,
+        "entities": 21,
+        "covered_entities": 20,
+        "core_covered_entities": 20,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9523809523809523,
+        "core_entity_recall": 0.9523809523809523,
+        "char_precision": 0.9932659932659933,
+        "char_recall": 0.9640522875816994,
+        "positive_cases": 8,
+        "positive_leak_free": 7,
+        "p50_ms": 324.53389547299594,
+        "p90_ms": 655.7293749647215,
+        "non_deterministic": 0
+      },
+      "fr": {
+        "tp": 286,
+        "fp": 0,
+        "fn": 23,
+        "entities": 21,
+        "covered_entities": 18,
+        "core_covered_entities": 18,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.8571428571428571,
+        "core_entity_recall": 0.8571428571428571,
+        "char_precision": 1.0,
+        "char_recall": 0.9255663430420712,
+        "positive_cases": 8,
+        "positive_leak_free": 5,
+        "p50_ms": 371.00085406564176,
+        "p90_ms": 2784.037542063743,
+        "non_deterministic": 0
+      },
+      "ru": {
+        "tp": 278,
+        "fp": 0,
+        "fn": 43,
+        "entities": 21,
+        "covered_entities": 15,
+        "core_covered_entities": 15,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.7142857142857143,
+        "core_entity_recall": 0.7142857142857143,
+        "char_precision": 1.0,
+        "char_recall": 0.8660436137071651,
+        "positive_cases": 8,
+        "positive_leak_free": 3,
+        "p50_ms": 372.94825044227764,
+        "p90_ms": 910.7934590429068,
+        "non_deterministic": 0
+      },
+      "ar": {
+        "tp": 206,
+        "fp": 0,
+        "fn": 76,
+        "entities": 21,
+        "covered_entities": 12,
+        "core_covered_entities": 12,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.5714285714285714,
+        "core_entity_recall": 0.5714285714285714,
+        "char_precision": 1.0,
+        "char_recall": 0.7304964539007093,
+        "positive_cases": 8,
+        "positive_leak_free": 1,
+        "p50_ms": 351.65250004502013,
+        "p90_ms": 402.79462398029864,
+        "non_deterministic": 0
+      },
+      "fa": {
+        "tp": 156,
+        "fp": 9,
+        "fn": 127,
+        "entities": 21,
+        "covered_entities": 9,
+        "core_covered_entities": 9,
+        "protected_hits": 1,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.42857142857142855,
+        "core_entity_recall": 0.42857142857142855,
+        "char_precision": 0.9454545454545454,
+        "char_recall": 0.5512367491166078,
+        "positive_cases": 8,
+        "positive_leak_free": 1,
+        "p50_ms": 339.4647919340059,
+        "p90_ms": 394.15937510784715,
+        "non_deterministic": 0
+      }
+    },
+    "groups": {
+      "original": {
+        "tp": 851,
+        "fp": 2,
+        "fn": 500,
+        "entities": 96,
+        "covered_entities": 52,
+        "core_covered_entities": 52,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 42,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.5416666666666666,
+        "core_entity_recall": 0.5416666666666666,
+        "char_precision": 0.9976553341148886,
+        "char_recall": 0.6299037749814952,
+        "positive_cases": 36,
+        "positive_leak_free": 12,
+        "p50_ms": 378.63495852798223,
+        "p90_ms": 989.6924159256741,
+        "non_deterministic": 0
+      },
+      "code_switch": {
+        "tp": 180,
+        "fp": 0,
+        "fn": 91,
+        "entities": 18,
+        "covered_entities": 11,
+        "core_covered_entities": 11,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.6111111111111112,
+        "core_entity_recall": 0.6111111111111112,
+        "char_precision": 1.0,
+        "char_recall": 0.6642066420664207,
+        "positive_cases": 6,
+        "positive_leak_free": 1,
+        "p50_ms": 336.27735497429967,
+        "p90_ms": 364.2667499370873,
+        "non_deterministic": 0
+      },
+      "noisy": {
+        "tp": 282,
+        "fp": 0,
+        "fn": 38,
+        "entities": 25,
+        "covered_entities": 19,
+        "core_covered_entities": 19,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.76,
+        "core_entity_recall": 0.76,
+        "char_precision": 1.0,
+        "char_recall": 0.88125,
+        "positive_cases": 6,
+        "positive_leak_free": 2,
+        "p50_ms": 345.15154198743403,
+        "p90_ms": 392.9997499799356,
+        "non_deterministic": 0
+      },
+      "dob_event": {
+        "tp": 37,
+        "fp": 0,
+        "fn": 34,
+        "entities": 6,
+        "covered_entities": 2,
+        "core_covered_entities": 2,
+        "protected_hits": 0,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.3333333333333333,
+        "core_entity_recall": 0.3333333333333333,
+        "char_precision": 1.0,
+        "char_recall": 0.5211267605633803,
+        "positive_cases": 6,
+        "positive_leak_free": 2,
+        "p50_ms": 339.6891464362852,
+        "p90_ms": 372.43675091303885,
+        "non_deterministic": 0
+      },
+      "sensitive": {
+        "tp": 48,
+        "fp": 0,
+        "fn": 154,
+        "entities": 18,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.0,
+        "core_entity_recall": 0.0,
+        "char_precision": 1.0,
+        "char_recall": 0.2376237623762376,
+        "positive_cases": 6,
+        "positive_leak_free": 0,
+        "p50_ms": 369.5348750334233,
+        "p90_ms": 435.513083008118,
+        "non_deterministic": 0
+      },
+      "negative": {
+        "tp": 0,
+        "fp": 9,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 1,
+        "protected_count": 18,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 0,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": 0.0,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 327.97287544235587,
+        "p90_ms": 381.2730840872973,
+        "non_deterministic": 0
+      },
+      "long": {
+        "tp": 159,
+        "fp": 0,
+        "fn": 92,
+        "entities": 18,
+        "covered_entities": 9,
+        "core_covered_entities": 9,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.5,
+        "core_entity_recall": 0.5,
+        "char_precision": 1.0,
+        "char_recall": 0.6334661354581673,
+        "positive_cases": 6,
+        "positive_leak_free": 1,
+        "p50_ms": 2032.4440205586143,
+        "p90_ms": 4011.2893760669976,
+        "non_deterministic": 0
+      },
+      "boundary": {
+        "tp": 216,
+        "fp": 18,
+        "fn": 22,
+        "entities": 12,
+        "covered_entities": 9,
+        "core_covered_entities": 9,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.75,
+        "core_entity_recall": 0.75,
+        "char_precision": 0.9230769230769231,
+        "char_recall": 0.907563025210084,
+        "positive_cases": 6,
+        "positive_leak_free": 3,
+        "p50_ms": 411.29983350401744,
+        "p90_ms": 493.7323749763891,
+        "non_deterministic": 0
+      },
+      "date_only": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 0,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 12,
+        "protected_date_hits": 0,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": null,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 321.1639169603586,
+        "p90_ms": 467.2733750194311,
+        "non_deterministic": 0
+      }
+    },
+    "misses": [
+      {
+        "id": "ko-1",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 19,
+            "end": 40,
+            "label": "email",
+            "text": "harin.kim@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 8,
+            "end": 20,
+            "label": "dob",
+            "text": "1991년 8월 17일"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 3,
+            "end": 28,
+            "label": "address",
+            "text": "서울시 가상구 새봄로 27번길 14, 302호"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 0,
+            "end": 6,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 43,
+            "end": 49,
+            "label": "person",
+            "text": "사미르 하산"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 51,
+            "end": 73,
+            "label": "email",
+            "text": "new.seoyun@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 3,
+            "end": 6,
+            "label": "religion",
+            "text": "기독교"
+          },
+          {
+            "start": 16,
+            "end": 19,
+            "label": "political",
+            "text": "새빛당"
+          },
+          {
+            "start": 27,
+            "end": 39,
+            "label": "medical",
+            "text": "외상 후 스트레스 장애"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 10,
+            "end": 42,
+            "label": "address",
+            "text": "14 Willow Lane, Flat 302, London"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 15,
+            "end": 27,
+            "label": "religion",
+            "text": "Christianity"
+          },
+          {
+            "start": 49,
+            "end": 63,
+            "label": "political",
+            "text": "New Dawn Party"
+          },
+          {
+            "start": 87,
+            "end": 117,
+            "label": "medical",
+            "text": "post-traumatic stress disorder"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 69,
+            "end": 81,
+            "label": "person",
+            "text": "Samir Hassan"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 23,
+            "end": 36,
+            "label": "religion",
+            "text": "christianisme"
+          },
+          {
+            "start": 53,
+            "end": 77,
+            "label": "political",
+            "text": "Parti de l'Aube Nouvelle"
+          },
+          {
+            "start": 104,
+            "end": 138,
+            "label": "medical",
+            "text": "trouble de stress post-traumatique"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 71,
+            "end": 82,
+            "label": "person",
+            "text": "Самир Хасан"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 87,
+            "end": 98,
+            "label": "person",
+            "text": "Самир Хасан"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 9,
+            "end": 21,
+            "label": "religion",
+            "text": "христианство"
+          },
+          {
+            "start": 51,
+            "end": 73,
+            "label": "political",
+            "text": "Партии нового рассвета"
+          },
+          {
+            "start": 100,
+            "end": 142,
+            "label": "medical",
+            "text": "посттравматическое стрессовое расстройство"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 16,
+            "end": 29,
+            "label": "dob",
+            "text": "١٧ أغسطس ١٩٩١"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 8,
+            "end": 39,
+            "label": "address",
+            "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢"
+          },
+          {
+            "start": 45,
+            "end": 53,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 8,
+            "end": 17,
+            "label": "person",
+            "text": "ليلى نوري"
+          },
+          {
+            "start": 73,
+            "end": 81,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 14,
+            "label": "person",
+            "text": "مريم فرح"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 7,
+            "end": 15,
+            "label": "religion",
+            "text": "المسيحية"
+          },
+          {
+            "start": 31,
+            "end": 47,
+            "label": "political",
+            "text": "حزب الفجر الجديد"
+          },
+          {
+            "start": 64,
+            "end": 84,
+            "label": "medical",
+            "text": "اضطراب ما بعد الصدمة"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 14,
+            "end": 25,
+            "label": "dob",
+            "text": "۱۷ اوت ۱۹۹۱"
+          },
+          {
+            "start": 45,
+            "end": 54,
+            "label": "passport",
+            "text": "P73829164"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 42,
+            "label": "address",
+            "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲"
+          },
+          {
+            "start": 64,
+            "end": 72,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-5",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 0,
+            "end": 9,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 52,
+            "end": 61,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 78,
+            "end": 86,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-6",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 0,
+            "end": 8,
+            "label": "person",
+            "text": "مریم فرح"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-7",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 6,
+            "end": 12,
+            "label": "religion",
+            "text": "مسیحیت"
+          },
+          {
+            "start": 24,
+            "end": 36,
+            "label": "political",
+            "text": "حزب سپیده نو"
+          },
+          {
+            "start": 52,
+            "end": 76,
+            "label": "medical",
+            "text": "اختلال استرس پس از سانحه"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 21,
+            "end": 34,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          },
+          {
+            "start": 51,
+            "end": 75,
+            "label": "email",
+            "text": "omar.alkarim@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 61,
+            "end": 63,
+            "label": "person",
+            "text": "남궁"
+          },
+          {
+            "start": 69,
+            "end": 71,
+            "label": "person",
+            "text": "혜린"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 3,
+            "end": 14,
+            "label": "dob",
+            "text": "1987년 2월 9일"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 8,
+            "end": 10,
+            "label": "religion",
+            "text": "불교"
+          },
+          {
+            "start": 21,
+            "end": 26,
+            "label": "political",
+            "text": "민주연합당"
+          },
+          {
+            "start": 53,
+            "end": 55,
+            "label": "medical",
+            "text": "간질"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 1540,
+            "end": 1547,
+            "label": "person",
+            "text": "아미르 라히미"
+          },
+          {
+            "start": 3077,
+            "end": 3099,
+            "label": "email",
+            "text": "yuna.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-long",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 1540,
+            "end": 1547,
+            "label": "person",
+            "text": "아미르 라히미"
+          },
+          {
+            "start": 3077,
+            "end": 3099,
+            "label": "email",
+            "text": "yuna.final@example.org"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-boundary",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 253,
+            "end": 256,
+            "label": "person",
+            "text": "서지후"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 18,
+            "end": 26,
+            "label": "religion",
+            "text": "Buddhism"
+          },
+          {
+            "start": 64,
+            "end": 89,
+            "label": "political",
+            "text": "Democratic Alliance Party"
+          },
+          {
+            "start": 123,
+            "end": 131,
+            "label": "medical",
+            "text": "epilepsy"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 34,
+            "end": 44,
+            "label": "person",
+            "text": "عمر الكريم"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 114,
+            "end": 128,
+            "label": "person",
+            "text": "Nadia Pet rova"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 25,
+            "end": 35,
+            "label": "religion",
+            "text": "bouddhisme"
+          },
+          {
+            "start": 74,
+            "end": 106,
+            "label": "political",
+            "text": "Parti de l'Alliance démocratique"
+          },
+          {
+            "start": 134,
+            "end": 143,
+            "label": "medical",
+            "text": "épilepsie"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 2959,
+            "end": 2970,
+            "label": "person",
+            "text": "Amir Rahimi"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 11,
+            "end": 25,
+            "label": "person",
+            "text": "Омар Аль-Карим"
+          },
+          {
+            "start": 55,
+            "end": 68,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 11,
+            "end": 30,
+            "label": "dob",
+            "text": "9 февраля 1987 года"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 22,
+            "end": 29,
+            "label": "religion",
+            "text": "буддизм"
+          },
+          {
+            "start": 57,
+            "end": 88,
+            "label": "political",
+            "text": "Партии демократического альянса"
+          },
+          {
+            "start": 110,
+            "end": 119,
+            "label": "medical",
+            "text": "эпилепсии"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 11,
+            "end": 23,
+            "label": "person",
+            "text": "Надя Петрова"
+          },
+          {
+            "start": 2682,
+            "end": 2693,
+            "label": "person",
+            "text": "Амир Рахими"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 24,
+            "end": 37,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 99,
+            "end": 112,
+            "label": "person",
+            "text": "نادية بتر وفا"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 9,
+            "end": 22,
+            "label": "dob",
+            "text": "٩ فبراير ١٩٨٧"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 10,
+            "end": 17,
+            "label": "religion",
+            "text": "البوذية"
+          },
+          {
+            "start": 43,
+            "end": 66,
+            "label": "political",
+            "text": "لحزب التحالف الديمقراطي"
+          },
+          {
+            "start": 88,
+            "end": 93,
+            "label": "medical",
+            "text": "الصرع"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 5,
+            "end": 17,
+            "label": "person",
+            "text": "نادية بتروفا"
+          },
+          {
+            "start": 2003,
+            "end": 2013,
+            "label": "person",
+            "text": "أمير رحيمي"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-long",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 5,
+            "end": 17,
+            "label": "person",
+            "text": "نادية بتروفا"
+          },
+          {
+            "start": 2003,
+            "end": 2013,
+            "label": "person",
+            "text": "أمير رحيمي"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-boundary",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 264,
+            "end": 275,
+            "label": "person",
+            "text": "يوناس ميريك"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-boundary",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 264,
+            "end": 275,
+            "label": "person",
+            "text": "يوناس ميريك"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 37,
+            "end": 50,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-noisy",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 28,
+            "end": 37,
+            "label": "passport",
+            "text": "N64918372"
+          },
+          {
+            "start": 92,
+            "end": 105,
+            "label": "person",
+            "text": "نادیا پتر ووا"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 18,
+            "label": "dob",
+            "text": "۹ فوریه ۱۹۸۷"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-sensitive",
+        "mode": "whole",
+        "track": "sensitive",
+        "missed": [
+          {
+            "start": 13,
+            "end": 22,
+            "label": "religion",
+            "text": "آیین بودا"
+          },
+          {
+            "start": 45,
+            "end": 64,
+            "label": "political",
+            "text": "حزب اتحاد دموکراتیک"
+          },
+          {
+            "start": 88,
+            "end": 91,
+            "label": "medical",
+            "text": "صرع"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-negative",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 20,
+            "end": 30,
+            "label": "keep",
+            "text": "مأمور پلیس"
+          }
+        ]
+      },
+      {
+        "id": "fa-long",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 7,
+            "end": 19,
+            "label": "person",
+            "text": "نادیا پترووا"
+          },
+          {
+            "start": 2496,
+            "end": 2506,
+            "label": "person",
+            "text": "امیر رحیمی"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-long",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 7,
+            "end": 19,
+            "label": "person",
+            "text": "نادیا پترووا"
+          },
+          {
+            "start": 2496,
+            "end": 2506,
+            "label": "person",
+            "text": "امیر رحیمی"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-boundary",
+        "mode": "whole",
+        "track": "long",
+        "missed": [
+          {
+            "start": 256,
+            "end": 266,
+            "label": "person",
+            "text": "یوناس میرک"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-boundary",
+        "mode": "chunked",
+        "track": "long",
+        "missed": [
+          {
+            "start": 256,
+            "end": 266,
+            "label": "person",
+            "text": "یوناس میرک"
+          }
+        ],
+        "protected_damaged": []
+      }
+    ]
+  },
+  {
+    "name": "nym",
+    "model": "Wismut/nym-pii-multilingual",
+    "revision": "0ed0242d67a30ca6a83e5f118506ff1e1daf83ca",
+    "status": "complete",
+    "fixture_sha256": "227a81ae03bd1f4f9d2d771441480f80b54b41b3560a549ed435a241c6566cbf",
+    "rows": 102,
+    "parameters": 307592529,
+    "load_seconds": 3.6287460000021383,
+    "latency_kind": "measured end-to-end per case; download/load excluded",
+    "short_identifiers": {
+      "tp": 1644,
+      "fp": 35,
+      "fn": 90,
+      "entities": 127,
+      "covered_entities": 116,
+      "core_covered_entities": 117,
+      "protected_hits": 2,
+      "protected_count": 42,
+      "cases": 66,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.9133858267716536,
+      "core_entity_recall": 0.9212598425196851,
+      "char_precision": 0.9791542584871947,
+      "char_recall": 0.9480968858131488,
+      "positive_cases": 48,
+      "positive_leak_free": 37,
+      "p50_ms": 90.26493696728721,
+      "p90_ms": 203.24216701555997,
+      "non_deterministic": 0
+    },
+    "expanded_only": {
+      "tp": 639,
+      "fp": 31,
+      "fn": 23,
+      "entities": 49,
+      "covered_entities": 46,
+      "core_covered_entities": 46,
+      "protected_hits": 2,
+      "protected_count": 42,
+      "cases": 30,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 24,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.9387755102040817,
+      "core_entity_recall": 0.9387755102040817,
+      "char_precision": 0.9537313432835821,
+      "char_recall": 0.9652567975830816,
+      "positive_cases": 18,
+      "positive_leak_free": 15,
+      "p50_ms": 76.34829194284976,
+      "p90_ms": 89.14249995723367,
+      "non_deterministic": 0
+    },
+    "original_only": {
+      "tp": 1005,
+      "fp": 4,
+      "fn": 67,
+      "entities": 78,
+      "covered_entities": 70,
+      "core_covered_entities": 71,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 36,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 0.8974358974358975,
+      "core_entity_recall": 0.9102564102564102,
+      "char_precision": 0.9960356788899901,
+      "char_recall": 0.9375,
+      "positive_cases": 30,
+      "positive_leak_free": 22,
+      "p50_ms": 132.06114649074152,
+      "p90_ms": 230.38991703651845,
+      "non_deterministic": 0
+    },
+    "sensitive": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "entities": 0,
+      "covered_entities": 0,
+      "core_covered_entities": 0,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 0,
+      "errors": 0,
+      "unsupported": 12,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": null,
+      "core_entity_recall": null,
+      "char_precision": null,
+      "char_recall": null,
+      "positive_cases": 0,
+      "positive_leak_free": 0,
+      "p50_ms": null,
+      "p90_ms": null,
+      "non_deterministic": 0
+    },
+    "long_whole": {
+      "tp": 251,
+      "fp": 0,
+      "fn": 0,
+      "entities": 18,
+      "covered_entities": 18,
+      "core_covered_entities": 18,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 1.0,
+      "core_entity_recall": 1.0,
+      "char_precision": 1.0,
+      "char_recall": 1.0,
+      "positive_cases": 6,
+      "positive_leak_free": 6,
+      "p50_ms": 887.1250834781677,
+      "p90_ms": 1484.3374169431627,
+      "non_deterministic": 0
+    },
+    "long_chunked": {
+      "tp": 251,
+      "fp": 0,
+      "fn": 0,
+      "entities": 18,
+      "covered_entities": 18,
+      "core_covered_entities": 18,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 1.0,
+      "core_entity_recall": 1.0,
+      "char_precision": 1.0,
+      "char_recall": 1.0,
+      "positive_cases": 6,
+      "positive_leak_free": 6,
+      "p50_ms": 2984.203187050298,
+      "p90_ms": 3504.4029160635546,
+      "non_deterministic": 0
+    },
+    "boundary_whole": {
+      "tp": 238,
+      "fp": 0,
+      "fn": 0,
+      "entities": 12,
+      "covered_entities": 12,
+      "core_covered_entities": 12,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 1.0,
+      "core_entity_recall": 1.0,
+      "char_precision": 1.0,
+      "char_recall": 1.0,
+      "positive_cases": 6,
+      "positive_leak_free": 6,
+      "p50_ms": 87.00654155109078,
+      "p90_ms": 95.59241705574095,
+      "non_deterministic": 0
+    },
+    "boundary_chunked": {
+      "tp": 238,
+      "fp": 0,
+      "fn": 0,
+      "entities": 12,
+      "covered_entities": 12,
+      "core_covered_entities": 12,
+      "protected_hits": 0,
+      "protected_count": 0,
+      "cases": 6,
+      "errors": 0,
+      "unsupported": 0,
+      "protected_date_count": 0,
+      "protected_date_hits": 0,
+      "full_span_recall": 1.0,
+      "core_entity_recall": 1.0,
+      "char_precision": 1.0,
+      "char_recall": 1.0,
+      "positive_cases": 6,
+      "positive_leak_free": 6,
+      "p50_ms": 154.07795854844153,
+      "p90_ms": 176.64204095490277,
+      "non_deterministic": 0
+    },
+    "languages": {
+      "ko": {
+        "tp": 231,
+        "fp": 11,
+        "fn": 2,
+        "entities": 22,
+        "covered_entities": 21,
+        "core_covered_entities": 21,
+        "protected_hits": 1,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9545454545454546,
+        "core_entity_recall": 0.9545454545454546,
+        "char_precision": 0.9545454545454546,
+        "char_recall": 0.9914163090128756,
+        "positive_cases": 8,
+        "positive_leak_free": 7,
+        "p50_ms": 90.92322899959981,
+        "p90_ms": 147.2892080200836,
+        "non_deterministic": 0
+      },
+      "en": {
+        "tp": 304,
+        "fp": 0,
+        "fn": 2,
+        "entities": 21,
+        "covered_entities": 20,
+        "core_covered_entities": 21,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9523809523809523,
+        "core_entity_recall": 1.0,
+        "char_precision": 1.0,
+        "char_recall": 0.9934640522875817,
+        "positive_cases": 8,
+        "positive_leak_free": 7,
+        "p50_ms": 151.18977089878172,
+        "p90_ms": 230.38991703651845,
+        "non_deterministic": 0
+      },
+      "fr": {
+        "tp": 296,
+        "fp": 0,
+        "fn": 13,
+        "entities": 21,
+        "covered_entities": 20,
+        "core_covered_entities": 20,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9523809523809523,
+        "core_entity_recall": 0.9523809523809523,
+        "char_precision": 1.0,
+        "char_recall": 0.9579288025889967,
+        "positive_cases": 8,
+        "positive_leak_free": 7,
+        "p50_ms": 126.31172902183607,
+        "p90_ms": 251.22700002975762,
+        "non_deterministic": 0
+      },
+      "ru": {
+        "tp": 298,
+        "fp": 6,
+        "fn": 23,
+        "entities": 21,
+        "covered_entities": 19,
+        "core_covered_entities": 19,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9047619047619048,
+        "core_entity_recall": 0.9047619047619048,
+        "char_precision": 0.9802631578947368,
+        "char_recall": 0.9283489096573209,
+        "positive_cases": 8,
+        "positive_leak_free": 6,
+        "p50_ms": 90.17889603273943,
+        "p90_ms": 155.5352919967845,
+        "non_deterministic": 0
+      },
+      "ar": {
+        "tp": 253,
+        "fp": 6,
+        "fn": 29,
+        "entities": 21,
+        "covered_entities": 17,
+        "core_covered_entities": 17,
+        "protected_hits": 0,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.8095238095238095,
+        "core_entity_recall": 0.8095238095238095,
+        "char_precision": 0.9768339768339769,
+        "char_recall": 0.8971631205673759,
+        "positive_cases": 8,
+        "positive_leak_free": 4,
+        "p50_ms": 91.91481198649853,
+        "p90_ms": 131.86383398715407,
+        "non_deterministic": 0
+      },
+      "fa": {
+        "tp": 262,
+        "fp": 12,
+        "fn": 21,
+        "entities": 21,
+        "covered_entities": 19,
+        "core_covered_entities": 19,
+        "protected_hits": 1,
+        "protected_count": 7,
+        "cases": 11,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 4,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9047619047619048,
+        "core_entity_recall": 0.9047619047619048,
+        "char_precision": 0.9562043795620438,
+        "char_recall": 0.9257950530035336,
+        "positive_cases": 8,
+        "positive_leak_free": 6,
+        "p50_ms": 80.06218750961125,
+        "p90_ms": 135.47174993436784,
+        "non_deterministic": 0
+      }
+    },
+    "groups": {
+      "original": {
+        "tp": 1005,
+        "fp": 4,
+        "fn": 67,
+        "entities": 78,
+        "covered_entities": 70,
+        "core_covered_entities": 71,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 36,
+        "errors": 0,
+        "unsupported": 6,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.8974358974358975,
+        "core_entity_recall": 0.9102564102564102,
+        "char_precision": 0.9960356788899901,
+        "char_recall": 0.9375,
+        "positive_cases": 30,
+        "positive_leak_free": 22,
+        "p50_ms": 132.06114649074152,
+        "p90_ms": 230.38991703651845,
+        "non_deterministic": 0
+      },
+      "code_switch": {
+        "tp": 269,
+        "fp": 0,
+        "fn": 2,
+        "entities": 18,
+        "covered_entities": 17,
+        "core_covered_entities": 17,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.9444444444444444,
+        "core_entity_recall": 0.9444444444444444,
+        "char_precision": 1.0,
+        "char_recall": 0.992619926199262,
+        "positive_cases": 6,
+        "positive_leak_free": 5,
+        "p50_ms": 78.10745848109946,
+        "p90_ms": 84.75529099814594,
+        "non_deterministic": 0
+      },
+      "noisy": {
+        "tp": 320,
+        "fp": 0,
+        "fn": 0,
+        "entities": 25,
+        "covered_entities": 25,
+        "core_covered_entities": 25,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 1.0,
+        "char_recall": 1.0,
+        "positive_cases": 6,
+        "positive_leak_free": 6,
+        "p50_ms": 72.30681250803173,
+        "p90_ms": 83.79487495403737,
+        "non_deterministic": 0
+      },
+      "dob_event": {
+        "tp": 50,
+        "fp": 11,
+        "fn": 21,
+        "entities": 6,
+        "covered_entities": 4,
+        "core_covered_entities": 4,
+        "protected_hits": 2,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 0,
+        "full_span_recall": 0.6666666666666666,
+        "core_entity_recall": 0.6666666666666666,
+        "char_precision": 0.819672131147541,
+        "char_recall": 0.704225352112676,
+        "positive_cases": 6,
+        "positive_leak_free": 4,
+        "p50_ms": 76.376375509426,
+        "p90_ms": 86.9852079777047,
+        "non_deterministic": 0
+      },
+      "sensitive": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 0,
+        "errors": 0,
+        "unsupported": 6,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": null,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": null,
+        "p90_ms": null,
+        "non_deterministic": 0
+      },
+      "negative": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 0,
+        "protected_count": 18,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 6,
+        "protected_date_hits": 0,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": null,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 79.33445851085708,
+        "p90_ms": 89.41466698888689,
+        "non_deterministic": 0
+      },
+      "long": {
+        "tp": 251,
+        "fp": 0,
+        "fn": 0,
+        "entities": 18,
+        "covered_entities": 18,
+        "core_covered_entities": 18,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 1.0,
+        "char_recall": 1.0,
+        "positive_cases": 6,
+        "positive_leak_free": 6,
+        "p50_ms": 887.1250834781677,
+        "p90_ms": 1484.3374169431627,
+        "non_deterministic": 0
+      },
+      "boundary": {
+        "tp": 238,
+        "fp": 0,
+        "fn": 0,
+        "entities": 12,
+        "covered_entities": 12,
+        "core_covered_entities": 12,
+        "protected_hits": 0,
+        "protected_count": 0,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 0,
+        "protected_date_hits": 0,
+        "full_span_recall": 1.0,
+        "core_entity_recall": 1.0,
+        "char_precision": 1.0,
+        "char_recall": 1.0,
+        "positive_cases": 6,
+        "positive_leak_free": 6,
+        "p50_ms": 87.00654155109078,
+        "p90_ms": 95.59241705574095,
+        "non_deterministic": 0
+      },
+      "date_only": {
+        "tp": 0,
+        "fp": 20,
+        "fn": 0,
+        "entities": 0,
+        "covered_entities": 0,
+        "core_covered_entities": 0,
+        "protected_hits": 0,
+        "protected_count": 12,
+        "cases": 6,
+        "errors": 0,
+        "unsupported": 0,
+        "protected_date_count": 12,
+        "protected_date_hits": 0,
+        "full_span_recall": null,
+        "core_entity_recall": null,
+        "char_precision": 0.0,
+        "char_recall": null,
+        "positive_cases": 0,
+        "positive_leak_free": 0,
+        "p50_ms": 75.60710445977747,
+        "p90_ms": 88.38433306664228,
+        "non_deterministic": 0
+      }
+    },
+    "misses": [
+      {
+        "id": "ko-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 3,
+            "end": 28,
+            "label": "address",
+            "text": "서울시 가상구 새봄로 27번길 14, 302호"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "en-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 10,
+            "end": 42,
+            "label": "address",
+            "text": "14 Willow Lane, Flat 302, London"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fr-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 12,
+            "end": 52,
+            "label": "address",
+            "text": "14 rue des Saules, appartement 302, Lyon"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ru-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 18,
+            "end": 60,
+            "label": "address",
+            "text": "Москва, улица Ивовая, дом 14, квартира 302"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-2",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 16,
+            "end": 29,
+            "label": "dob",
+            "text": "١٧ أغسطس ١٩٩١"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 8,
+            "end": 39,
+            "label": "address",
+            "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-3",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 42,
+            "label": "address",
+            "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ko-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [],
+        "protected_damaged": [
+          {
+            "start": 46,
+            "end": 57,
+            "label": "keep",
+            "text": "구금되지는 않았습니다"
+          }
+        ]
+      },
+      {
+        "id": "ar-code_switch",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 24,
+            "end": 37,
+            "label": "person",
+            "text": "Omar Al-Karim"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "ar-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 9,
+            "end": 22,
+            "label": "dob",
+            "text": "٩ فبراير ١٩٨٧"
+          }
+        ],
+        "protected_damaged": []
+      },
+      {
+        "id": "fa-dob_event",
+        "mode": "whole",
+        "track": "identifiers",
+        "missed": [
+          {
+            "start": 6,
+            "end": 18,
+            "label": "dob",
+            "text": "۹ فوریه ۱۹۸۷"
+          }
+        ],
+        "protected_damaged": [
+          {
+            "start": 72,
+            "end": 84,
+            "label": "keep",
+            "text": "بازداشت نشدم"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,274 @@
+[
+  {
+    "name": "ethnicity",
+    "question_id": "1.12",
+    "source": "Татарин.",
+    "meaning_to_check": "Tatar ethnicity, not the Russian language",
+    "before": {
+      "translation": "타타르인.",
+      "seconds": 0.3775652500335127,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "타타르인.",
+      "seconds": 0.30627266713418067,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "language",
+    "question_id": "1.13",
+    "source": "Русский.",
+    "meaning_to_check": "Russian language, not ethnicity",
+    "before": {
+      "translation": "러시아어.",
+      "seconds": 0.17551737488247454,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "러시아어.",
+      "seconds": 0.11186750000342727,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "child_elsewhere",
+    "question_id": "14.13",
+    "source": "У меня есть дочь. Она осталась в России. Со мной детей нет.",
+    "meaning_to_check": "Has a daughter elsewhere; no accompanying children; add no age",
+    "before": {
+      "translation": "저에게는 딸이 있습니다. 그녀는 러시아에 남아 있습니다. 저는 아이가 없습니다.",
+      "seconds": 0.5614692501258105,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "딸이 한 명 있습니다. 그녀는 러시아에 남아 있습니다. 저는 아이가 없습니다.",
+      "seconds": 0.4274005419574678,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "child_age",
+    "question_id": "14.13",
+    "source": "Со мной мой сын, ему 17 лет.",
+    "meaning_to_check": "Accompanying son aged 17; no invented age threshold",
+    "before": {
+      "translation": "저와 함께 있는 제 아들은 17살입니다.",
+      "seconds": 0.2777075420599431,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "내 아들은 17살이며 나와 함께 있습니다.",
+      "seconds": 0.24807866709306836,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "age_unknown",
+    "question_id": "14.13",
+    "source": "Со мной ребёнок. Его точный возраст я не знаю.",
+    "meaning_to_check": "Accompanying child; exact age unknown",
+    "before": {
+      "translation": "저와 함께 아이가 있습니다. 그 아이의 정확한 나이는 모릅니다.",
+      "seconds": 0.3399876249022782,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "아이가 함께 옵니다. 정확한 나이는 모릅니다.",
+      "seconds": 0.32792524993419647,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "known_police",
+    "question_id": "14.2",
+    "source": "Двое полицейских остановили меня. Я видел их удостоверения.",
+    "meaning_to_check": "Police identity known, witnessed IDs",
+    "before": {
+      "translation": "두 명의 경찰관이 나를 멈췄습니다. 그들의 신분증을 보았습니다.",
+      "seconds": 0.5421389169059694,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "두 명의 경찰관이 나를 멈춰 세웠습니다. 나는 그들의 신분증을 보았습니다.",
+      "seconds": 0.503551916917786,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "unknown_police",
+    "question_id": "14.2",
+    "source": "Двое мужчин остановили меня. Я не знаю, были ли они полицейскими.",
+    "meaning_to_check": "Two men; police identity unknown",
+    "before": {
+      "translation": "두 명의 남자가 나를 멈춰 세웠다. 그들이 경찰이었는지는 모르겠다.",
+      "seconds": 0.4718560001347214,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "두 명의 남성이 나를 멈춰 세웠습니다. 그들이 경찰이었는지는 모릅니다.",
+      "seconds": 0.47058374993503094,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "direct_observation",
+    "question_id": "14.4",
+    "source": "Я лично видел, как задержали моего брата. Мать при этом не присутствовала.",
+    "meaning_to_check": "Directly witnessed brother detained; mother absent",
+    "before": {
+      "translation": "저는 직접 제 형이 구금되는 것을 보았습니다. 어머니는 그 자리에 없었습니다.",
+      "seconds": 0.5230829161591828,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "저는 직접 제 형을 구금하는 것을 보았습니다. 어머니는 그 자리에 없었습니다.",
+      "seconds": 0.4472627080976963,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "hearsay",
+    "question_id": "14.4",
+    "source": "Мать сказала, что брата задержали. Сам я этого не видел.",
+    "meaning_to_check": "Mother reports detention; not directly witnessed",
+    "before": {
+      "translation": "어머니는 오빠가 구금되었다고 말했어요. 저는 직접 보지는 않았습니다.",
+      "seconds": 0.41498320805840194,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "엄마가 오빠가 구금되었다고 말했어요. 저는 직접 보지 않았습니다.",
+      "seconds": 0.4075438748113811,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "contacted_police",
+    "question_id": "14.5",
+    "source": "Я обратился в полицию 3 апреля 2025 года. Мне отказали в помощи.",
+    "meaning_to_check": "Did contact police; date and refused help retained",
+    "before": {
+      "translation": "2025년 4월 3일에 경찰에 신청했으나 도움을 거부당했습니다.",
+      "seconds": 0.5577861669007689,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "2025년 4월 3일에 경찰에 신고했습니다. 하지만 도움을 거부당했습니다.",
+      "seconds": 0.4266929170116782,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "not_contacted",
+    "question_id": "14.5",
+    "source": "Я не обращался в полицию. Не знаю, помогли бы мне.",
+    "meaning_to_check": "Did not contact police; hypothetical assistance unknown",
+    "before": {
+      "translation": "저는 경찰에 신청한 적이 없습니다. 도움을 받을 수 있었을지 모르겠습니다.",
+      "seconds": 0.4210475829895586,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "나는 경찰에 신고하지 않았습니다. 도움을 받을 수 있을지 모르겠습니다.",
+      "seconds": 0.3990242499858141,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "timing_fact",
+    "question_id": "14.18",
+    "source": "Заявление подано через три месяца после въезда.",
+    "meaning_to_check": "Submitted after three months; no new obligation",
+    "before": {
+      "translation": "입국 후 3개월 만에 신청서가 제출되었습니다.",
+      "seconds": 0.3991349160205573,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "입국 후 3개월 만에 신청서가 제출되었습니다.",
+      "seconds": 0.2949673330876976,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "reported_deadline",
+    "question_id": "14.18",
+    "source": "Мне сказали подать заявление до 1 июня 2026 года. Я не знаю, верен ли этот срок.",
+    "meaning_to_check": "Reported deadline with uncertainty; preserve date and obligation as reported",
+    "before": {
+      "translation": "2026년 6월 1일까지 신청서를 제출해야 한다고 들었습니다. 이 기간이 정확한지 모르겠습니다.",
+      "seconds": 0.5758113339543343,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "2026년 6월 1일까지 신청서를 제출하라고 했습니다. 이 기간이 정확한지 모르겠습니다.",
+      "seconds": 0.558182458858937,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "real_appendix",
+    "question_id": "15",
+    "source": "К заявлению прилагаю приложение с фотографиями. Это не программа для компьютера.",
+    "meaning_to_check": "Appendix with photos; explicitly not software",
+    "before": {
+      "translation": "신청서에 사진이 담긴 첨부물을 첨부합니다. 이는 컴퓨터 프로그램이 아닙니다.",
+      "seconds": 0.6169790409039706,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "신청인의 직접적인 말로 된 추가 진술을 첨부합니다. 이는 컴퓨터 프로그램이 아닙니다.",
+      "seconds": 0.5099174999631941,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "software_test",
+    "question_id": "15",
+    "source": "Это тест мобильного приложения. Это не настоящее заявление.",
+    "meaning_to_check": "Mobile software test; not a real application",
+    "before": {
+      "translation": "이것은 모바일 앱 테스트입니다. 이는 실제 신청서가 아닙니다.",
+      "seconds": 0.3928680829703808,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "이것은 모바일 앱 테스트입니다. 이는 실제 진술이 아닙니다.",
+      "seconds": 0.3797252920921892,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "real_statement",
+    "question_id": "15",
+    "source": "Это моё настоящее заявление. Описанные события произошли со мной.",
+    "meaning_to_check": "Real statement and events, not a fictional test",
+    "before": {
+      "translation": "이것은 제 진정한 신청서입니다. 설명된 사건들은 저와 관련된 것입니다.",
+      "seconds": 0.3994517498649657,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "이것은 제 진짜 진술입니다. 설명된 사건들은 저와 관련이 있습니다.",
+      "seconds": 0.38468849984928966,
+      "done_reason": "stop"
+    }
+  },
+  {
+    "name": "travel_document",
+    "question_id": "9.10",
+    "source": "Проездной документ. Паспорт получить не могу.",
+    "meaning_to_check": "Travel document; cannot obtain passport",
+    "before": {
+      "translation": "통행증 문서. 여권은 받을 수 없습니다.",
+      "seconds": 0.3504764169920236,
+      "done_reason": "stop"
+    },
+    "after": {
+      "translation": "여행 증명서. 여권을 받을 수 없음.",
+      "seconds": 0.26250050007365644,
+      "done_reason": "stop"
+    }
+  }
+]

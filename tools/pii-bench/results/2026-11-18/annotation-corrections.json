@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ko-noisy",
+    "old_gold": [
+      {
+        "start": 4,
+        "end": 8,
+        "label": "person"
+      },
+      {
+        "start": 15,
+        "end": 24,
+        "label": "passport"
+      },
+      {
+        "start": 32,
+        "end": 56,
+        "label": "email"
+      }
+    ],
+    "new_gold": [
+      {
+        "start": 4,
+        "end": 8,
+        "label": "person"
+      },
+      {
+        "start": 15,
+        "end": 24,
+        "label": "passport"
+      },
+      {
+        "start": 32,
+        "end": 56,
+        "label": "email"
+      },
+      {
+        "start": 61,
+        "end": 63,
+        "label": "person"
+      },
+      {
+        "start": 69,
+        "end": 71,
+        "label": "person"
+      }
+    ],
+    "reason": "Two explicitly repeated Korean surname/given-name spans were unannotated; inference text is identical."
+  }
+]

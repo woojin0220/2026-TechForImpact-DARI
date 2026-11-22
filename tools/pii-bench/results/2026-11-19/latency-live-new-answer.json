@@ -1,0 +1,33 @@
+{
+  "scenario": "narrow-denial",
+  "auxiliaryPasses": "selective",
+  "totalMs": 26538,
+  "extractionMs": 23401,
+  "calls": [
+    {
+      "runtime": "gemini",
+      "constrained": true,
+      "totalMs": 14415,
+      "maskingMs": 366,
+      "modelLoadMs": 0,
+      "providerMs": 14049
+    },
+    {
+      "runtime": "gemini",
+      "constrained": true,
+      "totalMs": 8914,
+      "maskingMs": 381,
+      "modelLoadMs": 0,
+      "providerMs": 8533
+    },
+    {
+      "runtime": "gemini",
+      "constrained": true,
+      "totalMs": 3129,
+      "maskingMs": 392,
+      "modelLoadMs": 0,
+      "providerMs": 2737
+    }
+  ],
+  "nextQuestionReady": true
+}

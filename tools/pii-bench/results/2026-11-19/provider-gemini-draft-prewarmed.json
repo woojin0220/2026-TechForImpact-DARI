@@ -1,0 +1,160 @@
+{
+  "fixtureOnly": true,
+  "backend": "gemini",
+  "providerSettings": "One-call conversation and batch draft for both providers. Local: Mac Ollama gemma4:e4b (not phone), think=false, ctx=16384; Gemini current config.",
+  "preparation": "Model and first exact request masked locally before each timed run. Fresh follow-up requests remain included.",
+  "draftPolicy": "One batch, per-question local validation, omissions flagged, no repair requests",
+  "rows": [
+    {
+      "phase": "draft",
+      "backend": "gemini",
+      "mode": "single-call",
+      "label": "full-export-fixture",
+      "preparationMs": 27254,
+      "calls": [
+        {
+          "task": "draft",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "gemini",
+            "constrained": true,
+            "totalMs": 34544,
+            "maskingMs": 3,
+            "modelLoadMs": 0,
+            "providerMs": 34541
+          },
+          "usage": {
+            "promptTokenCount": 18687,
+            "candidatesTokenCount": 4761,
+            "totalTokenCount": 23448,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 18687
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      ],
+      "fixtureFacts": 161,
+      "sections": [
+        {
+          "questionId": "1.14",
+          "sentences": 3,
+          "characters": 105,
+          "supportedFactCount": 3,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "9.6",
+          "sentences": 1,
+          "characters": 74,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "10.5",
+          "sentences": 1,
+          "characters": 43,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "10.6",
+          "sentences": 1,
+          "characters": 38,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "10.9",
+          "sentences": 1,
+          "characters": 44,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "11.8",
+          "sentences": 1,
+          "characters": 36,
+          "supportedFactCount": 2,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.1",
+          "sentences": 4,
+          "characters": 215,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.2",
+          "sentences": 6,
+          "characters": 333,
+          "supportedFactCount": 8,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.3",
+          "sentences": 3,
+          "characters": 198,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.5",
+          "sentences": 2,
+          "characters": 117,
+          "supportedFactCount": 2,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.6",
+          "sentences": 4,
+          "characters": 195,
+          "supportedFactCount": 5,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.9",
+          "sentences": 4,
+          "characters": 236,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.15",
+          "sentences": 2,
+          "characters": 73,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "15",
+          "sentences": 7,
+          "characters": 560,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        }
+      ],
+      "ok": true,
+      "totalMs": 34583
+    }
+  ]
+}

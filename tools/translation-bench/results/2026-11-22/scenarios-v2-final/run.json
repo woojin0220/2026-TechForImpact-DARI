@@ -1,0 +1,11 @@
+{
+  "dataset": "scenario-ru-v2",
+  "fingerprint": "6b5648d43a02aded8b018f2484f5ef0fef377db2aabe66fecdb7513766f4df33",
+  "seed": 20261122,
+  "rounds": 3,
+  "model": "dari-hymt2:1.8b",
+  "runtime": "production localhost endpoint; Mac local inference; no external LLM",
+  "model_digest": "2114dc79a09a8309fd68c61862fa4272f851f2c107f0db1ab10429ac4c97236c",
+  "warmup_seconds": 0.2907744999974966,
+  "warning": "Regex rules and assistant-authored expectations are review aids; independent bilingual review remains necessary."
+}

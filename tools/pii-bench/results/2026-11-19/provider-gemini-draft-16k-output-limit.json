@@ -1,0 +1,27 @@
+{
+  "fixtureOnly": true,
+  "backend": "gemini",
+  "providerSettings": "One-call conversation and batch draft for both providers. Local: Mac M1 Pro 16 GB Ollama gemma4:e4b (not phone), think=false, ctx=16384 intake / 32768 full draft; Gemini current config.",
+  "preparation": "Only privacy models are loaded before timing. No exact input is pre-masked: masking, provider, restoration and local validation are included in totalMs.",
+  "draftPolicy": "One batch, per-question local validation, omissions flagged, no repair requests",
+  "rows": [
+    {
+      "phase": "draft",
+      "backend": "gemini",
+      "mode": "single-call",
+      "label": "full-export-fixture",
+      "preparationMs": 13952,
+      "calls": [
+        {
+          "task": "draft",
+          "repair": false,
+          "ok": false,
+          "error": "Gemini 응답이 길이 제한에 도달했습니다. 요청 범위를 줄여 다시 시도해 주세요."
+        }
+      ],
+      "ok": false,
+      "error": "Gemini 응답이 길이 제한에 도달했습니다. 요청 범위를 줄여 다시 시도해 주세요.",
+      "totalMs": 122257
+    }
+  ]
+}

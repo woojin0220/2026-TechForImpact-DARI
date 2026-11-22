@@ -1,0 +1,44 @@
+{
+  "observations": 192,
+  "unique_cases": 64,
+  "model_calls": 144,
+  "passthroughs": 48,
+  "request_errors": 0,
+  "flagged_observations": 33,
+  "flagged_cases": [
+    "attachments-1",
+    "chronology-3",
+    "documents-1",
+    "documents-2",
+    "documents-3",
+    "family-2",
+    "identity_health-4",
+    "identity_health-5",
+    "prior_asylum-4",
+    "solo-3",
+    "uncertain-3"
+  ],
+  "varying_cases": [],
+  "rounds": {
+    "1": {
+      "seconds": 19.925,
+      "errors": 0,
+      "flagged": 11
+    },
+    "2": {
+      "seconds": 19.688,
+      "errors": 0,
+      "flagged": 11
+    },
+    "3": {
+      "seconds": 18.662,
+      "errors": 0,
+      "flagged": 11
+    }
+  },
+  "model_latency_seconds": {
+    "median": 0.40395000000000003,
+    "p95": 0.5826
+  },
+  "meaning": "Rule flags require review. No flags does not certify factual accuracy."
+}

@@ -1,0 +1,222 @@
+{
+  "fixtureOnly": true,
+  "backend": "gemini",
+  "providerSettings": "One-call conversation and batch draft for both providers. Local: Mac M1 Pro 16 GB Ollama gemma4:e4b (not phone), think=false, ctx=16384 intake / 32768 full draft; Gemini current config.",
+  "preparation": "Privacy models loaded and first exact request masked locally before timing.",
+  "draftPolicy": "One batch, per-question local validation, omissions flagged, no repair requests",
+  "rows": [
+    {
+      "phase": "conversation",
+      "backend": "gemini",
+      "mode": "single-call",
+      "label": "basic",
+      "preparationMs": 27555,
+      "calls": [
+        {
+          "task": "intake",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "gemini",
+            "constrained": true,
+            "totalMs": 7367,
+            "maskingMs": 2,
+            "modelLoadMs": 0,
+            "providerMs": 7360
+          },
+          "usage": {
+            "promptTokenCount": 3657,
+            "candidatesTokenCount": 828,
+            "totalTokenCount": 4485,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 3657
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      ],
+      "checks": [
+        {
+          "ok": false,
+          "label": "grounds.category ⊃ \"political\"",
+          "actual": "(없음)",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm = yes",
+          "actual": "answered:yes",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm 사건 1개",
+          "actual": "1개 harm-1",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.time ⊃ \"autumn|fall\"",
+          "actual": "answered:Around autumn 2024",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊃ \"questioning\"",
+          "actual": "answered:questioning",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "fear = yes",
+          "actual": "answered:yes",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "14.2 = 예",
+          "actual": "예",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "departure.date 답변으로 기록되지 않음",
+          "actual": "(없음)",
+          "safety": true
+        }
+      ],
+      "nextQuestionReady": true,
+      "ok": true,
+      "totalMs": 7627
+    },
+    {
+      "phase": "conversation",
+      "backend": "gemini",
+      "mode": "single-call",
+      "label": "narrow-denial",
+      "preparationMs": 994,
+      "calls": [
+        {
+          "task": "intake",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "gemini",
+            "constrained": true,
+            "totalMs": 6478,
+            "maskingMs": 2,
+            "modelLoadMs": 0,
+            "providerMs": 6475
+          },
+          "usage": {
+            "promptTokenCount": 3614,
+            "candidatesTokenCount": 814,
+            "totalTokenCount": 4428,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 3614
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      ],
+      "checks": [
+        {
+          "ok": true,
+          "label": "harm = yes",
+          "actual": "answered:yes",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊃ \"questioning\"",
+          "actual": "answered:questioning threat",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊅ \"assault\"",
+          "actual": "answered:questioning threat",
+          "safety": true
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊅ \"detention\"",
+          "actual": "answered:questioning threat",
+          "safety": true
+        },
+        {
+          "ok": true,
+          "label": "14.2 = 예",
+          "actual": "예",
+          "safety": false
+        }
+      ],
+      "nextQuestionReady": true,
+      "ok": true,
+      "totalMs": 6489
+    },
+    {
+      "phase": "conversation",
+      "backend": "gemini",
+      "mode": "single-call",
+      "label": "no-category",
+      "preparationMs": 487,
+      "calls": [
+        {
+          "task": "intake",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "gemini",
+            "constrained": true,
+            "totalMs": 7186,
+            "maskingMs": 2,
+            "modelLoadMs": 0,
+            "providerMs": 7183
+          },
+          "usage": {
+            "promptTokenCount": 3555,
+            "candidatesTokenCount": 846,
+            "totalTokenCount": 4401,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 3555
+              }
+            ],
+            "serviceTier": "standard"
+          }
+        }
+      ],
+      "checks": [
+        {
+          "ok": true,
+          "label": "grounds.category 답변으로 기록되지 않음",
+          "actual": "(없음)",
+          "safety": true
+        },
+        {
+          "ok": true,
+          "label": "harm = yes",
+          "actual": "answered:yes",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.reason 답변으로 기록되지 않음",
+          "actual": "unknown:I don't really know why our village was attacked.",
+          "safety": true
+        }
+      ],
+      "nextQuestionReady": true,
+      "ok": true,
+      "totalMs": 7195
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "scenario": "narrow-denial",
+  "conversationMode": "single-call",
+  "totalMs": 23063,
+  "extractionMs": 23063,
+  "calls": [
+    {
+      "runtime": "gemini",
+      "constrained": true,
+      "totalMs": 22979,
+      "maskingMs": 7813,
+      "modelLoadMs": 0,
+      "providerMs": 15166
+    }
+  ],
+  "nextQuestionReady": true
+}

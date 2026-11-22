@@ -1,0 +1,3438 @@
+[
+  {
+    "id": "1",
+    "ko": "1. 실제 인적사항",
+    "en": "1. Personal Information",
+    "questions": [
+      {
+        "id": "1.1",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.1",
+            "ko": "신청인의 신분",
+            "en": "Applicant’s Status",
+            "type": "single",
+            "options": [
+              {
+                "value": "principal",
+                "ko": "주신청자",
+                "en": "The principal applicant"
+              },
+              {
+                "value": "family",
+                "ko": "동반가족(배우자, 사실혼, 미성년 또는 성년 자녀 등)",
+                "en": "Family (Spouse, de facto partner, minor or adult child etc.)"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "principal"
+      },
+      {
+        "id": "1.2",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.2",
+            "ko": "성(姓)",
+            "en": "Family name",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "ПРИМЕРОВ",
+        "choice": null
+      },
+      {
+        "id": "1.3",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.3",
+            "ko": "명(名)",
+            "en": "Given name(s)",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "АЛЕКСЕЙ УЧЕБНЫЙ",
+        "choice": null
+      },
+      {
+        "id": "1.4",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.4",
+            "ko": "다른 이름 (혼전 성명, 종교적 이름, 가명, 별명 등)",
+            "en": "Other names you have ever used including maiden names, religious names, aliases, nicknames",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Других имён не использовал.",
+        "choice": null
+      },
+      {
+        "id": "1.5",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.5",
+            "ko": "생년월일",
+            "en": "Date of birth (yyyy/mm/dd)",
+            "type": "date"
+          }
+        ],
+        "quick": true,
+        "text": "1991/08/17",
+        "choice": null
+      },
+      {
+        "id": "1.6",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.6",
+            "ko": "성별",
+            "en": "Gender",
+            "type": "single",
+            "options": [
+              {
+                "value": "male",
+                "ko": "남",
+                "en": "Male"
+              },
+              {
+                "value": "female",
+                "ko": "여",
+                "en": "Female"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Other"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "male"
+      },
+      {
+        "id": "1.7",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.7",
+            "ko": "국적",
+            "en": "Nationality",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Россия",
+        "choice": null
+      },
+      {
+        "id": "1.8",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.8",
+            "ko": "현재의 직업",
+            "en": "Occupation",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Программист, сейчас не работаю.",
+        "choice": null
+      },
+      {
+        "id": "1.9",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.9",
+            "ko": "출생지(국가, 시, 도, 마을 이름 등 행정구역을 상세히 기재)",
+            "en": "Place of birth (village, town, city, county, district, province, country)",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Россия, Санкт-Петербург.",
+        "choice": null
+      },
+      {
+        "id": "1.10",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.10",
+            "ko": "자국 주소지(국가, 시, 도, 마을 이름 등 행정구역을 상세히 기재)",
+            "en": "Registered address in home country (village, town, city, county, district, province, country)",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Россия, Санкт-Петербург, Учебная улица, дом 10. Адрес вымышленный.",
+        "choice": null
+      },
+      {
+        "id": "1.11",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.11",
+            "ko": "종교 및 종파",
+            "en": "Religion and sect",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Не исповедую религию.",
+        "choice": null
+      },
+      {
+        "id": "1.12",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.12",
+            "ko": "인종, 종족(민족)",
+            "en": "Race, ethnic or tribal group",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Русский.",
+        "choice": null
+      },
+      {
+        "id": "1.13",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.13",
+            "ko": "모국어",
+            "en": "Mother language",
+            "type": "short"
+          },
+          {
+            "id": "1.13-fluent",
+            "ko": "유창하게 할 수 있는 언어",
+            "en": "Language(s) you can speak the most fluently",
+            "type": "multi",
+            "options": [
+              {
+                "value": "ko",
+                "ko": "한국어",
+                "en": "Korean"
+              },
+              {
+                "value": "en",
+                "ko": "영어",
+                "en": "English"
+              },
+              {
+                "value": "fr",
+                "ko": "불어",
+                "en": "French"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Other languages"
+              }
+            ]
+          },
+          {
+            "id": "1.13-other",
+            "ko": "기타 언어",
+            "en": "Other languages",
+            "type": "short",
+            "when": [
+              {
+                "id": "1.13-fluent",
+                "anyOf": [
+                  "other"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Родной язык — русский. Свободно говорю по-русски, немного понимаю английский.",
+        "choice": null
+      },
+      {
+        "id": "1.14",
+        "sectionKo": "1. 실제 인적사항",
+        "sectionEn": "1. Personal Information",
+        "fields": [
+          {
+            "id": "1.14",
+            "ko": "난민심사관이 면접할 때 통역이 필요합니까?",
+            "en": "Do you need an interpreter during an interview?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "1.14-language",
+            "ko": "통역을 희망하는 언어",
+            "en": "Which language would you like to request for interpretation?",
+            "type": "short",
+            "when": [
+              {
+                "id": "1.14",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "1.14-request",
+            "ko": "통역과 관련하여 특별히 요청할 사항이 있나요?",
+            "en": "Is there anything specific you would like to request regarding interpretation?",
+            "type": "long",
+            "when": [
+              {
+                "id": "1.14",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да, мне нужен переводчик с русского языка. Корейского языка я не понимаю.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "ko": "2. 국적(시민권) 및 영주권",
+    "en": "2. Nationality (Citizenship) and Permanent Resident Status",
+    "questions": [
+      {
+        "id": "2",
+        "sectionKo": "2. 국적(시민권) 및 영주권",
+        "sectionEn": "2. Nationality (Citizenship) and Permanent Resident Status",
+        "fields": [
+          {
+            "id": "2",
+            "ko": "과거에 다른 나라 국적이나 영주권을 취득한 적이 있거나 또는 현재 다른 나라 국적이나 영주권을 가지고 있습니까?",
+            "en": "Have you ever acquired any other country’s nationality or permanent resident status, or do you currently hold any other country’s nationality or permanent resident status?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "2-table",
+            "ko": "나라 이름, 취득일자, 상실일자, 현재 상태",
+            "en": "Country, date of acquisition, date of loss, and current status",
+            "type": "table",
+            "when": [
+              {
+                "id": "2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "country",
+                "ko": "국가명",
+                "en": "Country"
+              },
+              {
+                "id": "acquired",
+                "ko": "취득일자(연/월/일)",
+                "en": "Date of acquisition (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "lost",
+                "ko": "상실일자(연/월/일)",
+                "en": "Date of loss (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "status",
+                "ko": "현재 상태",
+                "en": "Current status"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет. Другого гражданства и постоянного вида на жительство у меня нет.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "ko": "3. 혼인사항",
+    "en": "3. Marital Status",
+    "questions": [
+      {
+        "id": "3",
+        "sectionKo": "3. 혼인사항",
+        "sectionEn": "3. Marital Status",
+        "fields": [
+          {
+            "id": "3",
+            "ko": "혼인 상태",
+            "en": "Marital status",
+            "type": "single",
+            "options": [
+              {
+                "value": "single",
+                "ko": "미혼",
+                "en": "Single"
+              },
+              {
+                "value": "married",
+                "ko": "결혼",
+                "en": "Married"
+              },
+              {
+                "value": "de_facto",
+                "ko": "사실혼",
+                "en": "De facto marriage"
+              },
+              {
+                "value": "divorced",
+                "ko": "이혼",
+                "en": "Divorced"
+              },
+              {
+                "value": "widowed",
+                "ko": "사별",
+                "en": "Widowed"
+              },
+              {
+                "value": "same_sex",
+                "ko": "동성혼",
+                "en": "Same-sex marriage"
+              },
+              {
+                "value": "separated",
+                "ko": "별거",
+                "en": "Living separately"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Etc."
+              }
+            ]
+          },
+          {
+            "id": "3-table",
+            "ko": "혼인 이력",
+            "en": "Marital history",
+            "type": "table",
+            "when": [
+              {
+                "id": "3",
+                "anyOf": [
+                  "married",
+                  "de_facto",
+                  "divorced",
+                  "widowed",
+                  "same_sex",
+                  "separated",
+                  "other"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "date",
+                "ko": "발생일자(연/월/일)",
+                "en": "Date (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "family",
+                "ko": "배우자 성(姓)",
+                "en": "Spouse family name"
+              },
+              {
+                "id": "given",
+                "ko": "배우자 명(名)",
+                "en": "Spouse given name"
+              },
+              {
+                "id": "dob",
+                "ko": "생년월일",
+                "en": "Date of birth (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "status",
+                "ko": "현재 상태(혼인, 이혼, 사별 등)",
+                "en": "Current status (married, divorced, widowed)"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Не женат. Супруга и детей нет.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "ko": "4. 가족사항",
+    "en": "4. Family Information",
+    "questions": [
+      {
+        "id": "4",
+        "sectionKo": "4. 가족사항",
+        "sectionEn": "4. Family Information",
+        "fields": [
+          {
+            "id": "4",
+            "ko": "가족사항",
+            "en": "Family information",
+            "type": "table",
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "relationship",
+                "ko": "관계",
+                "en": "Relationship"
+              },
+              {
+                "id": "name",
+                "ko": "성명",
+                "en": "Full name"
+              },
+              {
+                "id": "dob",
+                "ko": "생년월일",
+                "en": "Date of birth",
+                "kind": "date"
+              },
+              {
+                "id": "nationality",
+                "ko": "국적",
+                "en": "Nationality"
+              },
+              {
+                "id": "city",
+                "ko": "거주 도시(사망자는 사망일)",
+                "en": "City of residence (date of death if deceased)"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Мать: Елена Примерова, 1965/09/24, гражданка России, живёт в Санкт-Петербурге. Все имена вымышлены.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "ko": "5. 학력사항",
+    "en": "5. Education",
+    "questions": [
+      {
+        "id": "5",
+        "sectionKo": "5. 학력사항",
+        "sectionEn": "5. Education",
+        "fields": [
+          {
+            "id": "5",
+            "ko": "학력사항",
+            "en": "Education",
+            "type": "table",
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "from",
+                "ko": "입학연도(yyyy/mm)",
+                "en": "From (yyyy/mm)",
+                "kind": "date"
+              },
+              {
+                "id": "to",
+                "ko": "졸업연도(yyyy/mm)",
+                "en": "To (yyyy/mm)",
+                "kind": "date"
+              },
+              {
+                "id": "school",
+                "ko": "학교 또는 그 밖의 교육기관명",
+                "en": "Name of school or institution"
+              },
+              {
+                "id": "location",
+                "ko": "소재지",
+                "en": "Location (address)"
+              },
+              {
+                "id": "degree",
+                "ko": "졸업 여부(학위, 자격증)",
+                "en": "Degrees or qualifications obtained"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "2009–2014: Учебный технический институт, Санкт-Петербург, специальность — информатика. Название вымышленное.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "ko": "6. 경력사항",
+    "en": "6. Work Experience",
+    "questions": [
+      {
+        "id": "6",
+        "sectionKo": "6. 경력사항",
+        "sectionEn": "6. Work Experience",
+        "fields": [
+          {
+            "id": "6",
+            "ko": "경력사항",
+            "en": "Work experience",
+            "type": "table",
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "from",
+                "ko": "근무 시작(yyyy/mm)",
+                "en": "From (yyyy/mm)",
+                "kind": "date"
+              },
+              {
+                "id": "to",
+                "ko": "근무 종료(yyyy/mm)",
+                "en": "To (yyyy/mm)",
+                "kind": "date"
+              },
+              {
+                "id": "workplace",
+                "ko": "직장명",
+                "en": "Name of workplace"
+              },
+              {
+                "id": "location",
+                "ko": "소재지(주소)",
+                "en": "Location (address)"
+              },
+              {
+                "id": "duty",
+                "ko": "담당업무(직위)",
+                "en": "Type of work"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "2014–2026: программист в компании «Учебный код», Санкт-Петербург. Компания вымышленная.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "ko": "7. 군 복무 사항",
+    "en": "7. Military Service",
+    "questions": [
+      {
+        "id": "7.1",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.1",
+            "ko": "본국의 군 복무제도",
+            "en": "Is military service compulsory or voluntary in your home country?",
+            "type": "single",
+            "options": [
+              {
+                "value": "compulsory",
+                "ko": "의무 복무",
+                "en": "Compulsory"
+              },
+              {
+                "value": "voluntary",
+                "ko": "지원 복무",
+                "en": "Voluntary"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "compulsory"
+      },
+      {
+        "id": "7.2",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.2",
+            "ko": "귀하는 군 복무를 한 적이 있나요?",
+            "en": "Did you serve in the military?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "no"
+      },
+      {
+        "id": "7.3",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.3",
+            "ko": "군 복무기간",
+            "en": "If yes, when did you serve?",
+            "type": "short",
+            "when": [
+              {
+                "id": "7.2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо: военную службу не проходил.",
+        "choice": null
+      },
+      {
+        "id": "7.4",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.4",
+            "ko": "군 복무한 국가(지명 포함)",
+            "en": "What country did you serve in? (include the specific location)",
+            "type": "short",
+            "when": [
+              {
+                "id": "7.2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо: военную службу не проходил.",
+        "choice": null
+      },
+      {
+        "id": "7.5",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.5",
+            "ko": "귀하가 복무한 군대",
+            "en": "In which military branch did you serve?",
+            "type": "single",
+            "when": [
+              {
+                "id": "7.2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "options": [
+              {
+                "value": "army",
+                "ko": "육군",
+                "en": "Army"
+              },
+              {
+                "value": "navy",
+                "ko": "해군",
+                "en": "Navy"
+              },
+              {
+                "value": "air",
+                "ko": "공군",
+                "en": "Air Force"
+              },
+              {
+                "value": "marine",
+                "ko": "해병대",
+                "en": "Marine Corps"
+              },
+              {
+                "value": "other",
+                "ko": "기타(민병대 등)",
+                "en": "Others (militia, etc.)"
+              }
+            ]
+          },
+          {
+            "id": "7.5-other",
+            "ko": "기타 군대",
+            "en": "Other military branch",
+            "type": "short",
+            "when": [
+              {
+                "id": "7.5",
+                "anyOf": [
+                  "other"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не служил ни в каких вооружённых силах.",
+        "choice": null
+      },
+      {
+        "id": "7.6",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.6",
+            "ko": "소속 부대명",
+            "en": "Name of regiment (unit)",
+            "type": "short",
+            "when": [
+              {
+                "id": "7.2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо: военную службу не проходил.",
+        "choice": null
+      },
+      {
+        "id": "7.7",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.7",
+            "ko": "전역 당시 계급",
+            "en": "Rank at the conclusion of service",
+            "type": "short",
+            "when": [
+              {
+                "id": "7.2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Воинского звания нет.",
+        "choice": null
+      },
+      {
+        "id": "7.8",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.8",
+            "ko": "전역 사유",
+            "en": "Reason for discharge",
+            "type": "short",
+            "when": [
+              {
+                "id": "7.2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо: военную службу не проходил.",
+        "choice": null
+      },
+      {
+        "id": "7.9",
+        "sectionKo": "7. 군 복무 사항",
+        "sectionEn": "7. Military Service",
+        "fields": [
+          {
+            "id": "7.9",
+            "ko": "전투에 참가한 경력이 있나요?",
+            "en": "Do you have combat experience?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "7.9-detail",
+            "ko": "전투 참가 내용을 자세하게 쓰세요.",
+            "en": "If yes, please explain in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "7.9",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет, в боевых действиях не участвовал.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "ko": "8. 거주사항",
+    "en": "8. Residence Records",
+    "questions": [
+      {
+        "id": "8",
+        "sectionKo": "8. 거주사항",
+        "sectionEn": "8. Residence Records",
+        "fields": [
+          {
+            "id": "8",
+            "ko": "거주사항",
+            "en": "Residence records",
+            "type": "table",
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "from",
+                "ko": "거주 시작(yyyy/mm)",
+                "en": "From (yyyy/mm)",
+                "kind": "date"
+              },
+              {
+                "id": "to",
+                "ko": "거주 종료(yyyy/mm)",
+                "en": "To (yyyy/mm)",
+                "kind": "date"
+              },
+              {
+                "id": "country",
+                "ko": "거주국가",
+                "en": "Country of residence"
+              },
+              {
+                "id": "address",
+                "ko": "상세 주소",
+                "en": "Address"
+              },
+              {
+                "id": "status",
+                "ko": "신분(국민, 체류자격 등)",
+                "en": "Status (citizen, type of visa, etc.)"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "1991–2026: Санкт-Петербург, Россия, гражданин. С 2026/05/15: Сеул, Республика Корея, краткосрочное пребывание C-3.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "ko": "9. 여권사항",
+    "en": "9. Travel Documents",
+    "questions": [
+      {
+        "id": "9.1",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.1",
+            "ko": "현재 여권 또는 여행증명서를 소지하고 있나요?",
+            "en": "Do you currently possess your passport or travel document?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "yes"
+      },
+      {
+        "id": "9.2",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.2",
+            "ko": "여권 등 발급기관명",
+            "en": "By whom was it issued?",
+            "type": "short",
+            "when": [
+              {
+                "id": "9.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Министерство внутренних дел России.",
+        "choice": null
+      },
+      {
+        "id": "9.3",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.3",
+            "ko": "발급일",
+            "en": "Date of issuance (yyyy/mm/dd)",
+            "type": "date",
+            "when": [
+              {
+                "id": "9.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "2024/01/10",
+        "choice": null
+      },
+      {
+        "id": "9.4",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.4",
+            "ko": "취득 목적",
+            "en": "Purpose of obtaining",
+            "type": "short",
+            "when": [
+              {
+                "id": "9.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Зарубежная туристическая поездка.",
+        "choice": null
+      },
+      {
+        "id": "9.5",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.5",
+            "ko": "여권 또는 여행증명서는 진본이며 적법하게 취득한 것인가요?",
+            "en": "Is the passport or travel document genuine and legally obtained?",
+            "type": "single",
+            "when": [
+              {
+                "id": "9.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요 (위조, 변조 또는 그 밖의 불법 취득)",
+                "en": "No (obtained by falsified, forged or other illegal means)"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "yes"
+      },
+      {
+        "id": "9.6",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.6",
+            "ko": "여권 또는 여행증명서를 취득하게 된 경위를 자세히 쓰세요.",
+            "en": "Explain in detail where and how you obtained your passport or travel document.",
+            "type": "long",
+            "when": [
+              {
+                "id": "9.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "В январе 2024 года я лично подал заявление и получил подлинный паспорт на своё имя.",
+        "choice": null
+      },
+      {
+        "id": "9.7",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.7",
+            "ko": "여권이 진본이 아니거나 적법하지 않게 취득하였다면 그 이유를 쓰세요.",
+            "en": "If the passport is not genuine or illegally obtained, please explain the reason in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "9.5",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Не применимо: паспорт подлинный и получен законно.",
+        "choice": null
+      },
+      {
+        "id": "9.8",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.8",
+            "ko": "현재 여권이나 여행증명서를 가지고 있지 않다면 그 이유를 자세히 쓰세요.",
+            "en": "If you do not currently have a passport or travel document, please explain the reason in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "9.1",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Не применимо: паспорт находится у меня.",
+        "choice": null
+      },
+      {
+        "id": "9.9",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.9",
+            "ko": "현재 여권이나 여행증명서를 가지고 있지 않은 경우 여권 등을 발급받을 수 있나요?",
+            "en": "If you do not currently have a passport or travel document, can you have it issued?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ],
+            "when": [
+              {
+                "id": "9.1",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "yes"
+      },
+      {
+        "id": "9.10",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.10",
+            "ko": "취득 가능한 항목에 표기하세요.",
+            "en": "If yes, please fill out what you can get issued.",
+            "type": "multi",
+            "when": [
+              {
+                "id": "9.9",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "options": [
+              {
+                "value": "passport",
+                "ko": "여권",
+                "en": "Passport"
+              },
+              {
+                "value": "travel",
+                "ko": "여행증명서",
+                "en": "Travel document"
+              },
+              {
+                "value": "id",
+                "ko": "국가 신분증",
+                "en": "I.D card"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Others"
+              }
+            ]
+          },
+          {
+            "id": "9.10-other",
+            "ko": "기타 취득 가능 서류",
+            "en": "Other document you can get issued",
+            "type": "short",
+            "when": [
+              {
+                "id": "9.10",
+                "anyOf": [
+                  "other"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Заграничный паспорт.",
+        "choice": null
+      },
+      {
+        "id": "9.11",
+        "sectionKo": "9. 여권사항",
+        "sectionEn": "9. Travel Documents",
+        "fields": [
+          {
+            "id": "9.11",
+            "ko": "여권이나 여행증명서를 취득할 수 없다면 그 이유를 쓰세요.",
+            "en": "If no, explain the reason in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "9.9",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Не применимо: действующий паспорт у меня есть.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "ko": "10. 대한민국 입국사항",
+    "en": "10. Entry to the Republic of Korea",
+    "questions": [
+      {
+        "id": "10.1",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.1",
+            "ko": "귀하는 한국 사증을 발급받아 입국하였나요?",
+            "en": "Do you have a Korean visa?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "yes"
+      },
+      {
+        "id": "10.2",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.2",
+            "ko": "사증 발급 기관명 또는 지역",
+            "en": "Which consulate/embassy did you apply at?",
+            "type": "short",
+            "when": [
+              {
+                "id": "10.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Консульство Республики Корея в России.",
+        "choice": null
+      },
+      {
+        "id": "10.3",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.3",
+            "ko": "사증 종류",
+            "en": "Visa type",
+            "type": "short",
+            "when": [
+              {
+                "id": "10.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "C-3",
+        "choice": null
+      },
+      {
+        "id": "10.4",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.4",
+            "ko": "사증 발급일자",
+            "en": "Date of issuance",
+            "type": "date",
+            "when": [
+              {
+                "id": "10.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "2026/04/20",
+        "choice": null
+      },
+      {
+        "id": "10.5",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.5",
+            "ko": "한국 사증 발급을 신청할 때 제출한 서류",
+            "en": "Document(s) you submitted to apply for a Korean visa",
+            "type": "long",
+            "when": [
+              {
+                "id": "10.1",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Паспорт, фотография, заявление и справка о банковском счёте.",
+        "choice": null
+      },
+      {
+        "id": "10.6",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.6",
+            "ko": "사증을 발급받거나 한국에 입국하는데 도와 준 사람이 있으면 그 인적사항과 경위를 자세히 쓰세요.",
+            "en": "Did anyone help you obtain a Korean visa or enter Korea? If yes, please explain in detail.",
+            "type": "long"
+          }
+        ],
+        "quick": false,
+        "text": "Заявление на визу и бронирование билета я оформил самостоятельно. Посредников не было.",
+        "choice": null
+      },
+      {
+        "id": "10.7",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.7",
+            "ko": "입국일자",
+            "en": "Date of the last entry into Korea (yyyy/mm/dd)",
+            "type": "date"
+          }
+        ],
+        "quick": true,
+        "text": "2026/05/15",
+        "choice": null
+      },
+      {
+        "id": "10.8",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.8",
+            "ko": "입국장소",
+            "en": "Place of the last entry into Korea",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Международный аэропорт Инчхон.",
+        "choice": null
+      },
+      {
+        "id": "10.9",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.9",
+            "ko": "처음 또는 난민인정 신청 전 한국에 입국할 때 입국목적은 무엇이었나요?(관광, 상용, 방문 등)",
+            "en": "What was the purpose of visit to Korea when you first entered, or before applying for refugee status? (tourism, business, visiting, etc.)",
+            "type": "long"
+          }
+        ],
+        "quick": false,
+        "text": "Я въехал по туристической визе, также хотел найти безопасное место после угроз.",
+        "choice": null
+      },
+      {
+        "id": "10.10",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.10",
+            "ko": "한국에 입국할 때 입국심사를 받았나요?",
+            "en": "Did you go through immigration inspection at the time of entry into Korea?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "10.10-detail",
+            "ko": "입국심사를 받지 않았다면 어떻게 입국했는지 쓰세요.",
+            "en": "If no, please explain how you entered into Korea in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "10.10",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да, прошёл пограничный контроль в аэропорту Инчхон.",
+        "choice": null
+      },
+      {
+        "id": "10.11",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.11",
+            "ko": "한국에 입국할 때 ‘1. 실제 인적사항’으로 발급받은 여권으로 입국하였나요?",
+            "en": "Did you present your passport issued with the above-mentioned personal information at the time of entry into Korea?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "yes"
+      },
+      {
+        "id": "10.12",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.12",
+            "ko": "여권상 성(姓)",
+            "en": "Family name on passport",
+            "type": "short",
+            "when": [
+              {
+                "id": "10.11",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "ПРИМЕРОВ",
+        "choice": null
+      },
+      {
+        "id": "10.13",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.13",
+            "ko": "여권상 명(名)",
+            "en": "Given name(s) on passport",
+            "type": "short",
+            "when": [
+              {
+                "id": "10.11",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "АЛЕКСЕЙ УЧЕБНЫЙ",
+        "choice": null
+      },
+      {
+        "id": "10.14",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.14",
+            "ko": "여권상 생년월일",
+            "en": "Date of birth on passport",
+            "type": "date",
+            "when": [
+              {
+                "id": "10.11",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "1991/08/17",
+        "choice": null
+      },
+      {
+        "id": "10.15",
+        "sectionKo": "10. 대한민국 입국사항",
+        "sectionEn": "10. Entry to the Republic of Korea",
+        "fields": [
+          {
+            "id": "10.15",
+            "ko": "여권상 국적",
+            "en": "Nationality on passport",
+            "type": "short",
+            "when": [
+              {
+                "id": "10.11",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Россия",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "ko": "11. 대한민국 내 체류사항",
+    "en": "11. Status of Stay in the Republic of Korea",
+    "questions": [
+      {
+        "id": "11.1",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.1",
+            "ko": "현재 체류자격",
+            "en": "Type of current visa",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Краткосрочное пребывание C-3.",
+        "choice": null
+      },
+      {
+        "id": "11.2",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.2",
+            "ko": "체류기간 만료일자",
+            "en": "Expiration date (yyyy/mm/dd)",
+            "type": "date"
+          }
+        ],
+        "quick": true,
+        "text": "2026/08/12",
+        "choice": null
+      },
+      {
+        "id": "11.3",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.3",
+            "ko": "과거부터 현재까지 아래의 법 위반사항이 있는 경우 모두 표시하세요.",
+            "en": "If you have ever committed a violation of the laws indicated below, check all the appropriate boxes.",
+            "type": "multi",
+            "options": [
+              {
+                "value": "overstay",
+                "ko": "불법체류",
+                "en": "Illegal stay"
+              },
+              {
+                "value": "entry",
+                "ko": "한국 밀입국",
+                "en": "Illegal entry into Korea"
+              },
+              {
+                "value": "crime",
+                "ko": "형사법 위반",
+                "en": "Criminal offence"
+              },
+              {
+                "value": "passport",
+                "ko": "위조ㆍ변조 여권 사용",
+                "en": "Usage of falsified or forged passport"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Others"
+              }
+            ]
+          },
+          {
+            "id": "11.3-detail",
+            "ko": "위에 표시한 법 위반사항의 내용을 자세하게 쓰세요.",
+            "en": "Please explain in detail the reason(s) for the items checked above.",
+            "type": "long",
+            "when": [
+              {
+                "id": "11.3",
+                "anyOf": [
+                  "overstay",
+                  "entry",
+                  "crime",
+                  "passport",
+                  "other"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нарушений законодательства не совершал.",
+        "choice": null
+      },
+      {
+        "id": "11.4",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.4",
+            "ko": "한국 내 주소",
+            "en": "Address in Korea",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Республика Корея, Сеул, Учебная улица, дом 20. Адрес вымышленный.",
+        "choice": null
+      },
+      {
+        "id": "11.5",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.5",
+            "ko": "연락처",
+            "en": "Contact information",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Номер телефона пока отсутствует.",
+        "choice": null
+      },
+      {
+        "id": "11.6",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.6",
+            "ko": "전자우편",
+            "en": "E-mail address",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "demo-applicant@example.invalid",
+        "choice": null
+      },
+      {
+        "id": "11.7",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.7",
+            "ko": "한국에 가족이나 친척 등 연고자가 있으면 표시하세요.",
+            "en": "If you have any of the following in Korea, check the boxes.",
+            "type": "multi",
+            "options": [
+              {
+                "value": "family",
+                "ko": "가족 또는 친척",
+                "en": "Family or relatives"
+              },
+              {
+                "value": "representative",
+                "ko": "대리인",
+                "en": "Representative"
+              },
+              {
+                "value": "lawyer",
+                "ko": "변호인",
+                "en": "Lawyer"
+              },
+              {
+                "value": "interpreter",
+                "ko": "통역인",
+                "en": "Interpreter"
+              },
+              {
+                "value": "friends",
+                "ko": "친구",
+                "en": "Friends"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Others"
+              }
+            ]
+          },
+          {
+            "id": "11.7-table",
+            "ko": "한국 내 연고자",
+            "en": "Contacts in Korea",
+            "type": "table",
+            "when": [
+              {
+                "id": "11.7",
+                "anyOf": [
+                  "family",
+                  "representative",
+                  "lawyer",
+                  "interpreter",
+                  "friends",
+                  "other"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "name",
+                "ko": "성명",
+                "en": "Full name"
+              },
+              {
+                "id": "relationship",
+                "ko": "신청인과의 관계",
+                "en": "Relationship"
+              },
+              {
+                "id": "phone",
+                "ko": "전화번호",
+                "en": "Telephone number"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Родственников в Корее нет.",
+        "choice": null
+      },
+      {
+        "id": "11.8",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.8",
+            "ko": "현재 생활비를 어떻게 조달하고 있는지 표시하세요.",
+            "en": "Through which means are you financing your living expenses?",
+            "type": "multi",
+            "options": [
+              {
+                "value": "wage",
+                "ko": "급여",
+                "en": "Wage"
+              },
+              {
+                "value": "savings",
+                "ko": "예금",
+                "en": "Savings"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Others"
+              }
+            ]
+          },
+          {
+            "id": "11.8-detail",
+            "ko": "생활비 조달 내용을 자세히 쓰세요.",
+            "en": "Explain in detail how you finance your living expenses.",
+            "type": "long"
+          }
+        ],
+        "quick": false,
+        "text": "Живу на личные сбережения. Иногда помогает друг.",
+        "choice": null
+      },
+      {
+        "id": "11.9",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.9",
+            "ko": "귀하의 현재 건강상태는 어떻습니까?",
+            "en": "How is your health condition at the moment?",
+            "type": "single",
+            "options": [
+              {
+                "value": "good",
+                "ko": "좋다",
+                "en": "Good"
+              },
+              {
+                "value": "not_good",
+                "ko": "나쁘다",
+                "en": "Not good"
+              }
+            ]
+          },
+          {
+            "id": "11.9-detail",
+            "ko": "건강이 나쁘다면 그 내용을 구체적으로 쓰세요.",
+            "en": "If not good, please explain in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "11.9",
+                "anyOf": [
+                  "not_good"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Хронических заболеваний нет. После угроз плохо сплю.",
+        "choice": null
+      },
+      {
+        "id": "11.10",
+        "sectionKo": "11. 대한민국 내 체류사항",
+        "sectionEn": "11. Status of Stay in the Republic of Korea",
+        "fields": [
+          {
+            "id": "11.10",
+            "ko": "귀하는 한국정부의 생계비 지원이 필요한가요?",
+            "en": "Do you need living expenses support from the Korean government?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ],
+            "hintKo": "난민신청자는 심사를 거쳐 신청서를 제출한 날부터 6개월 범위 안에서 생계비를 지원받을 수 있습니다.",
+            "hintEn": "Once found eligible, living-expense support can be provided for up to 6 months from the date the application was submitted."
+          },
+          {
+            "id": "11.10-detail",
+            "ko": "생계비 지원이 필요한 이유를 쓰세요.",
+            "en": "If yes, please explain in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "11.10",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да, мне нужна помощь с расходами на проживание.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "ko": "12. 본국 출입국사항",
+    "en": "12. Record of Entry Into and Departure From Home Country",
+    "questions": [
+      {
+        "id": "12.1",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.1",
+            "ko": "가장 최근에 본국에서 출국한 날짜는 언제인가요?",
+            "en": "When did you last leave your home country? (yyyy/mm/dd)",
+            "type": "date"
+          }
+        ],
+        "quick": true,
+        "text": "2026/05/14",
+        "choice": null
+      },
+      {
+        "id": "12.2",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.2",
+            "ko": "출국 공항ㆍ항만 또는 지역",
+            "en": "Place of departure (airport, port, or region)",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Аэропорт Пулково, Санкт-Петербург.",
+        "choice": null
+      },
+      {
+        "id": "12.3",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.3",
+            "ko": "출국 교통수단(비행기, 선박 등)",
+            "en": "Means of transportation (airplane, ship, etc.)",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Самолёт.",
+        "choice": null
+      },
+      {
+        "id": "12.4",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.4",
+            "ko": "출국할 때 출국목적",
+            "en": "Reason(s) for departure",
+            "type": "short"
+          }
+        ],
+        "quick": true,
+        "text": "Поездка в Корею и поиск безопасного места.",
+        "choice": null
+      },
+      {
+        "id": "12.5",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.5",
+            "ko": "귀하의 나라에서는 출국할 때 출국허가나 출국사증을 받아야 하나요?",
+            "en": "Were you required to obtain an exit permit or exit visa from the authorities of your country?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "no"
+      },
+      {
+        "id": "12.6",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.6",
+            "ko": "출국허가나 출국사증을 받아야 한다면 귀하는 적법한 허가를 받았나요?",
+            "en": "If yes, did you obtain it legally?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ],
+            "when": [
+              {
+                "id": "12.5",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "no"
+      },
+      {
+        "id": "12.7",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.7",
+            "ko": "언제 출국허가를 받았나요?",
+            "en": "If yes, when was it issued? (yyyy/mm/dd)",
+            "type": "date",
+            "when": [
+              {
+                "id": "12.6",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо: специальное разрешение не требовалось.",
+        "choice": null
+      },
+      {
+        "id": "12.8",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.8",
+            "ko": "출국허가를 받지 않았다면 그 이유와 출국 경위를 자세히 쓰세요.",
+            "en": "If no, please explain why and how you left your country in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "12.6",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Не применимо: выехал законно по действующему паспорту.",
+        "choice": null
+      },
+      {
+        "id": "12.9",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.9",
+            "ko": "한국에 입국하기 전에 다른 나라에 입국한 적이 있나요?",
+            "en": "Have you traveled through any other countries before coming to the Republic of Korea?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "12.9-table",
+            "ko": "방문한 나라를 연도 순으로 모두 쓰세요. 경유국가를 포함합니다.",
+            "en": "List all the countries you visited in chronological order, including transit countries.",
+            "type": "table",
+            "when": [
+              {
+                "id": "12.9",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "entry",
+                "ko": "입국일자",
+                "en": "Date of entry (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "departure",
+                "ko": "출국일자",
+                "en": "Date of departure (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "country",
+                "ko": "방문국가",
+                "en": "Country"
+              },
+              {
+                "id": "location",
+                "ko": "체류지",
+                "en": "Location"
+              },
+              {
+                "id": "visa",
+                "ko": "체류자격",
+                "en": "Visa status"
+              },
+              {
+                "id": "purpose",
+                "ko": "방문목적",
+                "en": "Purpose of visit"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет, до приезда в Корею в другие страны не въезжал.",
+        "choice": null
+      },
+      {
+        "id": "12.10",
+        "sectionKo": "12. 본국 출입국사항",
+        "sectionEn": "12. Record of Entry Into and Departure From Home Country",
+        "fields": [
+          {
+            "id": "12.10",
+            "ko": "과거 외국정부로부터(한국 포함) 입국거부, 체류불허, 강제퇴거 등 처분을 받은 사실이 있나요?",
+            "en": "Have you ever been deported from, denied a visa, or refused entry to any country including the Republic of Korea?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "12.10-table",
+            "ko": "처분 사항을 연도 순으로 모두 쓰세요.",
+            "en": "Complete the actions below in chronological order.",
+            "type": "table",
+            "when": [
+              {
+                "id": "12.10",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "date",
+                "ko": "처분일자",
+                "en": "Date (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "action",
+                "ko": "처분 사항(입국거부, 체류불허, 강제퇴거 등)",
+                "en": "Action (deportation, visa denial, entry refusal)"
+              },
+              {
+                "id": "country",
+                "ko": "처분 국가",
+                "en": "Country"
+              },
+              {
+                "id": "reason",
+                "ko": "사유",
+                "en": "Reason"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет, отказов во въезде, депортаций и отказов в пребывании не было.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "ko": "14. 난민인정 신청 사유",
+    "en": "14. Reasons for the refugee claim",
+    "questions": [
+      {
+        "id": "14.1",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.1",
+            "ko": "귀하가 난민인정 신청을 한 사유는 다음 중 어느 것인가요?",
+            "en": "Why are you applying for refugee status?",
+            "type": "multi",
+            "options": [
+              {
+                "value": "race",
+                "ko": "인종",
+                "en": "Race"
+              },
+              {
+                "value": "religion",
+                "ko": "종교",
+                "en": "Religion"
+              },
+              {
+                "value": "nationality",
+                "ko": "국적",
+                "en": "Nationality"
+              },
+              {
+                "value": "political",
+                "ko": "정치적 의견",
+                "en": "Political opinion"
+              },
+              {
+                "value": "social",
+                "ko": "특정사회집단의 구성원 신분",
+                "en": "Membership of a particular social group"
+              },
+              {
+                "value": "family",
+                "ko": "가족결합",
+                "en": "Family unity"
+              },
+              {
+                "value": "other",
+                "ko": "기타",
+                "en": "Others"
+              }
+            ]
+          },
+          {
+            "id": "14.1-detail",
+            "ko": "귀하가 난민인정 신청을 한 사유를 간략하게 적어 주세요.",
+            "en": "Please state briefly the reason for applying for refugee status.",
+            "type": "long"
+          }
+        ],
+        "quick": false,
+        "text": "Политические убеждения. В этом вымышленном примере я участвовал в мирных собраниях и критиковал действия властей.",
+        "choice": null
+      },
+      {
+        "id": "14.2",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.2",
+            "ko": "14.1의 사유 때문에 부당한 처분, 박해, 위협(조사, 폭행, 체포, 구금 또는 구속 등)을 받은 적이 있나요?",
+            "en": "Have you ever experienced harm, mistreatment or threats in the past by anyone due to the reasons mentioned in 14.1?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.2-detail",
+            "ko": "예라면 그 내용을 자세하게 쓰세요. 무슨 일이 있었는지, 어떤 처분·박해·위협인지, 언제, 누가, 이유, 어디서, 어떻게·왜 풀려났는지를 적으세요.",
+            "en": "If yes, explain in detail: what happened; what kind of harm, mistreatment or threats; when; who caused them; why you believe they occurred; where; and how or why you were released.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.2",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да. В марте 2026 года после мирного собрания двое неизвестных остановили меня, толкнули и потребовали прекратить участие. Я не знаю, были ли они сотрудниками полиции.",
+        "choice": null
+      },
+      {
+        "id": "14.3",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.3",
+            "ko": "14.1의 사유 때문에 귀국하면 부당한 처분이나 박해(조사, 폭행, 체포, 구금 또는 구속 등)를 받을 것이라고 생각하나요?",
+            "en": "Do you fear you would be harmed or mistreated if you return to your country due to the reasons mentioned in 14.1?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.3-detail",
+            "ko": "예라면, 어떤 처분을 두려워하는지, 누가 할 것이라고 생각하는지, 그 이유는 무엇인지 적으세요.",
+            "en": "If yes, explain what kind of harm you fear, who you believe would harm you, and why you believe you would be harmed.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.3",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да. Я боюсь повторных угроз и задержания при возвращении. Точный исход мне неизвестен.",
+        "choice": null
+      },
+      {
+        "id": "14.4",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.4",
+            "ko": "귀하의 가족이나 친구가 14.1의 사유 때문에 부당한 처분 또는 박해를 받은 적이 있나요?",
+            "en": "Have your family members or friends ever faced mistreatment or persecution in your country due to the reasons mentioned in 14.1?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.4-detail",
+            "ko": "예라면, 언제, 누가 체포 또는 구금했는지, 이유, 어디서, 어떻게·왜 풀려났는지 적으세요.",
+            "en": "If yes, explain when it occurred, who detained or arrested them, why, where, and how or why they were released.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.4",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "В апреле 2026 года мать сказала по телефону, что двое мужчин спрашивали обо мне. Лично я этого не видел и не знаю, кто они.",
+        "choice": null
+      },
+      {
+        "id": "14.5",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.5",
+            "ko": "14.1의 사유 때문에 본국에서 경찰이나 권한 있는 정부기관 등에 보호나 지원을 요청한 적이 있나요?",
+            "en": "Have you ever requested protection or support from the police or authorized government agencies in your home country due to the reasons mentioned in 14.1?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.5-yes",
+            "ko": "요청했다면 누구에게, 어떤 조치를 취했는지, 결과가 어땠는지 적으세요. 가능하면 날짜, 이름, 장소를 적으세요.",
+            "en": "If yes, explain whom you approached, what measures you took, and what happened. Indicate dates, names, and places where possible.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.5",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "14.5-no",
+            "ko": "요청하지 않았다면 그 이유를 쓰세요.",
+            "en": "If no, please explain the reasons in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.5",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет. Я не обращался в полицию, потому что опасался раскрыть место проживания. Не могу утверждать, как полиция отреагировала бы.",
+        "choice": null
+      },
+      {
+        "id": "14.6",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.6",
+            "ko": "14.1의 사유 때문에 자신의 안전을 위하여 본국 내 다른 지역으로 피신한 적이 있나요?",
+            "en": "Have you ever fled to any other region in your country to seek safety due to the reasons mentioned in 14.1?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.6-yes",
+            "ko": "피신했다면 언제였는지, 왜 그 지역을 떠났는지, 본국의 다른 지역에서 살 수 없었던 이유를 적으세요.",
+            "en": "If yes, explain when you fled, why you left that region, and why you could no longer live in that region or elsewhere in your country.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.6",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "14.6-no",
+            "ko": "피신하지 않았다면 그 이유를 쓰세요.",
+            "en": "If no, please explain the reasons in detail.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.6",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да. В апреле 2026 года я временно жил у друга в другом районе. После звонка матери решил уехать из страны.",
+        "choice": null
+      },
+      {
+        "id": "14.7",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.7",
+            "ko": "귀하는 언제 본국을 떠났나요?(구체적인 날짜)",
+            "en": "When did you leave your country? (Provide the date)",
+            "type": "date"
+          }
+        ],
+        "quick": true,
+        "text": "2026/05/14",
+        "choice": null
+      },
+      {
+        "id": "14.8",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.8",
+            "ko": "귀하 또는 귀하의 가족이 본국에서 가입했거나 활동했던 단체가 있나요?",
+            "en": "Have you or any of your family members ever joined or been associated with any organization or group in your home country?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.8-table",
+            "ko": "활동기간, 소속단체, 활동내용",
+            "en": "Period, organization, and level of participation",
+            "type": "table",
+            "when": [
+              {
+                "id": "14.8",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "name",
+                "ko": "성명",
+                "en": "Participant’s name"
+              },
+              {
+                "id": "relationship",
+                "ko": "관계",
+                "en": "Relationship"
+              },
+              {
+                "id": "period",
+                "ko": "활동기간(부터~까지)",
+                "en": "Period of activity (from–to)"
+              },
+              {
+                "id": "org",
+                "ko": "소속 단체 또는 활동 단체",
+                "en": "Name of organization"
+              },
+              {
+                "id": "role",
+                "ko": "활동 내용",
+                "en": "Position/level of participation"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет. Членом политических партий или организаций я не был.",
+        "choice": null
+      },
+      {
+        "id": "14.9",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.9",
+            "ko": "귀하는 본국 정부나 특정 단체에 적대적인 활동을 한 사실이 있나요? (한국에 온 후에 활동한 사실을 포함함)",
+            "en": "Have you ever been involved in hostile activity against your government or any group, including activities after you entered Korea?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.9-detail",
+            "ko": "언제, 어디서, 어떤 활동을 했는지 자세히 쓰세요.",
+            "en": "If yes, please explain in detail, including the date, location, and activities.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.9",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Я участвовал в мирных собраниях и публиковал критические сообщения. К насилию не призывал.",
+        "choice": null
+      },
+      {
+        "id": "14.10",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.10",
+            "ko": "귀하는 본국이나 제3국에서 범죄를 저질러 체포되거나 처벌받은 적이 있습니까?",
+            "en": "Have you ever been arrested or punished for a criminal offense in your home country or a third country?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.10-table",
+            "ko": "체포되거나 처벌받은 내용",
+            "en": "Arrest or punishment",
+            "type": "table",
+            "when": [
+              {
+                "id": "14.10",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "date",
+                "ko": "발생일자(연월일)",
+                "en": "Date (yyyy/mm/dd)",
+                "kind": "date"
+              },
+              {
+                "id": "offense",
+                "ko": "죄명",
+                "en": "Name of offense"
+              },
+              {
+                "id": "punishment",
+                "ko": "처벌받은 내용",
+                "en": "Punishment"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет, преступлений не совершал, арестован и осуждён не был.",
+        "choice": null
+      },
+      {
+        "id": "14.11",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.11",
+            "ko": "귀하 또는 귀하의 가족이 외국정부나 유엔난민기구(UNHCR)에 난민인정 신청을 한 적이 있나요?",
+            "en": "Have you or any of your family members ever applied for refugee status in any other country or at UNHCR?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.11-table",
+            "ko": "다른 나라 또는 UNHCR 신청 내용",
+            "en": "Other refugee applications",
+            "type": "table",
+            "when": [
+              {
+                "id": "14.11",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "name",
+                "ko": "성명(관계)",
+                "en": "Name (relationship to you)"
+              },
+              {
+                "id": "date",
+                "ko": "신청일자",
+                "en": "Date of application",
+                "kind": "date"
+              },
+              {
+                "id": "country",
+                "ko": "신청국가",
+                "en": "Country of asylum claim"
+              },
+              {
+                "id": "decision",
+                "ko": "신청결과(인정, 불허 등)",
+                "en": "Decision (accepted, rejected, etc.)"
+              },
+              {
+                "id": "cancel",
+                "ko": "취소ㆍ철회 여부",
+                "en": "Cancellation or withdrawal"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет, ранее я и члены моей семьи не обращались за убежищем в другие страны или в УВКБ ООН.",
+        "choice": null
+      },
+      {
+        "id": "14.12",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.12",
+            "ko": "귀하 또는 귀하의 가족이 다른 나라에서 난민인정을 받았다면, 그 나라를 출국한 이유를 자세히 쓰세요.",
+            "en": "If you or any family member was already recognized as a refugee in another country, explain in detail why you or they left that country.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.11",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "난민인정을 받은 적이 없으면 해당 없음이라고 적으세요.",
+            "hintEn": "If nobody was recognized as a refugee, answer “non applicable”."
+          }
+        ],
+        "quick": false,
+        "text": "Не применимо: в другой стране статус беженца не получал.",
+        "choice": null
+      },
+      {
+        "id": "14.13",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.13",
+            "ko": "귀하는 19세 미만의 미성년자와 함께 난민인정 신청을 하였나요?",
+            "en": "Did you apply for refugee status with a minor child under the age of 19?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.13-role",
+            "ko": "아이와의 관계",
+            "en": "Your relationship to the child",
+            "type": "single",
+            "when": [
+              {
+                "id": "14.13",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "options": [
+              {
+                "value": "both_parents",
+                "ko": "귀하는 아이의 부모이고 다른 부모도 한국에 있습니다.",
+                "en": "You are the child’s parent, and the other parent is in Korea."
+              },
+              {
+                "value": "not_parent",
+                "ko": "귀하는 아이의 부모가 아닙니다.",
+                "en": "You are not the child’s parent."
+              },
+              {
+                "value": "other_away",
+                "ko": "귀하는 아이의 부모이고 다른 부모는 한국에 있지 않습니다.",
+                "en": "You are the child’s parent but the other parent is not in Korea."
+              }
+            ]
+          },
+          {
+            "id": "14.13-not-docs",
+            "ko": "아이를 돌보거나 함께 여행하는 것을 허락한 증명서류를 가지고 있나요?",
+            "en": "Do you have any legal document or written consent allowing you to take care of the child or travel with the child?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ],
+            "when": [
+              {
+                "id": "14.13-role",
+                "anyOf": [
+                  "not_parent"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "14.13-not-detail",
+            "ko": "어떤 증명서류를 갖고 있나요? 없다면 그 이유는 무엇인가요?",
+            "en": "If yes, what document(s) do you have? If no, why not?",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.13-role",
+                "anyOf": [
+                  "not_parent"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "14.13-away-docs",
+            "ko": "다른 부모가 한국에 없는 경우, 아이를 돌보거나 함께 여행하는 것을 허락한 증명서류를 가지고 있나요?",
+            "en": "If the other parent is not in Korea, do you have any legal document or written consent allowing you to take care of the child or travel with the child?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ],
+            "when": [
+              {
+                "id": "14.13-role",
+                "anyOf": [
+                  "other_away"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "14.13-away-detail",
+            "ko": "어떤 증명서류를 갖고 있나요? 없다면 그 이유는 무엇인가요?",
+            "en": "If yes, what document(s) do you have? If no, why not?",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.13-role",
+                "anyOf": [
+                  "other_away"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Нет. Несовершеннолетних детей со мной нет.",
+        "choice": null
+      },
+      {
+        "id": "14.14",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.14",
+            "ko": "10세 이하의 자녀와 함께 신청했다면, 자녀가 귀국할 때 부당한 처분이나 박해를 받을 것이라고 생각하는 이유를 자세하게 쓰세요. 본인 사유와 중복되지 않는, 자녀의 상황에 특정된 이유만 쓰세요.",
+            "en": "If you are applying with a child under 10, explain why you believe the child would be at risk if returned. Include only information specific to the child and different from your own claim.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.13",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "10세 이하 자녀가 없으면 해당 없음이라고 적으세요.",
+            "hintEn": "If you are not applying with a child under 10, answer “non applicable”."
+          }
+        ],
+        "quick": false,
+        "text": "Не применимо: детей со мной нет.",
+        "choice": null
+      },
+      {
+        "id": "14.15",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.15",
+            "ko": "귀하는 본국에 거주하고 있는 가족과 연락하고 있나요?",
+            "en": "Do you have contact with, or information concerning, your family members remaining in your home country?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.15-yes",
+            "ko": "연락하고 있는 가족, 연락 방법, 연락 횟수를 자세히 쓰세요.",
+            "en": "If yes, explain with whom, how, and how often.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.15",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "14.15-no",
+            "ko": "연락하지 않는다면 그 이유를 쓰세요.",
+            "en": "If no, please explain the reason.",
+            "type": "long",
+            "when": [
+              {
+                "id": "14.15",
+                "anyOf": [
+                  "no"
+                ]
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да. Общаюсь с матерью по телефону примерно раз в неделю.",
+        "choice": null
+      },
+      {
+        "id": "14.16",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.16",
+            "ko": "귀하가 난민인정을 신청한 사유를 뒷받침할 서류나 그 밖의 증거물을 가지고 있습니까?",
+            "en": "Can you provide any documentation or evidence in support of your application?",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "예",
+                "en": "Yes"
+              },
+              {
+                "value": "no",
+                "ko": "아니요",
+                "en": "No"
+              }
+            ]
+          },
+          {
+            "id": "14.16-table",
+            "ko": "서류나 증거물",
+            "en": "Documents or evidence",
+            "type": "table",
+            "when": [
+              {
+                "id": "14.16",
+                "anyOf": [
+                  "yes"
+                ]
+              }
+            ],
+            "hintKo": "해당하는 내용이 없으면 행을 비워 두세요.",
+            "hintEn": "Leave the row blank if this does not apply.",
+            "columns": [
+              {
+                "id": "name",
+                "ko": "서류 명",
+                "en": "Name of document"
+              },
+              {
+                "id": "content",
+                "ko": "내용",
+                "en": "Content"
+              },
+              {
+                "id": "method",
+                "ko": "취득경로",
+                "en": "Method of obtaining"
+              },
+              {
+                "id": "when",
+                "ko": "제출예정시기",
+                "en": "Estimated submission date"
+              }
+            ]
+          }
+        ],
+        "quick": false,
+        "text": "Да. У меня есть копии сообщений с угрозами и фотографии мирного собрания. Они сохранены в телефоне.",
+        "choice": null
+      },
+      {
+        "id": "14.17",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.17",
+            "ko": "한국에서 난민인정 신청에 대해서 알게 된 경위를 쓰세요.(언제, 어디서, 누구로부터)",
+            "en": "How did you get the information on refugee status application procedures in Korea? (When, where, and from whom?)",
+            "type": "long"
+          }
+        ],
+        "quick": false,
+        "text": "В июне 2026 года в Сеуле я узнал о процедуре от сотрудника вымышленной консультационной организации.",
+        "choice": null
+      },
+      {
+        "id": "14.18",
+        "sectionKo": "14. 난민인정 신청 사유",
+        "sectionEn": "14. Reasons for the refugee claim",
+        "fields": [
+          {
+            "id": "14.18",
+            "ko": "한국에 입국한 지 1년이 지나서 난민인정 신청을 한 경우 그 이유를 쓰세요.",
+            "en": "If you have not applied for refugee status within one year after you arrived in Korea, please explain why.",
+            "type": "long",
+            "hintKo": "1년 안에 신청했다면 해당 없음이라고 적으세요.",
+            "hintEn": "If you applied within one year, answer “non applicable”."
+          }
+        ],
+        "quick": false,
+        "text": "Не применимо: в этом примере заявление подаётся менее чем через год после въезда.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "ko": "15. 추가 진술",
+    "en": "15. Personal Statement",
+    "questions": [
+      {
+        "id": "15",
+        "sectionKo": "15. 추가 진술",
+        "sectionEn": "15. Personal Statement",
+        "fields": [
+          {
+            "id": "15",
+            "ko": "위에 적은 사항 외에 추가로 진술하고 싶은 내용이 있으면 쓰세요.",
+            "en": "If you would like to give an additional statement besides the answers above, please write it in detail.",
+            "type": "long",
+            "hintKo": "더 적을 내용이 없으면 해당 없음이라고 적으세요.",
+            "hintEn": "If you have nothing to add, answer “non applicable”."
+          }
+        ],
+        "quick": false,
+        "text": "ЭТО ПОЛНОСТЬЮ ВЫМЫШЛЕННЫЙ УЧЕБНЫЙ ПРИМЕР ДЛЯ ПРОВЕРКИ ПРИЛОЖЕНИЯ. Он не является реальным заявлением. Все имена, адреса, организации и события придуманы. Прошу сохранить в переводе различие между личным опытом и рассказом матери.",
+        "choice": null
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "ko": "16. 서약",
+    "en": "16. Declaration",
+    "questions": [
+      {
+        "id": "16.1",
+        "sectionKo": "16. 서약",
+        "sectionEn": "16. Declaration",
+        "fields": [
+          {
+            "id": "16.1",
+            "ko": "본인은 이 신청서의 질문을 모두 이해하고 빠짐없이 사실대로 작성하였음을 확인합니다. 기재 내용이나 자료가 거짓이거나 사실을 은폐한 것이면 불인정되거나 인정이 취소될 수 있다는 안내를 받았습니다.",
+            "en": "I understand the questions and declare that the information is complete and true. I understand that false or misleading information may lead to refusal or cancellation.",
+            "type": "single",
+            "options": [
+              {
+                "value": "confirmed",
+                "ko": "확인하고 동의합니다",
+                "en": "I confirm and agree"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "confirmed"
+      },
+      {
+        "id": "16.2",
+        "sectionKo": "16. 서약",
+        "sectionEn": "16. Declaration",
+        "fields": [
+          {
+            "id": "16.2",
+            "ko": "난민인정 심사 결과를 전자우편 등 정보통신망으로 통보받는 것에 동의합니다.",
+            "en": "I agree to receive the result via e-mail or another information and communications network.",
+            "type": "single",
+            "options": [
+              {
+                "value": "yes",
+                "ko": "동의합니다",
+                "en": "I agree"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "yes"
+      },
+      {
+        "id": "16.3",
+        "sectionKo": "16. 서약",
+        "sectionEn": "16. Declaration",
+        "fields": [
+          {
+            "id": "16.3",
+            "ko": "제공한 정보는 「개인정보 보호법」에 따라 보호되며, 다른 법령에 근거가 없으면 「난민법」에 따른 업무에만 활용됩니다.",
+            "en": "The information is protected under the Personal Information Protection Act and, unless another statute provides otherwise, is used only for Refugee Act duties.",
+            "type": "single",
+            "options": [
+              {
+                "value": "confirmed",
+                "ko": "안내를 확인했습니다",
+                "en": "I have read this notice"
+              }
+            ]
+          }
+        ],
+        "quick": true,
+        "text": "Не применимо в этом учебном примере.",
+        "choice": "confirmed"
+      }
+    ]
+  }
+]

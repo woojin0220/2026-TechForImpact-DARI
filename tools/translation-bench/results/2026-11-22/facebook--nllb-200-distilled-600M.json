@@ -1,0 +1,342 @@
+{
+  "model": "facebook/nllb-200-distilled-600M",
+  "platform": "macOS-15.7-arm64-arm-64bit-Mach-O",
+  "runtime": "transformers MPS fp32",
+  "timing": "wall time per sequential request; warmup excluded; no masking or network LLM",
+  "cases": [
+    {
+      "id": "1.9",
+      "source": "Россия, Санкт-Петербург.",
+      "reference": "러시아, 상트페테르부르크.",
+      "translation": "러시아, 상트페테르부르크",
+      "seconds": 0.4393,
+      "stats": {
+        "input_tokens": 10,
+        "output_tokens": 13
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.11",
+      "source": "Не исповедую религию.",
+      "reference": "종교를 믿지 않습니다.",
+      "translation": "저는 종교를 믿지 않습니다.",
+      "seconds": 0.3107,
+      "stats": {
+        "input_tokens": 10,
+        "output_tokens": 9
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.12",
+      "source": "Русский.",
+      "reference": "러시아인입니다.",
+      "translation": "러시아어",
+      "seconds": 0.1779,
+      "stats": {
+        "input_tokens": 6,
+        "output_tokens": 5
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "4",
+      "source": "Мать: Елена Примерова, 1965/09/24, гражданка России, живёт в Санкт-Петербурге. Все имена вымышлены.",
+      "reference": "어머니: Елена Примерова, 1965/09/24 출생, 러시아 국적이며 상트페테르부르크에 거주합니다. 모든 이름은 가상입니다.",
+      "translation": "어머니: 엘레나 프리메라바, 1965/09/24, 러시아 시민, 상트페테르부르크에서 살고 있습니다. 이름들은 모두 만들어졌습니다.",
+      "seconds": 1.3704,
+      "stats": {
+        "input_tokens": 38,
+        "output_tokens": 42
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "5",
+      "source": "2009–2014: Учебный технический институт, Санкт-Петербург, специальность — информатика. Название вымышленное.",
+      "reference": "2009–2014: 상트페테르부르크의 교육 기술 대학, 전공은 컴퓨터 과학입니다. 학교 이름은 가상입니다.",
+      "translation": "20092014: 교육기술원, 상트페테르부르크, 전공  정보학. 명칭은 허구입니다.",
+      "seconds": 1.3906,
+      "stats": {
+        "input_tokens": 37,
+        "output_tokens": 38
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "8",
+      "source": "1991–2026: Санкт-Петербург, Россия, гражданин. С 2026/05/15: Сеул, Республика Корея, краткосрочное пребывание C-3.",
+      "reference": "1991–2026: 러시아 상트페테르부르크에 시민으로 거주했습니다. 2026/05/15부터 대한민국 서울에서 C-3 단기 체류 중입니다.",
+      "translation": "19912026: 러시아 상트페테르부르크, 시민. 2026/05/15: 서울, 대한민국, 단기 체류 C-3.",
+      "seconds": 1.3316,
+      "stats": {
+        "input_tokens": 41,
+        "output_tokens": 40
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.7",
+      "source": "Не применимо: паспорт подлинный и получен законно.",
+      "reference": "해당 없음: 여권은 진본이며 합법적으로 발급받았습니다.",
+      "translation": "유효하지 않습니다. 본인이 합법적으로 취득한 여권입니다.",
+      "seconds": 0.6286,
+      "stats": {
+        "input_tokens": 16,
+        "output_tokens": 18
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.10",
+      "source": "Заграничный паспорт.",
+      "reference": "해외여행용 여권.",
+      "translation": "해외 여권.",
+      "seconds": 0.4768,
+      "stats": {
+        "input_tokens": 7,
+        "output_tokens": 7
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.2",
+      "source": "Консульство Республики Корея в России.",
+      "reference": "러시아 주재 대한민국 영사관.",
+      "translation": "러시아에 있는 대한민국 대사관.",
+      "seconds": 0.3791,
+      "stats": {
+        "input_tokens": 10,
+        "output_tokens": 12
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.5",
+      "source": "Паспорт, фотография, заявление и справка о банковском счёте.",
+      "reference": "여권, 사진, 신청서 및 은행 잔고 증명서.",
+      "translation": "여권, 사진, 신청서, 은행 계좌 확인",
+      "seconds": 0.4905,
+      "stats": {
+        "input_tokens": 22,
+        "output_tokens": 14
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.7",
+      "source": "Родственников в Корее нет.",
+      "reference": "한국에 친척이 없습니다.",
+      "translation": "한국에는 친척이 없습니다.",
+      "seconds": 0.3093,
+      "stats": {
+        "input_tokens": 11,
+        "output_tokens": 9
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.2",
+      "source": "Аэропорт Пулково, Санкт-Петербург.",
+      "reference": "상트페테르부르크 풀코보 공항.",
+      "translation": "펄코 공항, 상트페테르부르크",
+      "seconds": 0.5301,
+      "stats": {
+        "input_tokens": 16,
+        "output_tokens": 16
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.3",
+      "source": "Самолёт.",
+      "reference": "비행기.",
+      "translation": "비행기가 있어요",
+      "seconds": 0.1747,
+      "stats": {
+        "input_tokens": 6,
+        "output_tokens": 6
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.7",
+      "source": "Не применимо: специальное разрешение не требовалось.",
+      "reference": "해당 없음: 특별 허가가 필요하지 않았습니다.",
+      "translation": "적용되지 않습니다. 특별한 허가가 필요하지 않았습니다.",
+      "seconds": 0.4547,
+      "stats": {
+        "input_tokens": 16,
+        "output_tokens": 13
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.8",
+      "source": "Не применимо: выехал законно по действующему паспорту.",
+      "reference": "해당 없음: 유효한 여권으로 합법적으로 출국했습니다.",
+      "translation": "유효하지 않습니다. 유효한 여권으로 합법적으로 출국했습니다.",
+      "seconds": 0.5841,
+      "stats": {
+        "input_tokens": 19,
+        "output_tokens": 18
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.2",
+      "source": "Да. В марте 2026 года после мирного собрания двое неизвестных остановили меня, толкнули и потребовали прекратить участие. Я не знаю, были ли они сотрудниками полиции.",
+      "reference": "네. 2026년 3월 평화로운 집회 후 신원을 알 수 없는 두 사람이 저를 멈춰 세우고 밀치며 참여를 중단하라고 요구했습니다. 그들이 경찰관이었는지는 모릅니다.",
+      "translation": "그래, 그래. 2026년 3월, 평화적인 모임이 끝난 후, 2명의 낯선 사람들이 저를 막고, 밀어붙이고, 참여를 중단하라고 요구했습니다. 그들이 경찰이었는지 모르겠어요.",
+      "seconds": 1.6356,
+      "stats": {
+        "input_tokens": 51,
+        "output_tokens": 52
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.3",
+      "source": "Да. Я боюсь повторных угроз и задержания при возвращении. Точный исход мне неизвестен.",
+      "reference": "네. 귀국하면 다시 위협을 받거나 구금될까 두렵습니다. 정확히 어떤 결과가 생길지는 모릅니다.",
+      "translation": "그래, 그래. 다시 위협을 받거나 귀국할 때 체포될까봐 걱정됩니다. 그 정확한 결과는 알 수 없습니다.",
+      "seconds": 1.1165,
+      "stats": {
+        "input_tokens": 32,
+        "output_tokens": 36
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.4",
+      "source": "В апреле 2026 года мать сказала по телефону, что двое мужчин спрашивали обо мне. Лично я этого не видел и не знаю, кто они.",
+      "reference": "2026년 4월 어머니가 전화로 두 남자가 저에 대해 물었다고 말씀하셨습니다. 저는 직접 보지 못했고 그들이 누구인지 모릅니다.",
+      "translation": "2026년 4월, 어머니께서 전화로 제게 두 명의 남자가 저를 묻는다고 말씀하셨습니다. 제가 직접 본 적도 없고, 그들이 누구인지도 모릅니다.",
+      "seconds": 1.5738,
+      "stats": {
+        "input_tokens": 38,
+        "output_tokens": 38
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.5",
+      "source": "Нет. Я не обращался в полицию, потому что опасался раскрыть место проживания. Не могу утверждать, как полиция отреагировала бы.",
+      "reference": "아니요. 거주지가 드러날까 두려워 경찰에 연락하지 않았습니다. 경찰이 어떻게 반응했을지는 단정할 수 없습니다.",
+      "translation": "아니, 아니, 아니 저는 경찰에 연락하지 않았습니다. 왜냐하면 제가 살고 있는 곳을 알려줄까봐 두려워했기 때문입니다. 경찰이 어떻게 반응할지 알 수 없습니다.",
+      "seconds": 1.3687,
+      "stats": {
+        "input_tokens": 43,
+        "output_tokens": 44
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.11",
+      "source": "Нет, ранее я и члены моей семьи не обращались за убежищем в другие страны или в УВКБ ООН.",
+      "reference": "아니요. 저와 가족은 이전에 다른 국가나 유엔난민기구에 망명을 신청한 적이 없습니다.",
+      "translation": "아니, 이전에는 저와 제 가족들은 다른 나라나 유엔 안전보장이사회에 피난처 신청을 하지 않았습니다.",
+      "seconds": 0.8836,
+      "stats": {
+        "input_tokens": 31,
+        "output_tokens": 28
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.13",
+      "source": "Нет. Несовершеннолетних детей со мной нет.",
+      "reference": "아니요. 저와 동행하는 미성년 자녀가 없습니다.",
+      "translation": "아니, 아니, 아니 나랑 미성년자는 없어요.",
+      "seconds": 0.6859,
+      "stats": {
+        "input_tokens": 18,
+        "output_tokens": 19
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.16",
+      "source": "Да. У меня есть копии сообщений с угрозами и фотографии мирного собрания. Они сохранены в телефоне.",
+      "reference": "네. 협박 메시지 사본과 평화로운 집회 사진이 있습니다. 휴대전화에 저장되어 있습니다.",
+      "translation": "그래, 그래. 위협 메시지와 평화 회의 사진의 복사본이 있습니다. 핸드폰에 저장되어 있습니다.",
+      "seconds": 1.0551,
+      "stats": {
+        "input_tokens": 34,
+        "output_tokens": 33
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.18",
+      "source": "Не применимо: в этом примере заявление подаётся менее чем через год после въезда.",
+      "reference": "해당 없음: 이 예시에서는 입국 후 1년이 지나기 전에 신청합니다.",
+      "translation": "적용되지 않습니다. 이 예제에서 신청은 입국 후 1년이 채 되지 않습니다.",
+      "seconds": 0.7186,
+      "stats": {
+        "input_tokens": 23,
+        "output_tokens": 22
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "15",
+      "source": "ЭТО ПОЛНОСТЬЮ ВЫМЫШЛЕННЫЙ УЧЕБНЫЙ ПРИМЕР ДЛЯ ПРОВЕРКИ ПРИЛОЖЕНИЯ. Он не является реальным заявлением. Все имена, адреса, организации и события придуманы. Прошу сохранить в переводе различие между личным опытом и рассказом матери.",
+      "reference": "이것은 애플리케이션 테스트를 위한 완전히 가상의 교육용 예시입니다. 실제 신청서가 아닙니다. 모든 이름, 주소, 기관 및 사건은 가상입니다. 번역에서 직접 경험한 일과 어머니에게 들은 이야기를 구분해 주세요.",
+      "translation": "이 모든 것은 실험에 대한 의도적인 학문적 우선순위입니다. 그것은 실제적인 발언이 아닙니다. 모든 이름, 주소, 조직, 사건은 모두 만들어졌습니다. 번역에서 개인적인 경험과 어머니의 이야기의 차이를 유지해 주시기 바랍니다.",
+      "seconds": 2.063,
+      "stats": {
+        "input_tokens": 101,
+        "output_tokens": 63
+      },
+      "has_hangul": true,
+      "copied_source": false
+    }
+  ],
+  "cold_load_seconds": 9.124960332876071,
+  "parameters": 615073792,
+  "generation": {
+    "sentence_split": true,
+    "num_beams": 4,
+    "max_new_tokens_per_sentence": 512
+  },
+  "warmup_seconds": 2.1970103338826448,
+  "warmup_stats": {
+    "input_tokens": 4,
+    "output_tokens": 5
+  },
+  "chrf2_reference_draft": 38.35574949521586,
+  "summary": {
+    "count": 24,
+    "errors": 0,
+    "no_hangul": 0,
+    "copied_source": 0,
+    "total_seconds": 20.1492,
+    "median_seconds": 0.65725,
+    "max_seconds": 2.063
+  }
+}
