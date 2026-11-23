@@ -1,0 +1,102 @@
+/* Location entry and personal calendar styles. */
+.overview-title.location-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,320px);align-items:start;gap:24px 40px;margin-bottom:20px}
+.location-heading .scope-label{display:inline-block;margin-top:8px;font-size:12px;white-space:normal;max-width:100%}
+.location-heading .home-subtitle{margin-bottom:0;max-width:550px}
+.location-heading .location-entry{display:flex;flex-direction:column;align-items:stretch;gap:9px;min-width:0}
+.location-entry #locateBtn{min-height:48px;width:100%;padding:12px 20px;border-radius:10px;background:#171717;border-color:#171717;color:#fff;font-size:15px;font-weight:650;line-height:1.55;white-space:normal;overflow-wrap:anywhere}
+.location-entry #locateBtn:hover{background:#333}
+.location-entry #locateBtn:focus-visible{outline:2px solid #171717;outline-offset:4px}
+.location-entry .location-entry-summary{margin:0;text-align:center;font-size:13px;line-height:1.65;color:#616161;overflow-wrap:anywhere}
+.location-first-guide{display:flex;align-items:flex-start;gap:14px;margin:0 0 22px;padding:15px 18px;border:1px solid #dedede;border-inline-start:3px solid #242424;border-radius:10px;background:#f8f8f8;color:#222}
+.location-first-guide .location-first-label{font-size:11px;line-height:1.5;flex:none;padding:4px 7px;background:#fff;border:1px solid #ddd;border-radius:5px;color:#555;max-width:32%;overflow-wrap:anywhere}
+.location-first-guide p{margin:0;font-size:13px;line-height:1.7}
+.location-first-guide p strong{display:block;font-size:14px;font-weight:650}
+.location-first-guide p span{color:#626262}
+.location-strip{align-items:flex-start}
+.location-strip>div{min-width:0;width:100%}
+#locationTitle{overflow-wrap:anywhere}
+@media(max-width:700px){
+ .overview-title.location-heading{grid-template-columns:minmax(0,1fr) minmax(145px,47%);gap:16px;margin-bottom:16px}
+ .location-heading h1{font-size:clamp(23px,6.4vw,29px);line-height:1.35;overflow-wrap:anywhere}
+ .location-heading .home-subtitle{font-size:12px;line-height:1.7}
+ .location-heading .scope-label{font-size:10px;line-height:1.6;margin-top:7px}
+ .location-entry #locateBtn{font-size:13px;padding:11px 10px;min-height:46px}
+ .location-entry .location-entry-summary{font-size:11px;line-height:1.65}
+ .location-first-guide{gap:10px;padding:12px;margin-bottom:18px}
+ .location-first-guide p{font-size:12px}
+ .location-first-guide p strong{font-size:13px}
+ .location-first-guide .location-first-label{font-size:10px;padding:3px 5px}
+}
+
+#dari-calendar-root{margin-top:24px;color:#171717;font-family:Arial,"Apple SD Gothic Neo",sans-serif;--dari-cal-border:#dadada;--dari-cal-muted:#666}
+#dari-calendar-root *{box-sizing:border-box}
+#dari-calendar-root button,#dari-calendar-root input,#dari-calendar-root select,#dari-calendar-root textarea{font:inherit}
+#dari-calendar-root button{cursor:pointer}
+#dari-calendar-root button:focus-visible,#dari-calendar-root input:focus-visible,#dari-calendar-root select:focus-visible,#dari-calendar-root textarea:focus-visible{outline:3px solid #777;outline-offset:3px}
+#dari-calendar-root .dari-cal-panel{border:1px solid #222;border-radius:14px;background:#fff;padding:22px}
+#dari-calendar-root .dari-cal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding-bottom:20px;border-bottom:1px solid var(--dari-cal-border)}
+#dari-calendar-root .dari-cal-intro{flex:1;min-width:0}
+#dari-calendar-root .dari-cal-eyebrow{font-size:10px;letter-spacing:.14em;color:var(--dari-cal-muted);font-weight:700;margin:0 0 7px}
+#dari-calendar-root h2{font-size:22px;line-height:1.35;margin:0 0 8px;letter-spacing:-.03em}
+#dari-calendar-root .dari-cal-description{font-size:12px;line-height:1.65;color:var(--dari-cal-muted);margin:0 0 14px;max-width:40em}
+#dari-calendar-root .dari-cal-reference{width:264px;flex:0 0 264px;border-inline-start:1px solid var(--dari-cal-border);padding-inline-start:20px}
+#dari-calendar-root .dari-cal-reference label{font-size:11px;font-weight:700;display:block;margin-bottom:6px}
+#dari-calendar-root .dari-cal-reference select{width:100%;min-height:36px;background:#fff;border:1px solid #aaa;border-radius:6px;padding:7px 9px;color:#171717;font-size:12px}
+#dari-calendar-root .dari-cal-clock-label{font-size:10px;color:var(--dari-cal-muted);margin:11px 0 3px}
+#dari-calendar-root .dari-cal-clock{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.035em;line-height:1.2;direction:ltr;text-align:start}
+#dari-calendar-root[dir=rtl] .dari-cal-clock{text-align:right}
+#dari-calendar-root .dari-cal-clock-date{font-size:11px;color:var(--dari-cal-muted);line-height:1.5;margin-top:4px;overflow-wrap:anywhere}
+#dari-calendar-root .dari-cal-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:7px 12px;border:1px solid #999;background:#fff;color:#171717;border-radius:6px;font-size:12px;font-weight:600;line-height:1.3}
+#dari-calendar-root .dari-cal-btn:hover{background:#f1f1f1}
+#dari-calendar-root .dari-cal-btn-primary{background:#171717;color:#fff;border-color:#171717}
+#dari-calendar-root .dari-cal-btn-primary:hover{background:#3c3c3c}
+#dari-calendar-root .dari-cal-btn-small{min-height:29px;padding:5px 9px;font-size:11px}
+#dari-calendar-root .dari-cal-month-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:19px 0 13px}
+#dari-calendar-root .dari-cal-month-title{font-size:17px;font-weight:700;margin:0;line-height:1.4}
+#dari-calendar-root .dari-cal-nav-actions{display:flex;align-items:center;gap:6px}
+#dari-calendar-root .dari-cal-arrow{width:32px;padding:3px;font-size:17px}
+#dari-calendar-root .dari-cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+#dari-calendar-root .dari-cal-weekday{text-align:center;padding:5px 0 8px;font-size:10px;font-weight:700;color:var(--dari-cal-muted)}
+#dari-calendar-root .dari-cal-day{position:relative;min-height:57px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;border:1px solid transparent;border-radius:7px;background:#f7f7f7;color:#222;padding:7px 2px;font-size:12px}
+#dari-calendar-root .dari-cal-day:hover{background:#eaeaea}
+#dari-calendar-root .dari-cal-day.dari-cal-outside{color:#929292;background:#fcfcfc}
+#dari-calendar-root .dari-cal-day.dari-cal-selected{border:2px solid #171717;background:#ededed;padding:6px 1px}
+#dari-calendar-root .dari-cal-day-num{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;line-height:1;font-variant-numeric:tabular-nums}
+#dari-calendar-root .dari-cal-day.dari-cal-today .dari-cal-day-num{background:#171717;color:#fff;font-weight:700}
+#dari-calendar-root .dari-cal-dots{height:6px;display:flex;justify-content:center;gap:3px;align-items:center}
+#dari-calendar-root .dari-cal-dot{display:block;width:4px;height:4px;border-radius:50%;background:currentColor}
+#dari-calendar-root .dari-cal-agenda{margin-top:20px;padding-top:17px;border-top:1px solid var(--dari-cal-border)}
+#dari-calendar-root .dari-cal-agenda-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+#dari-calendar-root .dari-cal-agenda-title{font-size:13px;font-weight:700;margin:0;line-height:1.5}
+#dari-calendar-root .dari-cal-count{font-size:11px;white-space:nowrap;color:var(--dari-cal-muted)}
+#dari-calendar-root .dari-cal-empty{margin:0;padding:17px 12px;background:#f7f7f7;border-radius:7px;color:var(--dari-cal-muted);font-size:12px;line-height:1.6}
+#dari-calendar-root .dari-cal-event-list{display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0}
+#dari-calendar-root .dari-cal-event{display:flex;align-items:flex-start;gap:14px;border:1px solid var(--dari-cal-border);border-radius:8px;padding:13px}
+#dari-calendar-root .dari-cal-event-time{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;line-height:1.6;direction:ltr}
+#dari-calendar-root .dari-cal-event-body{flex:1;min-width:0}
+#dari-calendar-root .dari-cal-event-title{font-size:13px;font-weight:700;line-height:1.5;margin:0;overflow-wrap:anywhere}
+#dari-calendar-root .dari-cal-event-note{font-size:11px;color:var(--dari-cal-muted);line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;margin:5px 0 0}
+#dari-calendar-root .dari-cal-event-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}
+#dari-calendar-root .dari-cal-delete-confirm{font-size:12px;line-height:1.6;margin-top:9px;display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+#dari-calendar-root .dari-cal-form{margin-top:20px;border:1px solid #999;border-radius:9px;padding:17px;background:#fafafa;scroll-margin-top:20px}
+#dari-calendar-root .dari-cal-form[hidden]{display:none}
+#dari-calendar-root .dari-cal-form-heading{font-size:15px;line-height:1.5;margin:0 0 5px}
+#dari-calendar-root .dari-cal-form-hint{font-size:11px;line-height:1.6;color:var(--dari-cal-muted);margin:0 0 15px}
+#dari-calendar-root .dari-cal-field{display:flex;flex-direction:column;gap:5px;margin-top:12px;min-width:0}
+#dari-calendar-root .dari-cal-field label{font-size:11px;font-weight:700;line-height:1.5}
+#dari-calendar-root .dari-cal-field input,#dari-calendar-root .dari-cal-field textarea{width:100%;border:1px solid #aaa;border-radius:6px;min-height:38px;padding:9px 10px;background:#fff;color:#171717;font-size:13px;line-height:1.4}
+#dari-calendar-root .dari-cal-field input[type=date],#dari-calendar-root .dari-cal-field input[type=time]{direction:ltr;text-align:start;min-width:0}
+#dari-calendar-root .dari-cal-field textarea{resize:vertical;min-height:74px}
+#dari-calendar-root .dari-cal-field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#dari-calendar-root .dari-cal-form-actions{display:flex;align-items:center;gap:8px;margin-top:15px}
+#dari-calendar-root .dari-cal-message{font-size:11px;line-height:1.65;padding:10px 12px;background:#f0f0f0;border-inline-start:3px solid #333;margin:14px 0 0;overflow-wrap:anywhere}
+#dari-calendar-root .dari-cal-message[hidden]{display:none}
+#dari-calendar-root .dari-cal-error{font-weight:600}
+#dari-calendar-root .dari-cal-footer{font-size:10px;line-height:1.65;color:var(--dari-cal-muted);margin:13px 0 0}
+#dari-calendar-root .dari-cal-sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#dari-calendar-root .dari-cal-reference label,#dari-calendar-root .dari-cal-field label{font-size:13px}
+#dari-calendar-root .dari-cal-btn,#dari-calendar-root .dari-cal-btn-small{font-size:13px}
+#dari-calendar-root .dari-cal-arrow{font-size:17px}
+@media(max-width:650px){#dari-calendar-root .dari-cal-panel{padding:17px}#dari-calendar-root .dari-cal-header{gap:16px}#dari-calendar-root .dari-cal-reference{width:220px;flex-basis:220px;padding-inline-start:15px}#dari-calendar-root h2{font-size:20px}#dari-calendar-root .dari-cal-event{gap:10px;flex-wrap:wrap}#dari-calendar-root .dari-cal-event-actions{margin-inline-start:auto}#dari-calendar-root .dari-cal-description{font-size:11px}}
+@media(max-width:650px){#dari-calendar-root .dari-cal-field input,#dari-calendar-root .dari-cal-field textarea,#dari-calendar-root .dari-cal-reference select{font-size:16px}#dari-calendar-root .dari-cal-btn{min-height:38px}}
+@media(max-width:480px){#dari-calendar-root .dari-cal-panel{padding:14px}#dari-calendar-root .dari-cal-header{flex-direction:column;gap:18px}#dari-calendar-root .dari-cal-intro{width:100%}#dari-calendar-root .dari-cal-reference{width:100%;flex-basis:auto;border-inline-start:0;padding-inline-start:0;border-top:1px solid var(--dari-cal-border);padding-top:14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 12px}#dari-calendar-root .dari-cal-reference label{grid-column:1;margin:0 0 6px}#dari-calendar-root .dari-cal-reference select{grid-column:1;grid-row:2}#dari-calendar-root .dari-cal-clock-label{grid-column:2;grid-row:1;margin:0 0 6px;align-self:center}#dari-calendar-root .dari-cal-clock{grid-column:2;grid-row:2;font-size:20px;align-self:center}#dari-calendar-root .dari-cal-clock-date{grid-column:1/-1;margin-top:7px}#dari-calendar-root .dari-cal-grid{gap:3px}#dari-calendar-root .dari-cal-day{min-height:49px;padding:5px 1px}#dari-calendar-root .dari-cal-day.dari-cal-selected{padding:4px 0}#dari-calendar-root .dari-cal-month-title{font-size:15px}#dari-calendar-root .dari-cal-month-nav{gap:6px}#dari-calendar-root .dari-cal-nav-actions{gap:4px}#dari-calendar-root .dari-cal-btn{padding:7px 10px}#dari-calendar-root .dari-cal-arrow{width:29px;padding:3px}#dari-calendar-root .dari-cal-form{padding:13px}#dari-calendar-root .dari-cal-field-row{gap:8px}#dari-calendar-root .dari-cal-event-body{flex-basis:calc(100% - 64px)}}
