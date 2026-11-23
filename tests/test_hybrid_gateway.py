@@ -121,7 +121,7 @@ class HybridTests(unittest.TestCase):
             self.assertEqual(config['maxOutputTokens'], 16384 if task == 'draft' else 8192)
 
     def test_real_compact_schema_fits_flat_shape_without_mutating_source(self):
-        schema = json.loads((Path(__file__).parent / 'fixtures/gemini-compact-schema.json').read_text())
+        schema = json.loads((Path(__file__).parent / 'fixtures/gemini-compact-schema.json').read_text(encoding='utf-8'))
         original = json.dumps(schema)
         variants = schema['properties']['facts']['items']['anyOf']
         flat = gateway.gemini_response_schema(schema)

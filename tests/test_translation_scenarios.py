@@ -11,7 +11,7 @@ import application_translation
 
 class ScenarioTests(unittest.TestCase):
     def test_all_scenarios_are_fictional_unique_and_fit_the_application(self):
-        data=json.loads((ROOT/'tools/translation-bench/scenarios/russian-v4.json').read_text())
+        data=json.loads((ROOT/'tools/translation-bench/scenarios/russian-v4.json').read_text(encoding='utf-8'))
         self.assertEqual(len(data['scenarios']),10)
         ids=set()
         for scene in data['scenarios']:

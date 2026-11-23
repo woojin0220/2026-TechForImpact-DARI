@@ -6,7 +6,7 @@ import json
 import re
 from pathlib import Path
 
-DATA = json.loads((Path(__file__).parent / 'capacitor-web/src/application/translationProfiles.json').read_text())
+DATA = json.loads((Path(__file__).parent / 'capacitor-web/src/application/translationProfiles.json').read_text(encoding='utf-8'))
 PROFILE_VERSION = DATA['version']
 PROFILES = DATA['profiles']
 

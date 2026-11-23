@@ -91,9 +91,9 @@ class LocalDetectors:
         for source in Path(gliner).iterdir():
             if source.is_file() and source.name != 'gliner_config.json':
                 (bundle / source.name).symlink_to(source)
-        config = json.loads((Path(gliner) / 'gliner_config.json').read_text())
+        config = json.loads((Path(gliner) / 'gliner_config.json').read_text(encoding='utf-8'))
         config['model_name'] = base
-        (bundle / 'gliner_config.json').write_text(json.dumps(config))
+        (bundle / 'gliner_config.json').write_text(json.dumps(config), encoding='utf-8')
         self.gliner = GLiNER.from_pretrained(str(bundle), local_files_only=True).eval()
         self.nym.to(self.device)
         self.gliner.to(self.device)
