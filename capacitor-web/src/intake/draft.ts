@@ -1,6 +1,6 @@
 import { requirementCatalog, requirementsById } from './catalog.ts';
 import { IntakeError, type DraftSection, type DraftSentence, type IntakeFact, type IntakeSession, type ModelAdapter } from './types.ts';
-import { draftResponseSchema } from './responseSchemas.ts';
+import { draftResponseSchema, draftBatchResponseSchema } from './responseSchemas.ts';
 import { factSupportsQuestion, questionUses } from './statements.ts';
 import { buildQuestion14Answers } from './derive14.ts';
 import { boundedPrompt, object, parseObject, stringArray, text } from './modelOutput.ts';
@@ -61,6 +61,7 @@ export async function generateDraft(session: IntakeSession, adapter: ModelAdapte
     const questionIds = [...new Set(uses.filter(use => requirementsById.get(use.requirementId)?.collection === 'conversation')
       .map(use => use.questionId!))];
     const draft: DraftSection[] = [];
+    const batch: {questionId: string; facts: IntakeFact[]; corrections: string[]; prompt: Record<string, unknown>}[] = [];
     for (const questionId of questionIds) {
       if (signal?.aborted) throw new Error('초안 작성을 중단했습니다.');
       const allowedIds = new Set(uses.filter(use => use.questionId === questionId).map(use => use.factId));
@@ -83,10 +84,14 @@ export async function generateDraft(session: IntakeSession, adapter: ModelAdapte
         facts: questionFacts.map(({ id, requirementId, eventId, value, status, certainty, knowledge, sourceIds: ids, sourceQuotes, statements, clarification, otherText }) =>
           ({ id, requirementId, eventId, value, status, certainty, knowledge, sourceIds: ids, quotes: sourceQuotes.map(quote => quote.quote), statements, clarification, ...(otherText ? { otherText } : {}) })),
         ...(corrections.length ? { corrections, correctionRule: 'The applicant corrected these values. Use only "now"; never write any "old" value, even where another fact still quotes it.' } : {}),
-      });
+      }, adapter.draftMode === 'single-call' ? 70000 : undefined);
       const request = { task: 'draft' as const, system: draftSystem, prompt, signal,
         responseSchema: draftResponseSchema(questionId, questionFacts.map(item => item.id)),
       };
+      if (adapter.draftMode === 'single-call') {
+        batch.push({questionId, facts: questionFacts, corrections: corrections.map(item => item.old), prompt: JSON.parse(prompt)});
+        continue;
+      }
       const output = await adapter(request);
       let sections: DraftSection[];
       try {
@@ -106,6 +111,28 @@ export async function generateDraft(session: IntakeSession, adapter: ModelAdapte
       }
       if (!sections.length) throw new Error(`${questionId} 문항의 초안이 반환되지 않았습니다.`);
       draft.push(...sections);
+    }
+    if (batch.length) {
+      const {contextRule, language} = batch[0].prompt;
+      const factPool = [...new Map(batch.flatMap(item => (item.prompt.facts as {id: string}[]).map(fact => [fact.id, fact] as const))).values()];
+      const prompt = boundedPrompt({facts: factPool, contextRule, language,
+        instruction: 'Return every requested question exactly once in sections, in the supplied order. Use only each question\'s own facts and requiredFactIds. Write concise prose, retaining all facts without repeating background or source text. No extra questions, no automatic repair pass.',
+        questions: batch.map(({prompt: {contextFacts: _context, facts: _facts, contextRule: _rule, language: _language, ...question}}) => question)}, 70000);
+      const output = await adapter({task:'draft', purpose:'draft-batch', system:draftSystem, prompt, signal,
+        responseSchema:draftBatchResponseSchema(batch.map(item=>item.questionId), [...new Set(batch.flatMap(item=>item.facts.map(fact=>fact.id)))])});
+      if (signal?.aborted) throw new Error('초안 작성을 중단했습니다.');
+      const raw = parseObject(output).sections;
+      if (!Array.isArray(raw) || raw.length !== batch.length
+        || raw.some(section => !section || typeof section !== 'object' || !batch.some(item=>item.questionId === section.questionId))) {
+        throw new Error('요청한 모든 문항의 초안이 반환되지 않았습니다.');
+      }
+      for (const item of batch) {
+        const sections = raw.filter(section=>section.questionId === item.questionId);
+        if (sections.length !== 1) throw new Error(`${item.questionId} 문항의 초안이 누락되거나 중복되었습니다.`);
+        // Keep omissions/corrected-value warnings for review, as the existing
+        // writer does after its repair. Unsupported citations still fail closed.
+        draft.push(...parseDraft(sections,item.facts,new Set([item.questionId]),true,item.corrections));
+      }
     }
     const drafted = { ...session, draft, draftRevision: session.draftRevision + 1, updatedAt: now() };
     return { ...drafted, question14: buildQuestion14Answers(drafted), draftReviews: undefined };

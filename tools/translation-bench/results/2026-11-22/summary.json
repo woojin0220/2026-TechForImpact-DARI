@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-22",
+  "machine": "Apple M1 Pro, 16 GiB, macOS 15.7",
+  "scope": "24 identical fictional Russian answers to Korean; single sequential warm runs; no external LLM",
+  "models": [
+    {
+      "model": "qwen3:4b",
+      "runtime": "Ollama Metal GGUF Q4_K_M",
+      "generation": null,
+      "parameters_if_measured": null,
+      "summary": {
+        "count": 24,
+        "errors": 0,
+        "no_hangul": 12,
+        "copied_source": 12,
+        "total_seconds": 28.5381,
+        "median_seconds": 0.8466,
+        "max_seconds": 2.5904
+      },
+      "chrf2_against_draft_reference": 27.813539336863013,
+      "inspection_notes": [
+        "12/24 source sentences copied unchanged.",
+        "4: invented Petrozavodsk instead of Saint Petersburg.",
+        "14.11: UNHCR replaced with a garbled EU/UN human-rights committee.",
+        "14.13: meaning of accompanying minor children lost."
+      ]
+    },
+    {
+      "model": "dari-hymt2:1.8b",
+      "runtime": "Ollama Metal GGUF Q4_K_M",
+      "generation": null,
+      "parameters_if_measured": null,
+      "summary": {
+        "count": 24,
+        "errors": 0,
+        "no_hangul": 0,
+        "copied_source": 0,
+        "total_seconds": 12.0776,
+        "median_seconds": 0.3847,
+        "max_seconds": 1.5778
+      },
+      "chrf2_against_draft_reference": 47.295582758696256,
+      "inspection_notes": [
+        "0/24 unchanged source sentences.",
+        "Negation, uncertainty and reported speech preserved in inspected 14.2–14.5.",
+        "9.10: foreign-national passport rather than overseas travel passport.",
+        "10.2: embassy rather than consulate.",
+        "14.18: changes a statement into an obligation.",
+        "15: application/software misread as appendix."
+      ]
+    },
+    {
+      "model": "facebook/m2m100_418M",
+      "runtime": "transformers MPS fp32",
+      "generation": {
+        "sentence_split": true,
+        "num_beams": 4,
+        "max_new_tokens_per_sentence": 512
+      },
+      "parameters_if_measured": 483905536,
+      "summary": {
+        "count": 24,
+        "errors": 0,
+        "no_hangul": 0,
+        "copied_source": 0,
+        "total_seconds": 18.159,
+        "median_seconds": 0.5843,
+        "max_seconds": 1.9896
+      },
+      "chrf2_against_draft_reference": 33.46837735264008,
+      "inspection_notes": [
+        "Sentence splitting is essential: unsplit run omitted later sentences.",
+        "10.2: direction of Korean consulate in Russia reversed.",
+        "14.2: pushing changed to shaking.",
+        "14.11: UNHCR generalized incorrectly as a UN committee."
+      ]
+    },
+    {
+      "model": "facebook/nllb-200-distilled-600M",
+      "runtime": "transformers MPS fp32",
+      "generation": {
+        "sentence_split": true,
+        "num_beams": 4,
+        "max_new_tokens_per_sentence": 512
+      },
+      "parameters_if_measured": 615073792,
+      "summary": {
+        "count": 24,
+        "errors": 0,
+        "no_hangul": 0,
+        "copied_source": 0,
+        "total_seconds": 20.1492,
+        "median_seconds": 0.65725,
+        "max_seconds": 2.063
+      },
+      "chrf2_against_draft_reference": 38.35574949521586,
+      "inspection_notes": [
+        "9.7/12.8: not applicable changed to invalid.",
+        "14.11: UNHCR changed to UN Security Council.",
+        "15: testing an application becomes an academic priority.",
+        "CC-BY-NC 4.0 research comparator; not selected for product use."
+      ]
+    }
+  ],
+  "limitations": [
+    "Ollama Q4_K_M Metal versus Transformers FP32 MPS beam=4 sentence splitting, not matched precision.",
+    "No-hangul/copied-source counts are not semantic accuracy scores.",
+    "Reference translations and qualitative inspection were prepared by the coding assistant, not independently validated by a bilingual expert.",
+    "The mobile LiteRT model has not been replaced or timed."
+  ],
+  "production": {
+    "scope": "97 fictional Russian application answers, production local endpoint with question context and terminology; no masking or external LLM",
+    "seconds": 36.982574665918946,
+    "model_calls": 69,
+    "failures": 0,
+    "untranslated_sentences": 0,
+    "improvements": [
+      "Question context disambiguates ethnicity in 1.12.",
+      "Terminology reference corrects travel passport and UNHCR.",
+      "All 97 UI fixture answers updated, actual Word download checked: 83 non-choice answers present; Cyrillic remains only in 4 preserved personal-name fields."
+    ],
+    "remaining_errors": [
+      "15 still misreads application testing as appendix review.",
+      "14.13 adds the question’s age threshold 19, which is not explicit in the source.",
+      "Personal-name transliteration inside narrative answers is not reliably kept in original script despite the instruction."
+    ]
+  }
+}

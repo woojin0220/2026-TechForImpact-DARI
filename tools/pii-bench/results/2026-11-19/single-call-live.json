@@ -1,0 +1,17 @@
+{
+  "scenario": "basic",
+  "conversationMode": "single-call",
+  "totalMs": 12732,
+  "extractionMs": 12732,
+  "calls": [
+    {
+      "runtime": "gemini",
+      "constrained": true,
+      "totalMs": 12639,
+      "maskingMs": 3,
+      "modelLoadMs": 0,
+      "providerMs": 12636
+    }
+  ],
+  "nextQuestionReady": true
+}

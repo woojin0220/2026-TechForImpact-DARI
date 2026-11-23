@@ -1,0 +1,25 @@
+{
+  "scenario": "basic",
+  "auxiliaryPasses": "selective",
+  "totalMs": 21779,
+  "extractionMs": 18418,
+  "calls": [
+    {
+      "runtime": "gemini",
+      "constrained": true,
+      "totalMs": 18342,
+      "maskingMs": 11226,
+      "modelLoadMs": 0,
+      "providerMs": 7116
+    },
+    {
+      "runtime": "gemini",
+      "constrained": true,
+      "totalMs": 3355,
+      "maskingMs": 974,
+      "modelLoadMs": 0,
+      "providerMs": 2381
+    }
+  ],
+  "nextQuestionReady": true
+}

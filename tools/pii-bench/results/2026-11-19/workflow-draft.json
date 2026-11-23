@@ -1,0 +1,15 @@
+{
+  "fixtureOnly": true,
+  "providerSettings": "Same current Gemini config for both policies; LOW intake, default draft",
+  "preparation": "Model and first exact request masked locally before each timed run. Fresh follow-up requests remain included.",
+  "draftPolicy": "Unchanged per-question writer and at most one repair per question in both modes",
+  "rows": [
+    {
+      "phase": "draft",
+      "mode": "multi-call",
+      "label": "full-export-fixture",
+      "preparationMs": 35597,
+      "calls": []
+    }
+  ]
+}

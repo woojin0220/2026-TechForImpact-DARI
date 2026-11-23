@@ -200,3 +200,101 @@ npm run build
 - 통역가·법률가 검토 및 수정 이력
 
 구현을 변경하기 전에 [향후 논의·결정 사항](docs/OPEN_DECISIONS.md)에서 아직 확정되지 않은 내용을 확인해 주세요.
+
+## 하이브리드 Gemini 개발 파이프라인
+
+`브라우저/에뮬레이터 → Mac 루프백 서버 → nym(식별정보) + GLiNER(종교·정치·건강) + 정규식 → Gemini → 서버에서 원문 복원 → 기존 사실/출처 검증` 경로를 추가했습니다. 기본 온디바이스/Ollama 경로는 환경변수를 설정하지 않으면 유지됩니다. 대화, 초안, 문장 수정, 역번역은 공통 intake 어댑터를 통해 연결됩니다. 기존 `/v1/translate*` 및 `/v1/translation/verify` 경로는 여전히 Ollama/ML Kit를 사용합니다.
+
+**현재 마스킹은 휴대폰 내부가 아니라 Mac 로컬 서버에서 실행됩니다.** 서버는 계속 `127.0.0.1`에만 바인딩됩니다. 같은 컴퓨터 브라우저와 Android 에뮬레이터(`10.0.2.2:8765`)에서 시험하고, 실기기 지원을 위해 이 개발 서버를 외부에 공개하지 마세요. 휴대폰 안에서 두 탐지기를 실행하는 네이티브 통합은 별도 작업입니다.
+
+Python 3.11 환경에서 준비합니다. API 키 없이 모델 준비와 로컬 테스트를 할 수 있습니다.
+
+```sh
+python3.11 -m venv .venv-hybrid
+.venv-hybrid/bin/pip install -r requirements-hybrid.txt
+.venv-hybrid/bin/python tools/prepare_privacy_models.py
+cp .env.example .env
+cp capacitor-web/.env.example capacitor-web/.env.local
+```
+
+`.env`의 `GEMINI_API_KEY`에 키를 넣습니다. `.env`는 서버가 자동으로 읽지 않으므로 아래처럼 환경변수로 로드합니다. 키를 `VITE_*`에 넣거나 채팅·소스에 붙여 넣지 않습니다. 모델은 `DARI_GEMINI_MODEL`로 교체할 수 있고, 초기값은 `gemini-3.8-flash`입니다. 예시 답변 생성은 별도 `purpose=example`로 표시해 Gemini 3/4 모델에서 낮은 추론(`LOW`)을 사용합니다. 대화 추출도 기본 `LOW`를 사용하며 `DARI_GEMINI_INTAKE_THINKING=default`로 공급자 기본값을 사용할 수 있습니다. 전체 초안의 1회 요청(`draft-batch`)도 `LOW`를 쓰고 최대 출력은 16,384토큰입니다. 일반 초안·문장 수정·역번역은 기존 추론 설정을 유지합니다. 키별 모델 접근 권한과 실제 응답 품질은 키 설정 후 확인해야 합니다. 서버는 모델을 미리 로드한 뒤 요청을 받습니다. 첫 요청의 지침 탐지는 별도 비용이며 이후 반복 지침은 캐시됩니다. 지원하는 Mac에서는 `DARI_PII_DEVICE=mps`로 GPU를 사용할 수 있고, 기본값은 CPU입니다. 같은 220자 창을 8개씩 묶어 처리하며 탐지 범위는 유지합니다.
+
+```sh
+set -a
+source .env
+set +a
+.venv-hybrid/bin/python local_verification_server.py
+```
+
+다른 터미널에서 `cd capacitor-web` 후 `npm run dev`를 실행합니다. 운영자 설정에서 **하이브리드 · 로컬 서버 마스킹 → Gemini → 로컬 복원**과 준비 상태를 확인합니다. 설정을 바꾸면 서버/Vite를 재시작합니다. 브라우저/앱과 서버의 모드가 다르면 원문 POST 전에 차단됩니다. 네이티브 빌드는 명시적으로 `VITE_DARI_LLM_MODE=hybrid`로 빌드한 경우에만 게이트웨이를 사용합니다.
+
+- 모델 버전을 커밋으로 고정하고 시작 전 다운로드합니다. 실행 중 탐지 모델은 오프라인이며, 탐지 실패나 키 누락 시 원문 외부 전송으로 대체하지 않습니다.
+- 알려진 이름·생년월일·주소·종교 등의 폼 값과 가족 표의 이름·연락처를 먼저 전달해 결정적으로 가립니다. 일반 사건 날짜는 일괄 마스킹하지 않습니다. 자유서술은 nym 및 GLiNER로 탐지하며, 긴 입력은 겹치는 창으로 끝까지 처리합니다.
+- 프롬프트 JSON을 디코딩한 뒤 스키마의 원문 enum까지 함께 가립니다. 동일한 원문은 한 요청 안에서 같은 토큰을 사용합니다. 서로 다른 요청은 별도 토큰이며 복원표는 요청 메모리에만 둡니다.
+- LiteRT용 compact 사실 스키마는 Gemini 전송 시 단일 객체로 평탄화하고 선택적 필드를 필수로 만들며 배열 길이 제약을 제거해 API의 상태 조합 제한을 피합니다. 항목별 선택값·사건 ID·원문 출처 등 의미 검증은 기존 앱 검증기를 계속 사용합니다.
+- 응답 JSON의 문자열 값을 복원한 뒤 앱의 원문 인용 검증을 수행합니다. 알 수 없는 토큰·손상된 토큰·잘린 응답은 거절합니다. 키와 외부 오류 본문은 클라이언트에 반환하지 않습니다. 반복 입력은 원문 대신 SHA-256과 탐지 위치만 최대 512개까지 메모리에 캐시합니다. Gemini 도구·검색·명시적 캐시는 사용하지 않습니다.
+- 탐지 누락과 오탐 가능성은 남습니다. 마스킹이 익명성을 보장하지 않으며, 사건의 맥락도 재식별 단서가 될 수 있습니다. 현재는 합성 데이터 개발용입니다. 합성 벤치마크와 테스트가 실제 신청자 데이터의 안전성·초안 품질을 입증하지는 않습니다.
+
+검증:
+
+```sh
+python3 -m unittest discover -s tests
+cd capacitor-web
+npm test
+npm run build
+```
+
+실제 난민 진술을 시험할 때는 [Google 데이터 처리 약관](https://aistudio.google.com/docs/terms)의 유료 서비스 조건을 확인하고 결제가 연결된 프로젝트의 키를 사용하세요. 무료 서비스에는 민감·개인정보를 제출하지 말라는 명시적 제한이 있습니다. 유료 서비스도 악용 방지를 위한 제한적 로그 보관은 있습니다. 모델 선택 근거: [공식 Gemini 3.8 Flash 문서](https://aistudio.google.com/docs/models/gemini-3.8-flash), [REST 생성 API](https://aistudio.google.com/api-reference/generate-content).
+
+하이브리드의 자유 답변 처리는 **로컬 마스킹 → Gemini 추출 1회 → 로컬 검증·복원 → 로컬 후속 질문** 순서입니다. 온디바이스용 주제 확인·집중 재추출은 이 경로에서 실행하지 않습니다. 누락 항목과 다음 주제는 검증된 사실과 커버리지로 결정하고, 기존 6개 언어 템플릿으로 한 주제씩 질문합니다. 응답 오류 때 자동으로 재호출하지 않으며 원문을 보존해 사용자가 재시도할 수 있습니다. 개인정보 탐지·정확한 인용·선택값·부정문·역할 검증은 유지됩니다. 추가 추출을 없앤 만큼 누락은 수집 정보 검토에서 확인해야 합니다. Gemini 초안도 요청할 서술형 문항들을 한 번에 생성하고, 문항별 출처 검증은 로컬에서 수행합니다. 누락된 사실이나 정정 전 값은 검토 경고로 남기며 자동 보완 호출을 하지 않습니다. 전체 초안 입력은 중복 출처를 합쳐 최대 70,000자로 제한하고, 초과하면 잘라 보내지 않고 오류를 표시합니다.
+
+### Numbered application translation
+
+The application tab now opens `capacitor-web/src/application/Application.tsx`:
+choose a numbered question, enter an answer, translate it into Korean, and edit
+that translation. This flow bypasses fact extraction, draft generation, masking,
+and Gemini. Mobile builds call `OnDeviceLlm` directly (import a compatible model
+from the answer screen). Browser development calls the loopback bridge's
+`/v1/translate` endpoint with `dari-hymt2:1.8b` (Hy-MT2 1.8B Q4_K_M); this is Mac-local
+preview, not phone inference. Start Ollama and `python local_verification_server.py`
+for browser translation. No external API key is required for this flow.
+Register Tencent's official `Hy-MT2-1.8B-Q4_K_M.gguf` with Ollama as
+`dari-hymt2:1.8b` first. `DARI_TRANSLATION_MODEL=qwen3:4b` selects the old
+preview model explicitly; a missing specialist model fails without a silent fallback.
+The mobile LiteRT model is unchanged and does not load GGUF files directly.
+
+Answers use an async repository contract, currently backed by session storage.
+The service-wide auth ID scopes signed-in drafts separately from guests and other
+accounts; guest drafts retain `dari.question-translations.v1` and are never uploaded
+or copied into an account automatically. Closing the tab/app is not durable storage.
+DB integration can replace the injected adapter without changing the form screens;
+see [draft storage integration](docs/APPLICATION_DRAFT_STORAGE.md).
+The old conversation working copy remains separate and is not migrated or removed.
+Download fills the supplied 2019.12.31 application form in `.docx` format.
+All 22 original PDF pages remain as fixed background images; only written
+answers are added as editable Word text boxes at the measured answer positions.
+The form labels and rules are preserved images, not editable Word tables. Before downloading, pending or outdated answers are translated locally. Completed
+translations (including manual edits) are reused. Each result is saved as it
+finishes; a failed translation stops the download and a retry resumes unfinished
+answers. Korean answers and predefined choices do not need a model call.
+Names in the four personal-name fields, dates, email addresses and visa codes
+are also kept verbatim. A source-language sentence returned unchanged is not a
+completed translation, even for previously saved answers: download retries it
+and stops if the result is still untranslated. Script checks catch obvious
+failures, not factual mistranslations. The specialist receives question context
+and a small travel-document/UNHCR terminology reference. Local comparison
+scripts and raw results are in `tools/translation-bench/`.
+The Hy-MT2 Korean application path resolves question IDs against a fixed profile
+registry generated from `src/form/schema.ts`; client-supplied question text is
+ignored. The registry covers all 97 questions and uses short subjects rather
+than sample answers or conditional age/time thresholds. Scoped terminology
+separates ethnicity/language, accompanying children, software testing/appendices,
+travel documents and UNHCR. It still makes one local model call per answer.
+`npm run dev` and `npm run build` regenerate the registry; restart the Python
+bridge after changing the schema or profile generator. Tests require profile
+coverage to match the schema. Native LiteRT inference keeps its existing path.
+Overflow and unstructured table answers go to numbered appendices, with
+references in the original form. Signatures, handwritten oaths, and officer
+fields remain blank. Rebuild the static Word template with
+`scripts/build-application-word-template.py --pdftoppm /absolute/path/to/bundled/pdftoppm`
+using the bundled document runtime; it never changes the original PDF or HWP.

@@ -1,0 +1,393 @@
+{
+  "version": "application-hymt-v2",
+  "profiles": {
+    "2": {
+      "subject": "Other citizenship or permanent residence",
+      "kind": "table"
+    },
+    "3": {
+      "subject": "Marital status and family circumstances",
+      "kind": "table"
+    },
+    "4": {
+      "subject": "Family members and their biographical details",
+      "kind": "table"
+    },
+    "5": {
+      "subject": "Education history",
+      "kind": "table"
+    },
+    "6": {
+      "subject": "Employment history",
+      "kind": "table"
+    },
+    "8": {
+      "subject": "Residence history",
+      "kind": "table"
+    },
+    "15": {
+      "subject": "Additional statement besides the answers above",
+      "kind": "narrative"
+    },
+    "1.1": {
+      "subject": "Applicant’s Status",
+      "kind": "short"
+    },
+    "1.2": {
+      "subject": "Family name",
+      "kind": "short"
+    },
+    "1.3": {
+      "subject": "Given name(s)",
+      "kind": "short"
+    },
+    "1.4": {
+      "subject": "Other names you have ever used including maiden names, religious names, aliases, nicknames",
+      "kind": "short"
+    },
+    "1.5": {
+      "subject": "Date of birth (yyyy/mm/dd)",
+      "kind": "short"
+    },
+    "1.6": {
+      "subject": "Gender",
+      "kind": "short"
+    },
+    "1.7": {
+      "subject": "Nationality",
+      "kind": "short"
+    },
+    "1.8": {
+      "subject": "Occupation",
+      "kind": "short"
+    },
+    "1.9": {
+      "subject": "Place of birth (village, town, city, county, district, province, country)",
+      "kind": "short"
+    },
+    "1.10": {
+      "subject": "Registered address in home country (village, town, city, county, district, province, country)",
+      "kind": "short"
+    },
+    "1.11": {
+      "subject": "Religion and sect",
+      "kind": "short"
+    },
+    "1.12": {
+      "subject": "Race, ethnic or tribal group (인종, 종족, 민족)",
+      "kind": "short"
+    },
+    "1.13": {
+      "subject": "Mother tongue and language proficiency",
+      "kind": "short"
+    },
+    "1.14": {
+      "subject": "Interpreter needs and requested language",
+      "kind": "narrative"
+    },
+    "7.1": {
+      "subject": "Is military service compulsory or voluntary in your home country?",
+      "kind": "short"
+    },
+    "7.2": {
+      "subject": "Did you serve in the military?",
+      "kind": "short"
+    },
+    "7.3": {
+      "subject": "If yes, when did you serve?",
+      "kind": "short"
+    },
+    "7.4": {
+      "subject": "What country did you serve in? (include the specific location)",
+      "kind": "short"
+    },
+    "7.5": {
+      "subject": "In which military branch did you serve?",
+      "kind": "short"
+    },
+    "7.6": {
+      "subject": "Name of regiment (unit)",
+      "kind": "short"
+    },
+    "7.7": {
+      "subject": "Rank at the conclusion of service",
+      "kind": "short"
+    },
+    "7.8": {
+      "subject": "Reason for discharge",
+      "kind": "short"
+    },
+    "7.9": {
+      "subject": "Do you have combat experience?",
+      "kind": "narrative"
+    },
+    "9.1": {
+      "subject": "Do you currently possess your passport or travel document?",
+      "kind": "short"
+    },
+    "9.2": {
+      "subject": "By whom was it issued?",
+      "kind": "short"
+    },
+    "9.3": {
+      "subject": "Date of issuance (yyyy/mm/dd)",
+      "kind": "short"
+    },
+    "9.4": {
+      "subject": "Purpose of obtaining",
+      "kind": "short"
+    },
+    "9.5": {
+      "subject": "Is the passport or travel document genuine and legally obtained?",
+      "kind": "short"
+    },
+    "9.6": {
+      "subject": "Explain in detail where and how you obtained your passport or travel document.",
+      "kind": "narrative"
+    },
+    "9.7": {
+      "subject": "If the passport is not genuine or illegally obtained, please explain the reason in detail.",
+      "kind": "narrative"
+    },
+    "9.8": {
+      "subject": "If you do not currently have a passport or travel document, please explain the reason in detail.",
+      "kind": "narrative"
+    },
+    "9.9": {
+      "subject": "If you do not currently have a passport or travel document, can you have it issued?",
+      "kind": "short"
+    },
+    "9.10": {
+      "subject": "Travel document available for issuance",
+      "kind": "short"
+    },
+    "9.11": {
+      "subject": "If no, explain the reason in detail.",
+      "kind": "narrative"
+    },
+    "10.1": {
+      "subject": "Do you have a Korean visa?",
+      "kind": "short"
+    },
+    "10.2": {
+      "subject": "Which consulate/embassy did you apply at?",
+      "kind": "short"
+    },
+    "10.3": {
+      "subject": "Visa type",
+      "kind": "short"
+    },
+    "10.4": {
+      "subject": "Date of issuance",
+      "kind": "short"
+    },
+    "10.5": {
+      "subject": "Document(s) you submitted to apply for a Korean visa",
+      "kind": "narrative"
+    },
+    "10.6": {
+      "subject": "Did anyone help you obtain a Korean visa or enter Korea? If yes, please explain in detail.",
+      "kind": "narrative"
+    },
+    "10.7": {
+      "subject": "Date of the last entry into Korea (yyyy/mm/dd)",
+      "kind": "short"
+    },
+    "10.8": {
+      "subject": "Place of the last entry into Korea",
+      "kind": "short"
+    },
+    "10.9": {
+      "subject": "What was the purpose of visit to Korea when you first entered, or before applying for refugee status? (tourism, business, visiting, etc.)",
+      "kind": "narrative"
+    },
+    "10.10": {
+      "subject": "Did you go through immigration inspection at the time of entry into Korea?",
+      "kind": "narrative"
+    },
+    "10.11": {
+      "subject": "Did you present your passport issued with the above-mentioned personal information at the time of entry into Korea?",
+      "kind": "short"
+    },
+    "10.12": {
+      "subject": "Family name on passport",
+      "kind": "short"
+    },
+    "10.13": {
+      "subject": "Given name(s) on passport",
+      "kind": "short"
+    },
+    "10.14": {
+      "subject": "Date of birth on passport",
+      "kind": "short"
+    },
+    "10.15": {
+      "subject": "Nationality on passport",
+      "kind": "short"
+    },
+    "11.1": {
+      "subject": "Type of current visa",
+      "kind": "short"
+    },
+    "11.2": {
+      "subject": "Expiration date (yyyy/mm/dd)",
+      "kind": "short"
+    },
+    "11.3": {
+      "subject": "If you have ever committed a violation of the laws indicated below, check all the appropriate boxes.",
+      "kind": "narrative"
+    },
+    "11.4": {
+      "subject": "Address in Korea",
+      "kind": "short"
+    },
+    "11.5": {
+      "subject": "Contact information",
+      "kind": "short"
+    },
+    "11.6": {
+      "subject": "E-mail address",
+      "kind": "short"
+    },
+    "11.7": {
+      "subject": "If you have any of the following in Korea, check the boxes.",
+      "kind": "table"
+    },
+    "11.8": {
+      "subject": "Through which means are you financing your living expenses?",
+      "kind": "narrative"
+    },
+    "11.9": {
+      "subject": "How is your health condition at the moment?",
+      "kind": "narrative"
+    },
+    "11.10": {
+      "subject": "Do you need living expenses support from the Korean government?",
+      "kind": "narrative"
+    },
+    "12.1": {
+      "subject": "When did you last leave your home country? (yyyy/mm/dd)",
+      "kind": "short"
+    },
+    "12.2": {
+      "subject": "Place of departure (airport, port, or region)",
+      "kind": "short"
+    },
+    "12.3": {
+      "subject": "Means of transportation (airplane, ship, etc.)",
+      "kind": "short"
+    },
+    "12.4": {
+      "subject": "Reason(s) for departure",
+      "kind": "short"
+    },
+    "12.5": {
+      "subject": "Were you required to obtain an exit permit or exit visa from the authorities of your country?",
+      "kind": "short"
+    },
+    "12.6": {
+      "subject": "If yes, did you obtain it legally?",
+      "kind": "short"
+    },
+    "12.7": {
+      "subject": "If yes, when was it issued? (yyyy/mm/dd)",
+      "kind": "short"
+    },
+    "12.8": {
+      "subject": "If no, please explain why and how you left your country in detail.",
+      "kind": "narrative"
+    },
+    "12.9": {
+      "subject": "Have you traveled through any other countries before coming to the Republic of Korea?",
+      "kind": "table"
+    },
+    "12.10": {
+      "subject": "Have you ever been deported from, denied a visa, or refused entry to any country including the Republic of Korea?",
+      "kind": "table"
+    },
+    "14.1": {
+      "subject": "Stated reasons for seeking refugee status",
+      "kind": "narrative"
+    },
+    "14.2": {
+      "subject": "Past harm or threats personally experienced",
+      "kind": "narrative"
+    },
+    "14.3": {
+      "subject": "Feared harm upon return and uncertainty about future events",
+      "kind": "narrative"
+    },
+    "14.4": {
+      "subject": "Harm or threats concerning family or friends, including reported events",
+      "kind": "narrative"
+    },
+    "14.5": {
+      "subject": "Requests for protection from authorities or reasons for not requesting protection",
+      "kind": "narrative"
+    },
+    "14.6": {
+      "subject": "Relocation within the home country for safety",
+      "kind": "narrative"
+    },
+    "14.7": {
+      "subject": "Departure date",
+      "kind": "short"
+    },
+    "14.8": {
+      "subject": "Membership or participation in organizations",
+      "kind": "table"
+    },
+    "14.9": {
+      "subject": "Political activities",
+      "kind": "narrative"
+    },
+    "14.10": {
+      "subject": "Criminal proceedings or punishment",
+      "kind": "table"
+    },
+    "14.11": {
+      "subject": "Previous asylum applications, including to UNHCR",
+      "kind": "table"
+    },
+    "14.12": {
+      "subject": "Previously recognized refugee status in another country",
+      "kind": "narrative"
+    },
+    "14.13": {
+      "subject": "Whether children accompany the applicant",
+      "kind": "narrative"
+    },
+    "14.14": {
+      "subject": "Risks specific to accompanying children",
+      "kind": "narrative"
+    },
+    "14.15": {
+      "subject": "Contact with family remaining in the home country",
+      "kind": "narrative"
+    },
+    "14.16": {
+      "subject": "Supporting evidence and documents",
+      "kind": "table"
+    },
+    "14.17": {
+      "subject": "How the applicant learned about the application procedure",
+      "kind": "narrative"
+    },
+    "14.18": {
+      "subject": "Timing of application and reasons for delay",
+      "kind": "narrative"
+    },
+    "16.1": {
+      "subject": "I understand the questions and declare that the information is complete and true. I understand that false or misleading information may lead to refusal or cancellation.",
+      "kind": "short"
+    },
+    "16.2": {
+      "subject": "I agree to receive the result via e-mail or another information and communications network.",
+      "kind": "short"
+    },
+    "16.3": {
+      "subject": "The information is protected under the Personal Information Protection Act and, unless another statute provides otherwise, is used only for Refugee Act duties.",
+      "kind": "short"
+    }
+  }
+}

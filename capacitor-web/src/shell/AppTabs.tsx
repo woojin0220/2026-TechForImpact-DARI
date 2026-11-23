@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-import App from '../App';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import App from '../application/Application';
+import { sessionDraftRepository } from '../application/repository';
 import { TabBar } from './TabBar';
 import { ProcedureGuide } from '../procedure/ProcedureGuide';
 import { CommunityTab } from './CommunityTab';
@@ -26,6 +27,8 @@ function Shell() {
   const copy = tabsCopyFor(language);
   const accountCopy = accountCopyFor(language);
   const { state } = useAuth();
+  const userId=state.status==='signedIn'?state.session.user.id:null;
+  const draftRepository=useMemo(()=>sessionDraftRepository({userId}),[userId]);
   const canTest = canUseDevGuest(import.meta.env.DEV, state.status);
   const testing = canTest && testRequested;
   const testCopy = devGuestCopyFor(language);
@@ -61,7 +64,7 @@ function Shell() {
     {testing && <div className="dev-guest-banner" dir={['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'} role="status">
       <span>{testCopy.active}</span><button type="button" onClick={leaveTest}>{testCopy.exit}</button>
     </div>}
-    <div className="tab-panel" hidden={!showApp || profileOpen}><App gate={gate} headerAccessory={userButton} /></div>
+    <div className="tab-panel" hidden={!showApp || profileOpen}><App key={draftRepository.scope} repository={draftRepository} gate={gate} headerAccessory={userButton} /></div>
     {!signingIn && profileOpen && <div className="tab-panel"><ProfilePanel copy={accountCopy} language={language} onClose={() => setProfileOpen(false)} /></div>}
     {!signingIn && !profileOpen && tab === 'scheduler' && <div className="tab-panel"><ProcedureGuide language={language} onBack={returnToApplication} headerAccessory={userButton} /></div>}
     {!signingIn && !profileOpen && tab === 'community' && <div className="tab-panel"><CommunityTab copy={copy} language={language} onOpenProfile={openProfile} /></div>}

@@ -1,0 +1,1283 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "reply": {
+      "type": "string",
+      "minLength": 1
+    },
+    "facts": {
+      "type": "array",
+      "maxItems": 60,
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r",
+              "v",
+              "k",
+              "q",
+              "a"
+            ],
+            "properties": {
+              "r": {
+                "type": "string",
+                "enum": [
+                  "grounds.summary",
+                  "fear.harm",
+                  "fear.actor",
+                  "fear.reason"
+                ]
+              },
+              "v": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                ]
+              },
+              "s": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "u",
+                  "k",
+                  "n",
+                  "c"
+                ]
+              },
+              "a": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "subject": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "object": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "polarity": {
+                      "type": "string",
+                      "enum": [
+                        "positive",
+                        "negative",
+                        "unspecified"
+                      ]
+                    },
+                    "certainty": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "uncertain"
+                      ]
+                    },
+                    "knowledge": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "heard",
+                        "inferred",
+                        "unspecified"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "action",
+                    "object",
+                    "polarity",
+                    "certainty",
+                    "knowledge",
+                    "quote"
+                  ]
+                },
+                "minItems": 1
+              },
+              "u": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "grounds.summary",
+                    "harm",
+                    "harm.event",
+                    "harm.type",
+                    "harm.time",
+                    "harm.place",
+                    "harm.actor",
+                    "harm.reason",
+                    "fear",
+                    "fear.harm",
+                    "fear.actor",
+                    "fear.reason"
+                  ]
+                }
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  "e",
+                  "a",
+                  "u"
+                ]
+              },
+              "k": {
+                "type": "string",
+                "enum": [
+                  "d",
+                  "h",
+                  "i",
+                  "u"
+                ]
+              },
+              "q": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "2.1",
+                    "2.2",
+                    "2.3",
+                    "2.4"
+                  ]
+                }
+              },
+              "e": {
+                "type": "string",
+                "minLength": 1
+              },
+              "x": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r",
+              "v",
+              "k",
+              "q",
+              "a"
+            ],
+            "properties": {
+              "r": {
+                "type": "string",
+                "enum": [
+                  "harm",
+                  "fear"
+                ]
+              },
+              "v": {
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "no"
+                ]
+              },
+              "s": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "c"
+                ]
+              },
+              "a": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "subject": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "object": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "polarity": {
+                      "type": "string",
+                      "enum": [
+                        "positive",
+                        "negative",
+                        "unspecified"
+                      ]
+                    },
+                    "certainty": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "uncertain"
+                      ]
+                    },
+                    "knowledge": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "heard",
+                        "inferred",
+                        "unspecified"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "action",
+                    "object",
+                    "polarity",
+                    "certainty",
+                    "knowledge",
+                    "quote"
+                  ]
+                }
+              },
+              "u": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "grounds.summary",
+                    "harm",
+                    "harm.event",
+                    "harm.type",
+                    "harm.time",
+                    "harm.place",
+                    "harm.actor",
+                    "harm.reason",
+                    "fear",
+                    "fear.harm",
+                    "fear.actor",
+                    "fear.reason"
+                  ]
+                }
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  "e",
+                  "a",
+                  "u"
+                ]
+              },
+              "k": {
+                "type": "string",
+                "enum": [
+                  "d",
+                  "h",
+                  "i",
+                  "u"
+                ]
+              },
+              "q": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "2.1",
+                    "2.2",
+                    "2.3",
+                    "2.4"
+                  ]
+                }
+              },
+              "e": {
+                "type": "string",
+                "minLength": 1
+              },
+              "x": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r",
+              "v",
+              "k",
+              "q",
+              "a",
+              "s"
+            ],
+            "properties": {
+              "r": {
+                "type": "string",
+                "enum": [
+                  "harm",
+                  "fear"
+                ]
+              },
+              "v": {
+                "type": "string",
+                "minLength": 1
+              },
+              "s": {
+                "type": "string",
+                "enum": [
+                  "u",
+                  "k",
+                  "n"
+                ]
+              },
+              "a": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "subject": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "object": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "polarity": {
+                      "type": "string",
+                      "enum": [
+                        "positive",
+                        "negative",
+                        "unspecified"
+                      ]
+                    },
+                    "certainty": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "uncertain"
+                      ]
+                    },
+                    "knowledge": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "heard",
+                        "inferred",
+                        "unspecified"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "action",
+                    "object",
+                    "polarity",
+                    "certainty",
+                    "knowledge",
+                    "quote"
+                  ]
+                }
+              },
+              "u": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "grounds.summary",
+                    "harm",
+                    "harm.event",
+                    "harm.type",
+                    "harm.time",
+                    "harm.place",
+                    "harm.actor",
+                    "harm.reason",
+                    "fear",
+                    "fear.harm",
+                    "fear.actor",
+                    "fear.reason"
+                  ]
+                }
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  "e",
+                  "a",
+                  "u"
+                ]
+              },
+              "k": {
+                "type": "string",
+                "enum": [
+                  "d",
+                  "h",
+                  "i",
+                  "u"
+                ]
+              },
+              "q": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "2.1",
+                    "2.2",
+                    "2.3",
+                    "2.4"
+                  ]
+                }
+              },
+              "e": {
+                "type": "string",
+                "minLength": 1
+              },
+              "x": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r",
+              "v",
+              "k",
+              "q",
+              "e",
+              "a"
+            ],
+            "properties": {
+              "r": {
+                "type": "string",
+                "enum": [
+                  "harm.time",
+                  "harm.place"
+                ]
+              },
+              "v": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                ]
+              },
+              "s": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "u",
+                  "k",
+                  "n",
+                  "c"
+                ]
+              },
+              "a": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "subject": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "object": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "polarity": {
+                      "type": "string",
+                      "enum": [
+                        "positive",
+                        "negative",
+                        "unspecified"
+                      ]
+                    },
+                    "certainty": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "uncertain"
+                      ]
+                    },
+                    "knowledge": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "heard",
+                        "inferred",
+                        "unspecified"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "action",
+                    "object",
+                    "polarity",
+                    "certainty",
+                    "knowledge",
+                    "quote"
+                  ]
+                }
+              },
+              "u": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "grounds.summary",
+                    "harm",
+                    "harm.event",
+                    "harm.type",
+                    "harm.time",
+                    "harm.place",
+                    "harm.actor",
+                    "harm.reason",
+                    "fear",
+                    "fear.harm",
+                    "fear.actor",
+                    "fear.reason"
+                  ]
+                }
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  "e",
+                  "a",
+                  "u"
+                ]
+              },
+              "k": {
+                "type": "string",
+                "enum": [
+                  "d",
+                  "h",
+                  "i",
+                  "u"
+                ]
+              },
+              "q": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "2.1",
+                    "2.2",
+                    "2.3",
+                    "2.4"
+                  ]
+                }
+              },
+              "e": {
+                "type": "string",
+                "minLength": 1
+              },
+              "x": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r",
+              "v",
+              "k",
+              "q",
+              "e",
+              "a"
+            ],
+            "properties": {
+              "r": {
+                "type": "string",
+                "enum": [
+                  "harm.event",
+                  "harm.actor",
+                  "harm.reason"
+                ]
+              },
+              "v": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                ]
+              },
+              "s": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "u",
+                  "k",
+                  "n",
+                  "c"
+                ]
+              },
+              "a": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "subject": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "object": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "polarity": {
+                      "type": "string",
+                      "enum": [
+                        "positive",
+                        "negative",
+                        "unspecified"
+                      ]
+                    },
+                    "certainty": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "uncertain"
+                      ]
+                    },
+                    "knowledge": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "heard",
+                        "inferred",
+                        "unspecified"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "action",
+                    "object",
+                    "polarity",
+                    "certainty",
+                    "knowledge",
+                    "quote"
+                  ]
+                },
+                "minItems": 1
+              },
+              "u": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "grounds.summary",
+                    "harm",
+                    "harm.event",
+                    "harm.type",
+                    "harm.time",
+                    "harm.place",
+                    "harm.actor",
+                    "harm.reason",
+                    "fear",
+                    "fear.harm",
+                    "fear.actor",
+                    "fear.reason"
+                  ]
+                }
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  "e",
+                  "a",
+                  "u"
+                ]
+              },
+              "k": {
+                "type": "string",
+                "enum": [
+                  "d",
+                  "h",
+                  "i",
+                  "u"
+                ]
+              },
+              "q": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "2.1",
+                    "2.2",
+                    "2.3",
+                    "2.4"
+                  ]
+                }
+              },
+              "e": {
+                "type": "string",
+                "minLength": 1
+              },
+              "x": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r",
+              "v",
+              "k",
+              "q",
+              "e",
+              "a"
+            ],
+            "properties": {
+              "r": {
+                "type": "string",
+                "enum": [
+                  "harm.type"
+                ]
+              },
+              "v": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "questioning",
+                      "threat",
+                      "assault",
+                      "arrest",
+                      "detention",
+                      "other"
+                    ]
+                  },
+                  {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "questioning",
+                        "threat",
+                        "assault",
+                        "arrest",
+                        "detention",
+                        "other"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "s": {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "c"
+                ]
+              },
+              "a": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "subject": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "object": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "polarity": {
+                      "type": "string",
+                      "enum": [
+                        "positive",
+                        "negative",
+                        "unspecified"
+                      ]
+                    },
+                    "certainty": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "uncertain"
+                      ]
+                    },
+                    "knowledge": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "heard",
+                        "inferred",
+                        "unspecified"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "action",
+                    "object",
+                    "polarity",
+                    "certainty",
+                    "knowledge",
+                    "quote"
+                  ]
+                }
+              },
+              "u": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "grounds.summary",
+                    "harm",
+                    "harm.event",
+                    "harm.type",
+                    "harm.time",
+                    "harm.place",
+                    "harm.actor",
+                    "harm.reason",
+                    "fear",
+                    "fear.harm",
+                    "fear.actor",
+                    "fear.reason"
+                  ]
+                }
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  "e",
+                  "a",
+                  "u"
+                ]
+              },
+              "k": {
+                "type": "string",
+                "enum": [
+                  "d",
+                  "h",
+                  "i",
+                  "u"
+                ]
+              },
+              "q": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "2.1",
+                    "2.2",
+                    "2.3",
+                    "2.4"
+                  ]
+                }
+              },
+              "e": {
+                "type": "string",
+                "minLength": 1
+              },
+              "x": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "r",
+              "v",
+              "k",
+              "q",
+              "e",
+              "a",
+              "s"
+            ],
+            "properties": {
+              "r": {
+                "type": "string",
+                "enum": [
+                  "harm.type"
+                ]
+              },
+              "v": {
+                "type": "string",
+                "minLength": 1
+              },
+              "s": {
+                "type": "string",
+                "enum": [
+                  "u",
+                  "k",
+                  "n"
+                ]
+              },
+              "a": {
+                "type": "array",
+                "maxItems": 16,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "subject": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "action": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "object": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "polarity": {
+                      "type": "string",
+                      "enum": [
+                        "positive",
+                        "negative",
+                        "unspecified"
+                      ]
+                    },
+                    "certainty": {
+                      "type": "string",
+                      "enum": [
+                        "exact",
+                        "approximate",
+                        "uncertain"
+                      ]
+                    },
+                    "knowledge": {
+                      "type": "string",
+                      "enum": [
+                        "direct",
+                        "heard",
+                        "inferred",
+                        "unspecified"
+                      ]
+                    },
+                    "quote": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "subject",
+                    "action",
+                    "object",
+                    "polarity",
+                    "certainty",
+                    "knowledge",
+                    "quote"
+                  ]
+                }
+              },
+              "u": {
+                "type": "array",
+                "maxItems": 8,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "grounds.summary",
+                    "harm",
+                    "harm.event",
+                    "harm.type",
+                    "harm.time",
+                    "harm.place",
+                    "harm.actor",
+                    "harm.reason",
+                    "fear",
+                    "fear.harm",
+                    "fear.actor",
+                    "fear.reason"
+                  ]
+                }
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  "e",
+                  "a",
+                  "u"
+                ]
+              },
+              "k": {
+                "type": "string",
+                "enum": [
+                  "d",
+                  "h",
+                  "i",
+                  "u"
+                ]
+              },
+              "q": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "2.1",
+                    "2.2",
+                    "2.3",
+                    "2.4"
+                  ]
+                }
+              },
+              "e": {
+                "type": "string",
+                "minLength": 1
+              },
+              "x": {
+                "type": "array",
+                "maxItems": 0,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "reply",
+    "facts"
+  ]
+}

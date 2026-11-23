@@ -1,0 +1,5246 @@
+{
+  "model": "urchade/gliner_multi_pii-v1",
+  "revision": "1fcf13e85f4eef5394e1fcd406cf2ca9ea82351d",
+  "device": "cpu",
+  "threads": 4,
+  "platform": "macOS-15.7-arm64-arm-64bit",
+  "python": "3.11.15",
+  "repeat": 2,
+  "fixture_sha256": "328a4f403737739f0e9fac11d998a3f93326c63e75f1b3f1ade63bb1d0186186",
+  "limitations": [
+    "42 short invented examples; not representative or native-reviewed",
+    "CPU screen on one Mac; not a mobile benchmark",
+    "Identifier comparison uses model-specific label names for the same six concepts",
+    "Sensitive track is an extra zero-shot probe, not part of identifier scores",
+    "Whitespace ignored in coverage metrics; each occurrence counted separately"
+  ],
+  "rows": [
+    {
+      "id": "ko-1",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "제 이름은 김하린입니다. 이메일은 harin.kim@example.org이고 전화번호는 010-4827-1936입니다.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 9,
+          "label": "person"
+        },
+        {
+          "start": 19,
+          "end": 40,
+          "label": "email"
+        },
+        {
+          "start": 49,
+          "end": 62,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 6,
+          "end": 12,
+          "label": "person",
+          "text": "김하린입니다",
+          "score": 0.9938443899154663
+        },
+        {
+          "start": 19,
+          "end": 42,
+          "label": "email",
+          "text": "harin.kim@example.org이고",
+          "score": 0.9989069700241089
+        },
+        {
+          "start": 49,
+          "end": 65,
+          "label": "phone number",
+          "text": "010-4827-1936입니다",
+          "score": 0.998658299446106
+        }
+      ],
+      "latency_ms": [
+        82.47716596815735,
+        79.39233304932714
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 37,
+        "fp": 8,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-2",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "제 생년월일은 1991년 8월 17일이고 여권번호는 M73829164입니다.",
+      "gold": [
+        {
+          "start": 8,
+          "end": 20,
+          "label": "dob"
+        },
+        {
+          "start": 29,
+          "end": 38,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 8,
+          "end": 22,
+          "label": "date of birth",
+          "text": "1991년 8월 17일이고",
+          "score": 0.9019913673400879
+        },
+        {
+          "start": 29,
+          "end": 41,
+          "label": "passport number",
+          "text": "M73829164입니다",
+          "score": 0.8164808750152588
+        }
+      ],
+      "latency_ms": [
+        65.08091697469354,
+        71.53254200238734
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 19,
+        "fp": 5,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-3",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "저는 서울시 가상구 새봄로 27번길 14, 302호에 살고 있습니다. 제 형 김도윤은 다른 곳에 삽니다.",
+      "gold": [
+        {
+          "start": 3,
+          "end": 28,
+          "label": "address"
+        },
+        {
+          "start": 43,
+          "end": 46,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "저는",
+          "score": 0.4439567029476166
+        },
+        {
+          "start": 3,
+          "end": 29,
+          "label": "address",
+          "text": "서울시 가상구 새봄로 27번길 14, 302호에",
+          "score": 0.9082106947898865
+        },
+        {
+          "start": 43,
+          "end": 47,
+          "label": "person",
+          "text": "김도윤은",
+          "score": 0.9614559412002563
+        }
+      ],
+      "latency_ms": [
+        67.43229099083692,
+        77.06991594750434
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 23,
+        "fp": 4,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-4",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "2024년 3월 12일 경찰이 집에 왔습니다. 저는 체포되거나 구금되지 않았고, 정확한 시간은 기억나지 않습니다.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 17,
+          "end": 19,
+          "label": "address",
+          "text": "집에",
+          "score": 0.4723481833934784
+        },
+        {
+          "start": 26,
+          "end": 28,
+          "label": "person",
+          "text": "저는",
+          "score": 0.8446425199508667
+        }
+      ],
+      "latency_ms": [
+        66.61491701379418,
+        67.60645902249962
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 4,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "ko-5",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "레일라 누리가 저를 도왔습니다. 다음 날 레일라 누리에게 전화했습니다. 친구 사미르 하산도 함께 있었습니다.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 6,
+          "label": "person"
+        },
+        {
+          "start": 23,
+          "end": 29,
+          "label": "person"
+        },
+        {
+          "start": 43,
+          "end": 49,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 7,
+          "label": "person",
+          "text": "레일라 누리가",
+          "score": 0.9980806112289429
+        },
+        {
+          "start": 23,
+          "end": 31,
+          "label": "person",
+          "text": "레일라 누리에게",
+          "score": 0.9978943467140198
+        },
+        {
+          "start": 43,
+          "end": 50,
+          "label": "person",
+          "text": "사미르 하산도",
+          "score": 0.9451952576637268
+        }
+      ],
+      "latency_ms": [
+        78.83412495721132,
+        69.68241592403501
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 15,
+        "fp": 4,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-6",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "박서윤의 연락처가 바뀌었습니다. 이전 이메일 old.seoyun@example.org 대신 new.seoyun@example.org를 사용합니다.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 3,
+          "label": "person"
+        },
+        {
+          "start": 25,
+          "end": 47,
+          "label": "email"
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 4,
+          "label": "person",
+          "text": "박서윤의",
+          "score": 0.9938177466392517
+        },
+        {
+          "start": 25,
+          "end": 47,
+          "label": "email",
+          "text": "old.seoyun@example.org",
+          "score": 0.9990715980529785
+        },
+        {
+          "start": 51,
+          "end": 74,
+          "label": "email",
+          "text": "new.seoyun@example.org를",
+          "score": 0.9936608076095581
+        }
+      ],
+      "latency_ms": [
+        83.40441598556936,
+        79.76029196288437
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 47,
+        "fp": 2,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-7",
+      "language": "ko",
+      "track": "sensitive",
+      "text": "저는 기독교로 개종했습니다. 새빛당에서 활동했고 외상 후 스트레스 장애 진단을 받았습니다.",
+      "gold": [
+        {
+          "start": 3,
+          "end": 6,
+          "label": "religion"
+        },
+        {
+          "start": 16,
+          "end": 19,
+          "label": "political"
+        },
+        {
+          "start": 27,
+          "end": 39,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "저는",
+          "score": 0.37256699800491333
+        },
+        {
+          "start": 3,
+          "end": 7,
+          "label": "religion",
+          "text": "기독교로",
+          "score": 0.9958494901657104
+        },
+        {
+          "start": 32,
+          "end": 39,
+          "label": "medical condition",
+          "text": "스트레스 장애",
+          "score": 0.9135206341743469
+        }
+      ],
+      "latency_ms": [
+        67.37541605252773,
+        67.9233749397099
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 9,
+        "fp": 1,
+        "fn": 6,
+        "covered_entities": 1,
+        "entities": 3,
+        "leak_free": false,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "id": "en-1",
+      "language": "en",
+      "track": "identifiers",
+      "text": "My name is Leila Nouri. My email is leila.nouri@example.org and my phone number is +44 7700 900123.",
+      "gold": [
+        {
+          "start": 11,
+          "end": 22,
+          "label": "person"
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email"
+        },
+        {
+          "start": 83,
+          "end": 98,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 11,
+          "end": 22,
+          "label": "person",
+          "text": "Leila Nouri",
+          "score": 0.9998443126678467
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9997528195381165
+        },
+        {
+          "start": 83,
+          "end": 98,
+          "label": "phone number",
+          "text": "+44 7700 900123",
+          "score": 0.9997554421424866
+        }
+      ],
+      "latency_ms": [
+        70.25874999817461,
+        79.24583298154175
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 46,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-2",
+      "language": "en",
+      "track": "identifiers",
+      "text": "My date of birth is 17 August 1991 and my passport number is P73829164.",
+      "gold": [
+        {
+          "start": 20,
+          "end": 34,
+          "label": "dob"
+        },
+        {
+          "start": 61,
+          "end": 70,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 20,
+          "end": 34,
+          "label": "date of birth",
+          "text": "17 August 1991",
+          "score": 0.998009979724884
+        },
+        {
+          "start": 61,
+          "end": 70,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9997747540473938
+        }
+      ],
+      "latency_ms": [
+        75.10200003162026,
+        61.913957935757935
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 21,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-3",
+      "language": "en",
+      "track": "identifiers",
+      "text": "I live at 14 Willow Lane, Flat 302, London. My brother Samir Hassan lives elsewhere.",
+      "gold": [
+        {
+          "start": 10,
+          "end": 42,
+          "label": "address"
+        },
+        {
+          "start": 55,
+          "end": 67,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 1,
+          "label": "person",
+          "text": "I",
+          "score": 0.4823187291622162
+        },
+        {
+          "start": 10,
+          "end": 42,
+          "label": "address",
+          "text": "14 Willow Lane, Flat 302, London",
+          "score": 0.9933679699897766
+        },
+        {
+          "start": 55,
+          "end": 67,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9794008135795593
+        }
+      ],
+      "latency_ms": [
+        66.78733299486339,
+        63.56262497138232
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 38,
+        "fp": 1,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-4",
+      "language": "en",
+      "track": "identifiers",
+      "text": "On 12 March 2024 the police came to my home. I was not arrested or detained, and I do not remember the exact time.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 36,
+          "end": 43,
+          "label": "address",
+          "text": "my home",
+          "score": 0.7738098502159119
+        },
+        {
+          "start": 45,
+          "end": 46,
+          "label": "person",
+          "text": "I",
+          "score": 0.9893020987510681
+        },
+        {
+          "start": 81,
+          "end": 82,
+          "label": "person",
+          "text": "I",
+          "score": 0.9935769438743591
+        }
+      ],
+      "latency_ms": [
+        77.05258403439075,
+        68.58958397060633
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 8,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "en-5",
+      "language": "en",
+      "track": "identifiers",
+      "text": "Leila Nouri helped me. The next day I called Leila Nouri. My friend Samir Hassan was also there.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person"
+        },
+        {
+          "start": 45,
+          "end": 56,
+          "label": "person"
+        },
+        {
+          "start": 68,
+          "end": 80,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person",
+          "text": "Leila Nouri",
+          "score": 0.9993782043457031
+        },
+        {
+          "start": 45,
+          "end": 56,
+          "label": "person",
+          "text": "Leila Nouri",
+          "score": 0.9995612502098083
+        },
+        {
+          "start": 68,
+          "end": 80,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9594030976295471
+        }
+      ],
+      "latency_ms": [
+        66.6341659380123,
+        75.2359579782933
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-6",
+      "language": "en",
+      "track": "identifiers",
+      "text": "Mariam Farah changed her contact details. She now uses new.mariam@example.org instead of old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person"
+        },
+        {
+          "start": 55,
+          "end": 77,
+          "label": "email"
+        },
+        {
+          "start": 89,
+          "end": 111,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person",
+          "text": "Mariam Farah",
+          "score": 0.9998273849487305
+        },
+        {
+          "start": 55,
+          "end": 77,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9788534641265869
+        },
+        {
+          "start": 89,
+          "end": 111,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9869193434715271
+        }
+      ],
+      "latency_ms": [
+        72.4622500129044,
+        68.8500830437988
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 55,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-7",
+      "language": "en",
+      "track": "sensitive",
+      "text": "I converted to Christianity. I was active in the New Dawn Party and was diagnosed with post-traumatic stress disorder.",
+      "gold": [
+        {
+          "start": 15,
+          "end": 27,
+          "label": "religion"
+        },
+        {
+          "start": 49,
+          "end": 63,
+          "label": "political"
+        },
+        {
+          "start": 87,
+          "end": 117,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 1,
+          "label": "person",
+          "text": "I",
+          "score": 0.9698247909545898
+        },
+        {
+          "start": 15,
+          "end": 27,
+          "label": "religion",
+          "text": "Christianity",
+          "score": 0.9961926937103271
+        },
+        {
+          "start": 29,
+          "end": 30,
+          "label": "person",
+          "text": "I",
+          "score": 0.9743955135345459
+        },
+        {
+          "start": 49,
+          "end": 63,
+          "label": "political party",
+          "text": "New Dawn Party",
+          "score": 0.9896859526634216
+        },
+        {
+          "start": 87,
+          "end": 117,
+          "label": "medical condition",
+          "text": "post-traumatic stress disorder",
+          "score": 0.9951151609420776
+        }
+      ],
+      "latency_ms": [
+        76.55070803593844,
+        68.69516696315259
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 52,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-1",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Je m'appelle Leïla Nouri. Mon adresse électronique est leila.nouri@example.org et mon numéro de téléphone est +33 6 12 34 56 78.",
+      "gold": [
+        {
+          "start": 13,
+          "end": 24,
+          "label": "person"
+        },
+        {
+          "start": 55,
+          "end": 78,
+          "label": "email"
+        },
+        {
+          "start": 110,
+          "end": 127,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 13,
+          "end": 24,
+          "label": "person",
+          "text": "Leïla Nouri",
+          "score": 0.9998337030410767
+        },
+        {
+          "start": 55,
+          "end": 78,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9999152421951294
+        },
+        {
+          "start": 110,
+          "end": 127,
+          "label": "phone number",
+          "text": "+33 6 12 34 56 78",
+          "score": 0.9997931122779846
+        }
+      ],
+      "latency_ms": [
+        78.87033291626722,
+        79.77016689255834
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 45,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-2",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Ma date de naissance est le 17 août 1991 et mon numéro de passeport est P73829164.",
+      "gold": [
+        {
+          "start": 28,
+          "end": 40,
+          "label": "dob"
+        },
+        {
+          "start": 72,
+          "end": 81,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 28,
+          "end": 40,
+          "label": "date of birth",
+          "text": "17 août 1991",
+          "score": 0.9951158761978149
+        },
+        {
+          "start": 72,
+          "end": 81,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9997475743293762
+        }
+      ],
+      "latency_ms": [
+        65.4109159950167,
+        62.8182910149917
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 19,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-3",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "J'habite au 14 rue des Saules, appartement 302, Lyon. Mon frère Samir Hassan habite ailleurs.",
+      "gold": [
+        {
+          "start": 12,
+          "end": 52,
+          "label": "address"
+        },
+        {
+          "start": 64,
+          "end": 76,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 12,
+          "end": 52,
+          "label": "address",
+          "text": "14 rue des Saules, appartement 302, Lyon",
+          "score": 0.9911479949951172
+        },
+        {
+          "start": 64,
+          "end": 76,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9844784736633301
+        }
+      ],
+      "latency_ms": [
+        78.76895798835903,
+        72.8718750178814
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 45,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-4",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Le 12 mars 2024, la police est venue chez moi. Je n'ai été ni arrêté ni détenu et je ne me souviens pas de l'heure exacte.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 42,
+          "end": 45,
+          "label": "person",
+          "text": "moi",
+          "score": 0.6887490749359131
+        },
+        {
+          "start": 47,
+          "end": 49,
+          "label": "person",
+          "text": "Je",
+          "score": 0.9594524502754211
+        },
+        {
+          "start": 82,
+          "end": 84,
+          "label": "person",
+          "text": "je",
+          "score": 0.9590699672698975
+        }
+      ],
+      "latency_ms": [
+        81.86470903456211,
+        82.08583400119096
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 7,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "fr-5",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Leïla Nouri m'a aidé. Le lendemain, j'ai appelé Leïla Nouri. Mon ami Samir Hassan était aussi présent.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person"
+        },
+        {
+          "start": 48,
+          "end": 59,
+          "label": "person"
+        },
+        {
+          "start": 69,
+          "end": 81,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person",
+          "text": "Leïla Nouri",
+          "score": 0.9993016719818115
+        },
+        {
+          "start": 48,
+          "end": 59,
+          "label": "person",
+          "text": "Leïla Nouri",
+          "score": 0.9987936019897461
+        },
+        {
+          "start": 69,
+          "end": 81,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9645016193389893
+        }
+      ],
+      "latency_ms": [
+        79.74600000306964,
+        83.07174989022315
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-6",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Mariam Farah a changé de coordonnées. Elle utilise new.mariam@example.org au lieu de old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person"
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "email"
+        },
+        {
+          "start": 85,
+          "end": 107,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person",
+          "text": "Mariam Farah",
+          "score": 0.999864935874939
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9951326251029968
+        },
+        {
+          "start": 85,
+          "end": 107,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9948384165763855
+        }
+      ],
+      "latency_ms": [
+        68.66691599134356,
+        80.08849993348122
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 55,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-7",
+      "language": "fr",
+      "track": "sensitive",
+      "text": "Je me suis converti au christianisme. Je militais au Parti de l'Aube Nouvelle et on m'a diagnostiqué un trouble de stress post-traumatique.",
+      "gold": [
+        {
+          "start": 23,
+          "end": 36,
+          "label": "religion"
+        },
+        {
+          "start": 53,
+          "end": 77,
+          "label": "political"
+        },
+        {
+          "start": 104,
+          "end": 138,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "Je",
+          "score": 0.6668948531150818
+        },
+        {
+          "start": 23,
+          "end": 36,
+          "label": "religion",
+          "text": "christianisme",
+          "score": 0.9962899684906006
+        },
+        {
+          "start": 38,
+          "end": 40,
+          "label": "person",
+          "text": "Je",
+          "score": 0.8006212711334229
+        },
+        {
+          "start": 53,
+          "end": 77,
+          "label": "political party",
+          "text": "Parti de l'Aube Nouvelle",
+          "score": 0.9897819757461548
+        },
+        {
+          "start": 104,
+          "end": 138,
+          "label": "medical condition",
+          "text": "trouble de stress post-traumatique",
+          "score": 0.9319973587989807
+        }
+      ],
+      "latency_ms": [
+        83.17220793105662,
+        84.79537500534207
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 65,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-1",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Меня зовут Лейла Нури. Моя электронная почта — leila.nouri@example.org, а номер телефона — +7 912 345-67-89.",
+      "gold": [
+        {
+          "start": 11,
+          "end": 21,
+          "label": "person"
+        },
+        {
+          "start": 47,
+          "end": 70,
+          "label": "email"
+        },
+        {
+          "start": 91,
+          "end": 107,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 11,
+          "end": 21,
+          "label": "person",
+          "text": "Лейла Нури",
+          "score": 0.9997960925102234
+        },
+        {
+          "start": 47,
+          "end": 70,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9998894929885864
+        },
+        {
+          "start": 91,
+          "end": 107,
+          "label": "phone number",
+          "text": "+7 912 345-67-89",
+          "score": 0.9996659755706787
+        }
+      ],
+      "latency_ms": [
+        84.25479207653552,
+        81.13916695583612
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 46,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-2",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+      "gold": [
+        {
+          "start": 20,
+          "end": 40,
+          "label": "dob"
+        },
+        {
+          "start": 59,
+          "end": 68,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 20,
+          "end": 35,
+          "label": "date of birth",
+          "text": "17 августа 1991",
+          "score": 0.925738513469696
+        },
+        {
+          "start": 59,
+          "end": 68,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.999777615070343
+        }
+      ],
+      "latency_ms": [
+        64.05370810534805,
+        65.34920807462186
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 22,
+        "fp": 0,
+        "fn": 4,
+        "covered_entities": 1,
+        "entities": 2,
+        "leak_free": false,
+        "exact_mask": false,
+        "fully_covered": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-3",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Я живу по адресу: Москва, улица Ивовая, дом 14, квартира 302. Мой брат Самир Хасан живёт в другом месте.",
+      "gold": [
+        {
+          "start": 18,
+          "end": 60,
+          "label": "address"
+        },
+        {
+          "start": 71,
+          "end": 82,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 1,
+          "label": "person",
+          "text": "Я",
+          "score": 0.4245460033416748
+        },
+        {
+          "start": 18,
+          "end": 60,
+          "label": "address",
+          "text": "Москва, улица Ивовая, дом 14, квартира 302",
+          "score": 0.9621085524559021
+        },
+        {
+          "start": 71,
+          "end": 82,
+          "label": "person",
+          "text": "Самир Хасан",
+          "score": 0.9802937507629395
+        }
+      ],
+      "latency_ms": [
+        73.52537498809397,
+        80.01708402298391
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 46,
+        "fp": 1,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-4",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "12 марта 2024 года полиция пришла ко мне домой. Меня не арестовывали и не задерживали, а точного времени я не помню.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 37,
+          "end": 40,
+          "label": "person",
+          "text": "мне",
+          "score": 0.716722846031189
+        },
+        {
+          "start": 48,
+          "end": 52,
+          "label": "person",
+          "text": "Меня",
+          "score": 0.9279522895812988
+        },
+        {
+          "start": 105,
+          "end": 106,
+          "label": "person",
+          "text": "я",
+          "score": 0.8433945775032043
+        }
+      ],
+      "latency_ms": [
+        70.75529196299613,
+        79.0162089979276
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 8,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "ru-5",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Лейла Нури помогла мне. На следующий день я позвонил ей; Лейла Нури ответила. Мой друг Самир Хасан тоже был там.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 10,
+          "label": "person"
+        },
+        {
+          "start": 57,
+          "end": 67,
+          "label": "person"
+        },
+        {
+          "start": 87,
+          "end": 98,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 10,
+          "label": "person",
+          "text": "Лейла Нури",
+          "score": 0.9990241527557373
+        },
+        {
+          "start": 57,
+          "end": 67,
+          "label": "person",
+          "text": "Лейла Нури",
+          "score": 0.9993232488632202
+        },
+        {
+          "start": 87,
+          "end": 98,
+          "label": "person",
+          "text": "Самир Хасан",
+          "score": 0.9680526256561279
+        }
+      ],
+      "latency_ms": [
+        70.74154203291982,
+        81.87091595027596
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 28,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-6",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Мариам Фарах сменила контакты. Теперь она использует new.mariam@example.org вместо old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person"
+        },
+        {
+          "start": 53,
+          "end": 75,
+          "label": "email"
+        },
+        {
+          "start": 83,
+          "end": 105,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person",
+          "text": "Мариам Фарах",
+          "score": 0.9994725584983826
+        },
+        {
+          "start": 53,
+          "end": 75,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9928474426269531
+        },
+        {
+          "start": 83,
+          "end": 105,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9877079725265503
+        }
+      ],
+      "latency_ms": [
+        71.18512492161244,
+        80.83758305292577
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 55,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-7",
+      "language": "ru",
+      "track": "sensitive",
+      "text": "Я принял христианство. Я участвовал в деятельности Партии нового рассвета, и у меня диагностировали посттравматическое стрессовое расстройство.",
+      "gold": [
+        {
+          "start": 9,
+          "end": 21,
+          "label": "religion"
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "political"
+        },
+        {
+          "start": 100,
+          "end": 142,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 1,
+          "label": "person",
+          "text": "Я",
+          "score": 0.9682484269142151
+        },
+        {
+          "start": 9,
+          "end": 21,
+          "label": "religion",
+          "text": "христианство",
+          "score": 0.9918397665023804
+        },
+        {
+          "start": 23,
+          "end": 24,
+          "label": "person",
+          "text": "Я",
+          "score": 0.9505674839019775
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "political party",
+          "text": "Партии нового рассвета",
+          "score": 0.9771600365638733
+        },
+        {
+          "start": 100,
+          "end": 142,
+          "label": "medical condition",
+          "text": "посттравматическое стрессовое расстройство",
+          "score": 0.975366473197937
+        }
+      ],
+      "latency_ms": [
+        79.32499994058162,
+        82.87829195614904
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 72,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-1",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "اسمي ليلى نوري. بريدي الإلكتروني هو leila.nouri@example.org ورقم هاتفي هو +962 7 9000 1234.",
+      "gold": [
+        {
+          "start": 5,
+          "end": 14,
+          "label": "person"
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email"
+        },
+        {
+          "start": 74,
+          "end": 90,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 5,
+          "end": 14,
+          "label": "person",
+          "text": "ليلى نوري",
+          "score": 0.9992302656173706
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9996649026870728
+        },
+        {
+          "start": 74,
+          "end": 90,
+          "label": "phone number",
+          "text": "+962 7 9000 1234",
+          "score": 0.9998074173927307
+        }
+      ],
+      "latency_ms": [
+        70.40824997238815,
+        78.10766610782593
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 44,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-2",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "تاريخ ميلادي هو ١٧ أغسطس ١٩٩١ ورقم جواز سفري هو P73829164.",
+      "gold": [
+        {
+          "start": 16,
+          "end": 29,
+          "label": "dob"
+        },
+        {
+          "start": 48,
+          "end": 57,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 16,
+          "end": 29,
+          "label": "date of birth",
+          "text": "١٧ أغسطس ١٩٩١",
+          "score": 0.981177806854248
+        },
+        {
+          "start": 48,
+          "end": 57,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9971611499786377
+        }
+      ],
+      "latency_ms": [
+        65.15695806592703,
+        64.47737501002848
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 20,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-3",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "أسكن في عمّان، شارع الصفصاف ١٤، شقة ٣٠٢. أخي سمير حسن يسكن في مكان آخر.",
+      "gold": [
+        {
+          "start": 8,
+          "end": 39,
+          "label": "address"
+        },
+        {
+          "start": 45,
+          "end": 53,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 8,
+          "end": 39,
+          "label": "address",
+          "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢",
+          "score": 0.6726725697517395
+        },
+        {
+          "start": 45,
+          "end": 53,
+          "label": "person",
+          "text": "سمير حسن",
+          "score": 0.9615918397903442
+        }
+      ],
+      "latency_ms": [
+        69.003792013973,
+        78.74195789918303
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 33,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-4",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "في ١٢ مارس ٢٠٢٤ جاءت الشرطة إلى منزلي. لم يتم اعتقالي أو احتجازي ولا أتذكر الوقت بالتحديد.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 3,
+          "end": 15,
+          "label": "date of birth",
+          "text": "١٢ مارس ٢٠٢٤",
+          "score": 0.6657816171646118
+        },
+        {
+          "start": 32,
+          "end": 37,
+          "label": "address",
+          "text": "منزلي",
+          "score": 0.8064520955085754
+        }
+      ],
+      "latency_ms": [
+        74.16087505407631,
+        74.46020795032382
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 15,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "ar-5",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "ساعدتني ليلى نوري. في اليوم التالي اتصلت بها وأجابت ليلى نوري. كان صديقي سمير حسن هناك أيضاً.",
+      "gold": [
+        {
+          "start": 8,
+          "end": 17,
+          "label": "person"
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person"
+        },
+        {
+          "start": 73,
+          "end": 81,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 8,
+          "end": 17,
+          "label": "person",
+          "text": "ليلى نوري",
+          "score": 0.9990084767341614
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person",
+          "text": "ليلى نوري",
+          "score": 0.9987861514091492
+        },
+        {
+          "start": 73,
+          "end": 81,
+          "label": "person",
+          "text": "سمير حسن",
+          "score": 0.9851062297821045
+        }
+      ],
+      "latency_ms": [
+        80.2154999691993,
+        82.10358291398734
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 23,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-6",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "غيّرت مريم فرح بيانات الاتصال بها. تستخدم الآن new.mariam@example.org بدلاً من old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 14,
+          "label": "person"
+        },
+        {
+          "start": 47,
+          "end": 69,
+          "label": "email"
+        },
+        {
+          "start": 79,
+          "end": 101,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 6,
+          "end": 14,
+          "label": "person",
+          "text": "مريم فرح",
+          "score": 0.992287278175354
+        },
+        {
+          "start": 47,
+          "end": 69,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9890052676200867
+        },
+        {
+          "start": 79,
+          "end": 101,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9934564232826233
+        }
+      ],
+      "latency_ms": [
+        82.98145805019885,
+        82.97949994448572
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 51,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-7",
+      "language": "ar",
+      "track": "sensitive",
+      "text": "اعتنقت المسيحية. كنت ناشطاً في حزب الفجر الجديد وتم تشخيصي بمرض اضطراب ما بعد الصدمة.",
+      "gold": [
+        {
+          "start": 7,
+          "end": 15,
+          "label": "religion"
+        },
+        {
+          "start": 31,
+          "end": 47,
+          "label": "political"
+        },
+        {
+          "start": 64,
+          "end": 84,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 7,
+          "end": 15,
+          "label": "religion",
+          "text": "المسيحية",
+          "score": 0.9923589825630188
+        },
+        {
+          "start": 31,
+          "end": 47,
+          "label": "political party",
+          "text": "حزب الفجر الجديد",
+          "score": 0.9702836871147156
+        },
+        {
+          "start": 64,
+          "end": 84,
+          "label": "medical condition",
+          "text": "اضطراب ما بعد الصدمة",
+          "score": 0.9414202570915222
+        }
+      ],
+      "latency_ms": [
+        83.42883409932256,
+        82.46341603808105
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 39,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-1",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "نام من لیلا نوری است. ایمیل من leila.nouri@example.org و شماره تلفن من +98 912 345 6789 است.",
+      "gold": [
+        {
+          "start": 7,
+          "end": 16,
+          "label": "person"
+        },
+        {
+          "start": 31,
+          "end": 54,
+          "label": "email"
+        },
+        {
+          "start": 71,
+          "end": 87,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 7,
+          "end": 16,
+          "label": "person",
+          "text": "لیلا نوری",
+          "score": 0.9979846477508545
+        },
+        {
+          "start": 31,
+          "end": 54,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9995019435882568
+        },
+        {
+          "start": 71,
+          "end": 87,
+          "label": "phone number",
+          "text": "+98 912 345 6789",
+          "score": 0.9996664524078369
+        }
+      ],
+      "latency_ms": [
+        68.2895421050489,
+        78.09166598599404
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 44,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-2",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "تاریخ تولد من ۱۷ اوت ۱۹۹۱ و شماره گذرنامه من P73829164 است.",
+      "gold": [
+        {
+          "start": 14,
+          "end": 25,
+          "label": "dob"
+        },
+        {
+          "start": 45,
+          "end": 54,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 11,
+          "end": 13,
+          "label": "person",
+          "text": "من",
+          "score": 0.9650417566299438
+        },
+        {
+          "start": 14,
+          "end": 25,
+          "label": "date of birth",
+          "text": "۱۷ اوت ۱۹۹۱",
+          "score": 0.985191285610199
+        },
+        {
+          "start": 42,
+          "end": 44,
+          "label": "person",
+          "text": "من",
+          "score": 0.9841893315315247
+        },
+        {
+          "start": 45,
+          "end": 54,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9430978298187256
+        }
+      ],
+      "latency_ms": [
+        64.48566704057157,
+        63.99145897012204
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 18,
+        "fp": 4,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-3",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "من در تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲ زندگی می‌کنم. برادرم سمیر حسن جای دیگری زندگی می‌کند.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 42,
+          "label": "address"
+        },
+        {
+          "start": 64,
+          "end": 72,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "من",
+          "score": 0.8446480631828308
+        },
+        {
+          "start": 6,
+          "end": 42,
+          "label": "address",
+          "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲",
+          "score": 0.9742833375930786
+        },
+        {
+          "start": 64,
+          "end": 72,
+          "label": "person",
+          "text": "سمیر حسن",
+          "score": 0.9608199000358582
+        }
+      ],
+      "latency_ms": [
+        81.37625001836568,
+        83.44254095572978
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 37,
+        "fp": 2,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-4",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "در ۱۲ مارس ۲۰۲۴ پلیس به خانه‌ام آمد. من بازداشت یا زندانی نشدم و ساعت دقیق را به یاد ندارم.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 3,
+          "end": 15,
+          "label": "date of birth",
+          "text": "۱۲ مارس ۲۰۲۴",
+          "score": 0.3532482087612152
+        },
+        {
+          "start": 24,
+          "end": 28,
+          "label": "address",
+          "text": "خانه",
+          "score": 0.4026336371898651
+        },
+        {
+          "start": 29,
+          "end": 31,
+          "label": "person",
+          "text": "ام",
+          "score": 0.9402461051940918
+        },
+        {
+          "start": 37,
+          "end": 39,
+          "label": "person",
+          "text": "من",
+          "score": 0.5137863755226135
+        }
+      ],
+      "latency_ms": [
+        67.45516695082188,
+        81.54120901599526
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 18,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "fa-5",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "لیلا نوری به من کمک کرد. روز بعد با او تماس گرفتم و لیلا نوری پاسخ داد. دوستم سمیر حسن هم آنجا بود.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 9,
+          "label": "person"
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person"
+        },
+        {
+          "start": 78,
+          "end": 86,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 9,
+          "label": "person",
+          "text": "لیلا نوری",
+          "score": 0.9992350339889526
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person",
+          "text": "لیلا نوری",
+          "score": 0.9993264675140381
+        },
+        {
+          "start": 78,
+          "end": 86,
+          "label": "person",
+          "text": "سمیر حسن",
+          "score": 0.9704779982566833
+        }
+      ],
+      "latency_ms": [
+        74.06537502538413,
+        87.38708298187703
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 23,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-6",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "مریم فرح اطلاعات تماسش را تغییر داد. اکنون از new.mariam@example.org به جای old.mariam@example.org استفاده می‌کند.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 8,
+          "label": "person"
+        },
+        {
+          "start": 46,
+          "end": 68,
+          "label": "email"
+        },
+        {
+          "start": 76,
+          "end": 98,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 8,
+          "label": "person",
+          "text": "مریم فرح",
+          "score": 0.9987230896949768
+        },
+        {
+          "start": 46,
+          "end": 68,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9807604551315308
+        },
+        {
+          "start": 76,
+          "end": 98,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9618034362792969
+        }
+      ],
+      "latency_ms": [
+        82.96708296984434,
+        81.43029198981822
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 51,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-7",
+      "language": "fa",
+      "track": "sensitive",
+      "text": "من به مسیحیت گرویدم. در حزب سپیده نو فعالیت داشتم و اختلال استرس پس از سانحه در من تشخیص داده شد.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 12,
+          "label": "religion"
+        },
+        {
+          "start": 24,
+          "end": 36,
+          "label": "political"
+        },
+        {
+          "start": 52,
+          "end": 76,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.3,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "من",
+          "score": 0.9516744613647461
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "label": "religion",
+          "text": "مسیحیت",
+          "score": 0.9974266886711121
+        },
+        {
+          "start": 24,
+          "end": 36,
+          "label": "political party",
+          "text": "حزب سپیده نو",
+          "score": 0.9265639781951904
+        },
+        {
+          "start": 52,
+          "end": 64,
+          "label": "medical condition",
+          "text": "اختلال استرس",
+          "score": 0.9847962856292725
+        },
+        {
+          "start": 80,
+          "end": 82,
+          "label": "person",
+          "text": "من",
+          "score": 0.7920643091201782
+        }
+      ],
+      "latency_ms": [
+        78.97887495346367,
+        81.04345796164125
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 27,
+        "fp": 0,
+        "fn": 9,
+        "covered_entities": 2,
+        "entities": 3,
+        "leak_free": false,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          false
+        ]
+      }
+    },
+    {
+      "id": "ko-1",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "제 이름은 김하린입니다. 이메일은 harin.kim@example.org이고 전화번호는 010-4827-1936입니다.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 9,
+          "label": "person"
+        },
+        {
+          "start": 19,
+          "end": 40,
+          "label": "email"
+        },
+        {
+          "start": 49,
+          "end": 62,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 6,
+          "end": 12,
+          "label": "person",
+          "text": "김하린입니다",
+          "score": 0.9938443899154663
+        },
+        {
+          "start": 19,
+          "end": 42,
+          "label": "email",
+          "text": "harin.kim@example.org이고",
+          "score": 0.9989069700241089
+        },
+        {
+          "start": 49,
+          "end": 65,
+          "label": "phone number",
+          "text": "010-4827-1936입니다",
+          "score": 0.998658299446106
+        }
+      ],
+      "latency_ms": [
+        68.27516597695649,
+        80.32229100354016
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 37,
+        "fp": 8,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-2",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "제 생년월일은 1991년 8월 17일이고 여권번호는 M73829164입니다.",
+      "gold": [
+        {
+          "start": 8,
+          "end": 20,
+          "label": "dob"
+        },
+        {
+          "start": 29,
+          "end": 38,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 8,
+          "end": 22,
+          "label": "date of birth",
+          "text": "1991년 8월 17일이고",
+          "score": 0.9019913673400879
+        },
+        {
+          "start": 29,
+          "end": 41,
+          "label": "passport number",
+          "text": "M73829164입니다",
+          "score": 0.8164808750152588
+        }
+      ],
+      "latency_ms": [
+        66.81616592686623,
+        73.91054194886237
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 19,
+        "fp": 5,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-3",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "저는 서울시 가상구 새봄로 27번길 14, 302호에 살고 있습니다. 제 형 김도윤은 다른 곳에 삽니다.",
+      "gold": [
+        {
+          "start": 3,
+          "end": 28,
+          "label": "address"
+        },
+        {
+          "start": 43,
+          "end": 46,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 3,
+          "end": 29,
+          "label": "address",
+          "text": "서울시 가상구 새봄로 27번길 14, 302호에",
+          "score": 0.9082106947898865
+        },
+        {
+          "start": 43,
+          "end": 47,
+          "label": "person",
+          "text": "김도윤은",
+          "score": 0.9614559412002563
+        }
+      ],
+      "latency_ms": [
+        69.50183294247836,
+        86.21437498368323
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 23,
+        "fp": 2,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-4",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "2024년 3월 12일 경찰이 집에 왔습니다. 저는 체포되거나 구금되지 않았고, 정확한 시간은 기억나지 않습니다.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 26,
+          "end": 28,
+          "label": "person",
+          "text": "저는",
+          "score": 0.8446425199508667
+        }
+      ],
+      "latency_ms": [
+        69.70274995546788,
+        79.52504197601229
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "ko-5",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "레일라 누리가 저를 도왔습니다. 다음 날 레일라 누리에게 전화했습니다. 친구 사미르 하산도 함께 있었습니다.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 6,
+          "label": "person"
+        },
+        {
+          "start": 23,
+          "end": 29,
+          "label": "person"
+        },
+        {
+          "start": 43,
+          "end": 49,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 7,
+          "label": "person",
+          "text": "레일라 누리가",
+          "score": 0.9980806112289429
+        },
+        {
+          "start": 23,
+          "end": 31,
+          "label": "person",
+          "text": "레일라 누리에게",
+          "score": 0.9978943467140198
+        },
+        {
+          "start": 43,
+          "end": 50,
+          "label": "person",
+          "text": "사미르 하산도",
+          "score": 0.9451952576637268
+        }
+      ],
+      "latency_ms": [
+        74.95533302426338,
+        85.0362089695409
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 15,
+        "fp": 4,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-6",
+      "language": "ko",
+      "track": "identifiers",
+      "text": "박서윤의 연락처가 바뀌었습니다. 이전 이메일 old.seoyun@example.org 대신 new.seoyun@example.org를 사용합니다.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 3,
+          "label": "person"
+        },
+        {
+          "start": 25,
+          "end": 47,
+          "label": "email"
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 4,
+          "label": "person",
+          "text": "박서윤의",
+          "score": 0.9938177466392517
+        },
+        {
+          "start": 25,
+          "end": 47,
+          "label": "email",
+          "text": "old.seoyun@example.org",
+          "score": 0.9990715980529785
+        },
+        {
+          "start": 51,
+          "end": 74,
+          "label": "email",
+          "text": "new.seoyun@example.org를",
+          "score": 0.9936608076095581
+        }
+      ],
+      "latency_ms": [
+        86.08891593758017,
+        87.9282500827685
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 47,
+        "fp": 2,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ko-7",
+      "language": "ko",
+      "track": "sensitive",
+      "text": "저는 기독교로 개종했습니다. 새빛당에서 활동했고 외상 후 스트레스 장애 진단을 받았습니다.",
+      "gold": [
+        {
+          "start": 3,
+          "end": 6,
+          "label": "religion"
+        },
+        {
+          "start": 16,
+          "end": 19,
+          "label": "political"
+        },
+        {
+          "start": 27,
+          "end": 39,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 3,
+          "end": 7,
+          "label": "religion",
+          "text": "기독교로",
+          "score": 0.9958494901657104
+        },
+        {
+          "start": 32,
+          "end": 39,
+          "label": "medical condition",
+          "text": "스트레스 장애",
+          "score": 0.9135206341743469
+        }
+      ],
+      "latency_ms": [
+        74.23362496774644,
+        76.87091699335724
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 9,
+        "fp": 1,
+        "fn": 6,
+        "covered_entities": 1,
+        "entities": 3,
+        "leak_free": false,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "id": "en-1",
+      "language": "en",
+      "track": "identifiers",
+      "text": "My name is Leila Nouri. My email is leila.nouri@example.org and my phone number is +44 7700 900123.",
+      "gold": [
+        {
+          "start": 11,
+          "end": 22,
+          "label": "person"
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email"
+        },
+        {
+          "start": 83,
+          "end": 98,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 11,
+          "end": 22,
+          "label": "person",
+          "text": "Leila Nouri",
+          "score": 0.9998443126678467
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9997528195381165
+        },
+        {
+          "start": 83,
+          "end": 98,
+          "label": "phone number",
+          "text": "+44 7700 900123",
+          "score": 0.9997554421424866
+        }
+      ],
+      "latency_ms": [
+        75.71820798330009,
+        72.91645801160485
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 46,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-2",
+      "language": "en",
+      "track": "identifiers",
+      "text": "My date of birth is 17 August 1991 and my passport number is P73829164.",
+      "gold": [
+        {
+          "start": 20,
+          "end": 34,
+          "label": "dob"
+        },
+        {
+          "start": 61,
+          "end": 70,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 20,
+          "end": 34,
+          "label": "date of birth",
+          "text": "17 August 1991",
+          "score": 0.998009979724884
+        },
+        {
+          "start": 61,
+          "end": 70,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9997747540473938
+        }
+      ],
+      "latency_ms": [
+        77.47087499592453,
+        75.59358305297792
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 21,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-3",
+      "language": "en",
+      "track": "identifiers",
+      "text": "I live at 14 Willow Lane, Flat 302, London. My brother Samir Hassan lives elsewhere.",
+      "gold": [
+        {
+          "start": 10,
+          "end": 42,
+          "label": "address"
+        },
+        {
+          "start": 55,
+          "end": 67,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 10,
+          "end": 42,
+          "label": "address",
+          "text": "14 Willow Lane, Flat 302, London",
+          "score": 0.9933679699897766
+        },
+        {
+          "start": 55,
+          "end": 67,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9794008135795593
+        }
+      ],
+      "latency_ms": [
+        78.22108408436179,
+        64.0287910355255
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 38,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-4",
+      "language": "en",
+      "track": "identifiers",
+      "text": "On 12 March 2024 the police came to my home. I was not arrested or detained, and I do not remember the exact time.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 36,
+          "end": 43,
+          "label": "address",
+          "text": "my home",
+          "score": 0.7738098502159119
+        },
+        {
+          "start": 45,
+          "end": 46,
+          "label": "person",
+          "text": "I",
+          "score": 0.9893020987510681
+        },
+        {
+          "start": 81,
+          "end": 82,
+          "label": "person",
+          "text": "I",
+          "score": 0.9935769438743591
+        }
+      ],
+      "latency_ms": [
+        101.13950003869832,
+        87.13570900727063
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 8,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "en-5",
+      "language": "en",
+      "track": "identifiers",
+      "text": "Leila Nouri helped me. The next day I called Leila Nouri. My friend Samir Hassan was also there.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person"
+        },
+        {
+          "start": 45,
+          "end": 56,
+          "label": "person"
+        },
+        {
+          "start": 68,
+          "end": 80,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person",
+          "text": "Leila Nouri",
+          "score": 0.9993782043457031
+        },
+        {
+          "start": 45,
+          "end": 56,
+          "label": "person",
+          "text": "Leila Nouri",
+          "score": 0.9995612502098083
+        },
+        {
+          "start": 68,
+          "end": 80,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9594030976295471
+        }
+      ],
+      "latency_ms": [
+        76.65733294561505,
+        69.24345891457051
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-6",
+      "language": "en",
+      "track": "identifiers",
+      "text": "Mariam Farah changed her contact details. She now uses new.mariam@example.org instead of old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person"
+        },
+        {
+          "start": 55,
+          "end": 77,
+          "label": "email"
+        },
+        {
+          "start": 89,
+          "end": 111,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person",
+          "text": "Mariam Farah",
+          "score": 0.9998273849487305
+        },
+        {
+          "start": 55,
+          "end": 77,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9788534641265869
+        },
+        {
+          "start": 89,
+          "end": 111,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9869193434715271
+        }
+      ],
+      "latency_ms": [
+        77.94954197015613,
+        70.34554204437882
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 55,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "en-7",
+      "language": "en",
+      "track": "sensitive",
+      "text": "I converted to Christianity. I was active in the New Dawn Party and was diagnosed with post-traumatic stress disorder.",
+      "gold": [
+        {
+          "start": 15,
+          "end": 27,
+          "label": "religion"
+        },
+        {
+          "start": 49,
+          "end": 63,
+          "label": "political"
+        },
+        {
+          "start": 87,
+          "end": 117,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 1,
+          "label": "person",
+          "text": "I",
+          "score": 0.9698247909545898
+        },
+        {
+          "start": 15,
+          "end": 27,
+          "label": "religion",
+          "text": "Christianity",
+          "score": 0.9961926937103271
+        },
+        {
+          "start": 29,
+          "end": 30,
+          "label": "person",
+          "text": "I",
+          "score": 0.9743955135345459
+        },
+        {
+          "start": 49,
+          "end": 63,
+          "label": "political party",
+          "text": "New Dawn Party",
+          "score": 0.9896859526634216
+        },
+        {
+          "start": 87,
+          "end": 117,
+          "label": "medical condition",
+          "text": "post-traumatic stress disorder",
+          "score": 0.9951151609420776
+        }
+      ],
+      "latency_ms": [
+        77.66470790375024,
+        69.08862490672618
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 52,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-1",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Je m'appelle Leïla Nouri. Mon adresse électronique est leila.nouri@example.org et mon numéro de téléphone est +33 6 12 34 56 78.",
+      "gold": [
+        {
+          "start": 13,
+          "end": 24,
+          "label": "person"
+        },
+        {
+          "start": 55,
+          "end": 78,
+          "label": "email"
+        },
+        {
+          "start": 110,
+          "end": 127,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 13,
+          "end": 24,
+          "label": "person",
+          "text": "Leïla Nouri",
+          "score": 0.9998337030410767
+        },
+        {
+          "start": 55,
+          "end": 78,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9999152421951294
+        },
+        {
+          "start": 110,
+          "end": 127,
+          "label": "phone number",
+          "text": "+33 6 12 34 56 78",
+          "score": 0.9997931122779846
+        }
+      ],
+      "latency_ms": [
+        79.64162505231798,
+        80.86999994702637
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 45,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-2",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Ma date de naissance est le 17 août 1991 et mon numéro de passeport est P73829164.",
+      "gold": [
+        {
+          "start": 28,
+          "end": 40,
+          "label": "dob"
+        },
+        {
+          "start": 72,
+          "end": 81,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 28,
+          "end": 40,
+          "label": "date of birth",
+          "text": "17 août 1991",
+          "score": 0.9951158761978149
+        },
+        {
+          "start": 72,
+          "end": 81,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9997475743293762
+        }
+      ],
+      "latency_ms": [
+        63.91400005668402,
+        72.3420410649851
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 19,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-3",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "J'habite au 14 rue des Saules, appartement 302, Lyon. Mon frère Samir Hassan habite ailleurs.",
+      "gold": [
+        {
+          "start": 12,
+          "end": 52,
+          "label": "address"
+        },
+        {
+          "start": 64,
+          "end": 76,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 12,
+          "end": 52,
+          "label": "address",
+          "text": "14 rue des Saules, appartement 302, Lyon",
+          "score": 0.9911479949951172
+        },
+        {
+          "start": 64,
+          "end": 76,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9844784736633301
+        }
+      ],
+      "latency_ms": [
+        68.35204199887812,
+        74.30487498641014
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 45,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-4",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Le 12 mars 2024, la police est venue chez moi. Je n'ai été ni arrêté ni détenu et je ne me souviens pas de l'heure exacte.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 42,
+          "end": 45,
+          "label": "person",
+          "text": "moi",
+          "score": 0.6887490749359131
+        },
+        {
+          "start": 47,
+          "end": 49,
+          "label": "person",
+          "text": "Je",
+          "score": 0.9594524502754211
+        },
+        {
+          "start": 82,
+          "end": 84,
+          "label": "person",
+          "text": "je",
+          "score": 0.9590699672698975
+        }
+      ],
+      "latency_ms": [
+        80.39408305194229,
+        81.27233292907476
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 7,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "fr-5",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Leïla Nouri m'a aidé. Le lendemain, j'ai appelé Leïla Nouri. Mon ami Samir Hassan était aussi présent.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person"
+        },
+        {
+          "start": 48,
+          "end": 59,
+          "label": "person"
+        },
+        {
+          "start": 69,
+          "end": 81,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 11,
+          "label": "person",
+          "text": "Leïla Nouri",
+          "score": 0.9993016719818115
+        },
+        {
+          "start": 48,
+          "end": 59,
+          "label": "person",
+          "text": "Leïla Nouri",
+          "score": 0.9987936019897461
+        },
+        {
+          "start": 69,
+          "end": 81,
+          "label": "person",
+          "text": "Samir Hassan",
+          "score": 0.9645016193389893
+        }
+      ],
+      "latency_ms": [
+        77.13583391159773,
+        78.83654208853841
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-6",
+      "language": "fr",
+      "track": "identifiers",
+      "text": "Mariam Farah a changé de coordonnées. Elle utilise new.mariam@example.org au lieu de old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person"
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "email"
+        },
+        {
+          "start": 85,
+          "end": 107,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person",
+          "text": "Mariam Farah",
+          "score": 0.999864935874939
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9951326251029968
+        },
+        {
+          "start": 85,
+          "end": 107,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9948384165763855
+        }
+      ],
+      "latency_ms": [
+        69.71379206515849,
+        78.20929191075265
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 55,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fr-7",
+      "language": "fr",
+      "track": "sensitive",
+      "text": "Je me suis converti au christianisme. Je militais au Parti de l'Aube Nouvelle et on m'a diagnostiqué un trouble de stress post-traumatique.",
+      "gold": [
+        {
+          "start": 23,
+          "end": 36,
+          "label": "religion"
+        },
+        {
+          "start": 53,
+          "end": 77,
+          "label": "political"
+        },
+        {
+          "start": 104,
+          "end": 138,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "Je",
+          "score": 0.6668948531150818
+        },
+        {
+          "start": 23,
+          "end": 36,
+          "label": "religion",
+          "text": "christianisme",
+          "score": 0.9962899684906006
+        },
+        {
+          "start": 38,
+          "end": 40,
+          "label": "person",
+          "text": "Je",
+          "score": 0.8006212711334229
+        },
+        {
+          "start": 53,
+          "end": 77,
+          "label": "political party",
+          "text": "Parti de l'Aube Nouvelle",
+          "score": 0.9897819757461548
+        },
+        {
+          "start": 104,
+          "end": 138,
+          "label": "medical condition",
+          "text": "trouble de stress post-traumatique",
+          "score": 0.9319973587989807
+        }
+      ],
+      "latency_ms": [
+        81.07737498357892,
+        91.64754208177328
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 65,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-1",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Меня зовут Лейла Нури. Моя электронная почта — leila.nouri@example.org, а номер телефона — +7 912 345-67-89.",
+      "gold": [
+        {
+          "start": 11,
+          "end": 21,
+          "label": "person"
+        },
+        {
+          "start": 47,
+          "end": 70,
+          "label": "email"
+        },
+        {
+          "start": 91,
+          "end": 107,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 11,
+          "end": 21,
+          "label": "person",
+          "text": "Лейла Нури",
+          "score": 0.9997960925102234
+        },
+        {
+          "start": 47,
+          "end": 70,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9998894929885864
+        },
+        {
+          "start": 91,
+          "end": 107,
+          "label": "phone number",
+          "text": "+7 912 345-67-89",
+          "score": 0.9996659755706787
+        }
+      ],
+      "latency_ms": [
+        80.97058301791549,
+        79.7142080264166
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 46,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-2",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+      "gold": [
+        {
+          "start": 20,
+          "end": 40,
+          "label": "dob"
+        },
+        {
+          "start": 59,
+          "end": 68,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 20,
+          "end": 35,
+          "label": "date of birth",
+          "text": "17 августа 1991",
+          "score": 0.925738513469696
+        },
+        {
+          "start": 59,
+          "end": 68,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.999777615070343
+        }
+      ],
+      "latency_ms": [
+        71.18333398830146,
+        69.97175002470613
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 22,
+        "fp": 0,
+        "fn": 4,
+        "covered_entities": 1,
+        "entities": 2,
+        "leak_free": false,
+        "exact_mask": false,
+        "fully_covered": [
+          false,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-3",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Я живу по адресу: Москва, улица Ивовая, дом 14, квартира 302. Мой брат Самир Хасан живёт в другом месте.",
+      "gold": [
+        {
+          "start": 18,
+          "end": 60,
+          "label": "address"
+        },
+        {
+          "start": 71,
+          "end": 82,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 18,
+          "end": 60,
+          "label": "address",
+          "text": "Москва, улица Ивовая, дом 14, квартира 302",
+          "score": 0.9621085524559021
+        },
+        {
+          "start": 71,
+          "end": 82,
+          "label": "person",
+          "text": "Самир Хасан",
+          "score": 0.9802937507629395
+        }
+      ],
+      "latency_ms": [
+        76.48970896843821,
+        74.43179201800376
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 46,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-4",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "12 марта 2024 года полиция пришла ко мне домой. Меня не арестовывали и не задерживали, а точного времени я не помню.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 37,
+          "end": 40,
+          "label": "person",
+          "text": "мне",
+          "score": 0.716722846031189
+        },
+        {
+          "start": 48,
+          "end": 52,
+          "label": "person",
+          "text": "Меня",
+          "score": 0.9279522895812988
+        },
+        {
+          "start": 105,
+          "end": 106,
+          "label": "person",
+          "text": "я",
+          "score": 0.8433945775032043
+        }
+      ],
+      "latency_ms": [
+        69.04695800039917,
+        76.37895795051008
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 8,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "ru-5",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Лейла Нури помогла мне. На следующий день я позвонил ей; Лейла Нури ответила. Мой друг Самир Хасан тоже был там.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 10,
+          "label": "person"
+        },
+        {
+          "start": 57,
+          "end": 67,
+          "label": "person"
+        },
+        {
+          "start": 87,
+          "end": 98,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 10,
+          "label": "person",
+          "text": "Лейла Нури",
+          "score": 0.9990241527557373
+        },
+        {
+          "start": 57,
+          "end": 67,
+          "label": "person",
+          "text": "Лейла Нури",
+          "score": 0.9993232488632202
+        },
+        {
+          "start": 87,
+          "end": 98,
+          "label": "person",
+          "text": "Самир Хасан",
+          "score": 0.9680526256561279
+        }
+      ],
+      "latency_ms": [
+        71.36150007136166,
+        75.00966708175838
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 28,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-6",
+      "language": "ru",
+      "track": "identifiers",
+      "text": "Мариам Фарах сменила контакты. Теперь она использует new.mariam@example.org вместо old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person"
+        },
+        {
+          "start": 53,
+          "end": 75,
+          "label": "email"
+        },
+        {
+          "start": 83,
+          "end": 105,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 12,
+          "label": "person",
+          "text": "Мариам Фарах",
+          "score": 0.9994725584983826
+        },
+        {
+          "start": 53,
+          "end": 75,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9928474426269531
+        },
+        {
+          "start": 83,
+          "end": 105,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9877079725265503
+        }
+      ],
+      "latency_ms": [
+        75.87645796593279,
+        77.6010409463197
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 55,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ru-7",
+      "language": "ru",
+      "track": "sensitive",
+      "text": "Я принял христианство. Я участвовал в деятельности Партии нового рассвета, и у меня диагностировали посттравматическое стрессовое расстройство.",
+      "gold": [
+        {
+          "start": 9,
+          "end": 21,
+          "label": "religion"
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "political"
+        },
+        {
+          "start": 100,
+          "end": 142,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 1,
+          "label": "person",
+          "text": "Я",
+          "score": 0.9682484269142151
+        },
+        {
+          "start": 9,
+          "end": 21,
+          "label": "religion",
+          "text": "христианство",
+          "score": 0.9918397665023804
+        },
+        {
+          "start": 23,
+          "end": 24,
+          "label": "person",
+          "text": "Я",
+          "score": 0.9505674839019775
+        },
+        {
+          "start": 51,
+          "end": 73,
+          "label": "political party",
+          "text": "Партии нового рассвета",
+          "score": 0.9771600365638733
+        },
+        {
+          "start": 100,
+          "end": 142,
+          "label": "medical condition",
+          "text": "посттравматическое стрессовое расстройство",
+          "score": 0.975366473197937
+        }
+      ],
+      "latency_ms": [
+        81.93558407947421,
+        78.6607910413295
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 72,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-1",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "اسمي ليلى نوري. بريدي الإلكتروني هو leila.nouri@example.org ورقم هاتفي هو +962 7 9000 1234.",
+      "gold": [
+        {
+          "start": 5,
+          "end": 14,
+          "label": "person"
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email"
+        },
+        {
+          "start": 74,
+          "end": 90,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 5,
+          "end": 14,
+          "label": "person",
+          "text": "ليلى نوري",
+          "score": 0.9992302656173706
+        },
+        {
+          "start": 36,
+          "end": 59,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9996649026870728
+        },
+        {
+          "start": 74,
+          "end": 90,
+          "label": "phone number",
+          "text": "+962 7 9000 1234",
+          "score": 0.9998074173927307
+        }
+      ],
+      "latency_ms": [
+        69.91341698449105,
+        77.18258304521441
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 44,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-2",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "تاريخ ميلادي هو ١٧ أغسطس ١٩٩١ ورقم جواز سفري هو P73829164.",
+      "gold": [
+        {
+          "start": 16,
+          "end": 29,
+          "label": "dob"
+        },
+        {
+          "start": 48,
+          "end": 57,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 16,
+          "end": 29,
+          "label": "date of birth",
+          "text": "١٧ أغسطس ١٩٩١",
+          "score": 0.981177806854248
+        },
+        {
+          "start": 48,
+          "end": 57,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9971611499786377
+        }
+      ],
+      "latency_ms": [
+        66.02195801679045,
+        65.90466701891273
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 20,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-3",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "أسكن في عمّان، شارع الصفصاف ١٤، شقة ٣٠٢. أخي سمير حسن يسكن في مكان آخر.",
+      "gold": [
+        {
+          "start": 8,
+          "end": 39,
+          "label": "address"
+        },
+        {
+          "start": 45,
+          "end": 53,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 8,
+          "end": 39,
+          "label": "address",
+          "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢",
+          "score": 0.6726725697517395
+        },
+        {
+          "start": 45,
+          "end": 53,
+          "label": "person",
+          "text": "سمير حسن",
+          "score": 0.9615918397903442
+        }
+      ],
+      "latency_ms": [
+        71.1883750045672,
+        75.84133394993842
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 33,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-4",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "في ١٢ مارس ٢٠٢٤ جاءت الشرطة إلى منزلي. لم يتم اعتقالي أو احتجازي ولا أتذكر الوقت بالتحديد.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 3,
+          "end": 15,
+          "label": "date of birth",
+          "text": "١٢ مارس ٢٠٢٤",
+          "score": 0.6657816171646118
+        },
+        {
+          "start": 32,
+          "end": 37,
+          "label": "address",
+          "text": "منزلي",
+          "score": 0.8064520955085754
+        }
+      ],
+      "latency_ms": [
+        73.00791703164577,
+        76.88649999909103
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 15,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "ar-5",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "ساعدتني ليلى نوري. في اليوم التالي اتصلت بها وأجابت ليلى نوري. كان صديقي سمير حسن هناك أيضاً.",
+      "gold": [
+        {
+          "start": 8,
+          "end": 17,
+          "label": "person"
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person"
+        },
+        {
+          "start": 73,
+          "end": 81,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 8,
+          "end": 17,
+          "label": "person",
+          "text": "ليلى نوري",
+          "score": 0.9990084767341614
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person",
+          "text": "ليلى نوري",
+          "score": 0.9987861514091492
+        },
+        {
+          "start": 73,
+          "end": 81,
+          "label": "person",
+          "text": "سمير حسن",
+          "score": 0.9851062297821045
+        }
+      ],
+      "latency_ms": [
+        79.93545802310109,
+        79.32966691441834
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 23,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-6",
+      "language": "ar",
+      "track": "identifiers",
+      "text": "غيّرت مريم فرح بيانات الاتصال بها. تستخدم الآن new.mariam@example.org بدلاً من old.mariam@example.org.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 14,
+          "label": "person"
+        },
+        {
+          "start": 47,
+          "end": 69,
+          "label": "email"
+        },
+        {
+          "start": 79,
+          "end": 101,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 6,
+          "end": 14,
+          "label": "person",
+          "text": "مريم فرح",
+          "score": 0.992287278175354
+        },
+        {
+          "start": 47,
+          "end": 69,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9890052676200867
+        },
+        {
+          "start": 79,
+          "end": 101,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9934564232826233
+        }
+      ],
+      "latency_ms": [
+        80.11300000362098,
+        80.34679107367992
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 51,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "ar-7",
+      "language": "ar",
+      "track": "sensitive",
+      "text": "اعتنقت المسيحية. كنت ناشطاً في حزب الفجر الجديد وتم تشخيصي بمرض اضطراب ما بعد الصدمة.",
+      "gold": [
+        {
+          "start": 7,
+          "end": 15,
+          "label": "religion"
+        },
+        {
+          "start": 31,
+          "end": 47,
+          "label": "political"
+        },
+        {
+          "start": 64,
+          "end": 84,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 7,
+          "end": 15,
+          "label": "religion",
+          "text": "المسيحية",
+          "score": 0.9923589825630188
+        },
+        {
+          "start": 31,
+          "end": 47,
+          "label": "political party",
+          "text": "حزب الفجر الجديد",
+          "score": 0.9702836871147156
+        },
+        {
+          "start": 64,
+          "end": 84,
+          "label": "medical condition",
+          "text": "اضطراب ما بعد الصدمة",
+          "score": 0.9414202570915222
+        }
+      ],
+      "latency_ms": [
+        77.72583398036659,
+        78.37795908562839
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 39,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-1",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "نام من لیلا نوری است. ایمیل من leila.nouri@example.org و شماره تلفن من +98 912 345 6789 است.",
+      "gold": [
+        {
+          "start": 7,
+          "end": 16,
+          "label": "person"
+        },
+        {
+          "start": 31,
+          "end": 54,
+          "label": "email"
+        },
+        {
+          "start": 71,
+          "end": 87,
+          "label": "phone"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 7,
+          "end": 16,
+          "label": "person",
+          "text": "لیلا نوری",
+          "score": 0.9979846477508545
+        },
+        {
+          "start": 31,
+          "end": 54,
+          "label": "email",
+          "text": "leila.nouri@example.org",
+          "score": 0.9995019435882568
+        },
+        {
+          "start": 71,
+          "end": 87,
+          "label": "phone number",
+          "text": "+98 912 345 6789",
+          "score": 0.9996664524078369
+        }
+      ],
+      "latency_ms": [
+        70.03454095683992,
+        76.28454104997218
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 44,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-2",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "تاریخ تولد من ۱۷ اوت ۱۹۹۱ و شماره گذرنامه من P73829164 است.",
+      "gold": [
+        {
+          "start": 14,
+          "end": 25,
+          "label": "dob"
+        },
+        {
+          "start": 45,
+          "end": 54,
+          "label": "passport"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 11,
+          "end": 13,
+          "label": "person",
+          "text": "من",
+          "score": 0.9650417566299438
+        },
+        {
+          "start": 14,
+          "end": 25,
+          "label": "date of birth",
+          "text": "۱۷ اوت ۱۹۹۱",
+          "score": 0.985191285610199
+        },
+        {
+          "start": 42,
+          "end": 44,
+          "label": "person",
+          "text": "من",
+          "score": 0.9841893315315247
+        },
+        {
+          "start": 45,
+          "end": 54,
+          "label": "passport number",
+          "text": "P73829164",
+          "score": 0.9430978298187256
+        }
+      ],
+      "latency_ms": [
+        64.17770800180733,
+        61.686665983870625
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 18,
+        "fp": 4,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-3",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "من در تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲ زندگی می‌کنم. برادرم سمیر حسن جای دیگری زندگی می‌کند.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 42,
+          "label": "address"
+        },
+        {
+          "start": 64,
+          "end": 72,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "من",
+          "score": 0.8446480631828308
+        },
+        {
+          "start": 6,
+          "end": 42,
+          "label": "address",
+          "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲",
+          "score": 0.9742833375930786
+        },
+        {
+          "start": 64,
+          "end": 72,
+          "label": "person",
+          "text": "سمیر حسن",
+          "score": 0.9608199000358582
+        }
+      ],
+      "latency_ms": [
+        79.38558293972164,
+        80.22587501909584
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 37,
+        "fp": 2,
+        "fn": 0,
+        "covered_entities": 2,
+        "entities": 2,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-4",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "در ۱۲ مارس ۲۰۲۴ پلیس به خانه‌ام آمد. من بازداشت یا زندانی نشدم و ساعت دقیق را به یاد ندارم.",
+      "gold": [],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 29,
+          "end": 31,
+          "label": "person",
+          "text": "ام",
+          "score": 0.9402461051940918
+        },
+        {
+          "start": 37,
+          "end": 39,
+          "label": "person",
+          "text": "من",
+          "score": 0.5137863755226135
+        }
+      ],
+      "latency_ms": [
+        72.66779092606157,
+        71.11070794053376
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 0,
+        "fp": 4,
+        "fn": 0,
+        "covered_entities": 0,
+        "entities": 0,
+        "leak_free": true,
+        "exact_mask": false,
+        "fully_covered": []
+      }
+    },
+    {
+      "id": "fa-5",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "لیلا نوری به من کمک کرد. روز بعد با او تماس گرفتم و لیلا نوری پاسخ داد. دوستم سمیر حسن هم آنجا بود.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 9,
+          "label": "person"
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person"
+        },
+        {
+          "start": 78,
+          "end": 86,
+          "label": "person"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 9,
+          "label": "person",
+          "text": "لیلا نوری",
+          "score": 0.9992350339889526
+        },
+        {
+          "start": 52,
+          "end": 61,
+          "label": "person",
+          "text": "لیلا نوری",
+          "score": 0.9993264675140381
+        },
+        {
+          "start": 78,
+          "end": 86,
+          "label": "person",
+          "text": "سمیر حسن",
+          "score": 0.9704779982566833
+        }
+      ],
+      "latency_ms": [
+        77.4803749518469,
+        72.53074995242059
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 23,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-6",
+      "language": "fa",
+      "track": "identifiers",
+      "text": "مریم فرح اطلاعات تماسش را تغییر داد. اکنون از new.mariam@example.org به جای old.mariam@example.org استفاده می‌کند.",
+      "gold": [
+        {
+          "start": 0,
+          "end": 8,
+          "label": "person"
+        },
+        {
+          "start": 46,
+          "end": 68,
+          "label": "email"
+        },
+        {
+          "start": 76,
+          "end": 98,
+          "label": "email"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 8,
+          "label": "person",
+          "text": "مریم فرح",
+          "score": 0.9987230896949768
+        },
+        {
+          "start": 46,
+          "end": 68,
+          "label": "email",
+          "text": "new.mariam@example.org",
+          "score": 0.9807604551315308
+        },
+        {
+          "start": 76,
+          "end": 98,
+          "label": "email",
+          "text": "old.mariam@example.org",
+          "score": 0.9618034362792969
+        }
+      ],
+      "latency_ms": [
+        83.05849996395409,
+        85.79554199241102
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 51,
+        "fp": 0,
+        "fn": 0,
+        "covered_entities": 3,
+        "entities": 3,
+        "leak_free": true,
+        "exact_mask": true,
+        "fully_covered": [
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "id": "fa-7",
+      "language": "fa",
+      "track": "sensitive",
+      "text": "من به مسیحیت گرویدم. در حزب سپیده نو فعالیت داشتم و اختلال استرس پس از سانحه در من تشخیص داده شد.",
+      "gold": [
+        {
+          "start": 6,
+          "end": 12,
+          "label": "religion"
+        },
+        {
+          "start": 24,
+          "end": 36,
+          "label": "political"
+        },
+        {
+          "start": 52,
+          "end": 76,
+          "label": "medical"
+        }
+      ],
+      "status": "ok",
+      "threshold": 0.5,
+      "predictions": [
+        {
+          "start": 0,
+          "end": 2,
+          "label": "person",
+          "text": "من",
+          "score": 0.9516744613647461
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "label": "religion",
+          "text": "مسیحیت",
+          "score": 0.9974266886711121
+        },
+        {
+          "start": 24,
+          "end": 36,
+          "label": "political party",
+          "text": "حزب سپیده نو",
+          "score": 0.9265639781951904
+        },
+        {
+          "start": 52,
+          "end": 64,
+          "label": "medical condition",
+          "text": "اختلال استرس",
+          "score": 0.9847962856292725
+        },
+        {
+          "start": 80,
+          "end": 82,
+          "label": "person",
+          "text": "من",
+          "score": 0.7920643091201782
+        }
+      ],
+      "latency_ms": [
+        78.49970797542483,
+        80.01133392099291
+      ],
+      "repeat_consistent": true,
+      "metrics": {
+        "tp": 27,
+        "fp": 0,
+        "fn": 9,
+        "covered_entities": 2,
+        "entities": 3,
+        "leak_free": false,
+        "exact_mask": false,
+        "fully_covered": [
+          true,
+          true,
+          false
+        ]
+      }
+    }
+  ],
+  "ram_gb": 16.0,
+  "packages": {
+    "torch": "2.15.0",
+    "transformers": "5.22.2",
+    "gliner": "0.2.30",
+    "gliner2": "2.1.0",
+    "huggingface-hub": "2.4.0"
+  },
+  "download_seconds": 0.002,
+  "load_seconds": 12.72,
+  "parameters": 288949504,
+  "rss_after_load_mb": 1489.4,
+  "warmup_ms": {
+    "0.3": 167.77954099234194,
+    "0.5": 71.16649998351932
+  },
+  "status": "complete",
+  "rss_after_inference_mb": 1542.5
+}

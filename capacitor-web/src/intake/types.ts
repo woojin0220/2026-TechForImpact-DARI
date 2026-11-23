@@ -75,8 +75,13 @@ export type IntakeSession = {
   updatedAt: string;
 };
 /** `priority: 'background'` marks work nobody is waiting on (e.g. automatic back-translation). */
-export type ModelRequest = { task: 'intake' | 'draft'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown>; priority?: 'foreground' | 'background' };
-export type ModelAdapter = (request: ModelRequest) => Promise<string>;
+export type ModelRequest = { task: 'intake' | 'draft'; purpose?: 'example' | 'draft-batch'; system: string; prompt: string; signal?: AbortSignal; responseSchema?: Record<string, unknown>; priority?: 'foreground' | 'background' };
+export type ModelAdapter = ((request: ModelRequest) => Promise<string>) & {
+  /** One extraction per answer; follow-up questions are produced locally. */
+  conversationMode?: 'single-call';
+  /** Generate all requested draft sections together without automatic repair. */
+  draftMode?: 'single-call';
+};
 
 /** Carries the original answer even if inference, JSON parsing or provenance checks fail. */
 export class IntakeError extends Error {

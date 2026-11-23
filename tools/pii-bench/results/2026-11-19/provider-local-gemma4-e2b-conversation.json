@@ -1,0 +1,199 @@
+{
+  "fixtureOnly": true,
+  "backend": "local",
+  "model": "gemma4:e2b",
+  "providerSettings": "One-call conversation and batch draft for both providers. Local: Mac M1 Pro 16 GB Ollama gemma4:e2b (not phone), think=false, ctx=16384 intake / 32768 full draft; Gemini current config.",
+  "preparation": "Local model warmed with a one-token request before timing; no privacy masking needed for local-only inference.",
+  "draftPolicy": "One batch, per-question local validation, omissions flagged, no repair requests",
+  "rows": [
+    {
+      "phase": "conversation",
+      "backend": "local",
+      "mode": "single-call",
+      "label": "basic",
+      "preparationMs": 7263,
+      "calls": [
+        {
+          "task": "intake",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "ollama",
+            "model": "gemma4:e2b",
+            "totalMs": 20396,
+            "loadMs": 5,
+            "prefillMs": 4178,
+            "decodeMs": 16132
+          },
+          "usage": {
+            "promptTokenCount": 2979,
+            "candidatesTokenCount": 756
+          }
+        }
+      ],
+      "checks": [
+        {
+          "ok": true,
+          "label": "grounds.category ⊃ \"political\"",
+          "actual": "answered:political",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm = yes",
+          "actual": "answered:yes",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm 사건 1개",
+          "actual": "1개 harm-1",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.time ⊃ \"autumn|fall\"",
+          "actual": "answered:around autumn 2024",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊃ \"questioning\"",
+          "actual": "answered:questioning",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "fear = yes",
+          "actual": "answered:yes",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "14.2 = 예",
+          "actual": "예",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "departure.date 답변으로 기록되지 않음",
+          "actual": "(없음)",
+          "safety": true
+        }
+      ],
+      "nextQuestionReady": true,
+      "ok": true,
+      "totalMs": 20439
+    },
+    {
+      "phase": "conversation",
+      "backend": "local",
+      "mode": "single-call",
+      "label": "narrow-denial",
+      "preparationMs": 127,
+      "calls": [
+        {
+          "task": "intake",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "ollama",
+            "model": "gemma4:e2b",
+            "totalMs": 9153,
+            "loadMs": 13,
+            "prefillMs": 1618,
+            "decodeMs": 7465
+          },
+          "usage": {
+            "promptTokenCount": 2983,
+            "candidatesTokenCount": 293
+          }
+        }
+      ],
+      "checks": [
+        {
+          "ok": true,
+          "label": "harm = yes",
+          "actual": "answered:yes",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊃ \"questioning\"",
+          "actual": "answered:questioning",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊅ \"assault\"",
+          "actual": "answered:questioning",
+          "safety": true
+        },
+        {
+          "ok": true,
+          "label": "harm.type ⊅ \"detention\"",
+          "actual": "answered:questioning",
+          "safety": true
+        },
+        {
+          "ok": true,
+          "label": "14.2 = 예",
+          "actual": "예",
+          "safety": false
+        }
+      ],
+      "nextQuestionReady": true,
+      "ok": true,
+      "totalMs": 9158
+    },
+    {
+      "phase": "conversation",
+      "backend": "local",
+      "mode": "single-call",
+      "label": "no-category",
+      "preparationMs": 79,
+      "calls": [
+        {
+          "task": "intake",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "ollama",
+            "model": "gemma4:e2b",
+            "totalMs": 6564,
+            "loadMs": 2,
+            "prefillMs": 1910,
+            "decodeMs": 4595
+          },
+          "usage": {
+            "promptTokenCount": 2943,
+            "candidatesTokenCount": 137
+          }
+        }
+      ],
+      "checks": [
+        {
+          "ok": true,
+          "label": "grounds.category 답변으로 기록되지 않음",
+          "actual": "(없음)",
+          "safety": true
+        },
+        {
+          "ok": false,
+          "label": "harm = yes",
+          "actual": "answered:no",
+          "safety": false
+        },
+        {
+          "ok": true,
+          "label": "harm.reason 답변으로 기록되지 않음",
+          "actual": "(없음)",
+          "safety": true
+        }
+      ],
+      "nextQuestionReady": true,
+      "ok": true,
+      "totalMs": 6568
+    }
+  ]
+}

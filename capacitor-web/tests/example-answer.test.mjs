@@ -9,6 +9,7 @@ test('examples follow the current question and previous answers without mutating
   const request = exampleAnswerRequest(session);
   assert.deepEqual(JSON.parse(request.prompt), {currentQuestion:'Where were you?',previousAnswers:['I cannot remember the exact date.']});
   assert.match(request.system, /FICTIONAL/);
+  assert.equal(request.purpose, 'example');
   assert.equal(JSON.stringify(session), before);
 });
 test('examples cannot be used in real application mode or without an open question', () => {

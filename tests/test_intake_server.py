@@ -30,8 +30,42 @@ class IntakeServerTests(unittest.TestCase):
             httpd.server_close()
             worker.join(timeout=3)
 
+    def test_translation_requires_nonempty_translation_field(self):
+        response = io.BytesIO(json.dumps({"response": '{"translation":"러시아"}'}).encode())
+        with patch.object(server, "urlopen", return_value=response) as mocked:
+            result = server.translate({"model":"qwen3:4b", "text":"Россия", "source_language":"ru", "target_language":"ko"})
+        body = json.loads(mocked.call_args.args[0].data)
+        self.assertEqual(body["format"]["required"], ["translation"])
+        self.assertEqual(body["format"]["properties"]["translation"]["minLength"], 1)
+        self.assertFalse(body["think"])
+        self.assertEqual(result["translation"], "러시아")
+        with patch.object(server, "call_ollama", return_value={"translation":""}), self.assertRaises(ValueError):
+            server.translate({"text":"пример", "source_language":"ru", "target_language":"ko"})
+
     def payload(self):
         return {"task": "intake", "model": "gemma4:e4b", "system": "collect facts", "prompt": "fictional example"}
+
+    def test_application_specialist_uses_plain_translation_prompt_and_rejects_incomplete_output(self):
+        payload = {"question_id":"9.8", "text":"Не применимо: паспорт находится у меня.", "source_language":"ru", "target_language":"ko", "model":"dari-hymt2:1.8b"}
+        response = io.BytesIO(json.dumps({"response":"해당 없음: 여권을 소지하고 있습니다.","done_reason":"stop"}).encode())
+        with patch.object(server, "urlopen", return_value=response) as mocked:
+            result = server.translate(payload)
+        body = json.loads(mocked.call_args.args[0].data)
+        self.assertNotIn("format", body)
+        self.assertEqual(body["options"]["temperature"], 0)
+        self.assertEqual(result["model"], "dari-hymt2:1.8b")
+        for data in [{"response":payload["text"],"done_reason":"stop"}, {"response":"일부 번역","done_reason":"length"}]:
+            with self.subTest(data=data), patch.object(server,"urlopen",return_value=io.BytesIO(json.dumps(data).encode())), self.assertRaises(ValueError):
+                server.translate(payload)
+
+    def test_application_guard_distinguishes_names_and_dates_from_copied_sentences(self):
+        server.validate_application_translation("ПРИМЕРОВ", "ru", "ПРИМЕРОВ", "1.2")
+        server.validate_application_translation("2024/01/10", "ru", "2024/01/10", "9.3")
+        server.validate_application_translation("Мать: Елена Примерова.", "ru", "어머니는 Елена Примерова입니다.", "4")
+        with self.assertRaisesRegex(ValueError, "UNTRANSLATED_ANSWER"):
+            server.validate_application_translation("Не исповедую религию.","ru","Не исповедую религию.","1.11")
+        with self.assertRaisesRegex(ValueError, "UNTRANSLATED_ANSWER"):
+            server.validate_application_translation("Паспорт находится у меня.","ru","해당 없음. Паспорт находится у меня.","9.8")
 
     def test_intake_uses_local_chat_and_preserves_structured_response(self):
         response = io.BytesIO(json.dumps({"message": {"content": '{"question":"언제인가요?"}'}, "done_reason": "stop"}).encode())

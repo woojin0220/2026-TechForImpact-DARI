@@ -1,0 +1,104 @@
+{
+  "scope": "Fictional data only; one-call path on both providers. Gemini includes actual masking, provider, restoration and local validation; first model preparation separate. Local is Mac M1 Pro 16 GiB Ollama, NOT physical phone.",
+  "head": "5acd6d8",
+  "conversation": [
+    {
+      "scenario": "basic",
+      "local": {
+        "totalMs": 35108,
+        "calls": 1,
+        "passed": 8,
+        "checks": 8,
+        "failedChecks": []
+      },
+      "gemini": {
+        "totalMs": 21332,
+        "calls": 1,
+        "passed": 7,
+        "checks": 8,
+        "failedChecks": [
+          {
+            "ok": false,
+            "label": "grounds.category ⊃ \"political\"",
+            "actual": "(없음)",
+            "safety": false
+          }
+        ],
+        "maskingMs": 10873
+      }
+    },
+    {
+      "scenario": "narrow-denial",
+      "local": {
+        "totalMs": 35768,
+        "calls": 1,
+        "passed": 5,
+        "checks": 5,
+        "failedChecks": []
+      },
+      "gemini": {
+        "totalMs": 11778,
+        "calls": 1,
+        "passed": 5,
+        "checks": 5,
+        "failedChecks": [],
+        "maskingMs": 1137
+      }
+    },
+    {
+      "scenario": "no-category",
+      "local": {
+        "totalMs": 7495,
+        "calls": 1,
+        "passed": 2,
+        "checks": 3,
+        "failedChecks": [
+          {
+            "ok": false,
+            "label": "harm = yes",
+            "actual": "(없음)",
+            "safety": false
+          }
+        ]
+      },
+      "gemini": {
+        "totalMs": 7429,
+        "calls": 1,
+        "passed": 3,
+        "checks": 3,
+        "failedChecks": [],
+        "maskingMs": 182
+      }
+    }
+  ],
+  "draft": {
+    "local": {
+      "totalMs": 104159,
+      "preparationMs": 24897,
+      "fromProcessStartMs": 129056,
+      "calls": 1,
+      "sections": 14,
+      "characters": 1968,
+      "missingFactIds": 0,
+      "maskingMs": 0
+    },
+    "gemini": {
+      "totalMs": 41420,
+      "preparationMs": 13953,
+      "fromProcessStartMs": 55373,
+      "calls": 1,
+      "sections": 14,
+      "characters": 2241,
+      "missingFactIds": 0,
+      "maskingMs": 12231
+    },
+    "speedRatioReady": 2.51
+  },
+  "limitations": [
+    "One sample per fixture and provider; no p95 inference.",
+    "Structural/provenance checks do not establish translation/semantic equivalence.",
+    "Default-reasoning Gemini drafts hit output limits at 8192 and 16384 tokens; those failures are retained separately. Final draft uses LOW only for draft-batch with 16384 output tokens.",
+    "Entire fixture has 161 facts; 41 are relevant to 14 narrative sections, other fields stay deterministic.",
+    "Local draft was measured before an extra concise-prose instruction was appended to the Gemini batch prompt; source facts and section mapping are identical."
+  ]
+}

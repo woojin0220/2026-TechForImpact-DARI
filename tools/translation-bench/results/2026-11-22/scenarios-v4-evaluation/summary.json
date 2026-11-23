@@ -1,0 +1,35 @@
+{
+  "observations": 240,
+  "unique_cases": 80,
+  "model_calls": 180,
+  "passthroughs": 60,
+  "request_errors": 0,
+  "flagged_observations": 0,
+  "flagged_cases": [],
+  "varying_cases": [
+    "fresh-7",
+    "uncertain-6"
+  ],
+  "rounds": {
+    "1": {
+      "seconds": 27.779,
+      "errors": 0,
+      "flagged": 0
+    },
+    "2": {
+      "seconds": 27.3,
+      "errors": 0,
+      "flagged": 0
+    },
+    "3": {
+      "seconds": 25.63,
+      "errors": 0,
+      "flagged": 0
+    }
+  },
+  "model_latency_seconds": {
+    "median": 0.4377,
+    "p95": 0.6832
+  },
+  "meaning": "Rule flags require review. No flags does not certify factual accuracy."
+}

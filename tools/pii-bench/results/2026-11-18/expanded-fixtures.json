@@ -1,0 +1,2077 @@
+[
+  {
+    "id": "ko-1",
+    "language": "ko",
+    "track": "identifiers",
+    "text": "제 이름은 김하린입니다. 이메일은 harin.kim@example.org이고 전화번호는 010-4827-1936입니다.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 9,
+        "label": "person"
+      },
+      {
+        "start": 19,
+        "end": 40,
+        "label": "email"
+      },
+      {
+        "start": 49,
+        "end": 62,
+        "label": "phone"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ko-2",
+    "language": "ko",
+    "track": "identifiers",
+    "text": "제 생년월일은 1991년 8월 17일이고 여권번호는 M73829164입니다.",
+    "gold": [
+      {
+        "start": 8,
+        "end": 20,
+        "label": "dob"
+      },
+      {
+        "start": 29,
+        "end": 38,
+        "label": "passport"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ko-3",
+    "language": "ko",
+    "track": "identifiers",
+    "text": "저는 서울시 가상구 새봄로 27번길 14, 302호에 살고 있습니다. 제 형 김도윤은 다른 곳에 삽니다.",
+    "gold": [
+      {
+        "start": 3,
+        "end": 28,
+        "label": "address"
+      },
+      {
+        "start": 43,
+        "end": 46,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ko-4",
+    "language": "ko",
+    "track": "identifiers",
+    "text": "2024년 3월 12일 경찰이 집에 왔습니다. 저는 체포되거나 구금되지 않았고, 정확한 시간은 기억나지 않습니다.",
+    "gold": [],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ko-5",
+    "language": "ko",
+    "track": "identifiers",
+    "text": "레일라 누리가 저를 도왔습니다. 다음 날 레일라 누리에게 전화했습니다. 친구 사미르 하산도 함께 있었습니다.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 6,
+        "label": "person"
+      },
+      {
+        "start": 23,
+        "end": 29,
+        "label": "person"
+      },
+      {
+        "start": 43,
+        "end": 49,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ko-6",
+    "language": "ko",
+    "track": "identifiers",
+    "text": "박서윤의 연락처가 바뀌었습니다. 이전 이메일 old.seoyun@example.org 대신 new.seoyun@example.org를 사용합니다.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 3,
+        "label": "person"
+      },
+      {
+        "start": 25,
+        "end": 47,
+        "label": "email"
+      },
+      {
+        "start": 51,
+        "end": 73,
+        "label": "email"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ko-7",
+    "language": "ko",
+    "track": "sensitive",
+    "text": "저는 기독교로 개종했습니다. 새빛당에서 활동했고 외상 후 스트레스 장애 진단을 받았습니다.",
+    "gold": [
+      {
+        "start": 3,
+        "end": 6,
+        "label": "religion"
+      },
+      {
+        "start": 16,
+        "end": 19,
+        "label": "political"
+      },
+      {
+        "start": 27,
+        "end": 39,
+        "label": "medical"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "en-1",
+    "language": "en",
+    "track": "identifiers",
+    "text": "My name is Leila Nouri. My email is leila.nouri@example.org and my phone number is +44 7700 900123.",
+    "gold": [
+      {
+        "start": 11,
+        "end": 22,
+        "label": "person"
+      },
+      {
+        "start": 36,
+        "end": 59,
+        "label": "email"
+      },
+      {
+        "start": 83,
+        "end": 98,
+        "label": "phone"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "en-2",
+    "language": "en",
+    "track": "identifiers",
+    "text": "My date of birth is 17 August 1991 and my passport number is P73829164.",
+    "gold": [
+      {
+        "start": 20,
+        "end": 34,
+        "label": "dob"
+      },
+      {
+        "start": 61,
+        "end": 70,
+        "label": "passport"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "en-3",
+    "language": "en",
+    "track": "identifiers",
+    "text": "I live at 14 Willow Lane, Flat 302, London. My brother Samir Hassan lives elsewhere.",
+    "gold": [
+      {
+        "start": 10,
+        "end": 42,
+        "label": "address"
+      },
+      {
+        "start": 55,
+        "end": 67,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "en-4",
+    "language": "en",
+    "track": "identifiers",
+    "text": "On 12 March 2024 the police came to my home. I was not arrested or detained, and I do not remember the exact time.",
+    "gold": [],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "en-5",
+    "language": "en",
+    "track": "identifiers",
+    "text": "Leila Nouri helped me. The next day I called Leila Nouri. My friend Samir Hassan was also there.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 11,
+        "label": "person"
+      },
+      {
+        "start": 45,
+        "end": 56,
+        "label": "person"
+      },
+      {
+        "start": 68,
+        "end": 80,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "en-6",
+    "language": "en",
+    "track": "identifiers",
+    "text": "Mariam Farah changed her contact details. She now uses new.mariam@example.org instead of old.mariam@example.org.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 12,
+        "label": "person"
+      },
+      {
+        "start": 55,
+        "end": 77,
+        "label": "email"
+      },
+      {
+        "start": 89,
+        "end": 111,
+        "label": "email"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "en-7",
+    "language": "en",
+    "track": "sensitive",
+    "text": "I converted to Christianity. I was active in the New Dawn Party and was diagnosed with post-traumatic stress disorder.",
+    "gold": [
+      {
+        "start": 15,
+        "end": 27,
+        "label": "religion"
+      },
+      {
+        "start": 49,
+        "end": 63,
+        "label": "political"
+      },
+      {
+        "start": 87,
+        "end": 117,
+        "label": "medical"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fr-1",
+    "language": "fr",
+    "track": "identifiers",
+    "text": "Je m'appelle Leïla Nouri. Mon adresse électronique est leila.nouri@example.org et mon numéro de téléphone est +33 6 12 34 56 78.",
+    "gold": [
+      {
+        "start": 13,
+        "end": 24,
+        "label": "person"
+      },
+      {
+        "start": 55,
+        "end": 78,
+        "label": "email"
+      },
+      {
+        "start": 110,
+        "end": 127,
+        "label": "phone"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fr-2",
+    "language": "fr",
+    "track": "identifiers",
+    "text": "Ma date de naissance est le 17 août 1991 et mon numéro de passeport est P73829164.",
+    "gold": [
+      {
+        "start": 28,
+        "end": 40,
+        "label": "dob"
+      },
+      {
+        "start": 72,
+        "end": 81,
+        "label": "passport"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fr-3",
+    "language": "fr",
+    "track": "identifiers",
+    "text": "J'habite au 14 rue des Saules, appartement 302, Lyon. Mon frère Samir Hassan habite ailleurs.",
+    "gold": [
+      {
+        "start": 12,
+        "end": 52,
+        "label": "address"
+      },
+      {
+        "start": 64,
+        "end": 76,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fr-4",
+    "language": "fr",
+    "track": "identifiers",
+    "text": "Le 12 mars 2024, la police est venue chez moi. Je n'ai été ni arrêté ni détenu et je ne me souviens pas de l'heure exacte.",
+    "gold": [],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fr-5",
+    "language": "fr",
+    "track": "identifiers",
+    "text": "Leïla Nouri m'a aidé. Le lendemain, j'ai appelé Leïla Nouri. Mon ami Samir Hassan était aussi présent.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 11,
+        "label": "person"
+      },
+      {
+        "start": 48,
+        "end": 59,
+        "label": "person"
+      },
+      {
+        "start": 69,
+        "end": 81,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fr-6",
+    "language": "fr",
+    "track": "identifiers",
+    "text": "Mariam Farah a changé de coordonnées. Elle utilise new.mariam@example.org au lieu de old.mariam@example.org.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 12,
+        "label": "person"
+      },
+      {
+        "start": 51,
+        "end": 73,
+        "label": "email"
+      },
+      {
+        "start": 85,
+        "end": 107,
+        "label": "email"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fr-7",
+    "language": "fr",
+    "track": "sensitive",
+    "text": "Je me suis converti au christianisme. Je militais au Parti de l'Aube Nouvelle et on m'a diagnostiqué un trouble de stress post-traumatique.",
+    "gold": [
+      {
+        "start": 23,
+        "end": 36,
+        "label": "religion"
+      },
+      {
+        "start": 53,
+        "end": 77,
+        "label": "political"
+      },
+      {
+        "start": 104,
+        "end": 138,
+        "label": "medical"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ru-1",
+    "language": "ru",
+    "track": "identifiers",
+    "text": "Меня зовут Лейла Нури. Моя электронная почта — leila.nouri@example.org, а номер телефона — +7 912 345-67-89.",
+    "gold": [
+      {
+        "start": 11,
+        "end": 21,
+        "label": "person"
+      },
+      {
+        "start": 47,
+        "end": 70,
+        "label": "email"
+      },
+      {
+        "start": 91,
+        "end": 107,
+        "label": "phone"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ru-2",
+    "language": "ru",
+    "track": "identifiers",
+    "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+    "gold": [
+      {
+        "start": 20,
+        "end": 40,
+        "label": "dob"
+      },
+      {
+        "start": 59,
+        "end": 68,
+        "label": "passport"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ru-3",
+    "language": "ru",
+    "track": "identifiers",
+    "text": "Я живу по адресу: Москва, улица Ивовая, дом 14, квартира 302. Мой брат Самир Хасан живёт в другом месте.",
+    "gold": [
+      {
+        "start": 18,
+        "end": 60,
+        "label": "address"
+      },
+      {
+        "start": 71,
+        "end": 82,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ru-4",
+    "language": "ru",
+    "track": "identifiers",
+    "text": "12 марта 2024 года полиция пришла ко мне домой. Меня не арестовывали и не задерживали, а точного времени я не помню.",
+    "gold": [],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ru-5",
+    "language": "ru",
+    "track": "identifiers",
+    "text": "Лейла Нури помогла мне. На следующий день я позвонил ей; Лейла Нури ответила. Мой друг Самир Хасан тоже был там.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 10,
+        "label": "person"
+      },
+      {
+        "start": 57,
+        "end": 67,
+        "label": "person"
+      },
+      {
+        "start": 87,
+        "end": 98,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ru-6",
+    "language": "ru",
+    "track": "identifiers",
+    "text": "Мариам Фарах сменила контакты. Теперь она использует new.mariam@example.org вместо old.mariam@example.org.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 12,
+        "label": "person"
+      },
+      {
+        "start": 53,
+        "end": 75,
+        "label": "email"
+      },
+      {
+        "start": 83,
+        "end": 105,
+        "label": "email"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ru-7",
+    "language": "ru",
+    "track": "sensitive",
+    "text": "Я принял христианство. Я участвовал в деятельности Партии нового рассвета, и у меня диагностировали посттравматическое стрессовое расстройство.",
+    "gold": [
+      {
+        "start": 9,
+        "end": 21,
+        "label": "religion"
+      },
+      {
+        "start": 51,
+        "end": 73,
+        "label": "political"
+      },
+      {
+        "start": 100,
+        "end": 142,
+        "label": "medical"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ar-1",
+    "language": "ar",
+    "track": "identifiers",
+    "text": "اسمي ليلى نوري. بريدي الإلكتروني هو leila.nouri@example.org ورقم هاتفي هو +962 7 9000 1234.",
+    "gold": [
+      {
+        "start": 5,
+        "end": 14,
+        "label": "person"
+      },
+      {
+        "start": 36,
+        "end": 59,
+        "label": "email"
+      },
+      {
+        "start": 74,
+        "end": 90,
+        "label": "phone"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ar-2",
+    "language": "ar",
+    "track": "identifiers",
+    "text": "تاريخ ميلادي هو ١٧ أغسطس ١٩٩١ ورقم جواز سفري هو P73829164.",
+    "gold": [
+      {
+        "start": 16,
+        "end": 29,
+        "label": "dob"
+      },
+      {
+        "start": 48,
+        "end": 57,
+        "label": "passport"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ar-3",
+    "language": "ar",
+    "track": "identifiers",
+    "text": "أسكن في عمّان، شارع الصفصاف ١٤، شقة ٣٠٢. أخي سمير حسن يسكن في مكان آخر.",
+    "gold": [
+      {
+        "start": 8,
+        "end": 39,
+        "label": "address"
+      },
+      {
+        "start": 45,
+        "end": 53,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ar-4",
+    "language": "ar",
+    "track": "identifiers",
+    "text": "في ١٢ مارس ٢٠٢٤ جاءت الشرطة إلى منزلي. لم يتم اعتقالي أو احتجازي ولا أتذكر الوقت بالتحديد.",
+    "gold": [],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ar-5",
+    "language": "ar",
+    "track": "identifiers",
+    "text": "ساعدتني ليلى نوري. في اليوم التالي اتصلت بها وأجابت ليلى نوري. كان صديقي سمير حسن هناك أيضاً.",
+    "gold": [
+      {
+        "start": 8,
+        "end": 17,
+        "label": "person"
+      },
+      {
+        "start": 52,
+        "end": 61,
+        "label": "person"
+      },
+      {
+        "start": 73,
+        "end": 81,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ar-6",
+    "language": "ar",
+    "track": "identifiers",
+    "text": "غيّرت مريم فرح بيانات الاتصال بها. تستخدم الآن new.mariam@example.org بدلاً من old.mariam@example.org.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 14,
+        "label": "person"
+      },
+      {
+        "start": 47,
+        "end": 69,
+        "label": "email"
+      },
+      {
+        "start": 79,
+        "end": 101,
+        "label": "email"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ar-7",
+    "language": "ar",
+    "track": "sensitive",
+    "text": "اعتنقت المسيحية. كنت ناشطاً في حزب الفجر الجديد وتم تشخيصي بمرض اضطراب ما بعد الصدمة.",
+    "gold": [
+      {
+        "start": 7,
+        "end": 15,
+        "label": "religion"
+      },
+      {
+        "start": 31,
+        "end": 47,
+        "label": "political"
+      },
+      {
+        "start": 64,
+        "end": 84,
+        "label": "medical"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fa-1",
+    "language": "fa",
+    "track": "identifiers",
+    "text": "نام من لیلا نوری است. ایمیل من leila.nouri@example.org و شماره تلفن من +98 912 345 6789 است.",
+    "gold": [
+      {
+        "start": 7,
+        "end": 16,
+        "label": "person"
+      },
+      {
+        "start": 31,
+        "end": 54,
+        "label": "email"
+      },
+      {
+        "start": 71,
+        "end": 87,
+        "label": "phone"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fa-2",
+    "language": "fa",
+    "track": "identifiers",
+    "text": "تاریخ تولد من ۱۷ اوت ۱۹۹۱ و شماره گذرنامه من P73829164 است.",
+    "gold": [
+      {
+        "start": 14,
+        "end": 25,
+        "label": "dob"
+      },
+      {
+        "start": 45,
+        "end": 54,
+        "label": "passport"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fa-3",
+    "language": "fa",
+    "track": "identifiers",
+    "text": "من در تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲ زندگی می‌کنم. برادرم سمیر حسن جای دیگری زندگی می‌کند.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 42,
+        "label": "address"
+      },
+      {
+        "start": 64,
+        "end": 72,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fa-4",
+    "language": "fa",
+    "track": "identifiers",
+    "text": "در ۱۲ مارس ۲۰۲۴ پلیس به خانه‌ام آمد. من بازداشت یا زندانی نشدم و ساعت دقیق را به یاد ندارم.",
+    "gold": [],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fa-5",
+    "language": "fa",
+    "track": "identifiers",
+    "text": "لیلا نوری به من کمک کرد. روز بعد با او تماس گرفتم و لیلا نوری پاسخ داد. دوستم سمیر حسن هم آنجا بود.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 9,
+        "label": "person"
+      },
+      {
+        "start": 52,
+        "end": 61,
+        "label": "person"
+      },
+      {
+        "start": 78,
+        "end": 86,
+        "label": "person"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fa-6",
+    "language": "fa",
+    "track": "identifiers",
+    "text": "مریم فرح اطلاعات تماسش را تغییر داد. اکنون از new.mariam@example.org به جای old.mariam@example.org استفاده می‌کند.",
+    "gold": [
+      {
+        "start": 0,
+        "end": 8,
+        "label": "person"
+      },
+      {
+        "start": 46,
+        "end": 68,
+        "label": "email"
+      },
+      {
+        "start": 76,
+        "end": 98,
+        "label": "email"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "fa-7",
+    "language": "fa",
+    "track": "sensitive",
+    "text": "من به مسیحیت گرویدم. در حزب سپیده نو فعالیت داشتم و اختلال استرس پس از سانحه در من تشخیص داده شد.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 12,
+        "label": "religion"
+      },
+      {
+        "start": 24,
+        "end": 36,
+        "label": "political"
+      },
+      {
+        "start": 52,
+        "end": 76,
+        "label": "medical"
+      }
+    ],
+    "group": "original",
+    "protected": []
+  },
+  {
+    "id": "ko-code_switch",
+    "language": "ko",
+    "group": "code_switch",
+    "track": "identifiers",
+    "text": "제 이름은 오마르 알카림이고 여권에는 Omar Al-Karim으로 적혀 있습니다. 연락처는 omar.alkarim@example.org입니다.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 13,
+        "label": "person"
+      },
+      {
+        "start": 21,
+        "end": 34,
+        "label": "person"
+      },
+      {
+        "start": 51,
+        "end": 75,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ko-noisy",
+    "language": "ko",
+    "group": "noisy",
+    "track": "identifiers",
+    "text": "이름: 남궁혜린 / 여권: N64918372 / 이메일: hye.rin+case@example.org. 성을 남궁, 이름을 혜린으로 읽어 주세요.",
+    "gold": [
+      {
+        "start": 4,
+        "end": 8,
+        "label": "person"
+      },
+      {
+        "start": 15,
+        "end": 24,
+        "label": "passport"
+      },
+      {
+        "start": 32,
+        "end": 56,
+        "label": "email"
+      },
+      {
+        "start": 61,
+        "end": 63,
+        "label": "person"
+      },
+      {
+        "start": 69,
+        "end": 71,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ko-dob_event",
+    "language": "ko",
+    "group": "dob_event",
+    "track": "identifiers",
+    "text": "저는 1987년 2월 9일에 태어났습니다. 2023년 11월 4일 조사를 받았지만 구금되지는 않았습니다.",
+    "gold": [
+      {
+        "start": 3,
+        "end": 14,
+        "label": "dob"
+      }
+    ],
+    "protected": [
+      {
+        "start": 24,
+        "end": 36,
+        "label": "keep"
+      },
+      {
+        "start": 46,
+        "end": 57,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ko-sensitive",
+    "language": "ko",
+    "group": "sensitive",
+    "track": "sensitive",
+    "text": "저의 배우자는 불교 신자입니다. 저는 민주연합당을 지지한다는 이유로 위협받았습니다. 제 동생은 간질 치료를 받습니다.",
+    "gold": [
+      {
+        "start": 8,
+        "end": 10,
+        "label": "religion"
+      },
+      {
+        "start": 21,
+        "end": 26,
+        "label": "political"
+      },
+      {
+        "start": 53,
+        "end": 55,
+        "label": "medical"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ko-negative",
+    "language": "ko",
+    "group": "negative",
+    "track": "identifiers",
+    "text": "경찰인지 확실하지 않습니다. 2024년 6월에 세 명을 봤으며 직접 폭행당한 적은 없습니다.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 0,
+        "end": 2,
+        "label": "keep"
+      },
+      {
+        "start": 16,
+        "end": 24,
+        "label": "keep"
+      },
+      {
+        "start": 35,
+        "end": 50,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ko-long",
+    "language": "ko",
+    "group": "long",
+    "track": "long",
+    "text": "제 이름은 정유나입니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다.  기록에 따르면 조력자는 아미르 라히미입니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다.  마지막 연락 이메일은 yuna.final@example.org입니다.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 9,
+        "label": "person"
+      },
+      {
+        "start": 1540,
+        "end": 1547,
+        "label": "person"
+      },
+      {
+        "start": 3077,
+        "end": 3099,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ko-boundary",
+    "language": "ko",
+    "group": "boundary",
+    "track": "long",
+    "text": "그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부분은 모른다고 말하겠습니다. 다른 사람에게 들은 내용과 직접 본 내용을 구분하겠습니다. 그때 있었던 일을 순서대로 설명하려고 합니다. 정확하지 않은 부 연락 이메일: boundary.contact+27@example.org. 확인 담당자는 서지후입니다.",
+    "gold": [
+      {
+        "start": 212,
+        "end": 243,
+        "label": "email"
+      },
+      {
+        "start": 253,
+        "end": 256,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ko-date_only",
+    "language": "ko",
+    "group": "date_only",
+    "track": "identifiers",
+    "text": "2022년 9월 18일 집을 떠났고 2023년 1월 7일 입국했습니다. 이것은 생년월일이 아니라 사건 날짜입니다.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 0,
+        "end": 12,
+        "label": "keep"
+      },
+      {
+        "start": 20,
+        "end": 31,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "en-code_switch",
+    "language": "en",
+    "group": "code_switch",
+    "track": "identifiers",
+    "text": "My name is Omar Al-Karim, written عمر الكريم on another document. Please contact omar.alkarim@example.org.",
+    "gold": [
+      {
+        "start": 11,
+        "end": 24,
+        "label": "person"
+      },
+      {
+        "start": 34,
+        "end": 44,
+        "label": "person"
+      },
+      {
+        "start": 81,
+        "end": 105,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "en-noisy",
+    "language": "en",
+    "group": "noisy",
+    "track": "identifiers",
+    "text": "Name: Nadya Petrova; passport: N64918372; e-mail: nadya.p+case@example.org. A scanned note spells her name Nadya Pet rova.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 19,
+        "label": "person"
+      },
+      {
+        "start": 31,
+        "end": 40,
+        "label": "passport"
+      },
+      {
+        "start": 50,
+        "end": 74,
+        "label": "email"
+      },
+      {
+        "start": 107,
+        "end": 121,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "en-dob_event",
+    "language": "en",
+    "group": "dob_event",
+    "track": "identifiers",
+    "text": "I was born on 9 February 1987. I was questioned on 4 November 2023, but I was not detained.",
+    "gold": [
+      {
+        "start": 14,
+        "end": 29,
+        "label": "dob"
+      }
+    ],
+    "protected": [
+      {
+        "start": 51,
+        "end": 66,
+        "label": "keep"
+      },
+      {
+        "start": 72,
+        "end": 90,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "en-sensitive",
+    "language": "en",
+    "group": "sensitive",
+    "track": "sensitive",
+    "text": "My spouse follows Buddhism. I was threatened for supporting the Democratic Alliance Party. My brother is being treated for epilepsy.",
+    "gold": [
+      {
+        "start": 18,
+        "end": 26,
+        "label": "religion"
+      },
+      {
+        "start": 64,
+        "end": 89,
+        "label": "political"
+      },
+      {
+        "start": 123,
+        "end": 131,
+        "label": "medical"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "en-negative",
+    "language": "en",
+    "group": "negative",
+    "track": "identifiers",
+    "text": "I am not sure whether they were police officers. I saw three people in June 2024 and I was never directly assaulted.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 32,
+        "end": 47,
+        "label": "keep"
+      },
+      {
+        "start": 71,
+        "end": 80,
+        "label": "keep"
+      },
+      {
+        "start": 85,
+        "end": 115,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "en-long",
+    "language": "en",
+    "group": "long",
+    "track": "long",
+    "text": "My name is Nadya Petrova. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me.  The person who helped was Amir Rahimi. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me.  My final contact email is nadya.final@example.org.",
+    "gold": [
+      {
+        "start": 11,
+        "end": 24,
+        "label": "person"
+      },
+      {
+        "start": 2951,
+        "end": 2962,
+        "label": "person"
+      },
+      {
+        "start": 5889,
+        "end": 5912,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "en-boundary",
+    "language": "en",
+    "group": "boundary",
+    "track": "long",
+    "text": "I am trying to describe what happened in order. I will say when I do not remember a detail. I will distinguish what I saw myself from what other people told me. I am trying to describe what happened in o Contact email: boundary.contact+27@example.org. The reviewer is Jonas Mirek.",
+    "gold": [
+      {
+        "start": 219,
+        "end": 250,
+        "label": "email"
+      },
+      {
+        "start": 268,
+        "end": 279,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "en-date_only",
+    "language": "en",
+    "group": "date_only",
+    "track": "identifiers",
+    "text": "I left home on 18 September 2022 and entered the country on 7 January 2023. These are incident dates, not my date of birth.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 15,
+        "end": 32,
+        "label": "keep"
+      },
+      {
+        "start": 60,
+        "end": 74,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "fr-code_switch",
+    "language": "fr",
+    "group": "code_switch",
+    "track": "identifiers",
+    "text": "Je m'appelle Omar Al-Karim, écrit عمر الكريم sur un autre document. Contactez omar.alkarim@example.org.",
+    "gold": [
+      {
+        "start": 13,
+        "end": 26,
+        "label": "person"
+      },
+      {
+        "start": 34,
+        "end": 44,
+        "label": "person"
+      },
+      {
+        "start": 78,
+        "end": 102,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fr-noisy",
+    "language": "fr",
+    "group": "noisy",
+    "track": "identifiers",
+    "text": "Nom : Nadia Petrova ; passeport : N64918372 ; courriel : nadia.p+case@example.org. Une note scannée écrit son nom Nadia Pet rova.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 19,
+        "label": "person"
+      },
+      {
+        "start": 34,
+        "end": 43,
+        "label": "passport"
+      },
+      {
+        "start": 57,
+        "end": 81,
+        "label": "email"
+      },
+      {
+        "start": 114,
+        "end": 128,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fr-dob_event",
+    "language": "fr",
+    "group": "dob_event",
+    "track": "identifiers",
+    "text": "Je suis née le 9 février 1987. J'ai été interrogée le 4 novembre 2023, mais je n'ai pas été détenue.",
+    "gold": [
+      {
+        "start": 15,
+        "end": 29,
+        "label": "dob"
+      }
+    ],
+    "protected": [
+      {
+        "start": 54,
+        "end": 69,
+        "label": "keep"
+      },
+      {
+        "start": 76,
+        "end": 99,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "fr-sensitive",
+    "language": "fr",
+    "group": "sensitive",
+    "track": "sensitive",
+    "text": "Mon conjoint pratique le bouddhisme. J'ai été menacée pour mon soutien au Parti de l'Alliance démocratique. Mon frère est traité pour épilepsie.",
+    "gold": [
+      {
+        "start": 25,
+        "end": 35,
+        "label": "religion"
+      },
+      {
+        "start": 74,
+        "end": 106,
+        "label": "political"
+      },
+      {
+        "start": 134,
+        "end": 143,
+        "label": "medical"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fr-negative",
+    "language": "fr",
+    "group": "negative",
+    "track": "identifiers",
+    "text": "Je ne sais pas si c'étaient des policiers. J'ai vu trois personnes en juin 2024 et je n'ai jamais été directement agressée.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 32,
+        "end": 41,
+        "label": "keep"
+      },
+      {
+        "start": 70,
+        "end": 79,
+        "label": "keep"
+      },
+      {
+        "start": 83,
+        "end": 122,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "fr-long",
+    "language": "fr",
+    "group": "long",
+    "track": "long",
+    "text": "Je m'appelle Nadia Petrova. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté.  La personne qui m'a aidée était Amir Rahimi. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté.  Mon dernier courriel est nadia.final@example.org.",
+    "gold": [
+      {
+        "start": 13,
+        "end": 26,
+        "label": "person"
+      },
+      {
+        "start": 2959,
+        "end": 2970,
+        "label": "person"
+      },
+      {
+        "start": 5896,
+        "end": 5919,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fr-boundary",
+    "language": "fr",
+    "group": "boundary",
+    "track": "long",
+    "text": "J'essaie de décrire les faits dans l'ordre. Je dirai quand je ne me souviens pas d'un détail. Je distinguerai ce que j'ai vu de ce que les autres m'ont raconté. J'essaie de décrire les faits dans l'ordre Courriel de contact : boundary.contact+27@example.org. Le réviseur est Jonas Mirek.",
+    "gold": [
+      {
+        "start": 226,
+        "end": 257,
+        "label": "email"
+      },
+      {
+        "start": 275,
+        "end": 286,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fr-date_only",
+    "language": "fr",
+    "group": "date_only",
+    "track": "identifiers",
+    "text": "J'ai quitté mon domicile le 18 septembre 2022 et je suis entrée dans le pays le 7 janvier 2023. Ce sont des dates d'événements, pas ma date de naissance.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 28,
+        "end": 45,
+        "label": "keep"
+      },
+      {
+        "start": 80,
+        "end": 94,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ru-code_switch",
+    "language": "ru",
+    "group": "code_switch",
+    "track": "identifiers",
+    "text": "Меня зовут Омар Аль-Карим, в другом документе написано Omar Al-Karim. Мой адрес почты: omar.alkarim@example.org.",
+    "gold": [
+      {
+        "start": 11,
+        "end": 25,
+        "label": "person"
+      },
+      {
+        "start": 55,
+        "end": 68,
+        "label": "person"
+      },
+      {
+        "start": 87,
+        "end": 111,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ru-noisy",
+    "language": "ru",
+    "group": "noisy",
+    "track": "identifiers",
+    "text": "Имя: Надя Петрова; паспорт: N64918372; почта: nadya.p+case@example.org. В скане имя записано как Надя Пет рова.",
+    "gold": [
+      {
+        "start": 5,
+        "end": 17,
+        "label": "person"
+      },
+      {
+        "start": 28,
+        "end": 37,
+        "label": "passport"
+      },
+      {
+        "start": 46,
+        "end": 70,
+        "label": "email"
+      },
+      {
+        "start": 97,
+        "end": 110,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ru-dob_event",
+    "language": "ru",
+    "group": "dob_event",
+    "track": "identifiers",
+    "text": "Я родилась 9 февраля 1987 года. Меня допрашивали 4 ноября 2023 года, но меня не задерживали.",
+    "gold": [
+      {
+        "start": 11,
+        "end": 30,
+        "label": "dob"
+      }
+    ],
+    "protected": [
+      {
+        "start": 49,
+        "end": 67,
+        "label": "keep"
+      },
+      {
+        "start": 72,
+        "end": 91,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ru-sensitive",
+    "language": "ru",
+    "group": "sensitive",
+    "track": "sensitive",
+    "text": "Мой супруг исповедует буддизм. Мне угрожали за поддержку Партии демократического альянса. Мой брат лечится от эпилепсии.",
+    "gold": [
+      {
+        "start": 22,
+        "end": 29,
+        "label": "religion"
+      },
+      {
+        "start": 57,
+        "end": 88,
+        "label": "political"
+      },
+      {
+        "start": 110,
+        "end": 119,
+        "label": "medical"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ru-negative",
+    "language": "ru",
+    "group": "negative",
+    "track": "identifiers",
+    "text": "Я не уверена, были ли они полицейскими. Я видела трёх человек в июне 2024 года, и я никогда не подвергалась прямому нападению.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 26,
+        "end": 38,
+        "label": "keep"
+      },
+      {
+        "start": 64,
+        "end": 78,
+        "label": "keep"
+      },
+      {
+        "start": 82,
+        "end": 125,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ru-long",
+    "language": "ru",
+    "group": "long",
+    "track": "long",
+    "text": "Меня зовут Надя Петрова. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди.  Мне помог Амир Рахими. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди.  Мой последний адрес почты: nadya.final@example.org.",
+    "gold": [
+      {
+        "start": 11,
+        "end": 23,
+        "label": "person"
+      },
+      {
+        "start": 2682,
+        "end": 2693,
+        "label": "person"
+      },
+      {
+        "start": 5369,
+        "end": 5392,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ru-boundary",
+    "language": "ru",
+    "group": "boundary",
+    "track": "long",
+    "text": "Я стараюсь описать события по порядку. Я скажу, если не помню подробность. Я буду различать то, что видела сама, и то, что рассказали другие люди. Я стараюсь описать события по порядку. Я скажу, если не  Контактная почта: boundary.contact+27@example.org. Проверяющий: Йонас Мирек.",
+    "gold": [
+      {
+        "start": 222,
+        "end": 253,
+        "label": "email"
+      },
+      {
+        "start": 268,
+        "end": 279,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ru-date_only",
+    "language": "ru",
+    "group": "date_only",
+    "track": "identifiers",
+    "text": "Я покинула дом 18 сентября 2022 года и въехала в страну 7 января 2023 года. Это даты событий, а не дата моего рождения.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 15,
+        "end": 36,
+        "label": "keep"
+      },
+      {
+        "start": 56,
+        "end": 74,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ar-code_switch",
+    "language": "ar",
+    "group": "code_switch",
+    "track": "identifiers",
+    "text": "اسمي عمر الكريم، ويُكتب Omar Al-Karim في وثيقة أخرى. بريدي هو omar.alkarim@example.org.",
+    "gold": [
+      {
+        "start": 5,
+        "end": 15,
+        "label": "person"
+      },
+      {
+        "start": 24,
+        "end": 37,
+        "label": "person"
+      },
+      {
+        "start": 62,
+        "end": 86,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ar-noisy",
+    "language": "ar",
+    "group": "noisy",
+    "track": "identifiers",
+    "text": "الاسم: نادية بتروفا؛ جواز السفر: N64918372؛ البريد: nadia.p+case@example.org. في الصورة كُتب الاسم نادية بتر وفا.",
+    "gold": [
+      {
+        "start": 7,
+        "end": 19,
+        "label": "person"
+      },
+      {
+        "start": 33,
+        "end": 42,
+        "label": "passport"
+      },
+      {
+        "start": 52,
+        "end": 76,
+        "label": "email"
+      },
+      {
+        "start": 99,
+        "end": 112,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ar-dob_event",
+    "language": "ar",
+    "group": "dob_event",
+    "track": "identifiers",
+    "text": "وُلدت في ٩ فبراير ١٩٨٧. تم استجوابي في ٤ نوفمبر ٢٠٢٣، لكن لم يتم احتجازي.",
+    "gold": [
+      {
+        "start": 9,
+        "end": 22,
+        "label": "dob"
+      }
+    ],
+    "protected": [
+      {
+        "start": 39,
+        "end": 52,
+        "label": "keep"
+      },
+      {
+        "start": 58,
+        "end": 72,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ar-sensitive",
+    "language": "ar",
+    "group": "sensitive",
+    "track": "sensitive",
+    "text": "زوجي يتبع البوذية. تعرضت للتهديد بسبب دعمي لحزب التحالف الديمقراطي. يتلقى أخي العلاج من الصرع.",
+    "gold": [
+      {
+        "start": 10,
+        "end": 17,
+        "label": "religion"
+      },
+      {
+        "start": 43,
+        "end": 66,
+        "label": "political"
+      },
+      {
+        "start": 88,
+        "end": 93,
+        "label": "medical"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ar-negative",
+    "language": "ar",
+    "group": "negative",
+    "track": "identifiers",
+    "text": "لست متأكدة إن كانوا رجال شرطة. رأيت ثلاثة أشخاص في يونيو ٢٠٢٤، ولم أتعرض لاعتداء مباشر قط.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 20,
+        "end": 29,
+        "label": "keep"
+      },
+      {
+        "start": 51,
+        "end": 61,
+        "label": "keep"
+      },
+      {
+        "start": 64,
+        "end": 89,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "ar-long",
+    "language": "ar",
+    "group": "long",
+    "track": "long",
+    "text": "اسمي نادية بتروفا. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون.  الشخص الذي ساعدني هو أمير رحيمي. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون.  بريدي الأخير هو nadia.final@example.org.",
+    "gold": [
+      {
+        "start": 5,
+        "end": 17,
+        "label": "person"
+      },
+      {
+        "start": 2003,
+        "end": 2013,
+        "label": "person"
+      },
+      {
+        "start": 3994,
+        "end": 4017,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ar-boundary",
+    "language": "ar",
+    "group": "boundary",
+    "track": "long",
+    "text": "أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني به أشخاص آخرون. أحاول وصف ما حدث بالترتيب. سأقول عندما لا أتذكر تفصيلاً. سأميز بين ما رأيته بنفسي وما أخبرني ب البريد للتواصل: boundary.contact+27@example.org. المراجع هو يوناس ميريك.",
+    "gold": [
+      {
+        "start": 220,
+        "end": 251,
+        "label": "email"
+      },
+      {
+        "start": 264,
+        "end": 275,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "ar-date_only",
+    "language": "ar",
+    "group": "date_only",
+    "track": "identifiers",
+    "text": "غادرت منزلي في ١٨ سبتمبر ٢٠٢٢ ودخلت البلاد في ٧ يناير ٢٠٢٣. هذه تواريخ أحداث وليست تاريخ ميلادي.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 15,
+        "end": 29,
+        "label": "keep"
+      },
+      {
+        "start": 46,
+        "end": 58,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "fa-code_switch",
+    "language": "fa",
+    "group": "code_switch",
+    "track": "identifiers",
+    "text": "نام من عمر الکریم است و در سند دیگری Omar Al-Karim نوشته شده است. ایمیل من omar.alkarim@example.org است.",
+    "gold": [
+      {
+        "start": 7,
+        "end": 17,
+        "label": "person"
+      },
+      {
+        "start": 37,
+        "end": 50,
+        "label": "person"
+      },
+      {
+        "start": 75,
+        "end": 99,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fa-noisy",
+    "language": "fa",
+    "group": "noisy",
+    "track": "identifiers",
+    "text": "نام: نادیا پترووا؛ گذرنامه: N64918372؛ ایمیل: nadia.p+case@example.org. در اسکن نام به صورت نادیا پتر ووا آمده است.",
+    "gold": [
+      {
+        "start": 5,
+        "end": 17,
+        "label": "person"
+      },
+      {
+        "start": 28,
+        "end": 37,
+        "label": "passport"
+      },
+      {
+        "start": 46,
+        "end": 70,
+        "label": "email"
+      },
+      {
+        "start": 92,
+        "end": 105,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fa-dob_event",
+    "language": "fa",
+    "group": "dob_event",
+    "track": "identifiers",
+    "text": "من در ۹ فوریه ۱۹۸۷ به دنیا آمدم. در ۴ نوامبر ۲۰۲۳ از من بازجویی شد، ولی بازداشت نشدم.",
+    "gold": [
+      {
+        "start": 6,
+        "end": 18,
+        "label": "dob"
+      }
+    ],
+    "protected": [
+      {
+        "start": 36,
+        "end": 49,
+        "label": "keep"
+      },
+      {
+        "start": 72,
+        "end": 84,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "fa-sensitive",
+    "language": "fa",
+    "group": "sensitive",
+    "track": "sensitive",
+    "text": "همسر من پیرو آیین بودا است. به دلیل حمایت از حزب اتحاد دموکراتیک تهدید شدم. برادرم برای صرع درمان می‌شود.",
+    "gold": [
+      {
+        "start": 13,
+        "end": 22,
+        "label": "religion"
+      },
+      {
+        "start": 45,
+        "end": 64,
+        "label": "political"
+      },
+      {
+        "start": 88,
+        "end": 91,
+        "label": "medical"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fa-negative",
+    "language": "fa",
+    "group": "negative",
+    "track": "identifiers",
+    "text": "مطمئن نیستم که آنها مأمور پلیس بودند. در ژوئن ۲۰۲۴ سه نفر را دیدم و هرگز مستقیماً مورد حمله قرار نگرفتم.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 20,
+        "end": 30,
+        "label": "keep"
+      },
+      {
+        "start": 41,
+        "end": 50,
+        "label": "keep"
+      },
+      {
+        "start": 68,
+        "end": 103,
+        "label": "keep"
+      }
+    ]
+  },
+  {
+    "id": "fa-long",
+    "language": "fa",
+    "group": "long",
+    "track": "long",
+    "text": "نام من نادیا پترووا است. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم.  شخصی که به من کمک کرد امیر رحیمی بود. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم.  آخرین ایمیل من nadia.final@example.org است.",
+    "gold": [
+      {
+        "start": 7,
+        "end": 19,
+        "label": "person"
+      },
+      {
+        "start": 2496,
+        "end": 2506,
+        "label": "person"
+      },
+      {
+        "start": 4976,
+        "end": 4999,
+        "label": "email"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fa-boundary",
+    "language": "fa",
+    "group": "boundary",
+    "track": "long",
+    "text": "سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاورم می‌گویم. آنچه را خودم دیده‌ام از آنچه دیگران گفته‌اند جدا می‌کنم. سعی می‌کنم رویدادها را به ترتیب شرح دهم. اگر جزئیاتی را به یاد نیاو ایمیل تماس: boundary.contact+27@example.org. بازبین یوناس میرک است.",
+    "gold": [
+      {
+        "start": 216,
+        "end": 247,
+        "label": "email"
+      },
+      {
+        "start": 256,
+        "end": 266,
+        "label": "person"
+      }
+    ],
+    "protected": []
+  },
+  {
+    "id": "fa-date_only",
+    "language": "fa",
+    "group": "date_only",
+    "track": "identifiers",
+    "text": "در ۱۸ سپتامبر ۲۰۲۲ خانه را ترک کردم و در ۷ ژانویه ۲۰۲۳ وارد کشور شدم. اینها تاریخ رویداد هستند، نه تاریخ تولد من.",
+    "gold": [],
+    "protected": [
+      {
+        "start": 3,
+        "end": 18,
+        "label": "keep"
+      },
+      {
+        "start": 41,
+        "end": 54,
+        "label": "keep"
+      }
+    ]
+  }
+]

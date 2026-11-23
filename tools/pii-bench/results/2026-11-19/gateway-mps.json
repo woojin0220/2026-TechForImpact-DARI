@@ -1,0 +1,2308 @@
+{
+  "device": "mps",
+  "first_request_ms": 10755,
+  "identical_request_ms": 2,
+  "new_turn_ms": 579,
+  "rows": [
+    {
+      "id": "ko-1",
+      "track": "identifiers",
+      "milliseconds": 151,
+      "roundtrip_exact": true,
+      "tp": 37,
+      "fp": 2,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-2",
+      "track": "identifiers",
+      "milliseconds": 204,
+      "roundtrip_exact": true,
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-3",
+      "track": "identifiers",
+      "milliseconds": 53,
+      "roundtrip_exact": true,
+      "tp": 21,
+      "fp": 0,
+      "fn": 2,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        false,
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-4",
+      "track": "identifiers",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 3,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-5",
+      "track": "identifiers",
+      "milliseconds": 52,
+      "roundtrip_exact": true,
+      "tp": 15,
+      "fp": 1,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-6",
+      "track": "identifiers",
+      "milliseconds": 60,
+      "roundtrip_exact": true,
+      "tp": 47,
+      "fp": 1,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-7",
+      "track": "sensitive",
+      "milliseconds": 141,
+      "roundtrip_exact": true,
+      "tp": 9,
+      "fp": 1,
+      "fn": 6,
+      "covered_entities": 1,
+      "entities": 3,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        false,
+        false
+      ],
+      "core_fully_covered": [
+        true,
+        false,
+        false
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-1",
+      "track": "identifiers",
+      "milliseconds": 67,
+      "roundtrip_exact": true,
+      "tp": 46,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-2",
+      "track": "identifiers",
+      "milliseconds": 171,
+      "roundtrip_exact": true,
+      "tp": 21,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-3",
+      "track": "identifiers",
+      "milliseconds": 60,
+      "roundtrip_exact": true,
+      "tp": 36,
+      "fp": 0,
+      "fn": 2,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-4",
+      "track": "identifiers",
+      "milliseconds": 58,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-5",
+      "track": "identifiers",
+      "milliseconds": 60,
+      "roundtrip_exact": true,
+      "tp": 31,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-6",
+      "track": "identifiers",
+      "milliseconds": 63,
+      "roundtrip_exact": true,
+      "tp": 55,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-7",
+      "track": "sensitive",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 52,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-1",
+      "track": "identifiers",
+      "milliseconds": 58,
+      "roundtrip_exact": true,
+      "tp": 45,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-2",
+      "track": "identifiers",
+      "milliseconds": 53,
+      "roundtrip_exact": true,
+      "tp": 19,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-3",
+      "track": "identifiers",
+      "milliseconds": 60,
+      "roundtrip_exact": true,
+      "tp": 32,
+      "fp": 0,
+      "fn": 13,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        false,
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-4",
+      "track": "identifiers",
+      "milliseconds": 65,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-5",
+      "track": "identifiers",
+      "milliseconds": 66,
+      "roundtrip_exact": true,
+      "tp": 31,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-6",
+      "track": "identifiers",
+      "milliseconds": 58,
+      "roundtrip_exact": true,
+      "tp": 55,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-7",
+      "track": "sensitive",
+      "milliseconds": 64,
+      "roundtrip_exact": true,
+      "tp": 65,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-1",
+      "track": "identifiers",
+      "milliseconds": 59,
+      "roundtrip_exact": true,
+      "tp": 46,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-2",
+      "track": "identifiers",
+      "milliseconds": 140,
+      "roundtrip_exact": true,
+      "tp": 22,
+      "fp": 0,
+      "fn": 4,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        false,
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-3",
+      "track": "identifiers",
+      "milliseconds": 66,
+      "roundtrip_exact": true,
+      "tp": 27,
+      "fp": 0,
+      "fn": 19,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        false,
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-4",
+      "track": "identifiers",
+      "milliseconds": 48,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-5",
+      "track": "identifiers",
+      "milliseconds": 45,
+      "roundtrip_exact": true,
+      "tp": 28,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-6",
+      "track": "identifiers",
+      "milliseconds": 57,
+      "roundtrip_exact": true,
+      "tp": 55,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-7",
+      "track": "sensitive",
+      "milliseconds": 58,
+      "roundtrip_exact": true,
+      "tp": 72,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-1",
+      "track": "identifiers",
+      "milliseconds": 52,
+      "roundtrip_exact": true,
+      "tp": 44,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-2",
+      "track": "identifiers",
+      "milliseconds": 132,
+      "roundtrip_exact": true,
+      "tp": 9,
+      "fp": 0,
+      "fn": 11,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        false,
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-3",
+      "track": "identifiers",
+      "milliseconds": 51,
+      "roundtrip_exact": true,
+      "tp": 28,
+      "fp": 0,
+      "fn": 5,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        false,
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-4",
+      "track": "identifiers",
+      "milliseconds": 46,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-5",
+      "track": "identifiers",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 23,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-6",
+      "track": "identifiers",
+      "milliseconds": 59,
+      "roundtrip_exact": true,
+      "tp": 51,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-7",
+      "track": "sensitive",
+      "milliseconds": 108,
+      "roundtrip_exact": true,
+      "tp": 39,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-1",
+      "track": "identifiers",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 44,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-2",
+      "track": "identifiers",
+      "milliseconds": 52,
+      "roundtrip_exact": true,
+      "tp": 18,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-3",
+      "track": "identifiers",
+      "milliseconds": 55,
+      "roundtrip_exact": true,
+      "tp": 26,
+      "fp": 0,
+      "fn": 11,
+      "covered_entities": 1,
+      "entities": 2,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        false,
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-4",
+      "track": "identifiers",
+      "milliseconds": 53,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-5",
+      "track": "identifiers",
+      "milliseconds": 54,
+      "roundtrip_exact": true,
+      "tp": 23,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-6",
+      "track": "identifiers",
+      "milliseconds": 57,
+      "roundtrip_exact": true,
+      "tp": 51,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-7",
+      "track": "sensitive",
+      "milliseconds": 57,
+      "roundtrip_exact": true,
+      "tp": 27,
+      "fp": 0,
+      "fn": 9,
+      "covered_entities": 2,
+      "entities": 3,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        false
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        false
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-code_switch",
+      "track": "identifiers",
+      "milliseconds": 55,
+      "roundtrip_exact": true,
+      "tp": 42,
+      "fp": 3,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-noisy",
+      "track": "identifiers",
+      "milliseconds": 106,
+      "roundtrip_exact": true,
+      "tp": 41,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 5,
+      "entities": 5,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 5,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-dob_event",
+      "track": "identifiers",
+      "milliseconds": 51,
+      "roundtrip_exact": true,
+      "tp": 9,
+      "fp": 3,
+      "fn": 0,
+      "covered_entities": 1,
+      "entities": 1,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true
+      ],
+      "core_fully_covered": [
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [
+        false,
+        true
+      ],
+      "protected_hits": 1,
+      "protected_count": 2
+    },
+    {
+      "id": "ko-sensitive",
+      "track": "sensitive",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 9,
+      "fp": 4,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-negative",
+      "track": "identifiers",
+      "milliseconds": 48,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 3
+    },
+    {
+      "id": "ko-long",
+      "track": "long",
+      "milliseconds": 1051,
+      "roundtrip_exact": true,
+      "tp": 31,
+      "fp": 3,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-boundary",
+      "track": "long",
+      "milliseconds": 155,
+      "roundtrip_exact": true,
+      "tp": 34,
+      "fp": 3,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ko-date_only",
+      "track": "identifiers",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 4,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "en-code_switch",
+      "track": "identifiers",
+      "milliseconds": 52,
+      "roundtrip_exact": true,
+      "tp": 45,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-noisy",
+      "track": "identifiers",
+      "milliseconds": 59,
+      "roundtrip_exact": true,
+      "tp": 57,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 4,
+      "entities": 4,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 4,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-dob_event",
+      "track": "identifiers",
+      "milliseconds": 54,
+      "roundtrip_exact": true,
+      "tp": 13,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 1,
+      "entities": 1,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true
+      ],
+      "core_fully_covered": [
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "en-sensitive",
+      "track": "sensitive",
+      "milliseconds": 51,
+      "roundtrip_exact": true,
+      "tp": 39,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-negative",
+      "track": "identifiers",
+      "milliseconds": 52,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 3
+    },
+    {
+      "id": "en-long",
+      "track": "long",
+      "milliseconds": 1215,
+      "roundtrip_exact": true,
+      "tp": 45,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-boundary",
+      "track": "long",
+      "milliseconds": 84,
+      "roundtrip_exact": true,
+      "tp": 41,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "en-date_only",
+      "track": "identifiers",
+      "milliseconds": 53,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "fr-code_switch",
+      "track": "identifiers",
+      "milliseconds": 52,
+      "roundtrip_exact": true,
+      "tp": 45,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-noisy",
+      "track": "identifiers",
+      "milliseconds": 59,
+      "roundtrip_exact": true,
+      "tp": 57,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 4,
+      "entities": 4,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 4,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-dob_event",
+      "track": "identifiers",
+      "milliseconds": 46,
+      "roundtrip_exact": true,
+      "tp": 12,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 1,
+      "entities": 1,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true
+      ],
+      "core_fully_covered": [
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "fr-sensitive",
+      "track": "sensitive",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 48,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-negative",
+      "track": "identifiers",
+      "milliseconds": 56,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 3
+    },
+    {
+      "id": "fr-long",
+      "track": "long",
+      "milliseconds": 1378,
+      "roundtrip_exact": true,
+      "tp": 45,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-boundary",
+      "track": "long",
+      "milliseconds": 95,
+      "roundtrip_exact": true,
+      "tp": 41,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fr-date_only",
+      "track": "identifiers",
+      "milliseconds": 57,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "ru-code_switch",
+      "track": "identifiers",
+      "milliseconds": 54,
+      "roundtrip_exact": true,
+      "tp": 49,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-noisy",
+      "track": "identifiers",
+      "milliseconds": 53,
+      "roundtrip_exact": true,
+      "tp": 55,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 4,
+      "entities": 4,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 4,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-dob_event",
+      "track": "identifiers",
+      "milliseconds": 55,
+      "roundtrip_exact": true,
+      "tp": 16,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 1,
+      "entities": 1,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true
+      ],
+      "core_fully_covered": [
+        true
+      ],
+      "core_covered_entities": 1,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "ru-sensitive",
+      "track": "sensitive",
+      "milliseconds": 52,
+      "roundtrip_exact": true,
+      "tp": 45,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-negative",
+      "track": "identifiers",
+      "milliseconds": 55,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 3
+    },
+    {
+      "id": "ru-long",
+      "track": "long",
+      "milliseconds": 1007,
+      "roundtrip_exact": true,
+      "tp": 44,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-boundary",
+      "track": "long",
+      "milliseconds": 144,
+      "roundtrip_exact": true,
+      "tp": 41,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ru-date_only",
+      "track": "identifiers",
+      "milliseconds": 57,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 6,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "ar-code_switch",
+      "track": "identifiers",
+      "milliseconds": 57,
+      "roundtrip_exact": true,
+      "tp": 43,
+      "fp": 0,
+      "fn": 2,
+      "covered_entities": 2,
+      "entities": 3,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        false,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-noisy",
+      "track": "identifiers",
+      "milliseconds": 130,
+      "roundtrip_exact": true,
+      "tp": 55,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 4,
+      "entities": 4,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 4,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-dob_event",
+      "track": "identifiers",
+      "milliseconds": 54,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 11,
+      "covered_entities": 0,
+      "entities": 1,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false
+      ],
+      "core_fully_covered": [
+        false
+      ],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "ar-sensitive",
+      "track": "sensitive",
+      "milliseconds": 59,
+      "roundtrip_exact": true,
+      "tp": 29,
+      "fp": 0,
+      "fn": 4,
+      "covered_entities": 2,
+      "entities": 3,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        false,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        false,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-negative",
+      "track": "identifiers",
+      "milliseconds": 51,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 3
+    },
+    {
+      "id": "ar-long",
+      "track": "long",
+      "milliseconds": 924,
+      "roundtrip_exact": true,
+      "tp": 43,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-boundary",
+      "track": "long",
+      "milliseconds": 102,
+      "roundtrip_exact": true,
+      "tp": 41,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "ar-date_only",
+      "track": "identifiers",
+      "milliseconds": 53,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 6,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    },
+    {
+      "id": "fa-code_switch",
+      "track": "identifiers",
+      "milliseconds": 54,
+      "roundtrip_exact": true,
+      "tp": 45,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-noisy",
+      "track": "identifiers",
+      "milliseconds": 59,
+      "roundtrip_exact": true,
+      "tp": 55,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 4,
+      "entities": 4,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 4,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-dob_event",
+      "track": "identifiers",
+      "milliseconds": 53,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 8,
+      "fn": 10,
+      "covered_entities": 0,
+      "entities": 1,
+      "leak_free": false,
+      "exact_mask": false,
+      "fully_covered": [
+        false
+      ],
+      "core_fully_covered": [
+        false
+      ],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        true
+      ],
+      "protected_hits": 1,
+      "protected_count": 2
+    },
+    {
+      "id": "fa-sensitive",
+      "track": "sensitive",
+      "milliseconds": 61,
+      "roundtrip_exact": true,
+      "tp": 28,
+      "fp": 4,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-negative",
+      "track": "identifiers",
+      "milliseconds": 55,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 3
+    },
+    {
+      "id": "fa-long",
+      "track": "long",
+      "milliseconds": 1258,
+      "roundtrip_exact": true,
+      "tp": 43,
+      "fp": 73,
+      "fn": 0,
+      "covered_entities": 3,
+      "entities": 3,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true,
+        true
+      ],
+      "core_covered_entities": 3,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-boundary",
+      "track": "long",
+      "milliseconds": 115,
+      "roundtrip_exact": true,
+      "tp": 40,
+      "fp": 0,
+      "fn": 0,
+      "covered_entities": 2,
+      "entities": 2,
+      "leak_free": true,
+      "exact_mask": true,
+      "fully_covered": [
+        true,
+        true
+      ],
+      "core_fully_covered": [
+        true,
+        true
+      ],
+      "core_covered_entities": 2,
+      "protected_hit": [],
+      "protected_hits": 0,
+      "protected_count": 0
+    },
+    {
+      "id": "fa-date_only",
+      "track": "identifiers",
+      "milliseconds": 54,
+      "roundtrip_exact": true,
+      "tp": 0,
+      "fp": 4,
+      "fn": 0,
+      "covered_entities": 0,
+      "entities": 0,
+      "leak_free": true,
+      "exact_mask": false,
+      "fully_covered": [],
+      "core_fully_covered": [],
+      "core_covered_entities": 0,
+      "protected_hit": [
+        false,
+        false
+      ],
+      "protected_hits": 0,
+      "protected_count": 2
+    }
+  ]
+}

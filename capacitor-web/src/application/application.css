@@ -1,0 +1,55 @@
+/* Same monochrome tokens and 560px column as account/community screens. */
+.application-page{--soft:#f5f5f4;--muted:#6b6b6b;--card-line:#ececec;min-height:calc(100dvh - var(--dari-tabbar-height,60px));background:#fff;color:var(--ink);max-width:560px;margin:0 auto;padding:calc(32px + env(safe-area-inset-top)) 24px 32px}
+.application-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
+.application-brand{margin:0;font-size:26px;letter-spacing:-.6px;line-height:1.3;flex:1}
+.application-tools{display:flex;align-items:center;gap:8px}
+.application-tools select{width:auto;max-width:128px;font-size:12px;min-height:38px;padding:7px 10px}
+.application-main{padding:0;outline:none}
+.application-heading{display:grid;gap:16px}
+.application-heading p{margin:0;font-size:14px;line-height:1.85}
+.application-heading .application-eyebrow{font-size:12px;color:var(--muted);margin-bottom:8px}
+.application-eyebrow{font-size:12px;color:var(--muted);margin:0 0 8px}
+.application-eyebrow b{margin-inline-start:8px;color:var(--ink);font-weight:600}
+.application-section-title{font-size:22px;line-height:1.45;letter-spacing:-.4px;margin:0 0 12px}
+.application-main h1{font-size:22px;line-height:1.45;letter-spacing:-.4px}
+.application-note{font-size:12.5px;color:var(--muted);line-height:1.65}
+.application-heading>.primary{width:100%;min-height:48px;border-radius:12px;background:var(--ink);color:#fff;border-color:var(--ink)}
+.question-list{padding:0;list-style:none;margin:24px 0 0;display:grid;gap:12px}
+.question-card{width:100%;display:flex;align-items:center;gap:12px;text-align:start;border:1px solid var(--card-line);background:#fff;padding:16px;border-radius:var(--radius);color:inherit;font:inherit;box-shadow:0 1px 2px #0000000a;transition:border-color .15s,box-shadow .15s}
+.question-card:hover,.question-card:active{border-color:#cfcfcf;box-shadow:0 4px 14px #0000000f}
+.question-number{min-width:34px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.question-label{flex:1;min-width:0;font-size:14px;font-weight:600;line-height:1.6;overflow-wrap:anywhere}
+.question-state{font-size:11px;white-space:nowrap;color:var(--muted);flex:none}
+.question-state.has-answer{background:var(--soft);padding:4px 8px;border-radius:999px;color:var(--ink)}
+.question-card>span:last-child{color:var(--muted)}
+.application-back{border:0;background:none;padding:0;min-height:44px;margin-bottom:4px;font-size:13px;color:var(--muted);text-align:start}
+.application-back:hover{text-decoration:underline;text-underline-offset:4px}
+.answer-columns{display:grid;gap:24px;margin-top:12px}
+.answer-title{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:600;margin-bottom:8px}
+.answer-title select{width:auto;max-width:160px;font-size:13px}
+.application-page textarea{display:block;width:100%;min-height:240px;font-size:15px;line-height:1.85}
+.application-page textarea:disabled{background:var(--soft);color:var(--muted)}
+.translation-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.translation-actions .primary{min-height:48px;border-radius:12px;background:var(--ink);color:#fff;border-color:var(--ink);padding:10px 16px}
+.application-warning{margin:0 0 16px;font-size:13px;border:1px solid var(--ink);border-radius:10px;padding:10px 12px}
+.application-main:focus{outline:none}
+@media(max-width:380px){.application-page{padding-inline:20px}.question-card{gap:8px;padding:14px}.question-number{min-width:28px}.question-state{font-size:10px}.application-tools select{max-width:106px}.application-brand{font-size:24px}}
+/* Inline answers follow the existing FormStage label/input/ruled-section layout. */
+.question-list:has(.quick-answer){gap:0}
+.quick-answer{display:grid;gap:9px;padding:20px 0;border-top:1px solid var(--line)}
+.quick-answer .form-label{display:block;margin:0;font-size:14px;font-weight:600;line-height:1.6}
+.quick-answer .form-label>span{margin-inline-end:6px}
+.quick-answer .application-note{margin:0}
+.application-page .quick-answer textarea{min-height:96px}
+.quick-translation-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px}
+.quick-translation-actions .secondary{min-height:38px;padding:8px 12px;font-size:12px;border-radius:10px}
+.quick-result{display:grid;gap:6px;padding-top:4px}
+.quick-result>label{font-size:12px;color:var(--muted)}
+.application-page .quick-result textarea{min-height:76px;font-size:14px;background:var(--soft)}
+.question-list:has(.quick-answer) .question-card{margin:12px 0}
+
+.application-writing{padding-top:calc(16px + env(safe-area-inset-top))}
+.application-writing .application-header{margin-bottom:8px}
+.application-writing .application-section-title{margin-bottom:0}
+.application-writing .question-list{margin-top:12px}
+.application-writing .application-main h1{margin-bottom:8px}

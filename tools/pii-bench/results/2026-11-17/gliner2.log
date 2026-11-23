@@ -1,0 +1,90 @@
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 6282.66it/s]
+W1117 16:13:46.194000 14217 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+[transformers] You are using a model of type `extractor` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+/private/tmp/dari-pii-bench-venv/lib/python3.11/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+{"event": "loaded", "model": "gliner2", "load_seconds": 11.849, "parameters": 307098645}
+{"event": "case", "model": "gliner2", "id": "ko-1", "threshold": 0.3, "ms": 100.9, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ko-2", "threshold": 0.3, "ms": 116.7, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ko-3", "threshold": 0.3, "ms": 104.2, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ko-4", "threshold": 0.3, "ms": 94.3, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "ko-5", "threshold": 0.3, "ms": 88.1, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ko-6", "threshold": 0.3, "ms": 95.2, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ko-7", "threshold": 0.3, "ms": 87.4, "covered": 1, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-1", "threshold": 0.3, "ms": 92.4, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-2", "threshold": 0.3, "ms": 74.8, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "en-3", "threshold": 0.3, "ms": 78.7, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "en-4", "threshold": 0.3, "ms": 80.0, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "en-5", "threshold": 0.3, "ms": 80.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-6", "threshold": 0.3, "ms": 88.9, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-7", "threshold": 0.3, "ms": 93.6, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-1", "threshold": 0.3, "ms": 95.7, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-2", "threshold": 0.3, "ms": 71.8, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fr-3", "threshold": 0.3, "ms": 79.7, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fr-4", "threshold": 0.3, "ms": 82.9, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "fr-5", "threshold": 0.3, "ms": 87.1, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-6", "threshold": 0.3, "ms": 88.9, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-7", "threshold": 0.3, "ms": 87.0, "covered": 2, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-1", "threshold": 0.3, "ms": 85.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-2", "threshold": 0.3, "ms": 96.1, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ru-3", "threshold": 0.3, "ms": 85.9, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ru-4", "threshold": 0.3, "ms": 80.5, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "ru-5", "threshold": 0.3, "ms": 82.2, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-6", "threshold": 0.3, "ms": 79.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-7", "threshold": 0.3, "ms": 84.7, "covered": 2, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-1", "threshold": 0.3, "ms": 81.1, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-2", "threshold": 0.3, "ms": 72.8, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ar-3", "threshold": 0.3, "ms": 80.1, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ar-4", "threshold": 0.3, "ms": 81.2, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "ar-5", "threshold": 0.3, "ms": 82.5, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-6", "threshold": 0.3, "ms": 108.5, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-7", "threshold": 0.3, "ms": 85.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-1", "threshold": 0.3, "ms": 82.6, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-2", "threshold": 0.3, "ms": 75.3, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fa-3", "threshold": 0.3, "ms": 82.3, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fa-4", "threshold": 0.3, "ms": 85.3, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "fa-5", "threshold": 0.3, "ms": 86.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-6", "threshold": 0.3, "ms": 84.2, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-7", "threshold": 0.3, "ms": 85.2, "covered": 2, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ko-1", "threshold": 0.5, "ms": 85.6, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ko-2", "threshold": 0.5, "ms": 80.6, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ko-3", "threshold": 0.5, "ms": 90.5, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ko-4", "threshold": 0.5, "ms": 86.8, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "ko-5", "threshold": 0.5, "ms": 85.6, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ko-6", "threshold": 0.5, "ms": 89.8, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ko-7", "threshold": 0.5, "ms": 85.8, "covered": 1, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-1", "threshold": 0.5, "ms": 89.6, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-2", "threshold": 0.5, "ms": 78.4, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "en-3", "threshold": 0.5, "ms": 80.2, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "en-4", "threshold": 0.5, "ms": 84.0, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "en-5", "threshold": 0.5, "ms": 82.4, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-6", "threshold": 0.5, "ms": 83.4, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "en-7", "threshold": 0.5, "ms": 101.5, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-1", "threshold": 0.5, "ms": 83.1, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-2", "threshold": 0.5, "ms": 75.0, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fr-3", "threshold": 0.5, "ms": 92.1, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fr-4", "threshold": 0.5, "ms": 90.8, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "fr-5", "threshold": 0.5, "ms": 97.2, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-6", "threshold": 0.5, "ms": 87.8, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fr-7", "threshold": 0.5, "ms": 84.6, "covered": 2, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-1", "threshold": 0.5, "ms": 82.1, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-2", "threshold": 0.5, "ms": 75.6, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ru-3", "threshold": 0.5, "ms": 81.0, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ru-4", "threshold": 0.5, "ms": 80.5, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "ru-5", "threshold": 0.5, "ms": 83.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-6", "threshold": 0.5, "ms": 79.9, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ru-7", "threshold": 0.5, "ms": 105.1, "covered": 2, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-1", "threshold": 0.5, "ms": 84.6, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-2", "threshold": 0.5, "ms": 75.1, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ar-3", "threshold": 0.5, "ms": 84.8, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "ar-4", "threshold": 0.5, "ms": 103.2, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "ar-5", "threshold": 0.5, "ms": 91.5, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-6", "threshold": 0.5, "ms": 81.3, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "ar-7", "threshold": 0.5, "ms": 89.4, "covered": 2, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-1", "threshold": 0.5, "ms": 85.5, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-2", "threshold": 0.5, "ms": 73.9, "covered": 2, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fa-3", "threshold": 0.5, "ms": 84.7, "covered": 1, "entities": 2}
+{"event": "case", "model": "gliner2", "id": "fa-4", "threshold": 0.5, "ms": 85.6, "covered": 0, "entities": 0}
+{"event": "case", "model": "gliner2", "id": "fa-5", "threshold": 0.5, "ms": 85.8, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-6", "threshold": 0.5, "ms": 98.5, "covered": 3, "entities": 3}
+{"event": "case", "model": "gliner2", "id": "fa-7", "threshold": 0.5, "ms": 90.4, "covered": 2, "entities": 3}

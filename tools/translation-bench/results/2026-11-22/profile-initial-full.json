@@ -1,0 +1,826 @@
+{
+  "scope": "97 fictional Russian application answers, production local endpoint with question context and terminology; no masking or external LLM",
+  "cases": [
+    {
+      "id": "1.1",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "주신청자",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "1.2",
+      "source": "ПРИМЕРОВ",
+      "translation": "ПРИМЕРОВ",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "1.3",
+      "source": "АЛЕКСЕЙ УЧЕБНЫЙ",
+      "translation": "АЛЕКСЕЙ УЧЕБНЫЙ",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "1.4",
+      "source": "Других имён не использовал.",
+      "translation": "다른 이름을 사용하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4922
+    },
+    {
+      "id": "1.5",
+      "source": "1991/08/17",
+      "translation": "1991/08/17",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "1.6",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "남",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "1.7",
+      "source": "Россия",
+      "translation": "러시아",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.1822
+    },
+    {
+      "id": "1.8",
+      "source": "Программист, сейчас не работаю.",
+      "translation": "프로그래머, 현재 일하지 않음.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3228
+    },
+    {
+      "id": "1.9",
+      "source": "Россия, Санкт-Петербург.",
+      "translation": "러시아, 상트페테르부르크.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3545
+    },
+    {
+      "id": "1.10",
+      "source": "Россия, Санкт-Петербург, Учебная улица, дом 10. Адрес вымышленный.",
+      "translation": "러시아, 상트페테르부르크, 교육가도 10번지. 주소는 허구입니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 1.2676
+    },
+    {
+      "id": "1.11",
+      "source": "Не исповедую религию.",
+      "translation": "종교를 믿지 않음.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 1.0179
+    },
+    {
+      "id": "1.12",
+      "source": "Русский.",
+      "translation": "러시아어.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4017
+    },
+    {
+      "id": "1.13",
+      "source": "Родной язык — русский. Свободно говорю по-русски, немного понимаю английский.",
+      "translation": "모국어는 러시아어입니다. 러시아어를 자유롭게 구사하며, 영어는 약간만 이해합니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.7414
+    },
+    {
+      "id": "1.14",
+      "source": "Да, мне нужен переводчик с русского языка. Корейского языка я не понимаю.",
+      "translation": "네, 저는 러시아어로 통역사를 필요로 합니다. 한국어는 이해할 수 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.5737
+    },
+    {
+      "id": "2",
+      "source": "Нет. Другого гражданства и постоянного вида на жительство у меня нет.",
+      "translation": "아니요. 다른 국적과 영주권은 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3478
+    },
+    {
+      "id": "3",
+      "source": "Не женат. Супруга и детей нет.",
+      "translation": "기혼하지 않음. 아내와 자녀가 없음.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4274
+    },
+    {
+      "id": "4",
+      "source": "Мать: Елена Примерова, 1965/09/24, гражданка России, живёт в Санкт-Петербурге. Все имена вымышлены.",
+      "translation": "어머니: 엘레나 프리메로바, 1965/09/24, 러시아 국적, 상트페테르부르크에 거주. 모든 이름은 허구입니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.9487
+    },
+    {
+      "id": "5",
+      "source": "2009–2014: Учебный технический институт, Санкт-Петербург, специальность — информатика. Название вымышленное.",
+      "translation": "2009–2014: 상트페테르부르크 기술대학교, 정보학 전공. 이름은 허구입니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.6597
+    },
+    {
+      "id": "6",
+      "source": "2014–2026: программист в компании «Учебный код», Санкт-Петербург. Компания вымышленная.",
+      "translation": "2014–2026: 상트페테르부르크의 «학습 코드» 회사에서 프로그래머. 회사는 가상의 기업입니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.7738
+    },
+    {
+      "id": "7.1",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "의무 복무",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "7.2",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "아니요",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "7.3",
+      "source": "Не применимо: военную службу не проходил.",
+      "translation": "해당 없음: 군 복무를 하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3808
+    },
+    {
+      "id": "7.4",
+      "source": "Не применимо: военную службу не проходил.",
+      "translation": "해당 없음: 군 복무를 하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.395
+    },
+    {
+      "id": "7.5",
+      "source": "Не служил ни в каких вооружённых силах.",
+      "translation": "어떠한 군대에서도 복무하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3697
+    },
+    {
+      "id": "7.6",
+      "source": "Не применимо: военную службу не проходил.",
+      "translation": "해당 없음: 군 복무를 하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.36
+    },
+    {
+      "id": "7.7",
+      "source": "Воинского звания нет.",
+      "translation": "등급이 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.2228
+    },
+    {
+      "id": "7.8",
+      "source": "Не применимо: военную службу не проходил.",
+      "translation": "해당 없음: 군 복무를 하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3584
+    },
+    {
+      "id": "7.9",
+      "source": "Нет, в боевых действиях не участвовал.",
+      "translation": "아니요, 전투에 참여한 적이 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3567
+    },
+    {
+      "id": "8",
+      "source": "1991–2026: Санкт-Петербург, Россия, гражданин. С 2026/05/15: Сеул, Республика Корея, краткосрочное пребывание C-3.",
+      "translation": "1991–2026: 러시아 상트페테르부르크, 시민. 2026/05/15부터: 대한민국 서울, C-3급 단기 체류.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.8826
+    },
+    {
+      "id": "9.1",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "예",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "9.2",
+      "source": "Министерство внутренних дел России.",
+      "translation": "러시아 내무부.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.2391
+    },
+    {
+      "id": "9.3",
+      "source": "2024/01/10",
+      "translation": "2024/01/10",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "9.4",
+      "source": "Зарубежная туристическая поездка.",
+      "translation": "해외 관광 여행",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.2394
+    },
+    {
+      "id": "9.5",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "예",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "9.6",
+      "source": "В январе 2024 года я лично подал заявление и получил подлинный паспорт на своё имя.",
+      "translation": "2024년 1월에 저는 직접 신청을 진행하여 자신의 이름으로 진짜 여권을 받았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.5559
+    },
+    {
+      "id": "9.7",
+      "source": "Не применимо: паспорт подлинный и получен законно.",
+      "translation": "해당 없음: 진짜 여권이며 합법적으로 취득된 것입니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4245
+    },
+    {
+      "id": "9.8",
+      "source": "Не применимо: паспорт находится у меня.",
+      "translation": "해당 없음: 여권이 제게 있습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3056
+    },
+    {
+      "id": "9.9",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "예",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "9.10",
+      "source": "Заграничный паспорт.",
+      "translation": "해외여행용 여권.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.2615
+    },
+    {
+      "id": "9.11",
+      "source": "Не применимо: действующий паспорт у меня есть.",
+      "translation": "해당 없음: 현재 가지고 있는 여권은 없음.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3457
+    },
+    {
+      "id": "10.1",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "예",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.2",
+      "source": "Консульство Республики Корея в России.",
+      "translation": "러시아에 있는 한국 공화국 영사관.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3441
+    },
+    {
+      "id": "10.3",
+      "source": "C-3",
+      "translation": "C-3",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.4",
+      "source": "2026/04/20",
+      "translation": "2026/04/20",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.5",
+      "source": "Паспорт, фотография, заявление и справка о банковском счёте.",
+      "translation": "여권, 사진, 신청서 및 은행 계좌 증명서.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4122
+    },
+    {
+      "id": "10.6",
+      "source": "Заявление на визу и бронирование билета я оформил самостоятельно. Посредников не было.",
+      "translation": "비자 신청 및 티켓 예약은 직접 진행했습니다. 중개인은 없었습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.5231
+    },
+    {
+      "id": "10.7",
+      "source": "2026/05/15",
+      "translation": "2026/05/15",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.8",
+      "source": "Международный аэропорт Инчхон.",
+      "translation": "인천 국제공항",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.2263
+    },
+    {
+      "id": "10.9",
+      "source": "Я въехал по туристической визе, также хотел найти безопасное место после угроз.",
+      "translation": "해외여행용 여권으로 입국했으며, 위협 이후 안전한 곳을 찾고 싶었습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.5319
+    },
+    {
+      "id": "10.10",
+      "source": "Да, прошёл пограничный контроль в аэропорту Инчхон.",
+      "translation": "네, 인천 공항에서 국경 검사를 거쳤습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3751
+    },
+    {
+      "id": "10.11",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "예",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.12",
+      "source": "ПРИМЕРОВ",
+      "translation": "ПРИМЕРОВ",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.13",
+      "source": "АЛЕКСЕЙ УЧЕБНЫЙ",
+      "translation": "АЛЕКСЕЙ УЧЕБНЫЙ",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.14",
+      "source": "1991/08/17",
+      "translation": "1991/08/17",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "10.15",
+      "source": "Россия",
+      "translation": "러시아",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.1983
+    },
+    {
+      "id": "11.1",
+      "source": "Краткосрочное пребывание C-3.",
+      "translation": "C-3형 단기 체류 비자",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.279
+    },
+    {
+      "id": "11.2",
+      "source": "2026/08/12",
+      "translation": "2026/08/12",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "11.3",
+      "source": "Нарушений законодательства не совершал.",
+      "translation": "아래에 명시된 법률을 위반한 일이 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3903
+    },
+    {
+      "id": "11.4",
+      "source": "Республика Корея, Сеул, Учебная улица, дом 20. Адрес вымышленный.",
+      "translation": "대한민국, 서울, 교육로 20번지. 주소는 허구입니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.5073
+    },
+    {
+      "id": "11.5",
+      "source": "Номер телефона пока отсутствует.",
+      "translation": "전화번호는 아직 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.285
+    },
+    {
+      "id": "11.6",
+      "source": "demo-applicant@example.invalid",
+      "translation": "demo-applicant@example.invalid",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "11.7",
+      "source": "Родственников в Корее нет.",
+      "translation": "한국에 다음과 같은 사람이 있으면 해당 항목을 선택하세요.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4082
+    },
+    {
+      "id": "11.8",
+      "source": "Живу на личные сбережения. Иногда помогает друг.",
+      "translation": "개인 저축으로 생활비를 충당합니다. 가끔 친구의 도움도 받습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4688
+    },
+    {
+      "id": "11.9",
+      "source": "Хронических заболеваний нет. После угроз плохо сплю.",
+      "translation": "만성 질환이 없습니다. 위협 이후 잠을 잘 수 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4134
+    },
+    {
+      "id": "11.10",
+      "source": "Да, мне нужна помощь с расходами на проживание.",
+      "translation": "네, 저는 생활비 지원이 필요합니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.308
+    },
+    {
+      "id": "12.1",
+      "source": "2026/05/14",
+      "translation": "2026/05/14",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "12.2",
+      "source": "Аэропорт Пулково, Санкт-Петербург.",
+      "translation": "풀코보 공항, 상트페테르부르크.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.391
+    },
+    {
+      "id": "12.3",
+      "source": "Самолёт.",
+      "translation": "비행기.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.201
+    },
+    {
+      "id": "12.4",
+      "source": "Поездка в Корею и поиск безопасного места.",
+      "translation": "한국 여행 및 안전한 장소 찾기",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3035
+    },
+    {
+      "id": "12.5",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "아니요",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "12.6",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "아니요",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "12.7",
+      "source": "Не применимо: специальное разрешение не требовалось.",
+      "translation": "해당 없음: 특별 허가가 필요하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3487
+    },
+    {
+      "id": "12.8",
+      "source": "Не применимо: выехал законно по действующему паспорту.",
+      "translation": "해당 없음: 유효한 여권으로 합법적으로 출국했습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4066
+    },
+    {
+      "id": "12.9",
+      "source": "Нет, до приезда в Корею в другие страны не въезжал.",
+      "translation": "아니요, 한국에 오기 전에 다른 국가를 방문한 적이 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4539
+    },
+    {
+      "id": "12.10",
+      "source": "Нет, отказов во въезде, депортаций и отказов в пребывании не было.",
+      "translation": "아니요, 입국 거부, 추방, 체류 거부 사례는 없었습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.516
+    },
+    {
+      "id": "14.1",
+      "source": "Политические убеждения. В этом вымышленном примере я участвовал в мирных собраниях и критиковал действия властей.",
+      "translation": "정치적 신념. 이 가상의 예시에서 나는 평화적인 집회에 참여하고 당국의 행동을 비판했습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.6494
+    },
+    {
+      "id": "14.2",
+      "source": "Да. В марте 2026 года после мирного собрания двое неизвестных остановили меня, толкнули и потребовали прекратить участие. Я не знаю, были ли они сотрудниками полиции.",
+      "translation": "네. 2026년 3월, 평화적 회의가 끝난 후 두 명의 무명인이 나를 멈춰 세우고 밀치며 참여를 중단하라고 요구했습니다. 그들이 경찰관이었는지는 모릅니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 1.1166
+    },
+    {
+      "id": "14.3",
+      "source": "Да. Я боюсь повторных угроз и задержания при возвращении. Точный исход мне неизвестен.",
+      "translation": "네. 저는 돌아올 때 다시되는 위협과 구금을 두려워합니다. 정확한 결과는 알 수 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.6007
+    },
+    {
+      "id": "14.4",
+      "source": "В апреле 2026 года мать сказала по телефону, что двое мужчин спрашивали обо мне. Лично я этого не видел и не знаю, кто они.",
+      "translation": "2026년 4월에 어머니가 전화로 말하기를, 두 명의 남자가 나에 대해 물어보았다고 했습니다. 저는 직접 보지도 않았고, 그들이 누구인지도 모릅니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.9734
+    },
+    {
+      "id": "14.5",
+      "source": "Нет. Я не обращался в полицию, потому что опасался раскрыть место проживания. Не могу утверждать, как полиция отреагировала бы.",
+      "translation": "아니요. 저는 거주지를 공개하는 것을 두려워해서 경찰에 신고하지 않았습니다. 경찰이 어떻게 대응했을지는 말할 수 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.8113
+    },
+    {
+      "id": "14.6",
+      "source": "Да. В апреле 2026 года я временно жил у друга в другом районе. После звонка матери решил уехать из страны.",
+      "translation": "네. 2026년 4월에 저는 다른 지역의 친구 집에서 일시적으로 살았습니다. 어머니의 전화를 듣고 나서 나라는 떠나기로 결정했습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.8362
+    },
+    {
+      "id": "14.7",
+      "source": "2026/05/14",
+      "translation": "2026/05/14",
+      "kind": "passthrough",
+      "seconds": 0.0
+    },
+    {
+      "id": "14.8",
+      "source": "Нет. Членом политических партий или организаций я не был.",
+      "translation": "아니요. 정당이나 조직의 회원이 아니었습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3832
+    },
+    {
+      "id": "14.9",
+      "source": "Я участвовал в мирных собраниях и публиковал критические сообщения. К насилию не призывал.",
+      "translation": "나는 평화적인 집회에 참여하고 비판적인 글을 게시했습니다. 폭력에 대한 촉구는 하지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.642
+    },
+    {
+      "id": "14.10",
+      "source": "Нет, преступлений не совершал, арестован и осуждён не был.",
+      "translation": "아니요, 범죄를 저지르지 않았으며 체포되거나 유죄 판결을 받지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.559
+    },
+    {
+      "id": "14.11",
+      "source": "Нет, ранее я и члены моей семьи не обращались за убежищем в другие страны или в УВКБ ООН.",
+      "translation": "아니요, 저와 제 가족은 이전에 다른 국가나 유엔난민기구(UNHCR)에 피난을 요청한 적이 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.7232
+    },
+    {
+      "id": "14.12",
+      "source": "Не применимо: в другой стране статус беженца не получал.",
+      "translation": "해당 없음: 다른 국가에서 난민 지위를 받지 않았습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4208
+    },
+    {
+      "id": "14.13",
+      "source": "Нет. Несовершеннолетних детей со мной нет.",
+      "translation": "아니요. 미성년 자녀는 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.3201
+    },
+    {
+      "id": "14.14",
+      "source": "Не применимо: детей со мной нет.",
+      "translation": "해당 없음: 아이는 없습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.2757
+    },
+    {
+      "id": "14.15",
+      "source": "Да. Общаюсь с матерью по телефону примерно раз в неделю.",
+      "translation": "네. 매주 한 번 정도 어머니와 전화로 연락합니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.4121
+    },
+    {
+      "id": "14.16",
+      "source": "Да. У меня есть копии сообщений с угрозами и фотографии мирного собрания. Они сохранены в телефоне.",
+      "translation": "네. 저에게 위협 메시지 사본과 평화 집회 사진이 있습니다. 이들은 휴대폰에 저장되어 있습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.6628
+    },
+    {
+      "id": "14.17",
+      "source": "В июне 2026 года в Сеуле я узнал о процедуре от сотрудника вымышленной консультационной организации.",
+      "translation": "2026년 6월, 서울에서 저는 가상의 상담 기관 직원으로부터 신청 절차에 대해 알게 되었습니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.6221
+    },
+    {
+      "id": "14.18",
+      "source": "Не применимо: в этом примере заявление подаётся менее чем через год после въезда.",
+      "translation": "해당 없음: 이 예시에서는 입국 후 1년 이내에 신청서가 제출됩니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 0.5349
+    },
+    {
+      "id": "15",
+      "source": "ЭТО ПОЛНОСТЬЮ ВЫМЫШЛЕННЫЙ УЧЕБНЫЙ ПРИМЕР ДЛЯ ПРОВЕРКИ ПРИЛОЖЕНИЯ. Он не является реальным заявлением. Все имена, адреса, организации и события придуманы. Прошу сохранить в переводе различие между личным опытом и рассказом матери.",
+      "translation": "이것은 부록 검토를 위한 허구적인 교육 예시일 뿐입니다. 실제 진술이 아닙니다. 모든 이름, 주소, 조직 및 사건은 창작된 것입니다. 번역에서 개인적인 경험과 어머니의 이야기를 구분하도록 요청합니다.",
+      "model": "dari-hymt2:1.8b",
+      "profile_version": "application-hymt-v1",
+      "kind": "model",
+      "seconds": 1.2368
+    },
+    {
+      "id": "16.1",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "확인하고 동의합니다",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "16.2",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "동의합니다",
+      "kind": "choice",
+      "seconds": 0.0
+    },
+    {
+      "id": "16.3",
+      "source": "Не применимо в этом учебном примере.",
+      "translation": "안내를 확인했습니다",
+      "kind": "choice",
+      "seconds": 0.0
+    }
+  ],
+  "seconds": 34.32494970806874,
+  "model_calls": 69,
+  "failures": 0,
+  "untranslated_sentences": 0
+}

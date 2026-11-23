@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/build-procedure-i18n.mjs && vite",
-    "build": "node scripts/build-procedure-i18n.mjs && tsc -b && vite build",
+    "dev": "node --experimental-strip-types scripts/build-translation-profiles.mjs && node scripts/build-procedure-i18n.mjs && vite",
+    "build": "node --experimental-strip-types scripts/build-translation-profiles.mjs && node scripts/build-procedure-i18n.mjs && tsc -b && vite build",
     "procedure:i18n": "node scripts/build-procedure-i18n.mjs",
     "test": "node --experimental-strip-types scripts/audit-arabic-i18n.mjs && node --experimental-strip-types --test tests/*.test.mjs",
     "preview": "vite preview",

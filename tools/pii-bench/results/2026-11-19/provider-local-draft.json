@@ -1,0 +1,152 @@
+{
+  "fixtureOnly": true,
+  "backend": "local",
+  "providerSettings": "Mac M1 Pro 16 GiB, Ollama gemma4:e4b Q4_K_M, thinking disabled; context 16k intake / 32k full draft, output cap 3072 intake / 8192 draft. Not physical phone.",
+  "preparation": "Local model warmed with one-token request; generation includes prefill and decode, no masking required for local-only inference.",
+  "draftPolicy": "One batch, per-question local validation, omissions flagged, no repair requests",
+  "rows": [
+    {
+      "phase": "draft",
+      "backend": "local",
+      "mode": "single-call",
+      "label": "full-export-fixture",
+      "preparationMs": 24897,
+      "calls": [
+        {
+          "task": "draft",
+          "repair": false,
+          "ok": true,
+          "stats": {
+            "runtime": "ollama",
+            "model": "gemma4:e4b",
+            "totalMs": 103909,
+            "loadMs": 405,
+            "prefillMs": 28418,
+            "decodeMs": 70248
+          },
+          "usage": {
+            "promptTokenCount": 8839,
+            "candidatesTokenCount": 1588
+          }
+        }
+      ],
+      "fixtureFacts": 161,
+      "sections": [
+        {
+          "questionId": "1.14",
+          "sentences": 1,
+          "characters": 103,
+          "supportedFactCount": 3,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "9.6",
+          "sentences": 1,
+          "characters": 73,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "10.5",
+          "sentences": 1,
+          "characters": 43,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "10.6",
+          "sentences": 1,
+          "characters": 41,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "10.9",
+          "sentences": 1,
+          "characters": 51,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "11.8",
+          "sentences": 1,
+          "characters": 54,
+          "supportedFactCount": 2,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.1",
+          "sentences": 1,
+          "characters": 188,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.2",
+          "sentences": 1,
+          "characters": 252,
+          "supportedFactCount": 8,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.3",
+          "sentences": 1,
+          "characters": 186,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.5",
+          "sentences": 1,
+          "characters": 129,
+          "supportedFactCount": 2,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.6",
+          "sentences": 1,
+          "characters": 211,
+          "supportedFactCount": 5,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.9",
+          "sentences": 1,
+          "characters": 167,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "14.15",
+          "sentences": 1,
+          "characters": 70,
+          "supportedFactCount": 4,
+          "missingFactIds": [],
+          "staleValues": []
+        },
+        {
+          "questionId": "15",
+          "sentences": 1,
+          "characters": 400,
+          "supportedFactCount": 1,
+          "missingFactIds": [],
+          "staleValues": []
+        }
+      ],
+      "ok": true,
+      "totalMs": 104159
+    }
+  ]
+}

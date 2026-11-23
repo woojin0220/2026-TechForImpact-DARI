@@ -1,7 +1,7 @@
 /** Per-call measurements reported by a model runtime. Every field is optional:
  * each runtime fills what it can measure (see docs/BENCHMARK.md). */
 export type ModelStats = {
-  runtime?: 'litertlm' | 'ollama';
+  runtime?: 'litertlm' | 'ollama' | 'gemini';
   backend?: string;
   maxNumTokens?: number;
   constrained?: boolean;

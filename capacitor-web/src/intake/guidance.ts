@@ -7,6 +7,8 @@ import { boundedPrompt, parseObject, text } from './modelOutput.ts';
 import { appendAssistantMessage, getActiveFacts } from './session.ts';
 import { calculateCoverage } from './coverage.ts';
 import { groupOf, needsTopicQuestion, nextStep, openTopic } from './flow.ts';
+import { scriptedCopy } from '../intakeCopy.ts';
+import { localizedLabel } from '../form/localize.ts';
 
 /** Model-phrased follow-up questions: guided topics after the story and clarifying one statement. */
 
@@ -46,11 +48,25 @@ const normalize = (value: string) => value.replace(/[\s.,!?？؟。]/g, '');
  * ask next and the model only phrases one natural question for them. Every answer is still
  * extracted against all metadata, so whatever else the applicant says is kept too. */
 export async function guideConversation(session: IntakeSession, adapter: ModelAdapter, signal?: AbortSignal): Promise<IntakeSession> {
+  if (signal?.aborted) throw new DOMException('Cancelled', 'AbortError');
   const step = nextStep(session);
   if (step.kind !== 'narrative' || !step.guided || !needsTopicQuestion(session)) return session;
   const targets = nextTargets(session, step.guided);
   const coverage = calculateCoverage(session);
   const active = getActiveFacts(session);
+  if (adapter.conversationMode === 'single-call') {
+    // Ask only one topic and count only that topic. Prefer an unanswered detail
+    // to asking for a whole account the applicant has already supplied.
+    const target = targets[0];
+    const gap = coverage.find(item => groupOf(item.requirementId) === target
+      && ['missing', 'conflict'].includes(item.status) && item.requirementId !== target);
+    const requirement = gap && requirementsById.get(gap.requirementId);
+    const group = metadataGroups.find(item => item.id === target)!;
+    const topic = requirement ? localizedLabel(session.language, requirement.label, requirement.labelEn)
+      : localizedLabel(session.language, group.ko, group.en);
+    const copy = scriptedCopy[session.language] ?? scriptedCopy.en;
+    return openTopic(session, [target], copy.topic.replace('{topic}', topic));
+  }
   const topics = targets.map(topic => ({
     meaning: metadataGroups.find(group => group.id === topic)?.en ?? topic,
     stillMissing: coverage.filter(item => ['missing', 'conflict'].includes(item.status) && groupOf(item.requirementId) === topic).slice(0, 5).map(item => ({ field: requirementsById.get(item.requirementId)?.labelEn, status: item.status })),

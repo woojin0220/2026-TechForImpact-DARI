@@ -1,0 +1,1187 @@
+{
+  "model": "dari-hymt2:1.8b",
+  "platform": "macOS-15.7-arm64-arm-64bit-Mach-O",
+  "runtime": "Ollama Metal GGUF Q4_K_M",
+  "timing": "wall time per sequential request; warmup excluded; no masking or network LLM",
+  "cases": [
+    {
+      "id": "1.2",
+      "source": "ПРИМЕРОВ",
+      "reference": null,
+      "translation": "예시들",
+      "seconds": 0.0956,
+      "stats": {
+        "load_duration": 1014917,
+        "eval_count": 4,
+        "eval_duration": 43262000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.3",
+      "source": "АЛЕКСЕЙ УЧЕБНЫЙ",
+      "reference": null,
+      "translation": "알렉세이 우체브니",
+      "seconds": 0.211,
+      "stats": {
+        "load_duration": 1103125,
+        "eval_count": 11,
+        "eval_duration": 153999000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.4",
+      "source": "Других имён не использовал.",
+      "reference": null,
+      "translation": "다른 이름은 사용하지 않았습니다.",
+      "seconds": 0.2097,
+      "stats": {
+        "load_duration": 1040417,
+        "eval_count": 10,
+        "eval_duration": 148567000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.5",
+      "source": "1991/08/17",
+      "reference": null,
+      "translation": "1991/08/17",
+      "seconds": 0.2056,
+      "stats": {
+        "load_duration": 912042,
+        "eval_count": 7,
+        "eval_duration": 104840000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "1.7",
+      "source": "Россия",
+      "reference": null,
+      "translation": "러시아",
+      "seconds": 0.1034,
+      "stats": {
+        "load_duration": 1277208,
+        "eval_count": 4,
+        "eval_duration": 61394000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.8",
+      "source": "Программист, сейчас не работаю.",
+      "reference": null,
+      "translation": "프로그래머인데, 지금은 일하지 않고 있어요.",
+      "seconds": 0.3497,
+      "stats": {
+        "load_duration": 6462333,
+        "eval_count": 19,
+        "eval_duration": 273080000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.9",
+      "source": "Россия, Санкт-Петербург.",
+      "reference": "러시아, 상트페테르부르크.",
+      "translation": "러시아, 상트페테르부르크.",
+      "seconds": 0.2774,
+      "stats": {
+        "load_duration": 942917,
+        "eval_count": 15,
+        "eval_duration": 220912000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.10",
+      "source": "Россия, Санкт-Петербург, Учебная улица, дом 10. Адрес вымышленный.",
+      "reference": null,
+      "translation": "러시아, 상트페테르부르크, 교육가도 10번지. 주소는 허구입니다.",
+      "seconds": 0.4836,
+      "stats": {
+        "load_duration": 843458,
+        "eval_count": 30,
+        "eval_duration": 428023000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.11",
+      "source": "Не исповедую религию.",
+      "reference": "종교를 믿지 않습니다.",
+      "translation": "나는 종교를 믿지 않는다.",
+      "seconds": 0.2027,
+      "stats": {
+        "load_duration": 1320083,
+        "eval_count": 12,
+        "eval_duration": 146773000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.12",
+      "source": "Русский.",
+      "reference": "러시아인입니다.",
+      "translation": "러시아어.",
+      "seconds": 0.1067,
+      "stats": {
+        "load_duration": 1425000,
+        "eval_count": 6,
+        "eval_duration": 69993000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.13",
+      "source": "Родной язык — русский. Свободно говорю по-русски, немного понимаю английский.",
+      "reference": null,
+      "translation": "모국어는 러시아어입니다. 러시아어를 자유롭게 구사할 수 있지만, 영어는 조금만 이해할 수 있습니다.",
+      "seconds": 0.693,
+      "stats": {
+        "load_duration": 1887583,
+        "eval_count": 43,
+        "eval_duration": 607769000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.14",
+      "source": "Да, мне нужен переводчик с русского языка. Корейского языка я не понимаю.",
+      "reference": null,
+      "translation": "네, 러시아어로 통역사가 필요해요. 한국어는 이해할 수 없어요.",
+      "seconds": 0.4169,
+      "stats": {
+        "load_duration": 2523584,
+        "eval_count": 27,
+        "eval_duration": 360051000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "2",
+      "source": "Нет. Другого гражданства и постоянного вида на жительство у меня нет.",
+      "reference": null,
+      "translation": "아니요. 다른 국적이나 영주권은 없습니다.",
+      "seconds": 0.2657,
+      "stats": {
+        "load_duration": 1038458,
+        "eval_count": 15,
+        "eval_duration": 207070000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "3",
+      "source": "Не женат. Супруга и детей нет.",
+      "reference": null,
+      "translation": "기혼하지 않음. 아내와 자녀도 없음.",
+      "seconds": 0.2966,
+      "stats": {
+        "load_duration": 904584,
+        "eval_count": 17,
+        "eval_duration": 244856000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "4",
+      "source": "Мать: Елена Примерова, 1965/09/24, гражданка России, живёт в Санкт-Петербурге. Все имена вымышлены.",
+      "reference": "어머니: Елена Примерова, 1965/09/24 출생, 러시아 국적이며 상트페테르부르크에 거주합니다. 모든 이름은 가상입니다.",
+      "translation": "어머니: 엘레나 프리메로바, 1965/09/24, 러시아 국적, 상트페테르부르크에 거주. 모든 이름은 허구입니다.",
+      "seconds": 0.7125,
+      "stats": {
+        "load_duration": 741083,
+        "eval_count": 51,
+        "eval_duration": 683252000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "5",
+      "source": "2009–2014: Учебный технический институт, Санкт-Петербург, специальность — информатика. Название вымышленное.",
+      "reference": "2009–2014: 상트페테르부르크의 교육 기술 대학, 전공은 컴퓨터 과학입니다. 학교 이름은 가상입니다.",
+      "translation": "2009–2014: 상트페테르부르크 기술대학교, 정보학 전공. 이 이름은 허구입니다.",
+      "seconds": 0.4735,
+      "stats": {
+        "load_duration": 813500,
+        "eval_count": 33,
+        "eval_duration": 451249000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "6",
+      "source": "2014–2026: программист в компании «Учебный код», Санкт-Петербург. Компания вымышленная.",
+      "reference": null,
+      "translation": "2014–2026: 상트페테르부르크의 “학습 코드” 회사에서 프로그래머로 일함. 이 회사는 가상의 기업입니다.",
+      "seconds": 0.6845,
+      "stats": {
+        "load_duration": 1242334,
+        "eval_count": 43,
+        "eval_duration": 604300000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "7.3",
+      "source": "Не применимо: военную службу не проходил.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 군 복무를 하지 않았습니다.",
+      "seconds": 0.3066,
+      "stats": {
+        "load_duration": 2006291,
+        "eval_count": 17,
+        "eval_duration": 240491000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "7.4",
+      "source": "Не применимо: военную службу не проходил.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 군 복무를 하지 않았습니다.",
+      "seconds": 0.241,
+      "stats": {
+        "load_duration": 958875,
+        "eval_count": 17,
+        "eval_duration": 222162000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "7.5",
+      "source": "Не служил ни в каких вооружённых силах.",
+      "reference": null,
+      "translation": "어떠한 무장력 부대에서도 복무한 적이 없다.",
+      "seconds": 0.3256,
+      "stats": {
+        "load_duration": 871834,
+        "eval_count": 21,
+        "eval_duration": 266112000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "7.6",
+      "source": "Не применимо: военную службу не проходил.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 군 복무를 하지 않았습니다.",
+      "seconds": 0.2486,
+      "stats": {
+        "load_duration": 879583,
+        "eval_count": 17,
+        "eval_duration": 229160000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "7.7",
+      "source": "Воинского звания нет.",
+      "reference": null,
+      "translation": "군사 칭호는 없습니다.",
+      "seconds": 0.1574,
+      "stats": {
+        "load_duration": 867958,
+        "eval_count": 9,
+        "eval_duration": 104813000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "7.8",
+      "source": "Не применимо: военную службу не проходил.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 군 복무를 하지 않았습니다.",
+      "seconds": 0.2896,
+      "stats": {
+        "load_duration": 1004041,
+        "eval_count": 17,
+        "eval_duration": 235219000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "7.9",
+      "source": "Нет, в боевых действиях не участвовал.",
+      "reference": null,
+      "translation": "아니, 전투에 참여하지 않았습니다.",
+      "seconds": 0.2207,
+      "stats": {
+        "load_duration": 947000,
+        "eval_count": 13,
+        "eval_duration": 161927000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "8",
+      "source": "1991–2026: Санкт-Петербург, Россия, гражданин. С 2026/05/15: Сеул, Республика Корея, краткосрочное пребывание C-3.",
+      "reference": "1991–2026: 러시아 상트페테르부르크에 시민으로 거주했습니다. 2026/05/15부터 대한민국 서울에서 C-3 단기 체류 중입니다.",
+      "translation": "1991–2026: 러시아 상트페테르부르크, 시민. 2026/05/15부터: 한국 서울, C-3 단기 체류.",
+      "seconds": 0.659,
+      "stats": {
+        "load_duration": 1073625,
+        "eval_count": 46,
+        "eval_duration": 632730000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.2",
+      "source": "Министерство внутренних дел России.",
+      "reference": null,
+      "translation": "러시아 내무부.",
+      "seconds": 0.1727,
+      "stats": {
+        "load_duration": 3218916,
+        "eval_count": 8,
+        "eval_duration": 109375000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.3",
+      "source": "2024/01/10",
+      "reference": null,
+      "translation": "2024/01/10",
+      "seconds": 0.136,
+      "stats": {
+        "load_duration": 871166,
+        "eval_count": 7,
+        "eval_duration": 81358000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "9.4",
+      "source": "Зарубежная туристическая поездка.",
+      "reference": null,
+      "translation": "해외 관광 여행.",
+      "seconds": 0.1485,
+      "stats": {
+        "load_duration": 818833,
+        "eval_count": 8,
+        "eval_duration": 94618000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.6",
+      "source": "В январе 2024 года я лично подал заявление и получил подлинный паспорт на своё имя.",
+      "reference": null,
+      "translation": "2024년 1월에 저는 직접 신청을 했고, 자신의 이름으로 된 진짜 여권을 받았습니다.",
+      "seconds": 0.515,
+      "stats": {
+        "load_duration": 882166,
+        "eval_count": 31,
+        "eval_duration": 434917000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.7",
+      "source": "Не применимо: паспорт подлинный и получен законно.",
+      "reference": "해당 없음: 여권은 진본이며 합법적으로 발급받았습니다.",
+      "translation": "적용되지 않습니다: 여권은 진짜이며 합법적으로 발급된 것입니다.",
+      "seconds": 0.4019,
+      "stats": {
+        "load_duration": 945166,
+        "eval_count": 22,
+        "eval_duration": 344988000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.8",
+      "source": "Не применимо: паспорт находится у меня.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 여권은 제가 가지고 있습니다.",
+      "seconds": 0.2866,
+      "stats": {
+        "load_duration": 1565334,
+        "eval_count": 15,
+        "eval_duration": 238808000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.10",
+      "source": "Заграничный паспорт.",
+      "reference": "해외여행용 여권.",
+      "translation": "외국인 여권.",
+      "seconds": 0.1782,
+      "stats": {
+        "load_duration": 1191333,
+        "eval_count": 7,
+        "eval_duration": 122209000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "9.11",
+      "source": "Не применимо: действующий паспорт у меня есть.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 저는 유효한 여권을 가지고 있습니다.",
+      "seconds": 0.3434,
+      "stats": {
+        "load_duration": 1340667,
+        "eval_count": 18,
+        "eval_duration": 291383000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.2",
+      "source": "Консульство Республики Корея в России.",
+      "reference": "러시아 주재 대한민국 영사관.",
+      "translation": "대한민국 대사관, 러시아.",
+      "seconds": 0.1995,
+      "stats": {
+        "load_duration": 1010791,
+        "eval_count": 15,
+        "eval_duration": 180062000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.3",
+      "source": "C-3",
+      "reference": null,
+      "translation": "C-3",
+      "seconds": 0.0729,
+      "stats": {
+        "load_duration": 863667,
+        "eval_count": 4,
+        "eval_duration": 40925000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "10.4",
+      "source": "2026/04/20",
+      "reference": null,
+      "translation": "2026/04/20",
+      "seconds": 0.1508,
+      "stats": {
+        "load_duration": 800250,
+        "eval_count": 7,
+        "eval_duration": 103467000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "10.5",
+      "source": "Паспорт, фотография, заявление и справка о банковском счёте.",
+      "reference": "여권, 사진, 신청서 및 은행 잔고 증명서.",
+      "translation": "여권, 사진, 신청서, 그리고 은행 계좌 증명서.",
+      "seconds": 0.3298,
+      "stats": {
+        "load_duration": 950208,
+        "eval_count": 21,
+        "eval_duration": 269928000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.6",
+      "source": "Заявление на визу и бронирование билета я оформил самостоятельно. Посредников не было.",
+      "reference": null,
+      "translation": "비자 신청과 티켓 예약은 제가 직접 처리했습니다. 중간 매개인은 없었습니다.",
+      "seconds": 0.5028,
+      "stats": {
+        "load_duration": 976958,
+        "eval_count": 31,
+        "eval_duration": 419231000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.7",
+      "source": "2026/05/15",
+      "reference": null,
+      "translation": "2026/05/15",
+      "seconds": 0.1675,
+      "stats": {
+        "load_duration": 1309625,
+        "eval_count": 7,
+        "eval_duration": 106767000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "10.8",
+      "source": "Международный аэропорт Инчхон.",
+      "reference": null,
+      "translation": "인천 국제공항.",
+      "seconds": 0.1655,
+      "stats": {
+        "load_duration": 1150542,
+        "eval_count": 8,
+        "eval_duration": 99886000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.9",
+      "source": "Я въехал по туристической визе, также хотел найти безопасное место после угроз.",
+      "reference": null,
+      "translation": "관광 비자로 입국했으며, 위협 이후 안전한 장소를 찾고 싶었습니다.",
+      "seconds": 0.4374,
+      "stats": {
+        "load_duration": 1007459,
+        "eval_count": 25,
+        "eval_duration": 361893000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.10",
+      "source": "Да, прошёл пограничный контроль в аэропорту Инчхон.",
+      "reference": null,
+      "translation": "네, 인천 공항에서 국경 검사를 통과했습니다.",
+      "seconds": 0.2875,
+      "stats": {
+        "load_duration": 1073208,
+        "eval_count": 17,
+        "eval_duration": 234066000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.12",
+      "source": "ПРИМЕРОВ",
+      "reference": null,
+      "translation": "예시들",
+      "seconds": 0.1164,
+      "stats": {
+        "load_duration": 1341042,
+        "eval_count": 4,
+        "eval_duration": 57111000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.13",
+      "source": "АЛЕКСЕЙ УЧЕБНЫЙ",
+      "reference": null,
+      "translation": "알렉세이 우체브니",
+      "seconds": 0.2189,
+      "stats": {
+        "load_duration": 830125,
+        "eval_count": 11,
+        "eval_duration": 162702000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "10.14",
+      "source": "1991/08/17",
+      "reference": null,
+      "translation": "1991/08/17",
+      "seconds": 0.1435,
+      "stats": {
+        "load_duration": 1099792,
+        "eval_count": 7,
+        "eval_duration": 86726000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "10.15",
+      "source": "Россия",
+      "reference": null,
+      "translation": "러시아",
+      "seconds": 0.0814,
+      "stats": {
+        "load_duration": 927541,
+        "eval_count": 4,
+        "eval_duration": 47150000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.1",
+      "source": "Краткосрочное пребывание C-3.",
+      "reference": null,
+      "translation": "C-3의 단기 체류.",
+      "seconds": 0.1964,
+      "stats": {
+        "load_duration": 1074333,
+        "eval_count": 10,
+        "eval_duration": 137362000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.2",
+      "source": "2026/08/12",
+      "reference": null,
+      "translation": "2026/08/12",
+      "seconds": 0.1297,
+      "stats": {
+        "load_duration": 866125,
+        "eval_count": 7,
+        "eval_duration": 81589000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "11.3",
+      "source": "Нарушений законодательства не совершал.",
+      "reference": null,
+      "translation": "법률을 위반한 행위를 하지 않았습니다.",
+      "seconds": 0.2735,
+      "stats": {
+        "load_duration": 1004875,
+        "eval_count": 16,
+        "eval_duration": 221101000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.4",
+      "source": "Республика Корея, Сеул, Учебная улица, дом 20. Адрес вымышленный.",
+      "reference": null,
+      "translation": "대한민국, 서울, 교육로 20번지. 주소는 허구입니다.",
+      "seconds": 0.388,
+      "stats": {
+        "load_duration": 1168417,
+        "eval_count": 23,
+        "eval_duration": 310287000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.5",
+      "source": "Номер телефона пока отсутствует.",
+      "reference": null,
+      "translation": "전화번호는 아직 없습니다.",
+      "seconds": 0.1904,
+      "stats": {
+        "load_duration": 2612834,
+        "eval_count": 10,
+        "eval_duration": 127602000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.6",
+      "source": "demo-applicant@example.invalid",
+      "reference": null,
+      "translation": "demo-applicant@example.invalid",
+      "seconds": 0.1269,
+      "stats": {
+        "load_duration": 937000,
+        "eval_count": 7,
+        "eval_duration": 79191000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "11.7",
+      "source": "Родственников в Корее нет.",
+      "reference": "한국에 친척이 없습니다.",
+      "translation": "한국에는 친척이 없습니다.",
+      "seconds": 0.1971,
+      "stats": {
+        "load_duration": 949625,
+        "eval_count": 10,
+        "eval_duration": 147198000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.8",
+      "source": "Живу на личные сбережения. Иногда помогает друг.",
+      "reference": null,
+      "translation": "개인 저축으로 살고 있어요. 가끔 친구의 도움도 받아요.",
+      "seconds": 0.3522,
+      "stats": {
+        "load_duration": 1027708,
+        "eval_count": 23,
+        "eval_duration": 297022000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.9",
+      "source": "Хронических заболеваний нет. После угроз плохо сплю.",
+      "reference": null,
+      "translation": "만성 질환은 없습니다. 위협이 있으면 잠을 잘 수 없어요.",
+      "seconds": 0.3606,
+      "stats": {
+        "load_duration": 1042583,
+        "eval_count": 22,
+        "eval_duration": 309086000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "11.10",
+      "source": "Да, мне нужна помощь с расходами на проживание.",
+      "reference": null,
+      "translation": "네, 숙박 비용에 대한 도움이 필요합니다.",
+      "seconds": 0.2652,
+      "stats": {
+        "load_duration": 847750,
+        "eval_count": 16,
+        "eval_duration": 205977000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.1",
+      "source": "2026/05/14",
+      "reference": null,
+      "translation": "2026/05/14",
+      "seconds": 0.1436,
+      "stats": {
+        "load_duration": 846875,
+        "eval_count": 7,
+        "eval_duration": 91353000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "12.2",
+      "source": "Аэропорт Пулково, Санкт-Петербург.",
+      "reference": "상트페테르부르크 풀코보 공항.",
+      "translation": "풀코보 공항, 상트페테르부르크.",
+      "seconds": 0.2959,
+      "stats": {
+        "load_duration": 828500,
+        "eval_count": 19,
+        "eval_duration": 244179000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.3",
+      "source": "Самолёт.",
+      "reference": "비행기.",
+      "translation": "비행기.",
+      "seconds": 0.1044,
+      "stats": {
+        "load_duration": 1050792,
+        "eval_count": 5,
+        "eval_duration": 57466000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.4",
+      "source": "Поездка в Корею и поиск безопасного места.",
+      "reference": null,
+      "translation": "한국 여행과 안전한 장소 찾기.",
+      "seconds": 0.2158,
+      "stats": {
+        "load_duration": 932083,
+        "eval_count": 13,
+        "eval_duration": 162836000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.7",
+      "source": "Не применимо: специальное разрешение не требовалось.",
+      "reference": "해당 없음: 특별 허가가 필요하지 않았습니다.",
+      "translation": "적용되지 않습니다: 특별한 허가가 필요하지 않았습니다.",
+      "seconds": 0.3029,
+      "stats": {
+        "load_duration": 1009417,
+        "eval_count": 18,
+        "eval_duration": 248532000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.8",
+      "source": "Не применимо: выехал законно по действующему паспорту.",
+      "reference": "해당 없음: 유효한 여권으로 합법적으로 출국했습니다.",
+      "translation": "적용되지 않습니다: 유효한 여권으로 합법적으로 출국했습니다.",
+      "seconds": 0.3339,
+      "stats": {
+        "load_duration": 1026042,
+        "eval_count": 21,
+        "eval_duration": 275318000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.9",
+      "source": "Нет, до приезда в Корею в другие страны не въезжал.",
+      "reference": null,
+      "translation": "아니요, 한국에 오기 전에는 다른 나라로 들어가지 않았습니다.",
+      "seconds": 0.3495,
+      "stats": {
+        "load_duration": 1175958,
+        "eval_count": 21,
+        "eval_duration": 292898000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.10",
+      "source": "Нет, отказов во въезде, депортаций и отказов в пребывании не было.",
+      "reference": null,
+      "translation": "아니요, 입국 거부, 추방, 거주 거부 같은 것은 없었습니다.",
+      "seconds": 0.3562,
+      "stats": {
+        "load_duration": 2343208,
+        "eval_count": 22,
+        "eval_duration": 302751000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.1",
+      "source": "Политические убеждения. В этом вымышленном примере я участвовал в мирных собраниях и критиковал действия властей.",
+      "reference": null,
+      "translation": "정치적 신념. 이 가상의 예시에서 나는 평화로운 집회에 참여하고 당국의 행동을 비판했습니다.",
+      "seconds": 0.5718,
+      "stats": {
+        "load_duration": 1412875,
+        "eval_count": 36,
+        "eval_duration": 491714000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.2",
+      "source": "Да. В марте 2026 года после мирного собрания двое неизвестных остановили меня, толкнули и потребовали прекратить участие. Я не знаю, были ли они сотрудниками полиции.",
+      "reference": "네. 2026년 3월 평화로운 집회 후 신원을 알 수 없는 두 사람이 저를 멈춰 세우고 밀치며 참여를 중단하라고 요구했습니다. 그들이 경찰관이었는지는 모릅니다.",
+      "translation": "네. 2026년 3월, 평화적인 모임이 끝난 후 두 명의 낯선 사람이 나를 멈춰 세우고 밀치며 참여를 중단하라고 요구했습니다. 그들이 경찰관이었는지는 모르겠습니다.",
+      "seconds": 0.9552,
+      "stats": {
+        "load_duration": 1066584,
+        "eval_count": 68,
+        "eval_duration": 933625000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.3",
+      "source": "Да. Я боюсь повторных угроз и задержания при возвращении. Точный исход мне неизвестен.",
+      "reference": "네. 귀국하면 다시 위협을 받거나 구금될까 두렵습니다. 정확히 어떤 결과가 생길지는 모릅니다.",
+      "translation": "네. 돌아갈 때 다시 위협받거나 구금당할까 봐 두려워요. 어떤 결과가 될지는 모르겠어요.",
+      "seconds": 0.5563,
+      "stats": {
+        "load_duration": 886167,
+        "eval_count": 36,
+        "eval_duration": 505533000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.4",
+      "source": "В апреле 2026 года мать сказала по телефону, что двое мужчин спрашивали обо мне. Лично я этого не видел и не знаю, кто они.",
+      "reference": "2026년 4월 어머니가 전화로 두 남자가 저에 대해 물었다고 말씀하셨습니다. 저는 직접 보지 못했고 그들이 누구인지 모릅니다.",
+      "translation": "2026년 4월에 어머니가 전화로 말하길, 두 명의 남자가 나에 대해 물어보았다고 했습니다. 저는 직접 그들을 보지도 않았고, 그들이 누구인지도 모릅니다.",
+      "seconds": 0.8368,
+      "stats": {
+        "load_duration": 913875,
+        "eval_count": 59,
+        "eval_duration": 816425000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.5",
+      "source": "Нет. Я не обращался в полицию, потому что опасался раскрыть место проживания. Не могу утверждать, как полиция отреагировала бы.",
+      "reference": "아니요. 거주지가 드러날까 두려워 경찰에 연락하지 않았습니다. 경찰이 어떻게 반응했을지는 단정할 수 없습니다.",
+      "translation": "아니요. 저는 거주 장소를 공개할까 두려워해서 경찰에 신고하지 않았습니다. 경찰이 어떻게 반응할지는 말할 수 없습니다.",
+      "seconds": 0.6563,
+      "stats": {
+        "load_duration": 939583,
+        "eval_count": 46,
+        "eval_duration": 634263000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.6",
+      "source": "Да. В апреле 2026 года я временно жил у друга в другом районе. После звонка матери решил уехать из страны.",
+      "reference": null,
+      "translation": "네. 2026년 4월에 저는 다른 지역의 친구 집에서 잠시 머물렀습니다. 어머니와 통화한 후, 저는 해외로 떠나기로 결심했습니다.",
+      "seconds": 0.7742,
+      "stats": {
+        "load_duration": 914667,
+        "eval_count": 51,
+        "eval_duration": 695379000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.7",
+      "source": "2026/05/14",
+      "reference": null,
+      "translation": "2026/05/14",
+      "seconds": 0.147,
+      "stats": {
+        "load_duration": 2115791,
+        "eval_count": 7,
+        "eval_duration": 92594000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "14.8",
+      "source": "Нет. Членом политических партий или организаций я не был.",
+      "reference": null,
+      "translation": "아니요. 정치당이나 조직의 회원은 아니었습니다.",
+      "seconds": 0.2763,
+      "stats": {
+        "load_duration": 878042,
+        "eval_count": 18,
+        "eval_duration": 224116000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.9",
+      "source": "Я участвовал в мирных собраниях и публиковал критические сообщения. К насилию не призывал.",
+      "reference": null,
+      "translation": "나는 평화적인 집회에 참여했으며 비판적인 글을 발표했습니다. 폭력에 대한 촉구는 하지 않았습니다.",
+      "seconds": 0.5952,
+      "stats": {
+        "load_duration": 838333,
+        "eval_count": 37,
+        "eval_duration": 516345000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.10",
+      "source": "Нет, преступлений не совершал, арестован и осуждён не был.",
+      "reference": null,
+      "translation": "아니, 범죄를 저지르지 않았으며, 체포되거나 유죄 판결을 받지도 않았습니다.",
+      "seconds": 0.4922,
+      "stats": {
+        "load_duration": 956708,
+        "eval_count": 32,
+        "eval_duration": 436279000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.11",
+      "source": "Нет, ранее я и члены моей семьи не обращались за убежищем в другие страны или в УВКБ ООН.",
+      "reference": "아니요. 저와 가족은 이전에 다른 국가나 유엔난민기구에 망명을 신청한 적이 없습니다.",
+      "translation": "아니요, 저와 제 가족은 이전에 다른 나라나 UNHCR에 피난처를 요청한 적이 없습니다.",
+      "seconds": 0.5098,
+      "stats": {
+        "load_duration": 744667,
+        "eval_count": 32,
+        "eval_duration": 427252000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.12",
+      "source": "Не применимо: в другой стране статус беженца не получал.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 다른 나라에서는 난민 지위를 받지 못했습니다.",
+      "seconds": 0.3457,
+      "stats": {
+        "load_duration": 987125,
+        "eval_count": 22,
+        "eval_duration": 285738000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.13",
+      "source": "Нет. Несовершеннолетних детей со мной нет.",
+      "reference": "아니요. 저와 동행하는 미성년 자녀가 없습니다.",
+      "translation": "아니요. 미성년자 아이는 없습니다.",
+      "seconds": 0.2279,
+      "stats": {
+        "load_duration": 1036167,
+        "eval_count": 13,
+        "eval_duration": 170948000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.14",
+      "source": "Не применимо: детей со мной нет.",
+      "reference": null,
+      "translation": "적용되지 않습니다: 아이는 없습니다.",
+      "seconds": 0.2054,
+      "stats": {
+        "load_duration": 5034959,
+        "eval_count": 11,
+        "eval_duration": 142693000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.15",
+      "source": "Да. Общаюсь с матерью по телефону примерно раз в неделю.",
+      "reference": null,
+      "translation": "네. 일주일에 한 번 정도 어머니와 전화로 연락합니다.",
+      "seconds": 0.3592,
+      "stats": {
+        "load_duration": 869875,
+        "eval_count": 22,
+        "eval_duration": 306008000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.16",
+      "source": "Да. У меня есть копии сообщений с угрозами и фотографии мирного собрания. Они сохранены в телефоне.",
+      "reference": "네. 협박 메시지 사본과 평화로운 집회 사진이 있습니다. 휴대전화에 저장되어 있습니다.",
+      "translation": "네. 저에게는 협박 메시지의 복사본과 평화 집회 사진이 있습니다. 그것들은 휴대폰에 저장되어 있어요.",
+      "seconds": 0.6083,
+      "stats": {
+        "load_duration": 1014458,
+        "eval_count": 39,
+        "eval_duration": 527023000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.17",
+      "source": "В июне 2026 года в Сеуле я узнал о процедуре от сотрудника вымышленной консультационной организации.",
+      "reference": null,
+      "translation": "2026년 6월, 서울에서 저는 허구의 상담 기관 직원으로부터 그 절차에 대해 알게 되었습니다.",
+      "seconds": 0.5323,
+      "stats": {
+        "load_duration": 821334,
+        "eval_count": 33,
+        "eval_duration": 447463000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.18",
+      "source": "Не применимо: в этом примере заявление подаётся менее чем через год после въезда.",
+      "reference": "해당 없음: 이 예시에서는 입국 후 1년이 지나기 전에 신청합니다.",
+      "translation": "적용되지 않습니다: 이 예시에서는 입국 후 1년 이내에 신청해야 합니다.",
+      "seconds": 0.3999,
+      "stats": {
+        "load_duration": 1059208,
+        "eval_count": 25,
+        "eval_duration": 348186000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "15",
+      "source": "ЭТО ПОЛНОСТЬЮ ВЫМЫШЛЕННЫЙ УЧЕБНЫЙ ПРИМЕР ДЛЯ ПРОВЕРКИ ПРИЛОЖЕНИЯ. Он не является реальным заявлением. Все имена, адреса, организации и события придуманы. Прошу сохранить в переводе различие между личным опытом и рассказом матери.",
+      "reference": "이것은 애플리케이션 테스트를 위한 완전히 가상의 교육용 예시입니다. 실제 신청서가 아닙니다. 모든 이름, 주소, 기관 및 사건은 가상입니다. 번역에서 직접 경험한 일과 어머니에게 들은 이야기를 구분해 주세요.",
+      "translation": "이것은 부록을 검토하는 데 사용되는 가상의 교육적 예시에 불과합니다. 실제적인 진술이 아닙니다. 모든 이름, 주소, 조직, 사건은 가상으로 만들어진 것입니다. 개인적인 경험과 어머니의 이야기 사이의 차이를 번역에서 반드시 표기해 주시기 바랍니다.",
+      "seconds": 1.2388,
+      "stats": {
+        "load_duration": 992750,
+        "eval_count": 88,
+        "eval_duration": 1217544000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    }
+  ],
+  "cold_load_seconds": null,
+  "warmup_seconds": 0.4313735410105437,
+  "warmup_stats": {
+    "load_duration": 72988292,
+    "eval_count": 5,
+    "eval_duration": 100014000
+  },
+  "chrf2_reference_draft": 47.671882111789365,
+  "summary": {
+    "count": 83,
+    "errors": 0,
+    "no_hangul": 10,
+    "copied_source": 10,
+    "total_seconds": 28.1636,
+    "median_seconds": 0.2875,
+    "max_seconds": 1.2388
+  }
+}

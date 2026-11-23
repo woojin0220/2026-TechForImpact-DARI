@@ -1,0 +1,2931 @@
+[
+  {
+    "model": "fastino/gliner2-privacy-filter-PII-multi",
+    "threshold": 0.3,
+    "status": "complete",
+    "summary": {
+      "tp": 990,
+      "fp": 94,
+      "fn": 82,
+      "covered_entities": 74,
+      "entities": 78,
+      "samples": 36,
+      "entity_recall": 0.948718,
+      "char_precision": 0.913284,
+      "char_recall": 0.923507,
+      "leak_free_samples": 32,
+      "positive_samples": 30,
+      "positive_leak_free_samples": 26,
+      "negative_samples": 6,
+      "negative_samples_overmasked": 5,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 83.81,
+      "p90_ms": 100.85
+    },
+    "languages": {
+      "ko": {
+        "tp": 141,
+        "fp": 31,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.819767,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 97.73,
+        "p90_ms": 116.26
+      },
+      "en": {
+        "tp": 191,
+        "fp": 19,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.909524,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 80.81,
+        "p90_ms": 90.84
+      },
+      "fr": {
+        "tp": 161,
+        "fp": 10,
+        "fn": 34,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.94152,
+        "char_recall": 0.825641,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 82.87,
+        "p90_ms": 94.21
+      },
+      "ru": {
+        "tp": 165,
+        "fp": 20,
+        "fn": 36,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.891892,
+        "char_recall": 0.820896,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 83.76,
+        "p90_ms": 87.1
+      },
+      "ar": {
+        "tp": 165,
+        "fp": 0,
+        "fn": 6,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 1.0,
+        "char_recall": 0.964912,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 81.04,
+        "p90_ms": 94.63
+      },
+      "fa": {
+        "tp": 167,
+        "fp": 14,
+        "fn": 6,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.922652,
+        "char_recall": 0.965318,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 82.55,
+        "p90_ms": 86.47
+      }
+    },
+    "types": {
+      "person": {
+        "covered": 36,
+        "total": 36
+      },
+      "email": {
+        "covered": 18,
+        "total": 18
+      },
+      "phone": {
+        "covered": 6,
+        "total": 6
+      },
+      "dob": {
+        "covered": 6,
+        "total": 6
+      },
+      "passport": {
+        "covered": 6,
+        "total": 6
+      },
+      "address": {
+        "covered": 2,
+        "total": 6
+      }
+    },
+    "sensitive_probe": {
+      "tp": 251,
+      "fp": 1,
+      "fn": 28,
+      "covered_entities": 13,
+      "entities": 18,
+      "samples": 6,
+      "entity_recall": 0.722222,
+      "char_precision": 0.996032,
+      "char_recall": 0.899642,
+      "leak_free_samples": 2,
+      "positive_samples": 6,
+      "positive_leak_free_samples": 2,
+      "negative_samples": 0,
+      "negative_samples_overmasked": 0,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 86.57,
+      "p90_ms": 89.83
+    },
+    "load_seconds": 11.849,
+    "rss_after_load_mb": 1330.7,
+    "misses": [
+      {
+        "id": "fr-3",
+        "text": "J'habite au 14 rue des Saules, appartement 302, Lyon. Mon frère Samir Hassan habite ailleurs.",
+        "missed": [
+          {
+            "start": 12,
+            "end": 52,
+            "label": "address",
+            "text": "14 rue des Saules, appartement 302, Lyon"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 64,
+            "end": 76,
+            "label": "person",
+            "text": "Samir Hassan",
+            "score": 0.9969417452812195
+          }
+        ]
+      },
+      {
+        "id": "ru-3",
+        "text": "Я живу по адресу: Москва, улица Ивовая, дом 14, квартира 302. Мой брат Самир Хасан живёт в другом месте.",
+        "missed": [
+          {
+            "start": 18,
+            "end": 60,
+            "label": "address",
+            "text": "Москва, улица Ивовая, дом 14, квартира 302"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 71,
+            "end": 82,
+            "label": "person",
+            "text": "Самир Хасан",
+            "score": 0.996619701385498
+          }
+        ]
+      },
+      {
+        "id": "ar-3",
+        "text": "أسكن في عمّان، شارع الصفصاف ١٤، شقة ٣٠٢. أخي سمير حسن يسكن في مكان آخر.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 39,
+            "label": "address",
+            "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 45,
+            "end": 53,
+            "label": "person",
+            "text": "سمير حسن",
+            "score": 0.9898532032966614
+          },
+          {
+            "start": 15,
+            "end": 39,
+            "label": "address",
+            "text": "شارع الصفصاف ١٤، شقة ٣٠٢",
+            "score": 0.7936662435531616
+          }
+        ]
+      },
+      {
+        "id": "fa-3",
+        "text": "من در تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲ زندگی می‌کنم. برادرم سمیر حسن جای دیگری زندگی می‌کند.",
+        "missed": [
+          {
+            "start": 6,
+            "end": 42,
+            "label": "address",
+            "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 64,
+            "end": 72,
+            "label": "person",
+            "text": "سمیر حسن",
+            "score": 0.9861499667167664
+          },
+          {
+            "start": 13,
+            "end": 42,
+            "label": "address",
+            "text": "خیابان بید، پلاک ۱۴، واحد ۳۰۲",
+            "score": 0.7523024678230286
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": "fastino/gliner2-privacy-filter-PII-multi",
+    "threshold": 0.5,
+    "status": "complete",
+    "summary": {
+      "tp": 970,
+      "fp": 67,
+      "fn": 102,
+      "covered_entities": 73,
+      "entities": 78,
+      "samples": 36,
+      "entity_recall": 0.935897,
+      "char_precision": 0.935391,
+      "char_recall": 0.904851,
+      "leak_free_samples": 31,
+      "positive_samples": 30,
+      "positive_leak_free_samples": 25,
+      "negative_samples": 6,
+      "negative_samples_overmasked": 4,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 84.08,
+      "p90_ms": 93.43
+    },
+    "languages": {
+      "ko": {
+        "tp": 121,
+        "fp": 17,
+        "fn": 20,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.876812,
+        "char_recall": 0.858156,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 87.24,
+        "p90_ms": 90.63
+      },
+      "en": {
+        "tp": 191,
+        "fp": 11,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.945545,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 82.12,
+        "p90_ms": 87.14
+      },
+      "fr": {
+        "tp": 161,
+        "fp": 10,
+        "fn": 34,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.94152,
+        "char_recall": 0.825641,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 89.62,
+        "p90_ms": 96.9
+      },
+      "ru": {
+        "tp": 165,
+        "fp": 19,
+        "fn": 36,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.896739,
+        "char_recall": 0.820896,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 80.66,
+        "p90_ms": 83.48
+      },
+      "ar": {
+        "tp": 165,
+        "fp": 0,
+        "fn": 6,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 1.0,
+        "char_recall": 0.964912,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 83.64,
+        "p90_ms": 101.41
+      },
+      "fa": {
+        "tp": 167,
+        "fp": 10,
+        "fn": 6,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.943503,
+        "char_recall": 0.965318,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 84.88,
+        "p90_ms": 98.39
+      }
+    },
+    "types": {
+      "person": {
+        "covered": 36,
+        "total": 36
+      },
+      "email": {
+        "covered": 18,
+        "total": 18
+      },
+      "phone": {
+        "covered": 6,
+        "total": 6
+      },
+      "dob": {
+        "covered": 6,
+        "total": 6
+      },
+      "passport": {
+        "covered": 6,
+        "total": 6
+      },
+      "address": {
+        "covered": 1,
+        "total": 6
+      }
+    },
+    "sensitive_probe": {
+      "tp": 232,
+      "fp": 1,
+      "fn": 47,
+      "covered_entities": 12,
+      "entities": 18,
+      "samples": 6,
+      "entity_recall": 0.666667,
+      "char_precision": 0.995708,
+      "char_recall": 0.831541,
+      "leak_free_samples": 1,
+      "positive_samples": 6,
+      "positive_leak_free_samples": 1,
+      "negative_samples": 0,
+      "negative_samples_overmasked": 0,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 90.49,
+      "p90_ms": 108.71
+    },
+    "load_seconds": 11.849,
+    "rss_after_load_mb": 1330.7,
+    "misses": [
+      {
+        "id": "ko-3",
+        "text": "저는 서울시 가상구 새봄로 27번길 14, 302호에 살고 있습니다. 제 형 김도윤은 다른 곳에 삽니다.",
+        "missed": [
+          {
+            "start": 3,
+            "end": 28,
+            "label": "address",
+            "text": "서울시 가상구 새봄로 27번길 14, 302호"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 43,
+            "end": 47,
+            "label": "person",
+            "text": "김도윤은",
+            "score": 0.968705952167511
+          }
+        ]
+      },
+      {
+        "id": "fr-3",
+        "text": "J'habite au 14 rue des Saules, appartement 302, Lyon. Mon frère Samir Hassan habite ailleurs.",
+        "missed": [
+          {
+            "start": 12,
+            "end": 52,
+            "label": "address",
+            "text": "14 rue des Saules, appartement 302, Lyon"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 64,
+            "end": 76,
+            "label": "person",
+            "text": "Samir Hassan",
+            "score": 0.9969417452812195
+          }
+        ]
+      },
+      {
+        "id": "ru-3",
+        "text": "Я живу по адресу: Москва, улица Ивовая, дом 14, квартира 302. Мой брат Самир Хасан живёт в другом месте.",
+        "missed": [
+          {
+            "start": 18,
+            "end": 60,
+            "label": "address",
+            "text": "Москва, улица Ивовая, дом 14, квартира 302"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 71,
+            "end": 82,
+            "label": "person",
+            "text": "Самир Хасан",
+            "score": 0.996619701385498
+          }
+        ]
+      },
+      {
+        "id": "ar-3",
+        "text": "أسكن في عمّان، شارع الصفصاف ١٤، شقة ٣٠٢. أخي سمير حسن يسكن في مكان آخر.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 39,
+            "label": "address",
+            "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 45,
+            "end": 53,
+            "label": "person",
+            "text": "سمير حسن",
+            "score": 0.9898532032966614
+          },
+          {
+            "start": 15,
+            "end": 39,
+            "label": "address",
+            "text": "شارع الصفصاف ١٤، شقة ٣٠٢",
+            "score": 0.7936662435531616
+          }
+        ]
+      },
+      {
+        "id": "fa-3",
+        "text": "من در تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲ زندگی می‌کنم. برادرم سمیر حسن جای دیگری زندگی می‌کند.",
+        "missed": [
+          {
+            "start": 6,
+            "end": 42,
+            "label": "address",
+            "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 64,
+            "end": 72,
+            "label": "person",
+            "text": "سمیر حسن",
+            "score": 0.9861499667167664
+          },
+          {
+            "start": 13,
+            "end": 42,
+            "label": "address",
+            "text": "خیابان بید، پلاک ۱۴، واحد ۳۰۲",
+            "score": 0.7523024678230286
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": "knowledgator/gliner-pii-edge-v1.0",
+    "threshold": 0.3,
+    "status": "complete",
+    "summary": {
+      "tp": 569,
+      "fp": 92,
+      "fn": 503,
+      "covered_entities": 40,
+      "entities": 78,
+      "samples": 36,
+      "entity_recall": 0.512821,
+      "char_precision": 0.860817,
+      "char_recall": 0.530784,
+      "leak_free_samples": 16,
+      "positive_samples": 30,
+      "positive_leak_free_samples": 10,
+      "negative_samples": 6,
+      "negative_samples_overmasked": 3,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 20.09,
+      "p90_ms": 29.36
+    },
+    "languages": {
+      "ko": {
+        "tp": 36,
+        "fp": 10,
+        "fn": 105,
+        "covered_entities": 3,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.230769,
+        "char_precision": 0.782609,
+        "char_recall": 0.255319,
+        "leak_free_samples": 1,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 0,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 22.26,
+        "p90_ms": 25.66
+      },
+      "en": {
+        "tp": 147,
+        "fp": 0,
+        "fn": 44,
+        "covered_entities": 11,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.846154,
+        "char_precision": 1.0,
+        "char_recall": 0.769634,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 18.48,
+        "p90_ms": 19.33
+      },
+      "fr": {
+        "tp": 151,
+        "fp": 14,
+        "fn": 44,
+        "covered_entities": 11,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.846154,
+        "char_precision": 0.915152,
+        "char_recall": 0.774359,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 17.55,
+        "p90_ms": 19.6
+      },
+      "ru": {
+        "tp": 145,
+        "fp": 18,
+        "fn": 56,
+        "covered_entities": 9,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.692308,
+        "char_precision": 0.889571,
+        "char_recall": 0.721393,
+        "leak_free_samples": 3,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 2,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 24.23,
+        "p90_ms": 38.75
+      },
+      "ar": {
+        "tp": 45,
+        "fp": 18,
+        "fn": 126,
+        "covered_entities": 3,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.230769,
+        "char_precision": 0.714286,
+        "char_recall": 0.263158,
+        "leak_free_samples": 1,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 0,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 20.13,
+        "p90_ms": 27.3
+      },
+      "fa": {
+        "tp": 45,
+        "fp": 32,
+        "fn": 128,
+        "covered_entities": 3,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.230769,
+        "char_precision": 0.584416,
+        "char_recall": 0.260116,
+        "leak_free_samples": 1,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 0,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 25.41,
+        "p90_ms": 30.79
+      }
+    },
+    "types": {
+      "person": {
+        "covered": 19,
+        "total": 36
+      },
+      "email": {
+        "covered": 5,
+        "total": 18
+      },
+      "phone": {
+        "covered": 6,
+        "total": 6
+      },
+      "dob": {
+        "covered": 2,
+        "total": 6
+      },
+      "passport": {
+        "covered": 6,
+        "total": 6
+      },
+      "address": {
+        "covered": 2,
+        "total": 6
+      }
+    },
+    "sensitive_probe": {
+      "tp": 236,
+      "fp": 47,
+      "fn": 43,
+      "covered_entities": 12,
+      "entities": 18,
+      "samples": 6,
+      "entity_recall": 0.666667,
+      "char_precision": 0.833922,
+      "char_recall": 0.845878,
+      "leak_free_samples": 2,
+      "positive_samples": 6,
+      "positive_leak_free_samples": 2,
+      "negative_samples": 0,
+      "negative_samples_overmasked": 0,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 22.89,
+      "p90_ms": 26.37
+    },
+    "load_seconds": 8.21,
+    "rss_after_load_mb": 852.0,
+    "misses": [
+      {
+        "id": "ko-1",
+        "text": "제 이름은 김하린입니다. 이메일은 harin.kim@example.org이고 전화번호는 010-4827-1936입니다.",
+        "missed": [
+          {
+            "start": 19,
+            "end": 40,
+            "label": "email",
+            "text": "harin.kim@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 6,
+            "end": 12,
+            "label": "location address",
+            "text": "김하린입니다",
+            "score": 0.3750714361667633
+          },
+          {
+            "start": 49,
+            "end": 65,
+            "label": "phone number",
+            "text": "010-4827-1936입니다",
+            "score": 0.9152088165283203
+          }
+        ]
+      },
+      {
+        "id": "ko-2",
+        "text": "제 생년월일은 1991년 8월 17일이고 여권번호는 M73829164입니다.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 20,
+            "label": "dob",
+            "text": "1991년 8월 17일"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 29,
+            "end": 41,
+            "label": "passport number",
+            "text": "M73829164입니다",
+            "score": 0.6161226034164429
+          }
+        ]
+      },
+      {
+        "id": "ko-3",
+        "text": "저는 서울시 가상구 새봄로 27번길 14, 302호에 살고 있습니다. 제 형 김도윤은 다른 곳에 삽니다.",
+        "missed": [
+          {
+            "start": 3,
+            "end": 28,
+            "label": "address",
+            "text": "서울시 가상구 새봄로 27번길 14, 302호"
+          },
+          {
+            "start": 43,
+            "end": 46,
+            "label": "person",
+            "text": "김도윤"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 15,
+            "end": 29,
+            "label": "location address",
+            "text": "27번길 14, 302호에",
+            "score": 0.5853101015090942
+          }
+        ]
+      },
+      {
+        "id": "ko-5",
+        "text": "레일라 누리가 저를 도왔습니다. 다음 날 레일라 누리에게 전화했습니다. 친구 사미르 하산도 함께 있었습니다.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 6,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 43,
+            "end": 49,
+            "label": "person",
+            "text": "사미르 하산"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "ko-6",
+        "text": "박서윤의 연락처가 바뀌었습니다. 이전 이메일 old.seoyun@example.org 대신 new.seoyun@example.org를 사용합니다.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "person",
+            "text": "박서윤"
+          },
+          {
+            "start": 25,
+            "end": 47,
+            "label": "email",
+            "text": "old.seoyun@example.org"
+          },
+          {
+            "start": 51,
+            "end": 73,
+            "label": "email",
+            "text": "new.seoyun@example.org"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "en-6",
+        "text": "Mariam Farah changed her contact details. She now uses new.mariam@example.org instead of old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 55,
+            "end": 77,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 89,
+            "end": 111,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "Mariam Farah",
+            "score": 0.9604817032814026
+          }
+        ]
+      },
+      {
+        "id": "fr-6",
+        "text": "Mariam Farah a changé de coordonnées. Elle utilise new.mariam@example.org au lieu de old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 51,
+            "end": 73,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 85,
+            "end": 107,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "Mariam Farah",
+            "score": 0.9615021347999573
+          }
+        ]
+      },
+      {
+        "id": "ru-2",
+        "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 8,
+            "label": "name",
+            "text": "Моя дата",
+            "score": 0.7868542671203613
+          },
+          {
+            "start": 20,
+            "end": 35,
+            "label": "dob",
+            "text": "17 августа 1991",
+            "score": 0.3050602674484253
+          },
+          {
+            "start": 59,
+            "end": 68,
+            "label": "passport number",
+            "text": "P73829164",
+            "score": 0.4829844832420349
+          }
+        ]
+      },
+      {
+        "id": "ru-3",
+        "text": "Я живу по адресу: Москва, улица Ивовая, дом 14, квартира 302. Мой брат Самир Хасан живёт в другом месте.",
+        "missed": [
+          {
+            "start": 18,
+            "end": 60,
+            "label": "address",
+            "text": "Москва, улица Ивовая, дом 14, квартира 302"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 18,
+            "end": 24,
+            "label": "location address",
+            "text": "Москва",
+            "score": 0.33900269865989685
+          },
+          {
+            "start": 32,
+            "end": 38,
+            "label": "name",
+            "text": "Ивовая",
+            "score": 0.4386034309864044
+          },
+          {
+            "start": 40,
+            "end": 46,
+            "label": "location address",
+            "text": "дом 14",
+            "score": 0.3191621005535126
+          },
+          {
+            "start": 48,
+            "end": 60,
+            "label": "location address",
+            "text": "квартира 302",
+            "score": 0.7341934442520142
+          },
+          {
+            "start": 71,
+            "end": 82,
+            "label": "name",
+            "text": "Самир Хасан",
+            "score": 0.7313374280929565
+          }
+        ]
+      },
+      {
+        "id": "ru-6",
+        "text": "Мариам Фарах сменила контакты. Теперь она использует new.mariam@example.org вместо old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 53,
+            "end": 75,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 83,
+            "end": 105,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "Мариам Фарах",
+            "score": 0.8293983340263367
+          }
+        ]
+      },
+      {
+        "id": "ar-1",
+        "text": "اسمي ليلى نوري. بريدي الإلكتروني هو leila.nouri@example.org ورقم هاتفي هو +962 7 9000 1234.",
+        "missed": [
+          {
+            "start": 5,
+            "end": 14,
+            "label": "person",
+            "text": "ليلى نوري"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 36,
+            "end": 59,
+            "label": "email address",
+            "text": "leila.nouri@example.org",
+            "score": 0.32913997769355774
+          },
+          {
+            "start": 74,
+            "end": 90,
+            "label": "phone number",
+            "text": "+962 7 9000 1234",
+            "score": 0.9741538166999817
+          }
+        ]
+      },
+      {
+        "id": "ar-2",
+        "text": "تاريخ ميلادي هو ١٧ أغسطس ١٩٩١ ورقم جواز سفري هو P73829164.",
+        "missed": [
+          {
+            "start": 16,
+            "end": 29,
+            "label": "dob",
+            "text": "١٧ أغسطس ١٩٩١"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "تاريخ ميلادي",
+            "score": 0.658065915107727
+          },
+          {
+            "start": 48,
+            "end": 57,
+            "label": "passport number",
+            "text": "P73829164",
+            "score": 0.4150482416152954
+          }
+        ]
+      },
+      {
+        "id": "ar-3",
+        "text": "أسكن في عمّان، شارع الصفصاف ١٤، شقة ٣٠٢. أخي سمير حسن يسكن في مكان آخر.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 39,
+            "label": "address",
+            "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢"
+          },
+          {
+            "start": 45,
+            "end": 53,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 62,
+            "end": 70,
+            "label": "location address",
+            "text": "مكان آخر",
+            "score": 0.44288650155067444
+          }
+        ]
+      },
+      {
+        "id": "ar-5",
+        "text": "ساعدتني ليلى نوري. في اليوم التالي اتصلت بها وأجابت ليلى نوري. كان صديقي سمير حسن هناك أيضاً.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 17,
+            "label": "person",
+            "text": "ليلى نوري"
+          },
+          {
+            "start": 52,
+            "end": 61,
+            "label": "person",
+            "text": "ليلى نوري"
+          },
+          {
+            "start": 73,
+            "end": 81,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "ar-6",
+        "text": "غيّرت مريم فرح بيانات الاتصال بها. تستخدم الآن new.mariam@example.org بدلاً من old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 6,
+            "end": 14,
+            "label": "person",
+            "text": "مريم فرح"
+          },
+          {
+            "start": 47,
+            "end": 69,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 79,
+            "end": 101,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "fa-1",
+        "text": "نام من لیلا نوری است. ایمیل من leila.nouri@example.org و شماره تلفن من +98 912 345 6789 است.",
+        "missed": [
+          {
+            "start": 7,
+            "end": 16,
+            "label": "person",
+            "text": "لیلا نوری"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 31,
+            "end": 54,
+            "label": "email address",
+            "text": "leila.nouri@example.org",
+            "score": 0.4211306869983673
+          },
+          {
+            "start": 71,
+            "end": 87,
+            "label": "phone number",
+            "text": "+98 912 345 6789",
+            "score": 0.7699019312858582
+          }
+        ]
+      },
+      {
+        "id": "fa-2",
+        "text": "تاریخ تولد من ۱۷ اوت ۱۹۹۱ و شماره گذرنامه من P73829164 است.",
+        "missed": [
+          {
+            "start": 14,
+            "end": 25,
+            "label": "dob",
+            "text": "۱۷ اوت ۱۹۹۱"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 10,
+            "label": "name",
+            "text": "تاریخ تولد",
+            "score": 0.7530620098114014
+          },
+          {
+            "start": 45,
+            "end": 54,
+            "label": "passport number",
+            "text": "P73829164",
+            "score": 0.5375906825065613
+          }
+        ]
+      },
+      {
+        "id": "fa-3",
+        "text": "من در تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲ زندگی می‌کنم. برادرم سمیر حسن جای دیگری زندگی می‌کند.",
+        "missed": [
+          {
+            "start": 6,
+            "end": 42,
+            "label": "address",
+            "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲"
+          },
+          {
+            "start": 64,
+            "end": 72,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "fa-5",
+        "text": "لیلا نوری به من کمک کرد. روز بعد با او تماس گرفتم و لیلا نوری پاسخ داد. دوستم سمیر حسن هم آنجا بود.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 9,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 52,
+            "end": 61,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 78,
+            "end": 86,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 39,
+            "end": 43,
+            "label": "name",
+            "text": "تماس",
+            "score": 0.333120197057724
+          },
+          {
+            "start": 62,
+            "end": 66,
+            "label": "name",
+            "text": "پاسخ",
+            "score": 0.32957419753074646
+          }
+        ]
+      },
+      {
+        "id": "fa-6",
+        "text": "مریم فرح اطلاعات تماسش را تغییر داد. اکنون از new.mariam@example.org به جای old.mariam@example.org استفاده می‌کند.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 8,
+            "label": "person",
+            "text": "مریم فرح"
+          },
+          {
+            "start": 46,
+            "end": 68,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 76,
+            "end": 98,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 17,
+            "end": 22,
+            "label": "name",
+            "text": "تماسش",
+            "score": 0.45280367136001587
+          },
+          {
+            "start": 107,
+            "end": 113,
+            "label": "location address",
+            "text": "می‌کند",
+            "score": 0.32559388875961304
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": "knowledgator/gliner-pii-edge-v1.0",
+    "threshold": 0.5,
+    "status": "complete",
+    "summary": {
+      "tp": 472,
+      "fp": 41,
+      "fn": 600,
+      "covered_entities": 35,
+      "entities": 78,
+      "samples": 36,
+      "entity_recall": 0.448718,
+      "char_precision": 0.920078,
+      "char_recall": 0.440299,
+      "leak_free_samples": 16,
+      "positive_samples": 30,
+      "positive_leak_free_samples": 10,
+      "negative_samples": 6,
+      "negative_samples_overmasked": 2,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 21.33,
+      "p90_ms": 26.52
+    },
+    "languages": {
+      "ko": {
+        "tp": 33,
+        "fp": 7,
+        "fn": 108,
+        "covered_entities": 2,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.153846,
+        "char_precision": 0.825,
+        "char_recall": 0.234043,
+        "leak_free_samples": 1,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 0,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 21.86,
+        "p90_ms": 24.59
+      },
+      "en": {
+        "tp": 147,
+        "fp": 0,
+        "fn": 44,
+        "covered_entities": 11,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.846154,
+        "char_precision": 1.0,
+        "char_recall": 0.769634,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 20.38,
+        "p90_ms": 23.43
+      },
+      "fr": {
+        "tp": 151,
+        "fp": 3,
+        "fn": 44,
+        "covered_entities": 11,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.846154,
+        "char_precision": 0.980519,
+        "char_recall": 0.774359,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 19.31,
+        "p90_ms": 23.79
+      },
+      "ru": {
+        "tp": 106,
+        "fp": 11,
+        "fn": 95,
+        "covered_entities": 8,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.615385,
+        "char_precision": 0.905983,
+        "char_recall": 0.527363,
+        "leak_free_samples": 3,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 2,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 23.91,
+        "p90_ms": 25.38
+      },
+      "ar": {
+        "tp": 13,
+        "fp": 11,
+        "fn": 158,
+        "covered_entities": 1,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.076923,
+        "char_precision": 0.541667,
+        "char_recall": 0.076023,
+        "leak_free_samples": 1,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 0,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 21.21,
+        "p90_ms": 27.58
+      },
+      "fa": {
+        "tp": 22,
+        "fp": 9,
+        "fn": 151,
+        "covered_entities": 2,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.153846,
+        "char_precision": 0.709677,
+        "char_recall": 0.127168,
+        "leak_free_samples": 1,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 0,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 25.05,
+        "p90_ms": 29.11
+      }
+    },
+    "types": {
+      "person": {
+        "covered": 18,
+        "total": 36
+      },
+      "email": {
+        "covered": 3,
+        "total": 18
+      },
+      "phone": {
+        "covered": 6,
+        "total": 6
+      },
+      "dob": {
+        "covered": 2,
+        "total": 6
+      },
+      "passport": {
+        "covered": 4,
+        "total": 6
+      },
+      "address": {
+        "covered": 2,
+        "total": 6
+      }
+    },
+    "sensitive_probe": {
+      "tp": 162,
+      "fp": 7,
+      "fn": 117,
+      "covered_entities": 9,
+      "entities": 18,
+      "samples": 6,
+      "entity_recall": 0.5,
+      "char_precision": 0.95858,
+      "char_recall": 0.580645,
+      "leak_free_samples": 2,
+      "positive_samples": 6,
+      "positive_leak_free_samples": 2,
+      "negative_samples": 0,
+      "negative_samples_overmasked": 0,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 25.77,
+      "p90_ms": 33.21
+    },
+    "load_seconds": 8.21,
+    "rss_after_load_mb": 852.0,
+    "misses": [
+      {
+        "id": "ko-1",
+        "text": "제 이름은 김하린입니다. 이메일은 harin.kim@example.org이고 전화번호는 010-4827-1936입니다.",
+        "missed": [
+          {
+            "start": 6,
+            "end": 9,
+            "label": "person",
+            "text": "김하린"
+          },
+          {
+            "start": 19,
+            "end": 40,
+            "label": "email",
+            "text": "harin.kim@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 49,
+            "end": 65,
+            "label": "phone number",
+            "text": "010-4827-1936입니다",
+            "score": 0.9152088165283203
+          }
+        ]
+      },
+      {
+        "id": "ko-2",
+        "text": "제 생년월일은 1991년 8월 17일이고 여권번호는 M73829164입니다.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 20,
+            "label": "dob",
+            "text": "1991년 8월 17일"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 29,
+            "end": 41,
+            "label": "passport number",
+            "text": "M73829164입니다",
+            "score": 0.6161226034164429
+          }
+        ]
+      },
+      {
+        "id": "ko-3",
+        "text": "저는 서울시 가상구 새봄로 27번길 14, 302호에 살고 있습니다. 제 형 김도윤은 다른 곳에 삽니다.",
+        "missed": [
+          {
+            "start": 3,
+            "end": 28,
+            "label": "address",
+            "text": "서울시 가상구 새봄로 27번길 14, 302호"
+          },
+          {
+            "start": 43,
+            "end": 46,
+            "label": "person",
+            "text": "김도윤"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 15,
+            "end": 29,
+            "label": "location address",
+            "text": "27번길 14, 302호에",
+            "score": 0.5853101015090942
+          }
+        ]
+      },
+      {
+        "id": "ko-5",
+        "text": "레일라 누리가 저를 도왔습니다. 다음 날 레일라 누리에게 전화했습니다. 친구 사미르 하산도 함께 있었습니다.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 6,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 43,
+            "end": 49,
+            "label": "person",
+            "text": "사미르 하산"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "ko-6",
+        "text": "박서윤의 연락처가 바뀌었습니다. 이전 이메일 old.seoyun@example.org 대신 new.seoyun@example.org를 사용합니다.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 3,
+            "label": "person",
+            "text": "박서윤"
+          },
+          {
+            "start": 25,
+            "end": 47,
+            "label": "email",
+            "text": "old.seoyun@example.org"
+          },
+          {
+            "start": 51,
+            "end": 73,
+            "label": "email",
+            "text": "new.seoyun@example.org"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "en-6",
+        "text": "Mariam Farah changed her contact details. She now uses new.mariam@example.org instead of old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 55,
+            "end": 77,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 89,
+            "end": 111,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "Mariam Farah",
+            "score": 0.9604817032814026
+          }
+        ]
+      },
+      {
+        "id": "fr-6",
+        "text": "Mariam Farah a changé de coordonnées. Elle utilise new.mariam@example.org au lieu de old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 51,
+            "end": 73,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 85,
+            "end": 107,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "Mariam Farah",
+            "score": 0.9615021347999573
+          }
+        ]
+      },
+      {
+        "id": "ru-2",
+        "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          },
+          {
+            "start": 59,
+            "end": 68,
+            "label": "passport",
+            "text": "P73829164"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 8,
+            "label": "name",
+            "text": "Моя дата",
+            "score": 0.7868542671203613
+          }
+        ]
+      },
+      {
+        "id": "ru-3",
+        "text": "Я живу по адресу: Москва, улица Ивовая, дом 14, квартира 302. Мой брат Самир Хасан живёт в другом месте.",
+        "missed": [
+          {
+            "start": 18,
+            "end": 60,
+            "label": "address",
+            "text": "Москва, улица Ивовая, дом 14, квартира 302"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 48,
+            "end": 60,
+            "label": "location address",
+            "text": "квартира 302",
+            "score": 0.7341934442520142
+          },
+          {
+            "start": 71,
+            "end": 82,
+            "label": "name",
+            "text": "Самир Хасан",
+            "score": 0.7313374280929565
+          }
+        ]
+      },
+      {
+        "id": "ru-6",
+        "text": "Мариам Фарах сменила контакты. Теперь она использует new.mariam@example.org вместо old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 53,
+            "end": 75,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 83,
+            "end": 105,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "Мариам Фарах",
+            "score": 0.8293983340263367
+          }
+        ]
+      },
+      {
+        "id": "ar-1",
+        "text": "اسمي ليلى نوري. بريدي الإلكتروني هو leila.nouri@example.org ورقم هاتفي هو +962 7 9000 1234.",
+        "missed": [
+          {
+            "start": 5,
+            "end": 14,
+            "label": "person",
+            "text": "ليلى نوري"
+          },
+          {
+            "start": 36,
+            "end": 59,
+            "label": "email",
+            "text": "leila.nouri@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 74,
+            "end": 90,
+            "label": "phone number",
+            "text": "+962 7 9000 1234",
+            "score": 0.9741538166999817
+          }
+        ]
+      },
+      {
+        "id": "ar-2",
+        "text": "تاريخ ميلادي هو ١٧ أغسطس ١٩٩١ ورقم جواز سفري هو P73829164.",
+        "missed": [
+          {
+            "start": 16,
+            "end": 29,
+            "label": "dob",
+            "text": "١٧ أغسطس ١٩٩١"
+          },
+          {
+            "start": 48,
+            "end": 57,
+            "label": "passport",
+            "text": "P73829164"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "name",
+            "text": "تاريخ ميلادي",
+            "score": 0.658065915107727
+          }
+        ]
+      },
+      {
+        "id": "ar-3",
+        "text": "أسكن في عمّان، شارع الصفصاف ١٤، شقة ٣٠٢. أخي سمير حسن يسكن في مكان آخر.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 39,
+            "label": "address",
+            "text": "عمّان، شارع الصفصاف ١٤، شقة ٣٠٢"
+          },
+          {
+            "start": 45,
+            "end": 53,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "ar-5",
+        "text": "ساعدتني ليلى نوري. في اليوم التالي اتصلت بها وأجابت ليلى نوري. كان صديقي سمير حسن هناك أيضاً.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 17,
+            "label": "person",
+            "text": "ليلى نوري"
+          },
+          {
+            "start": 52,
+            "end": 61,
+            "label": "person",
+            "text": "ليلى نوري"
+          },
+          {
+            "start": 73,
+            "end": 81,
+            "label": "person",
+            "text": "سمير حسن"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "ar-6",
+        "text": "غيّرت مريم فرح بيانات الاتصال بها. تستخدم الآن new.mariam@example.org بدلاً من old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 6,
+            "end": 14,
+            "label": "person",
+            "text": "مريم فرح"
+          },
+          {
+            "start": 47,
+            "end": 69,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 79,
+            "end": 101,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "fa-1",
+        "text": "نام من لیلا نوری است. ایمیل من leila.nouri@example.org و شماره تلفن من +98 912 345 6789 است.",
+        "missed": [
+          {
+            "start": 7,
+            "end": 16,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 31,
+            "end": 54,
+            "label": "email",
+            "text": "leila.nouri@example.org"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 71,
+            "end": 87,
+            "label": "phone number",
+            "text": "+98 912 345 6789",
+            "score": 0.7699019312858582
+          }
+        ]
+      },
+      {
+        "id": "fa-2",
+        "text": "تاریخ تولد من ۱۷ اوت ۱۹۹۱ و شماره گذرنامه من P73829164 است.",
+        "missed": [
+          {
+            "start": 14,
+            "end": 25,
+            "label": "dob",
+            "text": "۱۷ اوت ۱۹۹۱"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 0,
+            "end": 10,
+            "label": "name",
+            "text": "تاریخ تولد",
+            "score": 0.7530620098114014
+          },
+          {
+            "start": 45,
+            "end": 54,
+            "label": "passport number",
+            "text": "P73829164",
+            "score": 0.5375906825065613
+          }
+        ]
+      },
+      {
+        "id": "fa-3",
+        "text": "من در تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲ زندگی می‌کنم. برادرم سمیر حسن جای دیگری زندگی می‌کند.",
+        "missed": [
+          {
+            "start": 6,
+            "end": 42,
+            "label": "address",
+            "text": "تهران، خیابان بید، پلاک ۱۴، واحد ۳۰۲"
+          },
+          {
+            "start": 64,
+            "end": 72,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "fa-5",
+        "text": "لیلا نوری به من کمک کرد. روز بعد با او تماس گرفتم و لیلا نوری پاسخ داد. دوستم سمیر حسن هم آنجا بود.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 9,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 52,
+            "end": 61,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 78,
+            "end": 86,
+            "label": "person",
+            "text": "سمیر حسن"
+          }
+        ],
+        "predictions": []
+      },
+      {
+        "id": "fa-6",
+        "text": "مریم فرح اطلاعات تماسش را تغییر داد. اکنون از new.mariam@example.org به جای old.mariam@example.org استفاده می‌کند.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 8,
+            "label": "person",
+            "text": "مریم فرح"
+          },
+          {
+            "start": 46,
+            "end": 68,
+            "label": "email",
+            "text": "new.mariam@example.org"
+          },
+          {
+            "start": 76,
+            "end": 98,
+            "label": "email",
+            "text": "old.mariam@example.org"
+          }
+        ],
+        "predictions": []
+      }
+    ]
+  },
+  {
+    "model": "urchade/gliner_multi_pii-v1",
+    "threshold": 0.3,
+    "status": "complete",
+    "summary": {
+      "tp": 1068,
+      "fp": 91,
+      "fn": 4,
+      "covered_entities": 77,
+      "entities": 78,
+      "samples": 36,
+      "entity_recall": 0.987179,
+      "char_precision": 0.921484,
+      "char_recall": 0.996269,
+      "leak_free_samples": 35,
+      "positive_samples": 30,
+      "positive_leak_free_samples": 29,
+      "negative_samples": 6,
+      "negative_samples_overmasked": 6,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 75.17,
+      "p90_ms": 82.97
+    },
+    "languages": {
+      "ko": {
+        "tp": 141,
+        "fp": 27,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.839286,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 74.3,
+        "p90_ms": 82.48
+      },
+      "en": {
+        "tp": 191,
+        "fp": 9,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.955,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 69.55,
+        "p90_ms": 77.05
+      },
+      "fr": {
+        "tp": 195,
+        "fp": 7,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.965347,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 79.31,
+        "p90_ms": 82.09
+      },
+      "ru": {
+        "tp": 197,
+        "fp": 9,
+        "fn": 4,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.956311,
+        "char_recall": 0.9801,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 76.27,
+        "p90_ms": 81.87
+      },
+      "ar": {
+        "tp": 171,
+        "fp": 15,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.919355,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 76.28,
+        "p90_ms": 82.98
+      },
+      "fa": {
+        "tp": 173,
+        "fp": 24,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.878173,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 79.73,
+        "p90_ms": 83.44
+      }
+    },
+    "types": {
+      "person": {
+        "covered": 36,
+        "total": 36
+      },
+      "email": {
+        "covered": 18,
+        "total": 18
+      },
+      "phone": {
+        "covered": 6,
+        "total": 6
+      },
+      "dob": {
+        "covered": 5,
+        "total": 6
+      },
+      "passport": {
+        "covered": 6,
+        "total": 6
+      },
+      "address": {
+        "covered": 6,
+        "total": 6
+      }
+    },
+    "sensitive_probe": {
+      "tp": 264,
+      "fp": 1,
+      "fn": 15,
+      "covered_entities": 15,
+      "entities": 18,
+      "samples": 6,
+      "entity_recall": 0.833333,
+      "char_precision": 0.996226,
+      "char_recall": 0.946237,
+      "leak_free_samples": 4,
+      "positive_samples": 6,
+      "positive_leak_free_samples": 4,
+      "negative_samples": 0,
+      "negative_samples_overmasked": 0,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 80.18,
+      "p90_ms": 83.43
+    },
+    "load_seconds": 12.72,
+    "rss_after_load_mb": 1489.4,
+    "misses": [
+      {
+        "id": "ru-2",
+        "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 20,
+            "end": 35,
+            "label": "date of birth",
+            "text": "17 августа 1991",
+            "score": 0.925738513469696
+          },
+          {
+            "start": 59,
+            "end": 68,
+            "label": "passport number",
+            "text": "P73829164",
+            "score": 0.999777615070343
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": "urchade/gliner_multi_pii-v1",
+    "threshold": 0.5,
+    "status": "complete",
+    "summary": {
+      "tp": 1068,
+      "fp": 71,
+      "fn": 4,
+      "covered_entities": 77,
+      "entities": 78,
+      "samples": 36,
+      "entity_recall": 0.987179,
+      "char_precision": 0.937665,
+      "char_recall": 0.996269,
+      "leak_free_samples": 35,
+      "positive_samples": 30,
+      "positive_leak_free_samples": 29,
+      "negative_samples": 6,
+      "negative_samples_overmasked": 6,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 76.08,
+      "p90_ms": 83.06
+    },
+    "languages": {
+      "ko": {
+        "tp": 141,
+        "fp": 23,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.859756,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 77.24,
+        "p90_ms": 86.21
+      },
+      "en": {
+        "tp": 191,
+        "fp": 8,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.959799,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 76.19,
+        "p90_ms": 87.14
+      },
+      "fr": {
+        "tp": 195,
+        "fp": 7,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.965347,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 77.67,
+        "p90_ms": 80.87
+      },
+      "ru": {
+        "tp": 197,
+        "fp": 8,
+        "fn": 4,
+        "covered_entities": 12,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.923077,
+        "char_precision": 0.960976,
+        "char_recall": 0.9801,
+        "leak_free_samples": 5,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 4,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 75.44,
+        "p90_ms": 79.71
+      },
+      "ar": {
+        "tp": 171,
+        "fp": 15,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.919355,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 76.36,
+        "p90_ms": 80.11
+      },
+      "fa": {
+        "tp": 173,
+        "fp": 10,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.945355,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 74.48,
+        "p90_ms": 83.06
+      }
+    },
+    "types": {
+      "person": {
+        "covered": 36,
+        "total": 36
+      },
+      "email": {
+        "covered": 18,
+        "total": 18
+      },
+      "phone": {
+        "covered": 6,
+        "total": 6
+      },
+      "dob": {
+        "covered": 5,
+        "total": 6
+      },
+      "passport": {
+        "covered": 6,
+        "total": 6
+      },
+      "address": {
+        "covered": 6,
+        "total": 6
+      }
+    },
+    "sensitive_probe": {
+      "tp": 264,
+      "fp": 1,
+      "fn": 15,
+      "covered_entities": 15,
+      "entities": 18,
+      "samples": 6,
+      "entity_recall": 0.833333,
+      "char_precision": 0.996226,
+      "char_recall": 0.946237,
+      "leak_free_samples": 4,
+      "positive_samples": 6,
+      "positive_leak_free_samples": 4,
+      "negative_samples": 0,
+      "negative_samples_overmasked": 0,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 78.44,
+      "p90_ms": 81.94
+    },
+    "load_seconds": 12.72,
+    "rss_after_load_mb": 1489.4,
+    "misses": [
+      {
+        "id": "ru-2",
+        "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 20,
+            "end": 35,
+            "label": "date of birth",
+            "text": "17 августа 1991",
+            "score": 0.925738513469696
+          },
+          {
+            "start": 59,
+            "end": 68,
+            "label": "passport number",
+            "text": "P73829164",
+            "score": 0.999777615070343
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": "openai/privacy-filter",
+    "threshold": null,
+    "status": "complete",
+    "summary": {
+      "tp": 981,
+      "fp": 128,
+      "fn": 91,
+      "covered_entities": 66,
+      "entities": 78,
+      "samples": 36,
+      "entity_recall": 0.846154,
+      "char_precision": 0.884581,
+      "char_recall": 0.915112,
+      "leak_free_samples": 26,
+      "positive_samples": 30,
+      "positive_leak_free_samples": 20,
+      "negative_samples": 6,
+      "negative_samples_overmasked": 5,
+      "repeat_inconsistencies": 0,
+      "p50_ms": 164.83,
+      "p90_ms": 236.85
+    },
+    "languages": {
+      "ko": {
+        "tp": 121,
+        "fp": 5,
+        "fn": 20,
+        "covered_entities": 10,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.769231,
+        "char_precision": 0.960317,
+        "char_recall": 0.858156,
+        "leak_free_samples": 4,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 3,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 0,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 179.7,
+        "p90_ms": 384.32
+      },
+      "en": {
+        "tp": 191,
+        "fp": 14,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.931707,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 194.8,
+        "p90_ms": 236.85
+      },
+      "fr": {
+        "tp": 195,
+        "fp": 32,
+        "fn": 0,
+        "covered_entities": 13,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 1.0,
+        "char_precision": 0.859031,
+        "char_recall": 1.0,
+        "leak_free_samples": 6,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 5,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 155.17,
+        "p90_ms": 239.15
+      },
+      "ru": {
+        "tp": 186,
+        "fp": 28,
+        "fn": 15,
+        "covered_entities": 11,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.846154,
+        "char_precision": 0.869159,
+        "char_recall": 0.925373,
+        "leak_free_samples": 4,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 3,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 166.41,
+        "p90_ms": 190.28
+      },
+      "ar": {
+        "tp": 155,
+        "fp": 18,
+        "fn": 16,
+        "covered_entities": 11,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.846154,
+        "char_precision": 0.895954,
+        "char_recall": 0.906433,
+        "leak_free_samples": 4,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 3,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 158.25,
+        "p90_ms": 218.1
+      },
+      "fa": {
+        "tp": 133,
+        "fp": 31,
+        "fn": 40,
+        "covered_entities": 8,
+        "entities": 13,
+        "samples": 6,
+        "entity_recall": 0.615385,
+        "char_precision": 0.810976,
+        "char_recall": 0.768786,
+        "leak_free_samples": 2,
+        "positive_samples": 5,
+        "positive_leak_free_samples": 1,
+        "negative_samples": 1,
+        "negative_samples_overmasked": 1,
+        "repeat_inconsistencies": 0,
+        "p50_ms": 164.57,
+        "p90_ms": 196.48
+      }
+    },
+    "types": {
+      "person": {
+        "covered": 27,
+        "total": 36
+      },
+      "email": {
+        "covered": 18,
+        "total": 18
+      },
+      "phone": {
+        "covered": 6,
+        "total": 6
+      },
+      "dob": {
+        "covered": 3,
+        "total": 6
+      },
+      "passport": {
+        "covered": 6,
+        "total": 6
+      },
+      "address": {
+        "covered": 6,
+        "total": 6
+      }
+    },
+    "sensitive_probe": "unsupported taxonomy",
+    "load_seconds": 9.335,
+    "rss_after_load_mb": 2025.5,
+    "misses": [
+      {
+        "id": "ko-2",
+        "text": "제 생년월일은 1991년 8월 17일이고 여권번호는 M73829164입니다.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 20,
+            "label": "dob",
+            "text": "1991년 8월 17일"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 29,
+            "end": 38,
+            "label": "account_number",
+            "text": "M73829164",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "ko-5",
+        "text": "레일라 누리가 저를 도왔습니다. 다음 날 레일라 누리에게 전화했습니다. 친구 사미르 하산도 함께 있었습니다.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 6,
+            "label": "person",
+            "text": "레일라 누리"
+          },
+          {
+            "start": 23,
+            "end": 29,
+            "label": "person",
+            "text": "레일라 누리"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 43,
+            "end": 49,
+            "label": "private_person",
+            "text": "사미르 하산",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "ru-2",
+        "text": "Моя дата рождения — 17 августа 1991 года, номер паспорта — P73829164.",
+        "missed": [
+          {
+            "start": 20,
+            "end": 40,
+            "label": "dob",
+            "text": "17 августа 1991 года"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 20,
+            "end": 35,
+            "label": "private_date",
+            "text": "17 августа 1991",
+            "score": null
+          },
+          {
+            "start": 59,
+            "end": 68,
+            "label": "account_number",
+            "text": "P73829164",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "ru-6",
+        "text": "Мариам Фарах сменила контакты. Теперь она использует new.mariam@example.org вместо old.mariam@example.org.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 12,
+            "label": "person",
+            "text": "Мариам Фарах"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 53,
+            "end": 75,
+            "label": "private_email",
+            "text": "new.mariam@example.org",
+            "score": null
+          },
+          {
+            "start": 83,
+            "end": 105,
+            "label": "private_email",
+            "text": "old.mariam@example.org",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "ar-1",
+        "text": "اسمي ليلى نوري. بريدي الإلكتروني هو leila.nouri@example.org ورقم هاتفي هو +962 7 9000 1234.",
+        "missed": [
+          {
+            "start": 5,
+            "end": 14,
+            "label": "person",
+            "text": "ليلى نوري"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 36,
+            "end": 59,
+            "label": "private_email",
+            "text": "leila.nouri@example.org",
+            "score": null
+          },
+          {
+            "start": 74,
+            "end": 90,
+            "label": "private_phone",
+            "text": "+962 7 9000 1234",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "ar-5",
+        "text": "ساعدتني ليلى نوري. في اليوم التالي اتصلت بها وأجابت ليلى نوري. كان صديقي سمير حسن هناك أيضاً.",
+        "missed": [
+          {
+            "start": 8,
+            "end": 17,
+            "label": "person",
+            "text": "ليلى نوري"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 45,
+            "end": 62,
+            "label": "private_person",
+            "text": "وأجابت ليلى نوري.",
+            "score": null
+          },
+          {
+            "start": 73,
+            "end": 81,
+            "label": "private_person",
+            "text": "سمير حسن",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "fa-1",
+        "text": "نام من لیلا نوری است. ایمیل من leila.nouri@example.org و شماره تلفن من +98 912 345 6789 است.",
+        "missed": [
+          {
+            "start": 7,
+            "end": 16,
+            "label": "person",
+            "text": "لیلا نوری"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 31,
+            "end": 54,
+            "label": "private_email",
+            "text": "leila.nouri@example.org",
+            "score": null
+          },
+          {
+            "start": 71,
+            "end": 87,
+            "label": "private_phone",
+            "text": "+98 912 345 6789",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "fa-2",
+        "text": "تاریخ تولد من ۱۷ اوت ۱۹۹۱ و شماره گذرنامه من P73829164 است.",
+        "missed": [
+          {
+            "start": 14,
+            "end": 25,
+            "label": "dob",
+            "text": "۱۷ اوت ۱۹۹۱"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 45,
+            "end": 54,
+            "label": "account_number",
+            "text": "P73829164",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "fa-5",
+        "text": "لیلا نوری به من کمک کرد. روز بعد با او تماس گرفتم و لیلا نوری پاسخ داد. دوستم سمیر حسن هم آنجا بود.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 9,
+            "label": "person",
+            "text": "لیلا نوری"
+          },
+          {
+            "start": 52,
+            "end": 61,
+            "label": "person",
+            "text": "لیلا نوری"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 78,
+            "end": 86,
+            "label": "private_person",
+            "text": "سمیر حسن",
+            "score": null
+          }
+        ]
+      },
+      {
+        "id": "fa-6",
+        "text": "مریم فرح اطلاعات تماسش را تغییر داد. اکنون از new.mariam@example.org به جای old.mariam@example.org استفاده می‌کند.",
+        "missed": [
+          {
+            "start": 0,
+            "end": 8,
+            "label": "person",
+            "text": "مریم فرح"
+          }
+        ],
+        "predictions": [
+          {
+            "start": 46,
+            "end": 68,
+            "label": "private_email",
+            "text": "new.mariam@example.org",
+            "score": null
+          },
+          {
+            "start": 76,
+            "end": 98,
+            "label": "private_email",
+            "text": "old.mariam@example.org",
+            "score": null
+          }
+        ]
+      }
+    ]
+  }
+]

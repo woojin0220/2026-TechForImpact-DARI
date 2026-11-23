@@ -28,8 +28,8 @@ export function enumValue<T extends string>(value: unknown, values: readonly T[]
   if (!values.includes(value as T)) throw new Error(`${label} 값이 올바르지 않습니다.`);
   return value as T;
 }
-export function boundedPrompt(data: unknown): string {
+export function boundedPrompt(data: unknown, maxLength = MAX_PROMPT_LENGTH): string {
   const prompt = JSON.stringify(data);
-  if (prompt.length > MAX_PROMPT_LENGTH) throw new Error('현재 처리할 수 있는 문맥 길이를 넘었습니다. 대화 기록은 보존되었습니다. 더 긴 문맥을 지원하는 모델 설정이 필요합니다.');
+  if (prompt.length > maxLength) throw new Error('현재 처리할 수 있는 문맥 길이를 넘었습니다. 대화 기록은 보존되었습니다. 더 긴 문맥을 지원하는 모델 설정이 필요합니다.');
   return prompt;
 }

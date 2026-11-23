@@ -1,0 +1,361 @@
+{
+  "model": "qwen3:4b",
+  "platform": "macOS-15.7-arm64-arm-64bit-Mach-O",
+  "runtime": "Ollama Metal GGUF Q4_K_M",
+  "timing": "wall time per sequential request; warmup excluded; no masking or network LLM",
+  "cases": [
+    {
+      "id": "1.9",
+      "source": "Россия, Санкт-Петербург.",
+      "reference": "러시아, 상트페테르부르크.",
+      "translation": "러시아, 러시아 연합국",
+      "seconds": 0.697,
+      "stats": {
+        "load_duration": 6460375,
+        "eval_count": 21,
+        "eval_duration": 558083000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "1.11",
+      "source": "Не исповедую религию.",
+      "reference": "종교를 믿지 않습니다.",
+      "translation": "Не исповедую религию.",
+      "seconds": 0.6032,
+      "stats": {
+        "load_duration": 4131750,
+        "eval_count": 18,
+        "eval_duration": 471790000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "1.12",
+      "source": "Русский.",
+      "reference": "러시아인입니다.",
+      "translation": "러시아어.",
+      "seconds": 0.4667,
+      "stats": {
+        "load_duration": 3475542,
+        "eval_count": 13,
+        "eval_duration": 343422000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "4",
+      "source": "Мать: Елена Примерова, 1965/09/24, гражданка России, живёт в Санкт-Петербурге. Все имена вымышлены.",
+      "reference": "어머니: Елена Примерова, 1965/09/24 출생, 러시아 국적이며 상트페테르부르크에 거주합니다. 모든 이름은 가상입니다.",
+      "translation": "모thers: 엘레나 프리мерوف아, 1965년 09월 24일, 러시아 국적, 심해 Petrozavodsk에서 거주합니다. 모든 이름은 가상입니다.",
+      "seconds": 1.8956,
+      "stats": {
+        "load_duration": 1599834,
+        "eval_count": 64,
+        "eval_duration": 1725246000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "5",
+      "source": "2009–2014: Учебный технический институт, Санкт-Петербург, специальность — информатика. Название вымышленное.",
+      "reference": "2009–2014: 상트페테르부르크의 교육 기술 대학, 전공은 컴퓨터 과학입니다. 학교 이름은 가상입니다.",
+      "translation": "2009–2014: Учебный технический институт, Санкт-Петербург, специальность — информатика. Название вымышленное.",
+      "seconds": 1.641,
+      "stats": {
+        "load_duration": 986458,
+        "eval_count": 53,
+        "eval_duration": 1465722000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "8",
+      "source": "1991–2026: Санкт-Петербург, Россия, гражданин. С 2026/05/15: Сеул, Республика Корея, краткосрочное пребывание C-3.",
+      "reference": "1991–2026: 러시아 상트페테르부르크에 시민으로 거주했습니다. 2026/05/15부터 대한민국 서울에서 C-3 단기 체류 중입니다.",
+      "translation": "1991–2026: Санкт-Петербург, Россия, гражданин. С 2026/05/15: Сеул, Республика Корея, краткосрочное пребывание C-3.",
+      "seconds": 2.1571,
+      "stats": {
+        "load_duration": 1039250,
+        "eval_count": 67,
+        "eval_duration": 1903529000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "9.7",
+      "source": "Не применимо: паспорт подлинный и получен законно.",
+      "reference": "해당 없음: 여권은 진본이며 합법적으로 발급받았습니다.",
+      "translation": "Не применимо: паспорт подлинный и получен законно.",
+      "seconds": 0.8038,
+      "stats": {
+        "load_duration": 6816542,
+        "eval_count": 24,
+        "eval_duration": 668909000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "9.10",
+      "source": "Заграничный паспорт.",
+      "reference": "해외여행용 여권.",
+      "translation": "Заграничный паспорт.",
+      "seconds": 0.6243,
+      "stats": {
+        "load_duration": 1244417,
+        "eval_count": 18,
+        "eval_duration": 493714000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "10.2",
+      "source": "Консульство Республики Корея в России.",
+      "reference": "러시아 주재 대한민국 영사관.",
+      "translation": "Консульство Республики Корея в России.",
+      "seconds": 0.7616,
+      "stats": {
+        "load_duration": 4250541,
+        "eval_count": 22,
+        "eval_duration": 640247000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "10.5",
+      "source": "Паспорт, фотография, заявление и справка о банковском счёте.",
+      "reference": "여권, 사진, 신청서 및 은행 잔고 증명서.",
+      "translation": "Паспорт, фотография, заявление и справка о банковском счёте.",
+      "seconds": 0.8475,
+      "stats": {
+        "load_duration": 1325500,
+        "eval_count": 28,
+        "eval_duration": 727384000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "11.7",
+      "source": "Родственников в Корее нет.",
+      "reference": "한국에 친척이 없습니다.",
+      "translation": "코리아에 형제가 없다.",
+      "seconds": 0.5974,
+      "stats": {
+        "load_duration": 1782709,
+        "eval_count": 17,
+        "eval_duration": 438508000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "12.2",
+      "source": "Аэропорт Пулково, Санкт-Петербург.",
+      "reference": "상트페테르부르크 풀코보 공항.",
+      "translation": "Аэропорт Пулково, Санкт-Петербург.",
+      "seconds": 0.6746,
+      "stats": {
+        "load_duration": 1397292,
+        "eval_count": 21,
+        "eval_duration": 550436000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "12.3",
+      "source": "Самолёт.",
+      "reference": "비행기.",
+      "translation": "Самолёт.",
+      "seconds": 0.4951,
+      "stats": {
+        "load_duration": 1065250,
+        "eval_count": 13,
+        "eval_duration": 365025000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "12.7",
+      "source": "Не применимо: специальное разрешение не требовалось.",
+      "reference": "해당 없음: 특별 허가가 필요하지 않았습니다.",
+      "translation": "Не применимо: специальное разрешение не требовалось.",
+      "seconds": 0.7534,
+      "stats": {
+        "load_duration": 1166375,
+        "eval_count": 24,
+        "eval_duration": 637183000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "12.8",
+      "source": "Не применимо: выехал законно по действующему паспорту.",
+      "reference": "해당 없음: 유효한 여권으로 합법적으로 출국했습니다.",
+      "translation": "Не применимо: выехал законно по действующему паспорту.",
+      "seconds": 0.8457,
+      "stats": {
+        "load_duration": 1410791,
+        "eval_count": 27,
+        "eval_duration": 718711000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "14.2",
+      "source": "Да. В марте 2026 года после мирного собрания двое неизвестных остановили меня, толкнули и потребовали прекратить участие. Я не знаю, были ли они сотрудниками полиции.",
+      "reference": "네. 2026년 3월 평화로운 집회 후 신원을 알 수 없는 두 사람이 저를 멈춰 세우고 밀치며 참여를 중단하라고 요구했습니다. 그들이 경찰관이었는지는 모릅니다.",
+      "translation": "네. 2026년 3월 평화 회의 후 두 명의 불명확한 사람들은 저를 멈추게 하여 밀고 참여를 중단하도록 요구했습니다. 저는 그들이 경찰 직원이었는지 모릅니다.",
+      "seconds": 2.01,
+      "stats": {
+        "load_duration": 1731875,
+        "eval_count": 68,
+        "eval_duration": 1832903000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.3",
+      "source": "Да. Я боюсь повторных угроз и задержания при возвращении. Точный исход мне неизвестен.",
+      "reference": "네. 귀국하면 다시 위협을 받거나 구금될까 두렵습니다. 정확히 어떤 결과가 생길지는 모릅니다.",
+      "translation": "네. 저는 다시 위협을 받거나 귀국 시 구금을 받을 수 있다는 것을 두려워합니다. 정확한 결과는 알려지지 않았습니다.",
+      "seconds": 1.4351,
+      "stats": {
+        "load_duration": 1060500,
+        "eval_count": 45,
+        "eval_duration": 1255779000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.4",
+      "source": "В апреле 2026 года мать сказала по телефону, что двое мужчин спрашивали обо мне. Лично я этого не видел и не знаю, кто они.",
+      "reference": "2026년 4월 어머니가 전화로 두 남자가 저에 대해 물었다고 말씀하셨습니다. 저는 직접 보지 못했고 그들이 누구인지 모릅니다.",
+      "translation": "2026년 4월에 어머니가 전화로 '나를 묻는 두 명의 남자가 있다'고 말했습니다. 저는 직접 보지 않았고 누구인지도 모릅니다.",
+      "seconds": 1.6133,
+      "stats": {
+        "load_duration": 1407917,
+        "eval_count": 54,
+        "eval_duration": 1441229000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.5",
+      "source": "Нет. Я не обращался в полицию, потому что опасался раскрыть место проживания. Не могу утверждать, как полиция отреагировала бы.",
+      "reference": "아니요. 거주지가 드러날까 두려워 경찰에 연락하지 않았습니다. 경찰이 어떻게 반응했을지는 단정할 수 없습니다.",
+      "translation": "아니요. 저는 경찰에 연락하지 않았습니다. 제가 거주지가 드러나게 될까 봐 걱정했기 때문입니다. 저는 경찰이 어떻게 반응했을지 확실히 말할 수 없습니다.",
+      "seconds": 1.9534,
+      "stats": {
+        "load_duration": 1242834,
+        "eval_count": 65,
+        "eval_duration": 1774791000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.11",
+      "source": "Нет, ранее я и члены моей семьи не обращались за убежищем в другие страны или в УВКБ ООН.",
+      "reference": "아니요. 저와 가족은 이전에 다른 국가나 유엔난민기구에 망명을 신청한 적이 없습니다.",
+      "translation": "아니요, 이전에 저는 그리고 내 가족 구성원들이 다른 국가로 또는 유엔의 유엔 인권 위원회(UNHCR)에 유럽 연합의 유엔 인권 위원회(UNHCR)에 피로 이주를 요청한 적이 없습니다.",
+      "seconds": 2.0317,
+      "stats": {
+        "load_duration": 2203792,
+        "eval_count": 70,
+        "eval_duration": 1854835000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.13",
+      "source": "Нет. Несовершеннолетних детей со мной нет.",
+      "reference": "아니요. 저와 동행하는 미성년 자녀가 없습니다.",
+      "translation": "아니요. 저와 함께 성인 아닙니다.",
+      "seconds": 0.6805,
+      "stats": {
+        "load_duration": 1336541,
+        "eval_count": 21,
+        "eval_duration": 558240000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.16",
+      "source": "Да. У меня есть копии сообщений с угрозами и фотографии мирного собрания. Они сохранены в телефоне.",
+      "reference": "네. 협박 메시지 사본과 평화로운 집회 사진이 있습니다. 휴대전화에 저장되어 있습니다.",
+      "translation": "네. 저는 위협 메시지와 평화 회의 사진의 복사본이 있습니다. 이들은 휴대폰에 저장되어 있습니다.",
+      "seconds": 1.3468,
+      "stats": {
+        "load_duration": 1248208,
+        "eval_count": 43,
+        "eval_duration": 1171772000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    },
+    {
+      "id": "14.18",
+      "source": "Не применимо: в этом примере заявление подаётся менее чем через год после въезда.",
+      "reference": "해당 없음: 이 예시에서는 입국 후 1년이 지나기 전에 신청합니다.",
+      "translation": "Не применимо: в этом примере заявление подаётся менее чем через год после въезда.",
+      "seconds": 1.0129,
+      "stats": {
+        "load_duration": 1203625,
+        "eval_count": 33,
+        "eval_duration": 884806000
+      },
+      "has_hangul": false,
+      "copied_source": true
+    },
+    {
+      "id": "15",
+      "source": "ЭТО ПОЛНОСТЬЮ ВЫМЫШЛЕННЫЙ УЧЕБНЫЙ ПРИМЕР ДЛЯ ПРОВЕРКИ ПРИЛОЖЕНИЯ. Он не является реальным заявлением. Все имена, адреса, организации и события придуманы. Прошу сохранить в переводе различие между личным опытом и рассказом матери.",
+      "reference": "이것은 애플리케이션 테스트를 위한 완전히 가상의 교육용 예시입니다. 실제 신청서가 아닙니다. 모든 이름, 주소, 기관 및 사건은 가상입니다. 번역에서 직접 경험한 일과 어머니에게 들은 이야기를 구분해 주세요.",
+      "translation": "이것은 애플리케이션 검사용 완전히 가상의 교육 예시입니다. 이는 실제 선언이 아닙니다. 모든 이름, 주소, 기관 및 사건은 가상으로 만들어졌습니다. 번역 시 개인 경험과 어머니의 이야기를 구분해 주세요.",
+      "seconds": 2.5904,
+      "stats": {
+        "load_duration": 2169708,
+        "eval_count": 81,
+        "eval_duration": 2259367000
+      },
+      "has_hangul": true,
+      "copied_source": false
+    }
+  ],
+  "cold_load_seconds": null,
+  "warmup_seconds": 5.233879374805838,
+  "warmup_stats": {
+    "load_duration": 4502473250,
+    "eval_count": 12,
+    "eval_duration": 322791000
+  },
+  "chrf2_reference_draft": 27.813539336863013,
+  "summary": {
+    "count": 24,
+    "errors": 0,
+    "no_hangul": 12,
+    "copied_source": 12,
+    "total_seconds": 28.5381,
+    "median_seconds": 0.8466,
+    "max_seconds": 2.5904
+  }
+}

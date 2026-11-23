@@ -1,0 +1,10 @@
+{
+  "repository": "LiquidAI/LFM2.5-Encoder-350M-PII-Detector",
+  "revision": "b8c9cf3d2d6ae52501b35a27ba46f271449c9ce2",
+  "files": {
+    "modeling_phase2_tc.py": "e48f084a44f25a43389a153dba6c94d53cb8f8fa4afd9f95b36ea697bf24d863",
+    "pii_hybrid_decode.py": "798ee81182e1a5a68307d01e8bb350bcd36fa68ebe68e58bb5bacdc2a6c95ed5",
+    "context_cued.py": "2a65a71e7625267b6dae4afd9a3256faa02ec3a724a754622f5c295d6252c33c"
+  },
+  "review": "Inspected imports, local file access, model patches, decoder, and helper functions before execution. Only published hybrid_spans was used; hardcoded developer-path helper was not called."
+}
