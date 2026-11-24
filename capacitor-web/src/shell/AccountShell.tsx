@@ -2,7 +2,6 @@ import { AccountScreen, AuthGate } from '../platform/AccountScreens';
 import { useAuth, type AuthState } from '../platform/AuthContext';
 import { onboardingNeeds } from '../platform/account';
 import type { AccountCopy } from '../platform/accountCopy';
-import { devGuestCopyFor } from './devGuest';
 import { devSupervisorCopyFor } from '../platform/devSupervisorCopy';
 
 /** True until the member is signed in with a finished, active profile. Every tab needs an account. */
@@ -14,15 +13,10 @@ export function needsSignIn(state: AuthState) {
 }
 
 /** Shown right after the language choice until the member has signed in and finished setting up. */
-export function SignInFront({ copy, language, onTest }: { copy: AccountCopy; language: string; onTest?: () => void }) {
-  const testCopy = devGuestCopyFor(language);
+export function SignInFront({ copy, language }: { copy: AccountCopy; language: string }) {
   return <main className="account-main sign-in-front" tabIndex={-1}>
     <p className="front-brand" lang="en" dir="ltr">DARI</p>
     <AuthGate copy={copy} language={language} frontTitle={copy.frontTitle} frontIntro={copy.frontIntro}>{() => null}</AuthGate>
-    {onTest && <div className="dev-guest-entry">
-      <button type="button" className="secondary" onClick={onTest}>{testCopy.enter}</button>
-      <p>{testCopy.hint}</p>
-    </div>}
   </main>;
 }
 
