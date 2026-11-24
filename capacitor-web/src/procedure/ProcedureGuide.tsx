@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { procedureCopyFor } from './copy';
 import './procedure.css';
+import { BackButton, ScreenHeader } from '../ui/ScreenControls';
+import { tabsCopyFor } from '../shell/tabsCopy';
 
 type Props = { language: string; onBack: () => void; headerAccessory?: ReactNode };
 
@@ -41,13 +43,8 @@ export function ProcedureGuide({ language, onBack, headerAccessory }: Props) {
   }
 
   return <main className="procedure-view" aria-label={copy.title} lang={language} dir={direction}>
-    <div className="procedure-toolbar">
-      <strong>{copy.title}</strong>
-      <div className="procedure-toolbar-actions">
-        <button type="button" className="secondary" onClick={onBack}>{copy.back}</button>
-        {headerAccessory}
-      </div>
-    </div>
+    <ScreenHeader className="procedure-toolbar" title={tabsCopyFor(language).schedulerTitle} actions={headerAccessory} />
+    <div className="procedure-back-row"><BackButton label={copy.back} onClick={onBack} /></div>
     {loadFailed && <div className="procedure-load-error" role="alert">
       <p>{copy.loadError}</p>
       <a href={standaloneSrc} target="_blank" rel="noopener noreferrer">{copy.openSeparately}</a>

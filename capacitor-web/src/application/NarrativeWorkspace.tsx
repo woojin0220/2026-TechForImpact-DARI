@@ -11,6 +11,7 @@ import { statusWords } from '../statusCopy';
 import { applicationCopy } from './copy';
 import { workspaceCopy } from './workspaceCopy';
 import { loadConversation, saveConversation } from './conversationStorage';
+import { BackButton, Button } from '../ui/ScreenControls';
 
 /** Existing intake engine, with no draft generator or application answer writer. */
 export function NarrativeWorkspace({scope,language,identityValues,onBack}:{scope:string;language:string;identityValues:string[];onBack:()=>void}) {
@@ -61,7 +62,7 @@ export function NarrativeWorkspace({scope,language,identityValues,onBack}:{scope
   setView('conversation');
  }
  return <main id="main" className="application-page application-writing metadata-workspace" dir={texts.direction}>
-  <button className="application-back" disabled={!!busy} onClick={onBack}>‹ {ac.back}</button>
+  <BackButton className="application-back" label={ac.back} disabled={!!busy} onClick={onBack} />
   <h1>{c.title}</h1><p className="application-note">{c.note}</p>
   <div className="metadata-tabs" role="group" aria-label={c.title}>
    <button className={view==='conversation'?'primary':'secondary'} aria-pressed={view==='conversation'} onClick={()=>setView('conversation')}>{c.chat}</button>
@@ -70,7 +71,7 @@ export function NarrativeWorkspace({scope,language,identityValues,onBack}:{scope
   {storageError&&<p role="alert" className="application-warning">{c.storage}</p>}
   {error&&<p role="alert" className="application-warning">{error}</p>}
   {view==='conversation' ? <>
-   {awaiting&&!busy&&<button className="secondary" onClick={()=>void extract(session)}>{c.retry}</button>}
+   {awaiting&&!busy&&<Button variant="secondary" onClick={()=>void extract(session)}>{c.retry}</Button>}
    {busy&&<p className="application-note" role="status">{c.title} · {task.elapsed}s</p>}
    <ConversationStage texts={texts} language={language} session={session} busy={busy} locked={!!busy||awaiting}
     threadRef={thread} composerRef={composer} input={input} onInput={setInput} ask={ask} askRequirement={requirement}
@@ -89,7 +90,7 @@ export function NarrativeWorkspace({scope,language,identityValues,onBack}:{scope
      </article>)}
     </div>)}
    </section>)}
-   <button className="secondary" disabled={!!busy} onClick={more}>{c.chat}</button>
+   <Button variant="secondary" disabled={!!busy} onClick={more}>{c.chat}</Button>
   </>}
  </main>;
 }

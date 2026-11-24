@@ -15,6 +15,7 @@ import { applicationCopy, downloadCopy, translationFailure } from './copy';
 import { QuickAnswer } from './QuickAnswer';
 import { workspaceCopy, subsectionLabel } from './workspaceCopy';
 import './application.css';
+import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 
 const NarrativeWorkspace=lazy(()=>import('./NarrativeWorkspace').then(module=>({default:module.NarrativeWorkspace})));
 const guestRepository=sessionDraftRepository({userId:null});
@@ -76,13 +77,13 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  if(gate) return <div className="application-page">{gate}</div>;
  if(conversation && question) return <Suspense fallback={<p role="status">{wc.title}…</p>}><NarrativeWorkspace scope={repository.scope} language={answer.language} identityValues={Object.entries(answers).filter(([id])=>['1.2','1.3','1.4','1.5','1.9','1.10','1.11','1.12'].includes(id)).map(([,a])=>a.source)} onBack={()=>setConversation(false)}/></Suspense>;
  return <div className={`application-page${group || question ? ' application-writing' : ''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
-  <header className="application-header"><h1 className="application-brand">{c.title}</h1><div className="application-tools"><label><span className="sr-only">{c.language}</span><select aria-label={c.language} value={language} disabled={busy} onChange={e=>setLanguage(e.target.value)}>{intakeLanguages.map(l=><option key={l.code} value={l.code}>{l.name}</option>)}</select></label>{headerAccessory}</div></header>
+  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} actions={<div className="application-tools"><label><span className="sr-only">{c.language}</span><select aria-label={c.language} value={language} disabled={busy} onChange={e=>setLanguage(e.target.value)}>{intakeLanguages.map(l=><option key={l.code} value={l.code}>{l.name}</option>)}</select></label>{headerAccessory}</div>} />
   <main id="main" tabIndex={-1} ref={main} className="application-main">
    {storageError && <p role="alert" className="application-warning">{c.storage}</p>}
    {error && <p role="alert" className="application-warning">{error}</p>}
    {!question ? <>
-    {group && <button className="application-back quiet" onClick={()=>setGroupId(null)}>‹ {c.back}</button>}
-    <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <button className="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{exporting?`${c.translating} ${progress.done} / ${progress.total}`:c.download} <span aria-hidden="true">↓</span></button>}</div>
+    {group && <BackButton className="application-back" label={c.back} onClick={()=>setGroupId(null)} />}
+    <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <Button variant="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{exporting?`${c.translating} ${progress.done} / ${progress.total}`:c.download} <span aria-hidden="true">↓</span></Button>}</div>
     {!group && <ol className="question-list">{!group ? questionGroups.map(g=>{
      const count=g.questions.filter(q=>answers[q.id]?.source.trim()).length;
      return <li key={g.id}><button className="question-card" disabled={exporting} onClick={()=>{setGroupId(g.id);if(g.questions.length===1 && !isQuickQuestion(g.questions[0])) setSelected(g.questions[0].id);setError('');}}><span className="question-number" dir="ltr">{g.id}</span><span className="question-label">{label(g.ko,g.en).replace(/^\d+\.\s*/, '')}</span><span className={`question-state ${count?'has-answer':''}`}>{count} / {g.questions.length}</span><span aria-hidden="true">›</span></button></li>;
@@ -99,9 +100,9 @@ export default function Application({gate, headerAccessory, repository=guestRepo
       <summary><span>{subsectionLabel(section.id,language,label(section.ko,section.en))}</span><span className="question-section-count">{count} / {section.questions.length}</span></summary>{items}
      </details>;
     })}</div>}
-    {group && <>{native&&<button className="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</button>}</>}
+    {group && <>{native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}</>}
    </> : <>
-    <button className="application-back" disabled={busy} onClick={()=>{setSelected(null);if(group?.questions.length===1)setGroupId(null);}}>‹ {c.back}</button>
+    <BackButton className="application-back" label={c.back} disabled={busy} onClick={()=>{setSelected(null);if(group?.questions.length===1)setGroupId(null);}} />
     <p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>
     <h1><span dir="ltr">{question.id}</span> {label(question.fields[0].ko,question.fields[0].en)}</h1>
     {question.fields.slice(1).map(f=><p className="application-note" key={f.id}>{label(f.ko,f.en)}</p>)}
@@ -110,12 +111,12 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     {supportsConversation(question) && <button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry} <span aria-hidden="true">›</span></button>}
     <div className="answer-columns"><section><div className="answer-title"><label htmlFor="answer-source">{c.source}</label><select aria-label={c.language} value={answer.language} disabled={busy} onChange={e=>{const next=e.target.value;setAnswers(prev=>({...prev,[question.id]:{...answer,language:next,korean:'',translatedSource:''}}));}}>{intakeLanguages.map(l=><option key={l.code} value={l.code}>{l.name}</option>)}</select></div>
      <textarea id="answer-source" dir="auto" lang={answer.language} value={answer.source} disabled={busy} maxLength={12000} onChange={e=>updateSource(e.target.value)}/>
-     <div className="translation-actions"><button className="primary" disabled={busy||!answer.source.trim()} onClick={()=>void translate()}>{busy?c.translating:c.translate}</button><span className="application-note">{answer.source.length.toLocaleString()} / 12,000</span></div>
+     <div className="translation-actions"><Button variant="primary" disabled={busy||!answer.source.trim()} onClick={()=>void translate()}>{busy?c.translating:c.translate}</Button><span className="application-note">{answer.source.length.toLocaleString()} / 12,000</span></div>
     </section><section><label className="answer-title" htmlFor="answer-korean">{c.result}</label>
      <textarea id="answer-korean" lang="ko" dir="ltr" value={answer.korean} disabled={busy||!answer.translatedSource||answer.translatedSource!==answer.source} onChange={e=>setAnswers(prev=>({...prev,[question.id]:{...answer,korean:e.target.value}}))}/>
      {(busy || (answer.korean&&!isCurrent(answer,question.id))) && <p className="application-note" role="status">{busy?c.translating:c.stale}</p>}
     </section></div>
-    {native&&<button className="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</button>}
+    {native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}
 
    </>}
   </main>

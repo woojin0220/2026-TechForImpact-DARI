@@ -41,7 +41,7 @@ test('the scheduler keeps the real guide and back action when its profile action
   for (const language of ['ko', 'en', 'fr', 'ru', 'ar', 'fa']) {
     const html = mod.exports.guide(language);
     assert.match(html, /procedure-guide\.html\?embedded=1&amp;lang=/);
-    assert.match(html, /class="procedure-toolbar-actions"/);
+    assert.match(html, /class="dari-screen-actions"/);
     assert.match(html, /aria-label="profile-test"/);
     assert.equal((html.match(/<button/g) ?? []).length, 2);
     assert.ok(html.includes(`dir="${['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'}"`));

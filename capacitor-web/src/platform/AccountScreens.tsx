@@ -4,6 +4,7 @@ import type { AccountCopy } from './accountCopy';
 import type { PlatformApi } from './api';
 import { useAuth } from './AuthContext';
 import { DevSupervisorEntry } from './DevSupervisorEntry';
+import { BackButton } from '../ui/ScreenControls';
 
 const errorKeys: Record<AccountErrorKind, keyof AccountCopy> = {
   email: 'errorEmail', code: 'errorCode', nickname: 'errorNickname', nicknameTaken: 'errorNicknameTaken', rateLimit: 'errorRateLimit', badgeCode: 'errorBadgeCode', badgeSelf: 'errorBadgeSelf', generic: 'errorGeneric',
@@ -176,7 +177,7 @@ export function AccountScreen({ copy, account, api, language = 'ko', onBack, onC
   }
   return <section className="account-screen">
     <header className="account-bar">
-      <button type="button" className="account-back" aria-label={copy.back} onClick={onBack}><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" /></svg></button>
+      <BackButton className="account-back" label={copy.back} onClick={onBack} />
       <h1>{copy.profile}</h1>
     </header>
     <div className="profile-card">
