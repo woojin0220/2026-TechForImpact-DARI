@@ -48,7 +48,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
   setAnswers(prev => {
    const saved = prev[id];
    const current = saved ?? {source:'',language,korean:'',translatedSource:''};
-   const translated = korean ?? (current.language==='ko' ? source : undefined);
+   const translated = korean;
    return {...prev,[id]:{...current,source,...(translated!==undefined ? {korean:translated,translatedSource:source} : {})}};
   }); setError('');
  }
@@ -106,10 +106,12 @@ export default function Application({gate, headerAccessory, repository=guestRepo
    </> : <>
     <BackButton className="application-back" label={c.back} disabled={busy} onClick={()=>{setSelected(null);if(group?.questions.length===1)setGroupId(null);}} />
     <p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>
-    <header className="writing-question"><span className="writing-question-number" dir="ltr">{question.id}</span><h2 id="writing-question-title">{label(question.fields[0].ko,question.fields[0].en)}</h2></header>
+    <header className="writing-question"><h2 id="writing-question-title"><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</h2>
+     {question.fields.length>1&&<ul className="question-description">{question.fields.slice(1).map(field=><li key={field.id}>{label(field.ko,field.en)}</li>)}</ul>}
+    </header>
     {supportsConversation(question) && <button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry} <span aria-hidden="true">›</span></button>}
     <AnswerEditor question={question} answer={answer} language={language} busy={busy} onSource={updateSource}
-     onLanguage={next=>setAnswers(prev=>({...prev,[question.id]:{...answer,language:next,translatedSource:'',...(next==='ko'?{korean:answer.source,translatedSource:answer.source}:{})}}))}
+     onLanguage={next=>setAnswers(prev=>({...prev,[question.id]:{...answer,language:next,translatedSource:''}}))}
      onTranslate={()=>void translate()} onKorean={korean=>setAnswers(prev=>({...prev,[question.id]:{...answer,korean}}))}/>
     {native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}
 

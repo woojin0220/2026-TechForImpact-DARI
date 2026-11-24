@@ -10,6 +10,14 @@ const copy={
  fa:{choose:'یک گزینه انتخاب کنید',clear:'پاک کردن انتخاب',write:'پاسخ خود را به این سؤال بنویسید.',uncertain:'مواردی را که به یاد ندارید یا از آن‌ها مطمئن نیستید مشخص کنید.',date:'سال/ماه/روز (مثلاً 2020/03/15)',when:'زمان وقوع',where:'محل وقوع',who:'افراد مرتبط و آنچه درباره هویت آن‌ها می‌دانید',what:'اتفاق و شرایط آن',why:'دلیل برداشت شما از علت آن',release:'در صورت ارتباط، چگونگی آزادی',ifYes:'اگر بله، فقط موارد مرتبط را شرح دهید',hint:'راهنمای نوشتن'},
 };
 export const inputCopy=(language:string)=>copy[language as keyof typeof copy]??copy.en;
+export const translationPlaceholder=(language:string)=>({
+ ko:'번역 버튼을 누르면 여기에 결과가 표시돼요.',
+ en:'Press the translate button to see the result here.',
+ fr:'Appuyez sur Traduire pour afficher le résultat ici.',
+ ru:'Нажмите кнопку перевода, чтобы увидеть результат здесь.',
+ ar:'اضغط على زر الترجمة لعرض النتيجة هنا.',
+ fa:'برای نمایش نتیجه در اینجا، دکمه ترجمه را بزنید.',
+}[language]??'Press the translate button to see the result here.');
 
 /** Instructions are display-only. They never become an answer or a model prompt. */
 export function questionGuide(q:Question,language:string):string {
