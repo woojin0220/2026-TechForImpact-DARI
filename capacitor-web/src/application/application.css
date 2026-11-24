@@ -150,3 +150,12 @@
 .table-question-guide>p{font-size:12px;color:#6b7684;margin:0 0 8px;line-height:1.6}
 .table-question-guide>ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 22px;margin:0;padding-inline-start:16px;color:#4e5968;font-size:13px;line-height:1.7}
 .table-question-guide li{min-width:0;word-break:keep-all;overflow-wrap:anywhere}
+.dari-screen-leading{flex:none;width:48px;display:flex;align-items:center}
+.application-header:has(.dari-screen-leading){gap:8px;margin-bottom:24px}
+.dari-screen-leading button.dari-back.dari-back{width:48px;height:48px;min-height:48px;padding:0;margin:0;justify-content:center;border-radius:12px;color:var(--ink);background:transparent}
+.dari-screen-leading .dari-back:hover:not(:disabled){background:var(--soft)}
+.dari-screen-leading .dari-back svg{width:24px;height:24px;stroke-width:2}
+.dari-screen-leading .dari-back span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.application-tools .select-menu>summary{font-size:12px;padding:8px 10px;gap:6px}
+.application-page .metadata-header.dari-screen-header>h1{font-size:22px}
+@media(max-width:380px){.application-page .application-header:has(.dari-screen-leading)>h1{font-size:18px;letter-spacing:-.3px}.application-header:has(.dari-screen-leading) .application-tools{gap:6px}.application-tools .select-menu>summary{padding-inline:8px}}

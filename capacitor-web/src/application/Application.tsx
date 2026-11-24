@@ -55,6 +55,10 @@ export default function Application({gate, headerAccessory, repository=guestRepo
   }); setError('');
  }
  function updateSource(source: string) { if (selected) changeAnswer(selected,source); }
+ function goBack() {
+  if(question){setSelected(null);if(group?.questions.length===1)setGroupId(null);}
+  else setGroupId(null);
+ }
  async function translate(id: string | null = selected) {
   const snapshot=id ? answers[id] : undefined;
   if(!id || busy || !snapshot?.source.trim()) return;
@@ -81,12 +85,11 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  if(gate) return <div className="application-page">{gate}</div>;
  if(conversation && question) return <Suspense fallback={<p role="status">{wc.title}…</p>}><NarrativeWorkspace scope={repository.scope} language={answer.language} identityValues={Object.entries(answers).filter(([id])=>['1.2','1.3','1.4','1.5','1.9','1.10','1.11','1.12'].includes(id)).map(([,a])=>a.source)} onBack={()=>setConversation(false)}/></Suspense>;
  return <div className={`application-page${group || question ? ' application-writing' : ''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
-  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} actions={<div className="application-tools">{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
+  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question)&&<BackButton className="application-back" label={c.back} disabled={busy} onClick={goBack}/>} actions={<div className="application-tools">{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
   <main id="main" tabIndex={-1} ref={main} className="application-main">
    {storageError && <p role="alert" className="application-warning">{c.storage}</p>}
    {error && <p role="alert" className="application-warning">{error}</p>}
    {!question ? <>
-    {group && <BackButton className="application-back" label={c.back} onClick={()=>setGroupId(null)} />}
     <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <Button variant="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{exporting?`${c.translating} ${progress.done} / ${progress.total}`:c.download} <span aria-hidden="true">↓</span></Button>}</div>
     {!group && <ol className="question-list">{!group ? questionGroups.map(g=>{
      const count=g.questions.filter(q=>answers[q.id]?.source.trim()).length;
@@ -106,7 +109,6 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     })}</div>}
     {group && <>{native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}</>}
    </> : <>
-    <BackButton className="application-back" label={c.back} disabled={busy} onClick={()=>{setSelected(null);if(group?.questions.length===1)setGroupId(null);}} />
     {!wholeTable&&<p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>}
     <header className={`writing-question${wholeTable?' section-question':''}`}><h2 id="writing-question-title">{wholeTable?label(question.sectionKo,question.sectionEn):<><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</>}</h2>
      {(question.notes.length>0||question.fields.length>1)&&<ul className="question-description">{question.notes.map((note,index)=><li key={`note-${index}`}>{label(note.ko,note.en)}</li>)}{question.fields.slice(1).map(field=><li key={field.id}>{label(field.ko,field.en)}</li>)}</ul>}
