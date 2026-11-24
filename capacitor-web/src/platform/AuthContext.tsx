@@ -3,16 +3,21 @@ import type { Session } from '@supabase/supabase-js';
 import { platformClient } from './client';
 import { platformApi, type PlatformApi } from './api';
 import type { Account } from './account';
+import type { CommunityApi } from '../community/api';
+import type { DevSupervisorSandbox } from './devSupervisor';
 
 export type AuthState =
   | { status: 'unconfigured' }
   | { status: 'loading' }
   | { status: 'signedOut' }
   | { status: 'error'; session: Session }
+  | { status: 'development'; account: Account }
   | { status: 'signedIn'; session: Session; account: Account };
 
-type AuthValue = { state: AuthState; api: PlatformApi | null; refresh: () => Promise<void> };
+type AuthValue = { state: AuthState; api: PlatformApi | null; refresh: () => Promise<void>;
+  enterSupervisor?: (language: string) => Promise<void>; exitSupervisor?: () => void; communityOverride?: CommunityApi };
 const AuthContext = createContext<AuthValue>({ state: { status: 'unconfigured' }, api: null, refresh: async () => {} });
+const TEST_ACCOUNT_KEY = 'dari.dev.supervisor.active.v1';
 
 /** Keeps the signed-in member and their profile, roles and consents in one place for every tab. */
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -20,6 +25,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const api = useMemo(() => client ? platformApi(client) : null, [client]);
   const [session, setSession] = useState<Session | null | undefined>(client ? undefined : null);
   const [state, setState] = useState<AuthState>(client ? { status: 'loading' } : { status: 'unconfigured' });
+  const [sandbox, setSandbox] = useState<DevSupervisorSandbox | null>(null);
+  const [testAccount, setTestAccount] = useState<Account | null>(null);
+  const exitSupervisor = useCallback(() => {
+    try { sessionStorage.removeItem(TEST_ACCOUNT_KEY); } catch { /* Memory-only exit still works. */ }
+    setSandbox(null); setTestAccount(null);
+  }, []);
+  const enterSupervisor = useCallback(async (language: string) => {
+    if (!import.meta.env.DEV || !['signedOut', 'unconfigured'].includes(state.status)) return;
+    // This module is excluded from production builds; it never manufactures a Supabase session.
+    const { createDevSupervisor } = await import('./devSupervisor');
+    const next = createDevSupervisor({ development: import.meta.env.DEV, language, storage: sessionStorage, onExit: exitSupervisor });
+    sessionStorage.setItem(TEST_ACCOUNT_KEY, language);
+    setTestAccount(next.account()); setSandbox(next);
+  }, [state.status, exitSupervisor]);
+  useEffect(() => {
+    if (!import.meta.env.DEV || sandbox || !['signedOut', 'unconfigured'].includes(state.status)) return;
+    let language: string | null = null;
+    try { language = sessionStorage.getItem(TEST_ACCOUNT_KEY); } catch { return; }
+    if (language) void enterSupervisor(language).catch(exitSupervisor);
+  }, [state.status, sandbox, enterSupervisor, exitSupervisor]);
 
   useEffect(() => {
     if (!client) return;
@@ -40,8 +65,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [api]);
 
   useEffect(() => { void load(session); }, [session, load]);
-  const refresh = useCallback(() => load(session), [load, session]);
-  const value = useMemo(() => ({ state, api, refresh }), [state, api, refresh]);
+  const refresh = useCallback(async () => {
+    if (sandbox) { setTestAccount(sandbox.account()); return; }
+    await load(session);
+  }, [load, session, sandbox]);
+  const value = useMemo<AuthValue>(() => ({
+    state: sandbox && testAccount ? { status: 'development', account: testAccount } : state,
+    api: sandbox ? sandbox.platform : api, refresh,
+    enterSupervisor: import.meta.env.DEV && !sandbox && ['signedOut', 'unconfigured'].includes(state.status) ? enterSupervisor : undefined,
+    exitSupervisor: sandbox ? exitSupervisor : undefined,
+    communityOverride: sandbox?.community,
+  }), [state, api, refresh, sandbox, testAccount, enterSupervisor, exitSupervisor]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
