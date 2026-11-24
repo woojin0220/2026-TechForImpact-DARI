@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {questions,saveAnswers,loadAnswers} from '../src/application/model.ts';
 import {guidanceItems,guidanceKey,guidanceGroups} from '../src/application/questionGuidance.ts';
-import {makeSentenceParts,sentenceText,splitSentence,mergeSentence} from '../src/application/sentenceDraft.ts';
+import {makeSentenceParts,sentenceText,splitSentence,mergeSentence,reconcileSentenceParts} from '../src/application/sentenceDraft.ts';
 const q=questions.find(q=>q.id==='14.2');
 
 test('printed content prompts are distinct from response rules and app advice; changes invalidate acknowledgement',()=>{
@@ -26,6 +26,16 @@ test('editing one sentence does not renumber or rewrite unrelated sentence ident
  const edited=parts.map((p,i)=>i===0?{...p,text:'I am not certain.'}:p);
  assert.equal(edited[1].id,parts[1].id);assert.equal(edited[1].text,parts[1].text);
  assert.equal(sentenceText(edited),'I am not certain. They left.');
+});
+
+test('continuous typing segments sentences without changing text or existing neighbour IDs',()=>{
+ let id=0;const create=()=>`sentence-${id++}`;
+ const initial=makeSentenceParts('I think it was March. I am not certain.','en',create);
+ const text='I think it was April. I am not certain.\n\nI did not see their faces.';
+ const next=reconcileSentenceParts(text,initial,'en',create);
+ assert.equal(sentenceText(next),text);assert.equal(next.length,3);assert.equal(next[0].id,initial[0].id);assert.equal(next[1].id,initial[1].id);
+ const edited=reconcileSentenceParts('I think it was April. A new sentence. I am not certain.\n\nI did not see their faces.',next,'en',create);
+ assert.equal(edited[2].id,next[1].id);assert.equal(edited[3].id,next[2].id);
 });
 test('guidance confirmation and sentence identities survive reload; legacy answer text remains unchanged',()=>{
  const data=new Map();globalThis.sessionStorage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)};

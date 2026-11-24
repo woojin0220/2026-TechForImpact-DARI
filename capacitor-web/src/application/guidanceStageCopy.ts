@@ -4,7 +4,15 @@ const fr:typeof ko={explain:'Les consignes du formulaire\nen {n} points',answer:
 const ru:typeof ko={explain:'Указания бланка\nв {n} пунктах',answer:'Как отвечать',ifYes:'Если ответ Да, подробно опишите относящиеся к вам обстоятельства.',contents:'Что указать',support:'Помощь DARI',question:'Посмотреть вопрос',next:'Продолжить',language:'Выбрать языки',pause:'Приостановить автоматический переход',play:'Возобновить автоматический переход',method:'Отметьте каждый пункт после прочтения и понимания.',finish:'Проверив все пункты, выберите языки.'};
 const ar:typeof ko={explain:'نظّمنا إرشادات النموذج\nفي {n} نقاط',answer:'طريقة الإجابة',ifYes:'إذا أجبت بنعم، اشرح بالتفصيل ما ينطبق عليك.',contents:'ما يجب تضمينه',support:'مساعدة DARI في الكتابة',question:'عرض السؤال مجدداً',next:'متابعة',language:'اختيار اللغتين',pause:'إيقاف الانتقال التلقائي مؤقتاً',play:'استئناف الانتقال التلقائي',method:'ضع علامة بعد قراءة كل نقطة وفهمها.',finish:'بعد مراجعة جميع النقاط، اختر اللغتين.'};
 const fa:typeof ko={explain:'راهنمای فرم را\nدر {n} مورد تنظیم کردیم',answer:'روش پاسخ دادن',ifYes:'اگر پاسخ بله است، موارد مرتبط را با جزئیات توضیح دهید.',contents:'موارد مورد نیاز',support:'راهنمای نوشتن DARI',question:'نمایش دوباره سؤال',next:'ادامه',language:'انتخاب زبان‌ها',pause:'توقف موقت انتقال خودکار',play:'ادامه انتقال خودکار',method:'پس از خواندن و فهمیدن هر مورد، آن را علامت بزنید.',finish:'پس از بررسی همه موارد، زبان‌ها را انتخاب کنید.'};
-export const guidanceStageCopy=(language:string)=>({ko,en,fr,ru,ar,fa}[language]??en);
+const readable={
+ ko:{explain:'작성할 내용 {n}가지를\n먼저 확인해 주세요.',sourceNote:'신청서의 작성 안내를 항목별로 정리했어요.'},
+ en:{explain:'Please check these {n} points\nbefore writing.',sourceNote:'These points are based on the application form’s guidance.'},
+ fr:{explain:'Vérifiez ces {n} points\navant de rédiger.',sourceNote:'Ces points reprennent les consignes du formulaire.'},
+ ru:{explain:'Проверьте {n} пунктов\nперед ответом.',sourceNote:'Эти пункты основаны на указаниях бланка.'},
+ ar:{explain:'راجع هذه النقاط وعددها {n}\nقبل الكتابة.',sourceNote:'هذه النقاط مستندة إلى إرشادات نموذج الطلب.'},
+ fa:{explain:'این {n} مورد را\nپیش از نوشتن بررسی کنید.',sourceNote:'این موارد بر اساس راهنمای فرم درخواست تنظیم شده‌اند.'},
+};
+export const guidanceStageCopy=(language:string)=>({...({ko,en,fr,ru,ar,fa}[language]??en),...(readable[language as keyof typeof readable]??readable.en)});
 
 // Form 14.2 (2024-12-03): Korean printed prompts; other locales are application translations.
 const prompts={

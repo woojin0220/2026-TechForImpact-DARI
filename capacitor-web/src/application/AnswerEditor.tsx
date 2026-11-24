@@ -9,6 +9,7 @@ import type { FieldValues } from './structuredAnswer';
 import { focusCopy } from './focusCopy';
 import { SentenceEditor } from './SentenceEditor';
 import type { SentencePart } from './sentenceDraft';
+import { WritingGuide } from './WritingGuide';
 
 type Props={question:Question;answer:Answer;language:string;busy:boolean;review:boolean;onFields:(values:FieldValues)=>void;onSentence:(field:string,text:string,parts:SentencePart[],structured:boolean)=>void;onGuidance:()=>void;onSettings:()=>void;onTranslate:()=>void;onKorean:(text:string)=>void;onEdit:()=>void;onSave:()=>void};
 export function AnswerEditor({question,answer,language,busy,review,onFields,onSentence,onGuidance,onSettings,onTranslate,onKorean,onEdit,onSave}:Props) {
@@ -24,7 +25,7 @@ export function AnswerEditor({question,answer,language,busy,review,onFields,onSe
    <div className="focus-tools"><button type="button" onClick={onGuidance}>{f.guide}</button><button type="button" onClick={onSettings} disabled={busy} aria-label={f.settings}>{answer.language.toUpperCase()}<span aria-hidden="true"> → </span>{target.toUpperCase()}<span aria-hidden="true">⌄</span></button></div>
    <section className="source-editor" aria-labelledby="source-title">
     <div className="editor-heading"><label id="source-title" htmlFor={structured?undefined:'answer-source'}>{c.source}</label></div>
-    {structured?<StructuredInput question={question} values={answer.fieldValues??{}} language={answer.language} uiLanguage={language} busy={busy} sentenceDrafts={answer.sentenceDrafts} compactLongLabels onSentence={(id,text,parts)=>onSentence(id,text,parts,true)} onChange={onFields}/>:<SentenceEditor id="answer-source" value={answer.source} parts={answer.sentenceDrafts?.[question.id]} language={answer.language} uiLanguage={language} disabled={busy} onChange={(text,parts)=>onSentence(question.id,text,parts,false)}/>}
+    {structured?<StructuredInput question={question} values={answer.fieldValues??{}} language={answer.language} uiLanguage={language} busy={busy} sentenceDrafts={answer.sentenceDrafts} compactLongLabels onSentence={(id,text,parts)=>onSentence(id,text,parts,true)} onChange={onFields}/>:<><WritingGuide question={question} language={language}/><SentenceEditor id="answer-source" value={answer.source} parts={answer.sentenceDrafts?.[question.id]} language={answer.language} uiLanguage={language} disabled={busy} onChange={(text,parts)=>onSentence(question.id,text,parts,false)}/></>}
    </section>
    <div className="writing-actions"><Button variant="primary" className="translation-trigger" disabled={busy||!answer.source.trim()} onClick={onTranslate}>{busy?c.translating:d.translateReview}<span aria-hidden="true">→</span></Button></div>
    {busy&&<p className="application-note" role="status">{c.translating}</p>}

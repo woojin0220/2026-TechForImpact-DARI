@@ -7,6 +7,7 @@ import { visibleField, type FieldValue, type FieldValues } from './structuredAns
 import type { Question } from './model';
 import { SentenceEditor } from './SentenceEditor';
 import type { SentenceDrafts, SentencePart } from './sentenceDraft';
+import { WritingGuide } from './WritingGuide';
 
 export function StructuredInput({question,values,language,uiLanguage,busy,sentenceDrafts,onSentence,compactLongLabels=false,onChange}:{question:Question;values:FieldValues;language:string;uiLanguage:string;busy:boolean;sentenceDrafts?:SentenceDrafts;compactLongLabels?:boolean;onSentence?:(id:string,text:string,parts:SentencePart[])=>void;onChange:(values:FieldValues)=>void}){
  const c=designCopy(uiLanguage),guide=inputCopy(language),label=(ko:string,en:string)=>localizedLabel(uiLanguage,ko,en);
@@ -20,7 +21,7 @@ export function StructuredInput({question,values,language,uiLanguage,busy,senten
     {rows.map((row,index)=><fieldset className="table-entry" key={index} disabled={busy}>
      <legend>{c.item} {index+1}</legend>
      <div className="table-entry-tools"><span aria-hidden="true">{String(index+1).padStart(2,'0')}</span><button type="button" className="remove-entry" aria-label={`${c.item} ${index+1} ${c.remove}`} onClick={()=>update(field.id,rows.filter((_,i)=>i!==index))}>{c.remove}</button></div>
-     {field.columns?.map(col=><label className="structured-label" key={col.id} htmlFor={`${id}-${index}-${col.id}`}><span>{label(col.ko,col.en)}</span><input id={`${id}-${index}-${col.id}`} dir="auto" lang={language} value={row[col.id]??''} maxLength={1000} placeholder={col.kind==='date'?(/yyyy\/mm\)/i.test(col.en)?'YYYY / MM':'YYYY / MM / DD'):''} onChange={e=>update(field.id,rows.map((r,i)=>i===index?{...r,[col.id]:e.target.value}:r))}/></label>)}
+     {field.columns?.map(col=><label className="structured-label" key={col.id} htmlFor={`${id}-${index}-${col.id}`}><span>{label(col.ko,col.en)}</span><input id={`${id}-${index}-${col.id}`} dir="auto" lang={language} value={row[col.id]??''} maxLength={1000} placeholder={col.kind==='date'?(/yyyy\/mm\)/i.test(col.en)?'YYYY / MM':'YYYY / MM / DD'):label(col.ko,col.en)} onChange={e=>update(field.id,rows.map((r,i)=>i===index?{...r,[col.id]:e.target.value}:r))}/></label>)}
     </fieldset>)}
     <Button className="add-entry" disabled={busy} onClick={()=>update(field.id,[...rows,{}])}><span aria-hidden="true">＋</span>{c.add}</Button>
    </section>;
@@ -31,8 +32,8 @@ export function StructuredInput({question,values,language,uiLanguage,busy,senten
   }
   const text=typeof value==='string'?value:'';
   return <div key={id} className="structured-text">
-   <label className={`structured-field-title${compactLongLabels&&field.id.endsWith('-detail')?' sr-only':''}`} htmlFor={id}>{label(field.ko,field.en)}</label>
-   {field.type==='long'&&onSentence?<SentenceEditor id={id} value={text} parts={sentenceDrafts?.[field.id]} language={language} uiLanguage={uiLanguage} disabled={busy} onChange={(text,parts)=>onSentence(field.id,text,parts)}/>:field.type==='long'?<div className="answer-input"><textarea id={id} dir="auto" lang={language} rows={6} maxLength={12000} value={text} disabled={busy} placeholder={guide.write} onChange={e=>update(field.id,e.target.value)}/><span className="answer-count" dir="ltr">{text.length.toLocaleString()} / 12,000</span></div>:<input id={id} dir="auto" lang={language} value={text} disabled={busy} maxLength={1000} placeholder={field.type==='date'?guide.date:''} onChange={e=>update(field.id,e.target.value)}/>}
+   <label className={`structured-field-title${compactLongLabels&&field.type==='long'?' sr-only':''}`} htmlFor={id}>{label(field.ko,field.en)}</label>
+   {field.type==='long'&&onSentence?<><WritingGuide question={question} fieldId={field.id} language={uiLanguage}/><SentenceEditor id={id} value={text} parts={sentenceDrafts?.[field.id]} language={language} uiLanguage={uiLanguage} disabled={busy} onChange={(text,parts)=>onSentence(field.id,text,parts)}/></>:field.type==='long'?<div className="answer-input"><textarea id={id} dir="auto" lang={language} rows={6} maxLength={12000} value={text} disabled={busy} placeholder={guide.write} onChange={e=>update(field.id,e.target.value)}/><span className="answer-count" dir="ltr">{text.length.toLocaleString()} / 12,000</span></div>:<input id={id} dir="auto" lang={language} value={text} disabled={busy} maxLength={1000} placeholder={field.type==='date'?guide.date:label(field.ko,field.en)} onChange={e=>update(field.id,e.target.value)}/>}
   </div>;
  })}</div>;
 }
