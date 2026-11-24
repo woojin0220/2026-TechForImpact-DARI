@@ -320,3 +320,41 @@
 .guidance-flow .intro-languages .select-menu>summary{min-height:48px;padding:12px 14px;font-size:14px}
 @keyframes guidance-arrive{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.guidance-flow *,.guidance-flow *::before,.guidance-flow *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Distinct scenes: question, explanation, acknowledgement, then language setup. */
+.application-onboarding .application-header:has(.dari-screen-leading){row-gap:0;margin-bottom:12px}
+.application-onboarding .application-header .dari-screen-leading{grid-column:1;grid-row:1;margin:0}
+.application-onboarding .application-header>.dari-screen-actions{grid-column:2;grid-row:1}
+.application-onboarding .application-header>h1{position:absolute;width:1px;height:1px;margin:0;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.guidance-stage{min-width:0;transition:opacity .18s ease,transform .18s ease;opacity:1;transform:translateY(0)}
+.guidance-stage.stage-leaving{opacity:0;transform:translateY(-8px);pointer-events:none}
+.stage-topline{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:40px;color:#8b95a1;font-size:12px;font-variant-numeric:tabular-nums}
+.stage-topline>.stage-count{font-size:12px;color:#6b7684}
+.stage-pause{width:44px;min-height:44px;padding:8px;border:0;background:none;color:#8b95a1;font-size:15px;font-family:inherit}
+.stage-content{animation:stage-arrive .32s ease-out both;min-width:0}
+.guidance-stage .stage-content h2{font-size:25px;line-height:1.65;letter-spacing:-.45px;font-weight:650;white-space:pre-line;margin:16px 0 24px;outline:none}
+.stage-question,.stage-explain{display:flex;flex-direction:column;min-height:calc(100dvh - 220px)}
+.stage-question .stage-content{display:flex;align-items:center;min-height:240px;flex:1}
+.stage-explain .stage-content{display:flex;flex-direction:column;justify-content:center;min-height:240px;flex:1}
+.stage-answer-method{border-top:1px solid #eef0f2;padding-top:18px;margin-top:8px}
+.stage-answer-method>h3{font-size:11px;color:#8b95a1;font-weight:500;margin:0 0 8px}
+.stage-answer-method>p{font-size:14px;line-height:1.9;color:#6b7684;margin:6px 0;overflow-wrap:anywhere}
+.guidance-stage.stage-check .stage-content h2{font-size:22px;margin-bottom:12px}
+.stage-question-link{min-height:44px;padding:6px 0;border:0;background:none;font-family:inherit;font-size:12px;color:#6b7684;text-align:start;text-underline-offset:4px}
+.stage-support{font-size:12px;line-height:1.85;color:#6b7684;margin:0 0 12px}
+.stage-support>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;list-style:none}
+.stage-support>summary:after{content:'＋'}
+.stage-support[open]>summary:after{content:'−'}
+.stage-support>summary::-webkit-details-marker{display:none}
+.stage-support>p{margin:0 0 12px}
+.stage-check .guidance-checks{margin-top:8px}
+.stage-check .guidance-finished{margin-top:16px}
+.stage-check .guidance-method{margin-bottom:0}
+.guidance-stage .intro-languages{margin:32px 0;gap:24px}
+.guidance-stage .intro-actions{margin-top:24px}
+.guidance-stage .intro-actions button{min-height:48px;font-size:14px}
+.guidance-stage .intro-actions:has(>button:only-child){grid-template-columns:minmax(0,1fr)}
+.guidance-stage .intro-actions>button:last-child{justify-content:space-between}
+@keyframes stage-arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:380px){.guidance-stage .stage-content h2{font-size:23px}.guidance-stage.stage-check .stage-content h2{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.guidance-stage,.guidance-stage *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

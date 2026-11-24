@@ -1,12 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {questions,saveAnswers,loadAnswers} from '../src/application/model.ts';
-import {guidanceItems,guidanceKey} from '../src/application/questionGuidance.ts';
+import {guidanceItems,guidanceKey,guidanceGroups} from '../src/application/questionGuidance.ts';
 import {makeSentenceParts,sentenceText,splitSentence,mergeSentence} from '../src/application/sentenceDraft.ts';
 const q=questions.find(q=>q.id==='14.2');
 
-test('guidance contains the detailed printed requirement and invalidates acknowledgement when wording or locale changes',()=>{
- assert.ok(guidanceItems(q,'ko').includes(q.fields[1].ko));
+test('printed content prompts are distinct from response rules and app advice; changes invalidate acknowledgement',()=>{
+ const groups=guidanceGroups(q,'ko');
+ assert.equal(guidanceItems(q,'ko').length,7);assert.ok(groups.response.some(s=>s.includes('예')));assert.ok(groups.support.some(s=>s.includes('확실하지')));
+ assert.ok(!groups.content.some(s=>s.includes('예라면')||s==='예 / 아니요'||s.includes('기억나지')));
+ assert.ok(groups.content.some(s=>s.includes('어떤 부당한 처분')));assert.ok(groups.content.some(s=>s.includes('무슨 일이')));assert.ok(groups.content.some(s=>s.includes('풀려났')));
  assert.notEqual(guidanceKey(q,'ko'),guidanceKey(q,'en'));
  const updated={...q,fields:q.fields.map((f,i)=>i===1?{...f,ko:f.ko+' 변경된 안내'}:f)};
  assert.notEqual(guidanceKey(q,'ko'),guidanceKey(updated,'ko'));
