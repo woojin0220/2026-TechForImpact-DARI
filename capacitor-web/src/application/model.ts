@@ -1,5 +1,7 @@
 import { applicationSteps } from '../form/schema.ts';
 import { translationProblem } from './translationQuality.ts';
+import type { FieldValues } from './structuredAnswer.ts';
+import { parseFieldValues } from './structuredAnswer.ts';
 
 /** Suffix fields belong to the same printed question (e.g. 14.1-detail). */
 export const questions = Array.from(new Set(applicationSteps.flatMap(s => s.fields.map(f => f.id.split('-')[0])))).map(id => {
@@ -33,9 +35,11 @@ export function sectionsForGroup(groupId: string) {
 export const supportsConversation = (question: Question) => (question.id.startsWith('14.') || question.id==='15') && question.fields.some(f=>f.type==='long');
 export type Question = typeof questions[number];
 export const isQuickQuestion = (question: Question) => question.fields.every(f => f.type !== 'long' && f.type !== 'table');
-export type Answer = { source: string; language: string; korean: string; translatedSource: string };
+export type TranslationLanguage='ko'|'en';
+/** `korean` is the legacy storage key for the reviewed translation; targetLanguage declares its requested language. */
+export type Answer = { source: string; language: string; korean: string; translatedSource: string; targetLanguage?:TranslationLanguage; translatedTarget?:TranslationLanguage; translatedLanguage?:string; fieldValues?:FieldValues };
 export type Answers = Record<string, Answer>;
-export const isCurrent = (answer: Answer, questionId?: string) => !!answer.source.trim() && answer.source === answer.translatedSource && !translationProblem(answer.source, answer.language, answer.korean, questionId);
+export const isCurrent = (answer: Answer, questionId?: string) => !!answer.source.trim() && answer.source === answer.translatedSource && (answer.translatedTarget??'ko')===(answer.targetLanguage??'ko') && (!answer.translatedLanguage||answer.translatedLanguage===answer.language) && !translationProblem(answer.source, answer.language, answer.korean, questionId,answer.targetLanguage);
 export function writtenAnswers(answers: Answers) {
   return questions.flatMap(question => answers[question.id]?.source.trim() ? [{ question, answer: answers[question.id] }] : []);
 }
@@ -49,7 +53,15 @@ export function loadAnswers(key = ANSWERS_KEY): { language: string; answers: Ans
     const answers: Answers = {};
     for (const q of questions) {
       const a = saved.answers[q.id];
-      if (a && ['source','language','korean','translatedSource'].every(k => typeof a[k] === 'string')) answers[q.id] = a;
+      if (a && ['source','language','korean','translatedSource'].every(k => typeof a[k] === 'string')) {
+       const restored:Answer={...a};
+       if(restored.targetLanguage!=='ko'&&restored.targetLanguage!=='en')delete restored.targetLanguage;
+       if(restored.translatedTarget!=='ko'&&restored.translatedTarget!=='en')delete restored.translatedTarget;
+       if(typeof restored.translatedLanguage!=='string')delete restored.translatedLanguage;
+       const fields=parseFieldValues(q,a.fieldValues);
+       if(fields)restored.fieldValues=fields;else delete restored.fieldValues;
+       answers[q.id]=restored;
+      }
     }
     return { language: saved.language, answers };
   } catch { return { language: '', answers: {}, problem: true }; }
