@@ -5,6 +5,7 @@ import type { AccountCopy } from '../platform/accountCopy';
 import type { CommunityApi } from './api';
 import { pageSize } from './api';
 import type { CommunityCopy } from './copy';
+import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 import { languageName, needsTranslation, type Translator } from './translation';
 import { boardIds, detectSensitive, excerpt, isValidBody, isValidTitle, relativeTime, reportReasons, writableBoards, type Author, type BoardId, type CommentItem, type PostSummary, type ReportReason } from './model';
 
@@ -92,10 +93,7 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
   }, [api, board]);
   useEffect(() => { void load(); }, [load]);
   return <section className="community community-home">
-    <header className="community-topbar">
-      <h1>{copy.title}</h1>
-      <button type="button" className="avatar-button" aria-label={accountCopy.myAccount} onClick={onAccount}><Avatar name={account.profile.nickname} /></button>
-    </header>
+    <ScreenHeader className="community-topbar" title={copy.title} actions={<button type="button" className="avatar-button" aria-label={accountCopy.myAccount} onClick={onAccount}><Avatar name={account.profile.nickname} /></button>} />
     <div className="board-tabs" role="tablist" aria-label={copy.board}>
       {boardIds.map(item => <button key={item} type="button" role="tab" aria-selected={board === item} onClick={() => onBoard(item)}>{copy[boardKey(item)]}</button>)}
     </div>
@@ -206,7 +204,7 @@ export function PostDetail({ copy, accountCopy, api, account, language, translat
 
   return <section className="community community-detail">
     <header className="detail-bar">
-      <button type="button" className="icon-button community-back" aria-label={copy.back} onClick={onBack}><Icon.back /></button>
+      <BackButton className="community-back" label={copy.back} onClick={onBack} />
       {post && <span className="detail-board">{copy[boardKey(post.board_id)]}</span>}
     </header>
     {post === undefined && <div className="post-skeleton tall" aria-busy="true" aria-label={copy.loading} />}
@@ -269,9 +267,9 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
   const ready = isValidTitle(title) && isValidBody(body);
   return <section className="community community-compose">
     <header className="detail-bar">
-      <button type="button" className="icon-button community-back" aria-label={copy.cancel} onClick={onCancel}><Icon.close /></button>
+      <BackButton className="community-back" label={copy.cancel} onClick={onCancel} />
       <h1>{copy.composeTitle}</h1>
-      <button form="compose-form" className={`publish-button${ready ? ' ready' : ''}`} disabled={pending}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : copy.publish}</button>
+      <Button type="submit" variant={ready?'primary':'secondary'} form="compose-form" className={`publish-button${ready ? ' ready' : ''}`} disabled={pending}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : copy.publish}</Button>
     </header>
     <form id="compose-form" className="compose-form" onSubmit={submit}>
       <fieldset className="board-picker"><legend>{copy.board}</legend>

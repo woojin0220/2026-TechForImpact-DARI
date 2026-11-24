@@ -1,0 +1,37 @@
+/* Shared by the React shell and the bundled scheduler document. */
+:root{--dari-control-height:48px;--dari-control-radius:12px;--dari-control-font:14px;--dari-control-pad:16px;--dari-control-border:#dedede;--dari-control-ink:#171717;--dari-control-muted:#6b6b6b;--dari-title-size:26px;--dari-page-gutter:24px;--dari-focus:2px solid #171717}
+/* Only action controls: choice chips, calendar dates and tab selection keep their semantics. */
+button.dari-button,:root button.primary,:root button.secondary,
+.dari-embedded .dialog-actions button,.dari-embedded .answer-buttons button,.dari-embedded .outcome-buttons button,
+#dari-calendar-root button.dari-cal-btn,.location-entry button#locateBtn{
+ min-height:var(--dari-control-height);border-radius:var(--dari-control-radius);font-size:var(--dari-control-font);font-weight:600;line-height:1.5;padding:11px var(--dari-control-pad);display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:normal;overflow-wrap:anywhere;max-width:100%;box-sizing:border-box;border:1px solid var(--dari-control-border);background:#fff;color:var(--dari-control-ink);font-family:inherit;touch-action:manipulation;
+}
+:root button.primary,#dari-calendar-root button.dari-cal-btn-primary,.location-entry button#locateBtn{background:var(--dari-control-ink);color:#fff;border-color:var(--dari-control-ink)}
+:root button.secondary{background:#fff;color:var(--dari-control-ink);border-color:var(--dari-control-border)}
+button.dari-button.quiet{background:transparent;border-color:transparent;color:var(--dari-control-muted);min-height:44px}
+button.dari-button:hover:not(:disabled),:root button.primary:hover:not(:disabled),:root button.secondary:hover:not(:disabled){text-decoration:none;filter:brightness(.96)}
+button.dari-button:disabled,:root button.primary:disabled,:root button.secondary:disabled{opacity:.45;cursor:not-allowed}
+button.dari-button:focus-visible,:root button.primary:focus-visible,:root button.secondary:focus-visible,.dari-embedded button:focus-visible{outline:var(--dari-focus);outline-offset:3px}
+.dari-screen-header.dari-screen-header{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px}
+.dari-screen-header.dari-screen-header>h1{font-size:var(--dari-title-size);line-height:1.3;letter-spacing:-.6px;font-weight:700;margin:0;min-width:0;overflow-wrap:anywhere;flex:1}
+.dari-screen-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0}
+button.dari-back.dari-back{min-height:44px;max-width:100%;border:0;border-radius:12px;padding:8px 8px 8px 0;gap:8px;justify-content:flex-start;font-size:14px;background:transparent;color:var(--dari-control-muted);text-align:start}
+.dari-back svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dari-back span{min-width:0;overflow-wrap:anywhere}
+[dir=rtl] .dari-back svg{transform:scaleX(-1)}
+[dir=rtl] button.dari-back{padding-inline:0 8px}
+button.user-button.user-button,button.avatar-button.avatar-button{width:44px;height:44px;min-height:44px;padding:0;border-radius:50%;display:grid;place-items:center;flex:none;background:#e9e9e7;border:1px solid #e9e9e7;color:#171717;font-size:15px;font-weight:700}
+.avatar-button .avatar{width:42px;height:42px;font-size:15px}
+.dari-screen-actions select{min-height:44px}
+/* The embedded scheduler wrapper follows the same title column as the other tabs. */
+.procedure-toolbar.dari-screen-header{max-width:560px;margin:0 auto;padding:calc(32px + env(safe-area-inset-top)) var(--dari-page-gutter) 24px;border-bottom:0}
+.detail-bar:has(.dari-back){gap:8px;min-height:60px}
+.detail-bar .dari-back{flex-shrink:1}
+.detail-bar .dari-back span,.account-bar .dari-back span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.detail-bar .dari-back.dari-back,.account-bar .dari-back.dari-back{width:44px;min-width:44px;padding:8px;justify-content:center}
+.detail-bar button.publish-button{min-height:44px;border-radius:12px;padding:10px 14px;font-size:14px}
+.application-page .metadata-tabs button{min-height:48px;border-radius:12px;font-size:14px}
+@media(max-width:380px){:root{--dari-page-gutter:20px}.dari-screen-header.dari-screen-header>h1{font-size:var(--dari-title-size)}}
+
+.procedure-back-row{max-width:560px;margin:0 auto;padding:0 var(--dari-page-gutter) 8px}
+.dari-embedded body,#dari-calendar-root{font-family:"Segoe UI","Malgun Gothic",Arial,sans-serif}
