@@ -120,12 +120,17 @@
 .source-editor{min-width:0}
 .editor-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
 .editor-heading>label{font-size:13px;font-weight:600;color:#4e5968}
-.application-page .source-editor textarea{font-size:16px;min-height:216px;line-height:2;padding:16px;border:1px solid #dedede;border-radius:14px;background:#fff;resize:vertical}
+.answer-input{border:1px solid #dedede;border-radius:14px;background:#fff;overflow:hidden}
+.answer-input:focus-within{border-color:#aeb5be}
+.answer-input:has(textarea:focus-visible){outline:2px solid var(--ink);outline-offset:3px}
+.application-page .answer-input textarea:focus-visible{outline:0}
+.application-page .source-editor textarea{font-size:16px;min-height:216px;line-height:2;padding:16px;border:0;border-radius:0;background:#fff;resize:vertical;outline-offset:-3px}
 .application-page textarea::placeholder{color:#757575;opacity:1;font-size:14px;line-height:1.85}
-.editor-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:12px}
-.answer-count{font-size:11px;color:var(--muted);margin-inline-start:auto;font-variant-numeric:tabular-nums;white-space:nowrap}
+.answer-input .answer-count{display:block;text-align:right;font-size:11px;color:var(--muted);padding:0 14px 10px;line-height:1.5;font-variant-numeric:tabular-nums;white-space:nowrap}
 .translation-result{min-width:0;display:grid;gap:10px;border-top:1px solid var(--line);padding-top:20px}
-.translation-result>label{font-size:13px;font-weight:600;color:#4e5968}
+.translation-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.translation-heading>label{font-size:13px;font-weight:600;color:#4e5968;min-width:0}
+.application-page button.dari-button.translation-trigger{min-height:44px;padding:8px 12px;border:0;border-radius:10px;background:#f2f4f6;color:#333d4b;font-size:12px;font-weight:500;flex:none;max-width:60%}
 .application-page .translation-result textarea{min-height:160px;line-height:1.85;font-size:16px;border:1px solid var(--line);border-radius:14px;padding:16px;background:#fafafa;color:var(--ink)}
 .application-page .translation-result textarea:disabled{color:var(--muted)}
 .application-page .quick-answer textarea{border-radius:12px;font-size:16px}
@@ -140,3 +145,8 @@
 .application-page .quick-answer input::placeholder{font-size:13px}
 .application-page .quick-answer textarea::placeholder{font-size:13px;line-height:2}
 .application-page .translation-result textarea::placeholder{font-size:13px}
+.writing-question.section-question h2{font-size:22px;font-weight:650;line-height:1.45;letter-spacing:-.4px}
+.table-question-guide{margin-top:18px}
+.table-question-guide>p{font-size:12px;color:#6b7684;margin:0 0 8px;line-height:1.6}
+.table-question-guide>ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 22px;margin:0;padding-inline-start:16px;color:#4e5968;font-size:13px;line-height:1.7}
+.table-question-guide li{min-width:0;word-break:keep-all;overflow-wrap:anywhere}

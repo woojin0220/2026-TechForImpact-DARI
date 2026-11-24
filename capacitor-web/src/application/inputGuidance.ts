@@ -10,6 +10,7 @@ const copy={
  fa:{choose:'یک گزینه انتخاب کنید',clear:'پاک کردن انتخاب',write:'پاسخ خود را به این سؤال بنویسید.',uncertain:'مواردی را که به یاد ندارید یا از آن‌ها مطمئن نیستید مشخص کنید.',date:'سال/ماه/روز (مثلاً 2020/03/15)',when:'زمان وقوع',where:'محل وقوع',who:'افراد مرتبط و آنچه درباره هویت آن‌ها می‌دانید',what:'اتفاق و شرایط آن',why:'دلیل برداشت شما از علت آن',release:'در صورت ارتباط، چگونگی آزادی',ifYes:'اگر بله، فقط موارد مرتبط را شرح دهید',hint:'راهنمای نوشتن'},
 };
 export const inputCopy=(language:string)=>copy[language as keyof typeof copy]??copy.en;
+export const translationAction=(language:string)=>({ko:'번역하기',en:'Translate',fr:'Traduire',ru:'Перевести',ar:'ترجمة',fa:'ترجمه'}[language]??'Translate');
 export const translationPlaceholder=(language:string)=>({
  ko:'번역 버튼을 누르면 여기에 결과가 표시돼요.',
  en:'Press the translate button to see the result here.',

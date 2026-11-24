@@ -16,6 +16,7 @@ import { QuickAnswer } from './QuickAnswer';
 import { AnswerEditor } from './AnswerEditor';
 import { SelectMenu } from '../ui/SelectMenu';
 import { workspaceCopy, subsectionLabel } from './workspaceCopy';
+import { inputCopy } from './inputGuidance';
 import './application.css';
 import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 
@@ -41,6 +42,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  useEffect(() => { main.current?.focus(); window.scrollTo(0,0); },[selected,groupId]);
  const group = questionGroups.find(g => g.id===groupId);
  const question = questions.find(q => q.id===selected);
+ const wholeTable = question?.fields[0].type==='table' && question.id===group?.id;
  const answer: Answer = (selected && answers[selected]) || {source:'',language,korean:'',translatedSource:''};
  const entries = writtenAnswers(answers);
  const label = (ko:string,en:string) => localizedLabel(language,ko,en);
@@ -105,9 +107,10 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     {group && <>{native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}</>}
    </> : <>
     <BackButton className="application-back" label={c.back} disabled={busy} onClick={()=>{setSelected(null);if(group?.questions.length===1)setGroupId(null);}} />
-    <p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>
-    <header className="writing-question"><h2 id="writing-question-title"><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</h2>
-     {question.fields.length>1&&<ul className="question-description">{question.fields.slice(1).map(field=><li key={field.id}>{label(field.ko,field.en)}</li>)}</ul>}
+    {!wholeTable&&<p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>}
+    <header className={`writing-question${wholeTable?' section-question':''}`}><h2 id="writing-question-title">{wholeTable?label(question.sectionKo,question.sectionEn):<><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</>}</h2>
+     {(question.notes.length>0||question.fields.length>1)&&<ul className="question-description">{question.notes.map((note,index)=><li key={`note-${index}`}>{label(note.ko,note.en)}</li>)}{question.fields.slice(1).map(field=><li key={field.id}>{label(field.ko,field.en)}</li>)}</ul>}
+     {question.fields[0].columns&&<div className="table-question-guide"><p>{inputCopy(language).hint}</p><ul>{question.fields[0].columns.map(column=><li key={column.id}>{label(column.ko,column.en)}</li>)}</ul></div>}
     </header>
     {supportsConversation(question) && <button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry} <span aria-hidden="true">›</span></button>}
     <AnswerEditor question={question} answer={answer} language={language} busy={busy} onSource={updateSource}

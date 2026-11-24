@@ -5,6 +5,7 @@ import { translationProblem } from './translationQuality.ts';
 export const questions = Array.from(new Set(applicationSteps.flatMap(s => s.fields.map(f => f.id.split('-')[0])))).map(id => {
   const steps = applicationSteps.filter(s => s.fields.some(f => f.id.split('-')[0] === id));
   return { id, sectionKo: steps[0].sectionKo, sectionEn: steps[0].sectionEn,
+    notes: steps.flatMap(step => step.noteKo && step.noteEn ? [{ko:step.noteKo,en:step.noteEn}] : []),
     fields: steps.flatMap(s => s.fields.filter(f => f.id.split('-')[0] === id)) };
 });
 /** The landing list follows the large printed section numbers. */
