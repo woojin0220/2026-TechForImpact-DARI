@@ -1,18 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { intakeLanguages } from '../intakeCopy';
-import { SelectMenu } from '../ui/SelectMenu';
 import { Button } from '../ui/ScreenControls';
 import { applicationCopy } from './copy';
-import { inputCopy, questionGuide } from './inputGuidance';
-import { isCurrent, type Answer, type Question, type TranslationLanguage } from './model';
+import { isCurrent, type Answer, type Question } from './model';
 import { designCopy } from './designCopy';
 import { StructuredInput } from './StructuredInput';
 import { sentences } from './sentences';
 import type { FieldValues } from './structuredAnswer';
+import { focusCopy } from './focusCopy';
+import { SentenceEditor } from './SentenceEditor';
+import type { SentencePart } from './sentenceDraft';
 
-type Props={question:Question;answer:Answer;language:string;busy:boolean;review:boolean;onSource:(source:string)=>void;onLanguage:(language:string)=>void;onTarget:(target:TranslationLanguage)=>void;onFields:(values:FieldValues)=>void;onTranslate:()=>void;onKorean:(text:string)=>void;onEdit:()=>void;onSave:()=>void};
-export function AnswerEditor({question,answer,language,busy,review,onSource,onLanguage,onTarget,onFields,onTranslate,onKorean,onEdit,onSave}:Props) {
- const c=applicationCopy(language),d=designCopy(language),guide=questionGuide(question,answer.language),target=answer.targetLanguage??'ko';
+type Props={question:Question;answer:Answer;language:string;busy:boolean;review:boolean;onFields:(values:FieldValues)=>void;onSentence:(field:string,text:string,parts:SentencePart[],structured:boolean)=>void;onGuidance:()=>void;onSettings:()=>void;onTranslate:()=>void;onKorean:(text:string)=>void;onEdit:()=>void;onSave:()=>void};
+export function AnswerEditor({question,answer,language,busy,review,onFields,onSentence,onGuidance,onSettings,onTranslate,onKorean,onEdit,onSave}:Props) {
+ const c=applicationCopy(language),d=designCopy(language),f=focusCopy(language),target=answer.targetLanguage??'ko';
  const [numbered,setNumbered]=useState(false);
  const structured=(question.fields.length>1||question.fields[0].type==='table')&&(!answer.source||!!answer.fieldValues);
  const current=isCurrent(answer,question.id),shownTarget=answer.translatedTarget??'ko';
@@ -21,13 +21,10 @@ export function AnswerEditor({question,answer,language,busy,review,onSource,onLa
  useEffect(()=>{const el=resultRef.current;if(el){el.style.height='auto';el.style.height=`${Math.max(240,el.scrollHeight+2)}px`;}},[answer.korean,review,numbered]);
  return <div className={`answer-editor${review?' is-review':''}`}>
   {!review?<>
-   <div className="language-route"><div><span>{d.source}</span><SelectMenu label={d.source} value={answer.language} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))} disabled={busy} onChange={onLanguage}/></div><span className="language-route-arrow" aria-hidden="true">→</span><div><span>{d.target}</span><SelectMenu label={d.target} value={target} options={[{value:'ko',label:d.ko},{value:'en',label:d.en}]} disabled={busy} onChange={v=>onTarget(v as TranslationLanguage)}/></div></div>
+   <div className="focus-tools"><button type="button" onClick={onGuidance}>{f.guide}</button><button type="button" onClick={onSettings} disabled={busy} aria-label={f.settings}>{answer.language.toUpperCase()}<span aria-hidden="true"> → </span>{target.toUpperCase()}<span aria-hidden="true">⌄</span></button></div>
    <section className="source-editor" aria-labelledby="source-title">
     <div className="editor-heading"><label id="source-title" htmlFor={structured?undefined:'answer-source'}>{c.source}</label></div>
-    {structured?<StructuredInput question={question} values={answer.fieldValues??{}} language={answer.language} uiLanguage={language} busy={busy} onChange={onFields}/>:<>
-     <p className="sr-only" id="answer-guidance" lang={answer.language}>{inputCopy(answer.language).hint}: {guide}</p>
-     <div className="answer-input"><textarea id="answer-source" aria-describedby="answer-guidance" dir="auto" lang={answer.language} rows={7} placeholder={inputCopy(answer.language).write} value={answer.source} disabled={busy} maxLength={12000} onChange={e=>onSource(e.target.value)}/><span className="answer-count" dir="ltr">{answer.source.length.toLocaleString()} / 12,000</span></div>
-    </>}
+    {structured?<StructuredInput question={question} values={answer.fieldValues??{}} language={answer.language} uiLanguage={language} busy={busy} sentenceDrafts={answer.sentenceDrafts} compactLongLabels onSentence={(id,text,parts)=>onSentence(id,text,parts,true)} onChange={onFields}/>:<SentenceEditor id="answer-source" value={answer.source} parts={answer.sentenceDrafts?.[question.id]} language={answer.language} uiLanguage={language} disabled={busy} onChange={(text,parts)=>onSentence(question.id,text,parts,false)}/>}
    </section>
    <div className="writing-actions"><Button variant="primary" className="translation-trigger" disabled={busy||!answer.source.trim()} onClick={onTranslate}>{busy?c.translating:d.translateReview}<span aria-hidden="true">→</span></Button></div>
    {busy&&<p className="application-note" role="status">{c.translating}</p>}

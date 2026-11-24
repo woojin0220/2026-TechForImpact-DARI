@@ -5,8 +5,10 @@ import { designCopy } from './designCopy';
 import { inputCopy } from './inputGuidance';
 import { visibleField, type FieldValue, type FieldValues } from './structuredAnswer';
 import type { Question } from './model';
+import { SentenceEditor } from './SentenceEditor';
+import type { SentenceDrafts, SentencePart } from './sentenceDraft';
 
-export function StructuredInput({question,values,language,uiLanguage,busy,onChange}:{question:Question;values:FieldValues;language:string;uiLanguage:string;busy:boolean;onChange:(values:FieldValues)=>void}){
+export function StructuredInput({question,values,language,uiLanguage,busy,sentenceDrafts,onSentence,compactLongLabels=false,onChange}:{question:Question;values:FieldValues;language:string;uiLanguage:string;busy:boolean;sentenceDrafts?:SentenceDrafts;compactLongLabels?:boolean;onSentence?:(id:string,text:string,parts:SentencePart[])=>void;onChange:(values:FieldValues)=>void}){
  const c=designCopy(uiLanguage),guide=inputCopy(language),label=(ko:string,en:string)=>localizedLabel(uiLanguage,ko,en);
  const update=(id:string,value:FieldValue)=>onChange({...values,[id]:value});
  return <div className="structured-input">{question.fields.filter(f=>visibleField(f,values)).map(field=>{
@@ -29,8 +31,8 @@ export function StructuredInput({question,values,language,uiLanguage,busy,onChan
   }
   const text=typeof value==='string'?value:'';
   return <div key={id} className="structured-text">
-   <label className="structured-field-title" htmlFor={id}>{label(field.ko,field.en)}</label>
-   {field.type==='long'?<div className="answer-input"><textarea id={id} dir="auto" lang={language} rows={6} maxLength={12000} value={text} disabled={busy} placeholder={guide.write} onChange={e=>update(field.id,e.target.value)}/><span className="answer-count" dir="ltr">{text.length.toLocaleString()} / 12,000</span></div>:<input id={id} dir="auto" lang={language} value={text} disabled={busy} maxLength={1000} placeholder={field.type==='date'?guide.date:''} onChange={e=>update(field.id,e.target.value)}/>}
+   <label className={`structured-field-title${compactLongLabels&&field.id.endsWith('-detail')?' sr-only':''}`} htmlFor={id}>{label(field.ko,field.en)}</label>
+   {field.type==='long'&&onSentence?<SentenceEditor id={id} value={text} parts={sentenceDrafts?.[field.id]} language={language} uiLanguage={uiLanguage} disabled={busy} onChange={(text,parts)=>onSentence(field.id,text,parts)}/>:field.type==='long'?<div className="answer-input"><textarea id={id} dir="auto" lang={language} rows={6} maxLength={12000} value={text} disabled={busy} placeholder={guide.write} onChange={e=>update(field.id,e.target.value)}/><span className="answer-count" dir="ltr">{text.length.toLocaleString()} / 12,000</span></div>:<input id={id} dir="auto" lang={language} value={text} disabled={busy} maxLength={1000} placeholder={field.type==='date'?guide.date:''} onChange={e=>update(field.id,e.target.value)}/>}
   </div>;
  })}</div>;
 }
