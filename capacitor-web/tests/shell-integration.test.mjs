@@ -37,13 +37,13 @@ test('issue 23 header keeps overview and grouped settings alongside the PR 27 pr
   }
 });
 
-test('the scheduler keeps the real guide and back action when its profile action is added', () => {
+test('the scheduler keeps the real guide and profile action without a redundant application back button', () => {
   for (const language of ['ko', 'en', 'fr', 'ru', 'ar', 'fa']) {
     const html = mod.exports.guide(language);
     assert.match(html, /procedure-guide\.html\?embedded=1&amp;lang=/);
     assert.match(html, /class="dari-screen-actions"/);
     assert.match(html, /aria-label="profile-test"/);
-    assert.equal((html.match(/<button/g) ?? []).length, 2);
+    assert.equal((html.match(/<button/g) ?? []).length, 1);
     assert.ok(html.includes(`dir="${['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'}"`));
   }
 });
