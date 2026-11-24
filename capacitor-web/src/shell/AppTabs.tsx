@@ -10,6 +10,7 @@ import { needsSignIn, ProfilePanel, SignInFront, UserButton } from './AccountShe
 import { readActiveTab, tabsCopyFor, writeActiveTab, type AppTab } from './tabsCopy';
 import { useDocumentLanguage, useKeyboardOpen } from './useShellEnvironment';
 import { canUseDevGuest, devGuestCopyFor, readDevGuest, writeDevGuest } from './devGuest';
+import { devSupervisorCopyFor } from '../platform/devSupervisorCopy';
 import './tabs.css';
 import '../platform/account.css';
 
@@ -26,8 +27,10 @@ function Shell() {
   const keyboardOpen = useKeyboardOpen();
   const copy = tabsCopyFor(language);
   const accountCopy = accountCopyFor(language);
-  const { state } = useAuth();
-  const userId=state.status==='signedIn'?state.session.user.id:null;
+  const { state, exitSupervisor } = useAuth();
+  const supervisor = state.status === 'development';
+  const supervisorCopy = devSupervisorCopyFor(language);
+  const userId=state.status==='signedIn'?state.session.user.id:state.status==='development'?state.account.profile.user_id:null;
   const draftRepository=useMemo(()=>sessionDraftRepository({userId}),[userId]);
   const canTest = canUseDevGuest(import.meta.env.DEV, state.status);
   const testing = canTest && testRequested;
@@ -54,15 +57,16 @@ function Shell() {
   // Signing out from the profile returns to the sign-in screen.
   useEffect(() => { if (state.status === 'signedOut') setProfileOpen(false); }, [state.status]);
   useEffect(() => {
-    if (state.status === 'signedIn') { writeDevGuest(false); setTestRequested(false); }
+    if (state.status === 'signedIn' || state.status === 'development') { writeDevGuest(false); setTestRequested(false); }
+    if (state.status === 'development') { setTab('community'); setProfileOpen(false); }
   }, [state.status]);
   const openProfile = () => { if (testing) leaveTest(); else setProfileOpen(true); window.scrollTo(0, 0); };
   const userButton = <UserButton copy={accountCopy} onOpen={openProfile} />;
   const gate = signingIn ? <SignInFront copy={accountCopy} language={language} onTest={canTest ? enterTest : undefined} /> : undefined;
   const showApp = tab === 'application' || signingIn;
   return <div className={`tab-root${keyboardOpen ? ' keyboard-open' : ''}${signingIn ? ' signing-in' : ''}`}>
-    {testing && <div className="dev-guest-banner" dir={['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'} role="status">
-      <span>{testCopy.active}</span><button type="button" onClick={leaveTest}>{testCopy.exit}</button>
+    {(testing || supervisor) && <div className="dev-guest-banner" dir={['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'} role="status">
+      <span>{supervisor ? supervisorCopy.active : testCopy.active}</span><button type="button" onClick={supervisor ? exitSupervisor : leaveTest}>{supervisor ? supervisorCopy.exit : testCopy.exit}</button>
     </div>}
     <div className="tab-panel" hidden={!showApp || profileOpen}><App key={draftRepository.scope} repository={draftRepository} gate={gate} headerAccessory={userButton} /></div>
     {!signingIn && profileOpen && <div className="tab-panel"><ProfilePanel copy={accountCopy} language={language} onClose={() => setProfileOpen(false)} /></div>}

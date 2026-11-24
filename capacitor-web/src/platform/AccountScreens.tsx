@@ -3,6 +3,7 @@ import { accountErrorKind, canVerifyBadges, isValidBadgeCode, isValidCode, isVal
 import type { AccountCopy } from './accountCopy';
 import type { PlatformApi } from './api';
 import { useAuth } from './AuthContext';
+import { DevSupervisorEntry } from './DevSupervisorEntry';
 
 const errorKeys: Record<AccountErrorKind, keyof AccountCopy> = {
   email: 'errorEmail', code: 'errorCode', nickname: 'errorNickname', nicknameTaken: 'errorNicknameTaken', rateLimit: 'errorRateLimit', badgeCode: 'errorBadgeCode', badgeSelf: 'errorBadgeSelf', generic: 'errorGeneric',
@@ -231,9 +232,10 @@ function SupporterStatus({ copy, account, api, onChanged }: { copy: AccountCopy;
  */
 export function AuthGate({ copy, language, children, frontTitle, frontIntro }: { copy: AccountCopy; language: string; children: (account: Account) => ReactNode; frontTitle?: string; frontIntro?: string }) {
   const { state, api, refresh } = useAuth();
-  if (state.status === 'unconfigured' || !api) return <section className="account-screen"><p className="account-intro">{copy.notConfigured}</p></section>;
+  if (state.status === 'development') return <>{children(state.account)}</>;
+  if (state.status === 'unconfigured' || !api) return <section className="account-screen"><p className="account-intro">{copy.notConfigured}</p><DevSupervisorEntry language={language} /></section>;
   if (state.status === 'loading') return <section className="account-screen" aria-busy="true"><p className="account-intro">{copy.working}</p></section>;
-  if (state.status === 'signedOut') return <SignInScreen copy={copy} api={api} title={frontTitle} intro={frontIntro} />;
+  if (state.status === 'signedOut') return <><SignInScreen copy={copy} api={api} title={frontTitle} intro={frontIntro} /><DevSupervisorEntry language={language} /></>;
   if (state.status === 'error') return <section className="account-screen"><p className="account-intro">{copy.loadFailed}</p>
     <div className="account-actions"><button type="button" className="secondary" onClick={() => void refresh()}>{copy.retry}</button><button type="button" className="quiet" onClick={() => void api.signOut()}>{copy.signOut}</button></div></section>;
   const { account } = state;
