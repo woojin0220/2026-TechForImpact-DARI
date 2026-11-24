@@ -53,3 +53,28 @@
 .application-writing .application-section-title{margin-bottom:0}
 .application-writing .question-list{margin-top:12px}
 .application-writing .application-main h1{margin-bottom:8px}
+/* Form subsections follow the existing ruled disclosure pattern. */
+.question-sections{margin-top:12px}
+.question-section{border-top:1px solid var(--line)}
+.question-section>summary{cursor:pointer;display:flex;align-items:center;gap:12px;padding:18px 0;font-size:14px;font-weight:600;list-style:none}
+.question-section>summary::-webkit-details-marker{display:none}
+.question-section>summary:after{content:'+';font-size:18px;font-weight:400;color:var(--muted)}
+.question-section[open]>summary:after{content:'−'}
+.question-section>summary>span:first-child{flex:1}
+.question-section-count{font-size:12px;font-weight:400;color:var(--muted);white-space:nowrap}
+.application-writing .question-section .question-list{margin:0 0 12px}
+.question-section .quick-answer:first-child{border-top:0;padding-top:4px}
+.conversation-entry{width:100%;display:flex;align-items:center;justify-content:space-between;margin-top:16px;text-align:start}
+.metadata-workspace h1{font-size:22px;line-height:1.45;margin:0 0 8px}
+.metadata-tabs{display:flex;gap:8px;margin:16px 0}
+.metadata-tabs button{flex:1;font-size:13px;padding:10px}
+.metadata-workspace .content-grid{display:block}
+.metadata-workspace .support-card{display:none}
+.metadata-workspace .chat-panel{padding:0;border:0;box-shadow:none}
+.metadata-workspace .chat-thread{height:40dvh;min-height:220px;overflow:auto}
+.application-page.metadata-workspace .chat-composer textarea{min-height:64px;max-height:180px}
+.metadata-group{border-top:1px solid var(--line);padding:16px 0}
+.metadata-group h2{font-size:16px;margin:0 0 12px}
+.metadata-workspace .fact-row{display:block}
+.quick-result>summary{cursor:pointer;font-size:12px;color:var(--muted);padding:4px 0}
+.quick-result>textarea{margin-top:6px}
