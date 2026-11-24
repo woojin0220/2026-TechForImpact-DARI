@@ -239,18 +239,7 @@
 .question-intro{margin-top:24px}
 .intro-caption{display:flex;justify-content:space-between;gap:16px;font-size:12px;color:#6b7684;margin:0 0 12px;line-height:1.7}
 .intro-caption>span{font-size:11px;font-variant-numeric:tabular-nums;flex:none}
-.intro-progress{display:flex;gap:5px;margin-bottom:32px}
-.intro-progress>span{height:3px;flex:1;border-radius:3px;background:#eef0f2}
-.intro-progress>span.passed{background:#191f28}
 .question-intro h2{font-size:22px;line-height:1.55;letter-spacing:-.4px;font-weight:650;margin:0 0 28px;word-break:keep-all;overflow-wrap:anywhere}
-.intro-section-label{font-size:12px;color:#6b7684;margin:0 0 12px}
-.guidance-checks{display:grid;gap:12px}
-.guidance-check{display:flex;gap:14px;align-items:flex-start;padding:18px 16px;border:1px solid #e5e8eb;border-radius:14px;background:#fff;cursor:pointer;min-width:0}
-.guidance-check.checked{border-color:#b9bec5;background:#fafbfc}
-.guidance-index{font-size:11px;color:#8b95a1;padding-top:3px;font-variant-numeric:tabular-nums;flex:none}
-.guidance-check-content{display:grid;gap:14px;min-width:0;font-size:14px;line-height:1.85;overflow-wrap:anywhere;word-break:keep-all}
-.guidance-confirm{display:flex;align-items:center;gap:8px;min-height:32px;color:#6b7684;font-size:12px}
-.guidance-confirm input{width:18px;height:18px;min-height:0;flex:none;accent-color:#191f28;margin:0}
 .guidance-check:has(input:focus-visible){outline:2px solid #191f28;outline-offset:3px}
 .intro-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:10px;margin-top:28px}
 .application-page .intro-actions button{font-size:14px;min-height:48px}
@@ -286,7 +275,7 @@
 .sentence-draft-footer .answer-count{padding:0;display:block;font-size:11px;color:#8b95a1;white-space:nowrap}
 .sentence-undo{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f7f8fa;border-radius:10px;padding:8px 12px;font-size:12px;color:#6b7684;margin-top:10px;line-height:1.7}
 .sentence-undo button{border:0;background:none;min-height:44px;font-family:inherit;font-size:12px;color:#191f28}
-@media(max-width:380px){.question-intro h2{font-size:20px}.guidance-check{padding:14px 12px;gap:10px}.sentence-row{grid-template-columns:22px minmax(0,1fr) 28px;gap:6px}.application-writing .writing-question:not(.review-question) h2{font-size:19px}}
+@media(max-width:380px){.question-intro h2{font-size:20px}.sentence-row{grid-template-columns:22px minmax(0,1fr) 28px;gap:6px}.application-writing .writing-question:not(.review-question) h2{font-size:19px}}
 .application-focused .application-header:has(.dari-screen-leading){row-gap:0;margin-bottom:16px}
 .application-focused .application-header .dari-screen-leading{grid-column:1;grid-row:1;margin:0}
 .application-focused .application-header>.dari-screen-actions{grid-column:2;grid-row:1}
@@ -295,3 +284,39 @@
 .application-focused .writing-progress li{padding-bottom:8px}
 .application-focused .sentence-editor-toolbar{justify-content:flex-end}
 .application-focused .sentence-editor-toolbar>span{display:none}
+
+/* Continuous guidance: reveal on acknowledgement, retain compact completed rows. */
+.guidance-flow{padding-bottom:12px}
+.guidance-flow h2{margin:20px 0 18px;animation:guidance-arrive .35s ease-out both}
+.guidance-welcome{display:grid;grid-template-rows:1fr;opacity:1;transition:grid-template-rows .3s ease,opacity .22s ease,margin .3s ease;margin-bottom:10px}
+.guidance-welcome>div{overflow:hidden;min-height:0}
+.guidance-welcome p{font-size:16px;font-weight:600;line-height:1.75;letter-spacing:-.2px;margin:0;color:#333d4b;animation:guidance-arrive .4s .06s ease-out both}
+.guidance-welcome.is-compact{grid-template-rows:0fr;opacity:0;margin-bottom:0}
+.guidance-method{font-size:12px;line-height:1.8;color:#6b7684;margin:0 0 20px}
+.guidance-checks{display:grid;gap:0}
+.guidance-check{position:relative;display:flex;align-items:flex-start;gap:13px;min-height:60px;min-width:0;margin:0;padding:18px 4px;border:0;border-bottom:1px solid #f0f2f4;border-radius:0;background:transparent;cursor:pointer;animation:guidance-arrive .3s ease-out both;transition:padding .28s ease,color .25s ease,background-color .25s ease}
+.guidance-check>input{position:absolute;opacity:0;width:24px;height:24px;min-height:0;margin:0;inset-inline-start:4px;top:20px}
+.guidance-tick{display:flex;align-items:center;justify-content:center;width:24px;height:24px;border:1.5px solid #c6cbd1;border-radius:50%;background:#fff;flex:none;margin-top:2px;pointer-events:none;transition:border-color .22s ease,background-color .22s ease,transform .22s ease}
+.guidance-tick svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.7);transition:opacity .18s ease,transform .22s ease}
+.guidance-check-content{display:block;min-width:0;font-size:15px;font-weight:500;line-height:1.8;color:#333d4b;overflow-wrap:anywhere;word-break:keep-all;transition:color .22s ease}
+.guidance-check.checked{padding-block:10px;background:transparent;border-color:#f5f6f8}
+.guidance-check.checked .guidance-tick{background:#191f28;border-color:#191f28}
+.guidance-check.checked .guidance-tick svg{opacity:1;transform:scale(1)}
+.guidance-check.checked .guidance-check-content{color:#6b7684;font-weight:400}
+.guidance-check:active .guidance-tick{transform:scale(.92)}
+.guidance-check.checked{min-height:48px;padding-top:10px;padding-bottom:10px;background:transparent}
+.guidance-check.checked>input{top:12px}
+.guidance-check.checked .guidance-tick{background:#191f28;border-color:#191f28}
+.guidance-check.checked .guidance-tick svg{opacity:1;transform:scale(1)}
+.guidance-check.checked .guidance-check-content{font-size:14px;color:#6b7684}
+.guidance-check.is-active{background:linear-gradient(90deg,#f8f9fb00,#f8f9fb,#f8f9fb00)}
+.guidance-flow .intro-actions{display:grid;grid-template-columns:minmax(0,1fr);margin-top:28px}
+.guidance-flow .intro-actions button{justify-content:space-between;padding-inline:16px}
+.intro-language-panel{animation:guidance-arrive .35s ease-out both;margin-top:24px}
+.intro-language-panel h3{font-size:17px;font-weight:600;line-height:1.7;color:#333d4b;margin:12px 0}
+.guidance-finished{display:flex;align-items:center;gap:7px;font-size:12px;color:#6b7684;margin:0}
+.guidance-finished>span{color:#191f28;font-weight:600}
+.guidance-flow .intro-languages{gap:18px;margin:16px 0 20px}
+.guidance-flow .intro-languages .select-menu>summary{min-height:48px;padding:12px 14px;font-size:14px}
+@keyframes guidance-arrive{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.guidance-flow *,.guidance-flow *::before,.guidance-flow *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
