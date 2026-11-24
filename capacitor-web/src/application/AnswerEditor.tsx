@@ -16,8 +16,14 @@ export function AnswerEditor({question,answer,language,busy,onSource,onLanguage,
     <span className="answer-count" dir="ltr">{answer.source.length.toLocaleString()} / 12,000</span>
    </div>
   </section>
+  <div className="translation-bridge">
+   <Button variant="primary" className="translation-trigger" aria-label={c.translate} disabled={busy||!answer.source.trim()} onClick={onTranslate}>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4v16m-6-6 6 6 6-6"/></svg>
+    {busy?c.translating:translationAction(language)}
+   </Button>
+  </div>
   <section className="translation-result" aria-labelledby="translation-result-title">
-   <div className="translation-heading"><label id="translation-result-title" htmlFor="answer-korean">{c.result}</label><Button variant="secondary" className="translation-trigger" aria-label={c.translate} disabled={busy||!answer.source.trim()} onClick={onTranslate}>{busy?c.translating:translationAction(language)}</Button></div>
+   <div className="translation-heading"><label id="translation-result-title" htmlFor="answer-korean">{c.result}</label></div>
    {busy&&<p className="application-note" role="status">{c.translating}</p>}
    {!!answer.korean&&!isCurrent(answer,question.id)&&<p className="application-note" role="status">{c.stale}</p>}
    <textarea id="answer-korean" aria-label={c.result} placeholder={translationPlaceholder(language)} lang="ko" dir="ltr" value={answer.korean} disabled={busy||!answer.translatedSource||answer.translatedSource!==answer.source} onChange={e=>onKorean(e.target.value)}/>
