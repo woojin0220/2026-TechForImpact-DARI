@@ -5,7 +5,7 @@ import { localizedLabel } from '../form/localize';
 import { LanguageEntry } from '../app/LanguageEntry';
 import { appTexts } from '../app/texts';
 import { onDeviceLlm } from '../lib/onDeviceLlm';
-import { questions, questionGroups, sectionsForGroup, supportsConversation, isQuickQuestion, isCurrent, writtenAnswers, type Answer } from './model';
+import { questions, questionGroups, sectionsForGroup, supportsConversation, isQuickQuestion, isCurrent, writtenAnswers, type Answer, type Question, type TranslationLanguage } from './model';
 import { sessionDraftRepository, type ApplicationDraftRepository } from './repository';
 import { useDraft } from './useDraft';
 import { translateAnswer } from './translate';
@@ -13,17 +13,31 @@ import { downloadApplication } from './docx';
 import { prepareDownload } from './prepareDownload';
 import { applicationCopy, downloadCopy, translationFailure } from './copy';
 import { QuickAnswer } from './QuickAnswer';
+import { AnswerEditor } from './AnswerEditor';
+import { SelectMenu } from '../ui/SelectMenu';
 import { workspaceCopy, subsectionLabel } from './workspaceCopy';
+import { designCopy } from './designCopy';
+import { serializeFields, type FieldValues } from './structuredAnswer';
+import { QuestionIntro } from './QuestionIntro';
+import { guidanceKey } from './questionGuidance';
+import { focusCopy } from './focusCopy';
+import type { SentencePart } from './sentenceDraft';
 import './application.css';
 import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 
 const NarrativeWorkspace=lazy(()=>import('./NarrativeWorkspace').then(module=>({default:module.NarrativeWorkspace})));
 const guestRepository=sessionDraftRepository({userId:null});
-export default function Application({gate, headerAccessory, repository=guestRepository}: {gate?: ReactNode; headerAccessory?: ReactNode; repository?: ApplicationDraftRepository}) {
- const {language,setLanguage,answers,setAnswers,loaded,storageError}=useDraft(repository);
+export default function Application({gate, headerAccessory, repository=guestRepository,initialLanguage}: {gate?: ReactNode; headerAccessory?: ReactNode; repository?: ApplicationDraftRepository;initialLanguage?:string}) {
+ const {language,setLanguage,answers,setAnswers,loaded,storageError}=useDraft(repository,initialLanguage);
  const [conversation,setConversation]=useState(false);
  const [groupId,setGroupId] = useState<string|null>(null);
  const [selected,setSelected] = useState<string|null>(null);
+ const [review,setReview]=useState(false);
+ const [setup,setSetup]=useState<'guide'|'language'|null>(null);
+ const [preferred,setPreferred]=useState<{language:string;target:TranslationLanguage}|null>(null);
+ const selectedRef=useRef(selected);
+ selectedRef.current=selected;
+ const scrollPositions=useRef<Record<string,number>>({});
  const [busyId,setBusyId] = useState<string|null>(null);
  const [exporting,setExporting] = useState(false);
  const [progress,setProgress] = useState({done:0,total:0});
@@ -32,32 +46,67 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  const [importing,setImporting] = useState(false);
  const main = useRef<HTMLElement>(null);
  const c = applicationCopy(language);
+ const d=designCopy(language);
+ const f=focusCopy(language);
  const dc = downloadCopy(language);
  const wc = workspaceCopy(language);
  const native = Capacitor.isNativePlatform();
  useEffect(() => { if (language) { document.documentElement.lang=language; document.documentElement.dir=['ar','fa'].includes(language)?'rtl':'ltr'; } },[language]);
- useEffect(() => { main.current?.focus(); window.scrollTo(0,0); },[selected,groupId]);
  const group = questionGroups.find(g => g.id===groupId);
  const question = questions.find(q => q.id===selected);
- const answer: Answer = (selected && answers[selected]) || {source:'',language,korean:'',translatedSource:''};
+ const wholeTable = question?.fields[0].type==='table' && question.id===group?.id;
+ const remembered=Object.values(answers).filter(a=>a.guideKey||a.sectionGuideKey).at(-1);
+ const defaults={language:preferred?.language??remembered?.language??language,target:preferred?.target??remembered?.targetLanguage??'ko'};
+ const answer: Answer = (selected && answers[selected]) || {source:'',language:defaults.language,targetLanguage:defaults.target,korean:'',translatedSource:''};
+ const quickQuestions=group?.questions.filter(isQuickQuestion)??[];
+ const sectionQuestion:Question|null=group&&quickQuestions.length?{id:`section-${group.id}`,sectionKo:group.ko,sectionEn:group.en,notes:quickQuestions.flatMap(q=>q.notes),fields:quickQuestions.flatMap(q=>q.fields)}:null;
+ const introQuestion=question??sectionQuestion;
+ const introAnswer=question?answer:quickQuestions[0]?answers[quickQuestions[0].id]:undefined;
+ const acknowledged=!!introQuestion&&(question?introAnswer?.guideKey:introAnswer?.sectionGuideKey)===guidanceKey(introQuestion,language);
+ const showingIntro=!!introQuestion&&(!acknowledged||!!setup);
+ useEffect(() => { main.current?.focus({preventScroll:true});window.scrollTo(0,showingIntro?0:scrollPositions.current[selected?`${selected}:${review?'review':'write'}`:groupId?`group:${groupId}`:'root']??0); },[selected,groupId,review,setup,showingIntro]);
  const entries = writtenAnswers(answers);
  const label = (ko:string,en:string) => localizedLabel(language,ko,en);
  function changeAnswer(id: string, source: string, korean?: string) {
   setAnswers(prev => {
    const saved = prev[id];
-   const current = saved?.source.trim() ? saved : {source:'',language,korean:'',translatedSource:''};
-   const translated = korean ?? (current.language==='ko' ? source : undefined);
-   return {...prev,[id]:{...current,source,...(translated!==undefined ? {korean:translated,translatedSource:source} : {})}};
+   const current = saved ?? {source:'',language:defaults.language,targetLanguage:defaults.target,korean:'',translatedSource:''};
+   const translated = korean;
+   return {...prev,[id]:{...current,source,...(translated!==undefined ? {korean:translated,translatedSource:source,translatedTarget:current.targetLanguage??'ko',translatedLanguage:current.language} : {})}};
   }); setError('');
  }
- function updateSource(source: string) { if (selected) changeAnswer(selected,source); }
+ function updateSentence(field:string,text:string,parts:SentencePart[],structured:boolean){
+  if(!question)return;
+  setAnswers(prev=>{const current=prev[question.id]??answer,fieldValues=structured?{...current.fieldValues,[field]:text}:current.fieldValues;return {...prev,[question.id]:{...current,...(structured?{fieldValues}:{}),source:structured?serializeFields(question,fieldValues!,current.language):text,sentenceDrafts:{...current.sentenceDrafts,[field]:parts}}};});setError('');
+ }
+ function updateFields(fieldValues:FieldValues,id=selected){
+  const q=questions.find(q=>q.id===id);if(!q)return;
+  setAnswers(prev=>{const current=prev[q.id]??{source:'',language:defaults.language,targetLanguage:defaults.target,korean:'',translatedSource:''};return {...prev,[q.id]:{...current,fieldValues,source:serializeFields(q,fieldValues,current.language)}};});setError('');
+ }
+ function finishIntro(source:string,target:TranslationLanguage,key:string){
+  setPreferred({language:source,target});
+  setAnswers(prev=>{const next={...prev};for(const q of question?[question]:quickQuestions){const current=next[q.id]??{source:'',language:source,korean:'',translatedSource:''};next[q.id]={...current,language:source,targetLanguage:target,...(question?{guideKey:key}:{sectionGuideKey:key}),...(current.language!==source?{translatedSource:'',...(current.fieldValues?{source:serializeFields(q,current.fieldValues,source)}:{})}:{})};}return next;});setSetup(null);
+ }
+ function remember(){scrollPositions.current[selected?`${selected}:${review?'review':'write'}`:groupId?`group:${groupId}`:'root']=window.scrollY;}
+ function openQuestion(id:string){remember();setSetup(null);setReview(false);setSelected(id);setError('');}
+ function leaveQuestion(){remember();setSetup(null);setReview(false);setSelected(null);if(group?.questions.length===1)setGroupId(null);}
+ function goBack() {
+  if(showingIntro&&setup&&acknowledged){setSetup(null);return;}
+  if(showingIntro){if(question)leaveQuestion();else{setSetup(null);setGroupId(null);}return;}
+  if(review){remember();setReview(false);return;}
+  if(question)leaveQuestion();
+  else{remember();setGroupId(null);}
+ }
  async function translate(id: string | null = selected) {
   const snapshot=id ? answers[id] : undefined;
   if(!id || busy || !snapshot?.source.trim()) return;
+  if(isCurrent(snapshot,id)&&selectedRef.current===id){scrollPositions.current[`${id}:write`]=window.scrollY;scrollPositions.current[`${id}:review`]=0;setReview(true);return;}
   setBusyId(id);setError('');
   try {
-   const korean=await translateAnswer(snapshot.source,snapshot.language,id);
-   setAnswers(prev => ({...prev,[id]:{...prev[id],korean,translatedSource:snapshot.source}}));
+   const target=snapshot.targetLanguage??'ko';
+   const korean=await translateAnswer(snapshot.source,snapshot.language,id,target);
+   setAnswers(prev => ({...prev,[id]:{...prev[id],korean,translatedSource:snapshot.source,translatedTarget:target,translatedLanguage:snapshot.language}}));
+   if(selectedRef.current===id){scrollPositions.current[`${id}:write`]=window.scrollY;scrollPositions.current[`${id}:review`]=0;setReview(true);}
   } catch (error) { setError(translationFailure(error,language,c.error)); } finally { setBusyId(null); }
  }
  async function exportApplication() {
@@ -76,24 +125,24 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  if(!language) return <><LanguageEntry texts={appTexts('en')} status={null} locked={false} onSelect={setLanguage}/>{storageError&&<p role="alert" className="application-warning">{c.storage}</p>}</>;
  if(gate) return <div className="application-page">{gate}</div>;
  if(conversation && question) return <Suspense fallback={<p role="status">{wc.title}…</p>}><NarrativeWorkspace scope={repository.scope} language={answer.language} identityValues={Object.entries(answers).filter(([id])=>['1.2','1.3','1.4','1.5','1.9','1.10','1.11','1.12'].includes(id)).map(([,a])=>a.source)} onBack={()=>setConversation(false)}/></Suspense>;
- return <div className={`application-page${group || question ? ' application-writing' : ''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
-  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} actions={<div className="application-tools"><label><span className="sr-only">{c.language}</span><select aria-label={c.language} value={language} disabled={busy} onChange={e=>setLanguage(e.target.value)}>{intakeLanguages.map(l=><option key={l.code} value={l.code}>{l.name}</option>)}</select></label>{headerAccessory}</div>} />
+ return <div className={`application-page${group || question ? ' application-writing' : ''}${question&&!showingIntro&&!review?' application-focused':''}${showingIntro?' application-onboarding':''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
+  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question)&&<BackButton className="application-back" label={review?d.edit:c.back} disabled={exporting} onClick={goBack}/>} actions={<div className="application-tools">{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
   <main id="main" tabIndex={-1} ref={main} className="application-main">
    {storageError && <p role="alert" className="application-warning">{c.storage}</p>}
    {error && <p role="alert" className="application-warning">{error}</p>}
-   {!question ? <>
-    {group && <BackButton className="application-back" label={c.back} onClick={()=>setGroupId(null)} />}
+   {showingIntro&&introQuestion?<QuestionIntro key={`${introQuestion.id}:${guidanceKey(introQuestion,language)}:${setup??'entry'}`} question={introQuestion} section={!question} language={language} sourceLanguage={introAnswer?.language??defaults.language} targetLanguage={introAnswer?.targetLanguage??defaults.target} acknowledged={acknowledged} settings={setup==='language'} onFinish={finishIntro}/>:!question ? <>
     <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <Button variant="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{exporting?`${c.translating} ${progress.done} / ${progress.total}`:c.download} <span aria-hidden="true">↓</span></Button>}</div>
+    {group&&sectionQuestion&&<div className="focus-tools"><button type="button" onClick={()=>setSetup('guide')}>{f.guide}</button><button type="button" disabled={busy} onClick={()=>setSetup('language')}>{f.settings}</button></div>}
     {!group && <ol className="question-list">{!group ? questionGroups.map(g=>{
      const count=g.questions.filter(q=>answers[q.id]?.source.trim()).length;
-     return <li key={g.id}><button className="question-card" disabled={exporting} onClick={()=>{setGroupId(g.id);if(g.questions.length===1 && !isQuickQuestion(g.questions[0])) setSelected(g.questions[0].id);setError('');}}><span className="question-number" dir="ltr">{g.id}</span><span className="question-label">{label(g.ko,g.en).replace(/^\d+\.\s*/, '')}</span><span className={`question-state ${count?'has-answer':''}`}>{count} / {g.questions.length}</span><span aria-hidden="true">›</span></button></li>;
+     return <li key={g.id}><button className="question-card" disabled={exporting} onClick={()=>{remember();setSetup(null);setGroupId(g.id);setReview(false);if(g.questions.length===1 && !isQuickQuestion(g.questions[0])) setSelected(g.questions[0].id);setError('');}}><span className="question-number" dir="ltr">{g.id}</span><span className="question-label">{label(g.ko,g.en).replace(/^\d+\.\s*/, '')}</span><span className={`question-state ${count?'has-answer':''}`}>{count} / {g.questions.length}</span><span aria-hidden="true">›</span></button></li>;
     }) : null}</ol>}
     {group && <div className="question-sections">{sectionsForGroup(group.id).map((section,index,sections)=>{
      const count=section.questions.filter(q=>answers[q.id]?.source.trim()).length;
      const items=<ol className="question-list">{section.questions.map(q=>{
      const a=answers[q.id];
-     if (isQuickQuestion(q)) return <li key={q.id}><QuickAnswer question={q} answer={a} language={language} busy={exporting||busyId===q.id} blocked={busy} onChange={(source,korean)=>changeAnswer(q.id,source,korean)} onTranslate={()=>void translate(q.id)} onKorean={korean=>setAnswers(prev=>({...prev,[q.id]:{...prev[q.id],korean}}))}/></li>;
-     return <li key={q.id}><button className="question-card" disabled={exporting} onClick={()=>{setSelected(q.id);setError('');}}><span className="question-number" dir="ltr">{q.id}</span><span className="question-label">{label(q.fields[0].ko,q.fields[0].en)}</span><span className={`question-state ${a?.source.trim()?'has-answer':''}`}>{a?.source.trim()?(isCurrent(a,q.id)?c.done:c.written):c.empty}</span><span aria-hidden="true">›</span></button></li>;
+     if (isQuickQuestion(q)) return <li key={q.id}><QuickAnswer question={q} answer={a} language={language} busy={exporting||busyId===q.id} blocked={busy} onChange={(source,korean)=>changeAnswer(q.id,source,korean)} onFields={values=>updateFields(values,q.id)} onTranslate={()=>void translate(q.id)} onKorean={korean=>setAnswers(prev=>({...prev,[q.id]:{...prev[q.id],korean}}))}/></li>;
+     return <li key={q.id}><button className="question-card" disabled={exporting} onClick={()=>openQuestion(q.id)}><span className="question-number" dir="ltr">{q.id}</span><span className="question-label">{label(q.fields[0].ko,q.fields[0].en)}</span><span className={`question-state ${a?.source.trim()?'has-answer':''}`}>{a?.source.trim()?(isCurrent(a,q.id)?c.done:c.written):c.empty}</span><span aria-hidden="true">›</span></button></li>;
 
      })}</ol>;
      return sections.length===1 || section.questions.length===1 ? <div key={section.id}>{items}</div> : <details className="question-section" key={`${group.id}-${section.id}`} open={index===0}>
@@ -102,20 +151,14 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     })}</div>}
     {group && <>{native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}</>}
    </> : <>
-    <BackButton className="application-back" label={c.back} disabled={busy} onClick={()=>{setSelected(null);if(group?.questions.length===1)setGroupId(null);}} />
-    <p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>
-    <h1><span dir="ltr">{question.id}</span> {label(question.fields[0].ko,question.fields[0].en)}</h1>
-    {question.fields.slice(1).map(f=><p className="application-note" key={f.id}>{label(f.ko,f.en)}</p>)}
-    {question.fields.map(f=>f.options&&<p className="application-note" key={`${f.id}-options`}>{f.options.map(o=>label(o.ko,o.en)).join(' / ')}</p>)}
-    {question.fields.some(f=>f.columns)&&<p className="application-note">{question.fields.flatMap(f=>f.columns??[]).map(col=>label(col.ko,col.en)).join(' · ')}</p>}
-    {supportsConversation(question) && <button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry} <span aria-hidden="true">›</span></button>}
-    <div className="answer-columns"><section><div className="answer-title"><label htmlFor="answer-source">{c.source}</label><select aria-label={c.language} value={answer.language} disabled={busy} onChange={e=>{const next=e.target.value;setAnswers(prev=>({...prev,[question.id]:{...answer,language:next,korean:'',translatedSource:''}}));}}>{intakeLanguages.map(l=><option key={l.code} value={l.code}>{l.name}</option>)}</select></div>
-     <textarea id="answer-source" dir="auto" lang={answer.language} value={answer.source} disabled={busy} maxLength={12000} onChange={e=>updateSource(e.target.value)}/>
-     <div className="translation-actions"><Button variant="primary" disabled={busy||!answer.source.trim()} onClick={()=>void translate()}>{busy?c.translating:c.translate}</Button><span className="application-note">{answer.source.length.toLocaleString()} / 12,000</span></div>
-    </section><section><label className="answer-title" htmlFor="answer-korean">{c.result}</label>
-     <textarea id="answer-korean" lang="ko" dir="ltr" value={answer.korean} disabled={busy||!answer.translatedSource||answer.translatedSource!==answer.source} onChange={e=>setAnswers(prev=>({...prev,[question.id]:{...answer,korean:e.target.value}}))}/>
-     {(busy || (answer.korean&&!isCurrent(answer,question.id))) && <p className="application-note" role="status">{busy?c.translating:c.stale}</p>}
-    </section></div>
+    <ol className="writing-progress" aria-label={c.title}><li aria-current={!review?'step':undefined} className={!review?'active':''}><span aria-hidden="true">01</span>{d.write}</li><li aria-current={review?'step':undefined} className={review?'active':''}><span aria-hidden="true">02</span>{d.review}</li></ol>
+    {!wholeTable&&<p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>}
+    <header className={`writing-question${wholeTable?' section-question':''}${review?' review-question':''}`}><h2 id="writing-question-title">{wholeTable?label(question.sectionKo,question.sectionEn):<><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</>}</h2>
+    </header>
+    <AnswerEditor key={question.id} question={question} answer={answer} language={language} busy={busy} review={review} onFields={updateFields} onSentence={updateSentence} onGuidance={()=>{remember();setSetup('guide');}} onSettings={()=>{remember();setSetup('language');}}
+     onTranslate={()=>void translate()} onKorean={korean=>setAnswers(prev=>({...prev,[question.id]:{...prev[question.id],korean}}))}
+     onEdit={()=>{remember();setReview(false);}} onSave={leaveQuestion}/>
+    {!review&&supportsConversation(question)&&<details className="conversation-option"><summary>{wc.entry}</summary><button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry}<span aria-hidden="true">›</span></button></details>}
     {native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}
 
    </>}

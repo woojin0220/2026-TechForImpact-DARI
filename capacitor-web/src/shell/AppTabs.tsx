@@ -25,7 +25,7 @@ function Shell() {
   const keyboardOpen = useKeyboardOpen();
   const copy = tabsCopyFor(language);
   const accountCopy = accountCopyFor(language);
-  const { state, exitSupervisor } = useAuth();
+  const { state, exitSupervisor,entryRevision=0 } = useAuth();
   const supervisor = state.status === 'development';
   const supervisorCopy = devSupervisorCopyFor(language);
   const userId=state.status==='signedIn'?state.session.user.id:state.status==='development'?state.account.profile.user_id:null;
@@ -44,8 +44,8 @@ function Shell() {
   // Signing out from the profile returns to the sign-in screen.
   useEffect(() => { if (state.status === 'signedOut') setProfileOpen(false); }, [state.status]);
   useEffect(() => {
-    if (state.status === 'development') { setTab('community'); setProfileOpen(false); }
-  }, [state.status]);
+    if (entryRevision>0) { setTab('application'); setProfileOpen(false); }
+  }, [entryRevision]);
   const openProfile = () => { setProfileOpen(true); window.scrollTo(0, 0); };
   const userButton = <UserButton copy={accountCopy} onOpen={openProfile} />;
   const gate = signingIn ? <SignInFront copy={accountCopy} language={language} /> : undefined;
@@ -54,7 +54,7 @@ function Shell() {
     {supervisor && <div className="dev-guest-banner" dir={['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'} role="status">
       <span>{supervisorCopy.active}</span><button type="button" onClick={exitSupervisor}>{supervisorCopy.exit}</button>
     </div>}
-    <div className="tab-panel" hidden={!showApp || profileOpen}><App key={draftRepository.scope} repository={draftRepository} gate={gate} headerAccessory={userButton} /></div>
+    <div className="tab-panel" hidden={!showApp || profileOpen}><App key={draftRepository.scope} repository={draftRepository} initialLanguage={userId?language:undefined} gate={gate} headerAccessory={userButton} /></div>
     {!signingIn && profileOpen && <div className="tab-panel"><ProfilePanel copy={accountCopy} language={language} onClose={() => setProfileOpen(false)} /></div>}
     {!signingIn && !profileOpen && tab === 'scheduler' && <div className="tab-panel"><ProcedureGuide language={language} onBack={returnToApplication} headerAccessory={userButton} /></div>}
     {!signingIn && !profileOpen && tab === 'community' && <div className="tab-panel"><CommunityTab copy={copy} language={language} onOpenProfile={openProfile} /></div>}

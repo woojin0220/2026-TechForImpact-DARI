@@ -15,8 +15,9 @@ export function BackButton({label,className='',...props}:Omit<ButtonProps,'child
 }
 
 /** Main screen title and trailing controls; callers own page navigation and content. */
-export function ScreenHeader({title,actions,className='',titleClassName=''}:{title:string;actions?:ReactNode;className?:string;titleClassName?:string}) {
+export function ScreenHeader({title,actions,leading,className='',titleClassName=''}:{title:string;actions?:ReactNode;leading?:ReactNode;className?:string;titleClassName?:string}) {
  return <header className={`dari-screen-header ${className}`}>
+  {leading&&<div className="dari-screen-leading">{leading}</div>}
   <h1 className={titleClassName}>{title}</h1>
   {actions&&<div className="dari-screen-actions">{actions}</div>}
  </header>;

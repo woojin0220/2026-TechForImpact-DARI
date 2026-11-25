@@ -40,3 +40,27 @@ button.link,.answer-buttons button,.nav button,.branch-node,th,td{text-align:sta
   .outcome-buttons button{min-width:0;flex:1}
   .roadmap-footer{gap:9px;flex-wrap:wrap}
 }
+/* #33: four balanced destinations, with the procedure itself as the visual focus. */
+.site-header>.nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;width:100%;min-width:0}
+.site-header>.nav button{position:relative;display:flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:56px;margin:0;padding:10px 6px;font-size:13px;line-height:1.5;text-align:center;border:0;border-radius:0;background:#fff;color:#6b6b6b;white-space:normal;overflow-wrap:anywhere}
+.site-header>.nav button[aria-current="page"]{color:#171717;font-weight:700}
+.site-header>.nav button[aria-current="page"]:after{content:"";position:absolute;inset-inline:6px;bottom:0;height:2px;background:#171717}
+.site-header>.nav button:focus-visible{outline:2px solid #171717;outline-offset:-4px}
+.dari-embedded .site-header{grid-template-columns:minmax(0,1fr);padding:0 20px;gap:0;min-height:56px}
+.dari-embedded .site-header>.nav{grid-column:1;gap:0}
+.dari-embedded .site-header>.nav button{font-size:13px;padding:10px 6px;min-height:56px}
+.overview-title:has(>#home-title){margin-bottom:20px}
+.overview-title>#home-title{margin:0}
+.flow-card{padding:20px 16px;margin-bottom:20px}
+.flow-main{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:0;padding:0;align-items:stretch}
+.flow-main .stage-node{min-height:92px;height:auto;padding:12px 2px;gap:10px}
+.flow-main .stage-node strong{font-size:12px;line-height:1.5;padding:0;overflow-wrap:anywhere}
+.flow-main>li:not(:last-child):after{top:25px;right:-8px;left:auto;bottom:auto;content:'→';font-size:11px}
+[dir="rtl"] .flow-main>li:not(:last-child):after{left:-8px;right:auto;top:25px;content:'←'}
+@media(max-width:370px){.dari-embedded .site-header{padding-inline:16px}.dari-embedded .site-header>.nav button{font-size:12px;padding-inline:4px}.flow-card{padding:18px 12px}.flow-main .stage-node strong{font-size:11px}}
+
+.procedure-intro{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.procedure-intro p{margin:0;color:#6b6b6b;font-size:13px;line-height:1.6}
+.flow-card .flow-diagram{min-height:0}
+.flow-card .flow-diagram .flow-main{padding-top:0}
+.flow-main .stage-node{min-height:0}

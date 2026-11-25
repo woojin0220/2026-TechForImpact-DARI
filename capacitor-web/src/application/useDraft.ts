@@ -3,7 +3,8 @@ import type { Answers } from './model';
 import { draftWriter, type ApplicationDraftRepository } from './repository';
 
 /** Mount with a new key when the service account changes; pending work stays with its owner. */
-export function useDraft(repository: ApplicationDraftRepository) {
+export function useDraft(repository: ApplicationDraftRepository,initialLanguage='') {
+ const seed=useRef(['ko','en','fr','ru','ar','fa'].includes(initialLanguage)?initialLanguage:'');
  const [language,setLanguage]=useState('');
  const [answers,setAnswers]=useState<Answers>({});
  const [loaded,setLoaded]=useState(false);
@@ -15,7 +16,7 @@ export function useDraft(repository: ApplicationDraftRepository) {
   let active=true;
   void repository.load().then(draft=>{
    if(!active)return;
-   setLanguage(draft?.language??'');setAnswers(draft?.answers??{});
+   setLanguage(draft?.language||seed.current);setAnswers(draft?.answers??{});
    writable.current=true;setLoaded(true);
   }).catch(()=>{if(active){setStorageError(true);setLoaded(true);}});
   return ()=>{active=false;writable.current=false;revision.current++;};

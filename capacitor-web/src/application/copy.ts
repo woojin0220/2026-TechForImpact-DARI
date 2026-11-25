@@ -1,5 +1,5 @@
 const ko = {
- title: '신청서 작성', intro: '원하는 문항을 선택해 답변을 작성하세요. 입력한 내용을 한국어로 번역합니다.',
+ title: '신청서 작성', intro: '필요한 문항부터 작성하고, 한국어 또는 영어로 번역하세요.',
  download: '신청서 다운로드', back: '뒤로가기', source: '내 답변', result: '한국어 번역', translate: '한국어로 번역', translating: '번역 중…',
  empty: '미작성', written: '작성 중', done: '번역 완료', count: '작성한 문항', saved: '입력한 답변은 이 기기의 현재 세션에 저장됩니다.',
  note: '다운로드에는 작성한 문항만 포함됩니다. 번역하지 않은 답변은 원문으로 표시됩니다.',
@@ -9,7 +9,7 @@ const ko = {
  native: '기기 내 모델로 번역', web: '브라우저 테스트 · Mac 로컬 모델로 번역', import: '모델 파일 가져오기', language: '답변 언어',
 };
 const en: typeof ko = {
- title: 'Application', intro: 'Choose a question and write your answer. Your words will be translated into Korean.',
+ title: 'Application', intro: 'Start with the questions you need. Translate your answers into Korean or English.',
  download: 'Download application', back: 'Back', source: 'Your answer', result: 'Korean translation', translate: 'Translate into Korean', translating: 'Translating…',
  empty: 'Not started', written: 'In progress', done: 'Translated', count: 'Questions answered', saved: 'Answers are saved in the current session on this device.',
  note: 'Only answered questions are downloaded. Answers not yet translated are included in their original language.',
@@ -21,20 +21,24 @@ const fr: typeof ko = {title:'Demande',intro:'Choisissez une question et rédige
 const ru: typeof ko = {title:'Заявление',intro:'Выберите вопрос и напишите ответ. Он будет переведён на корейский.',download:'Скачать заявление',back:'Назад',source:'Ваш ответ',result:'Корейский перевод',translate:'Перевести на корейский',translating:'Перевод…',empty:'Не заполнено',written:'В процессе',done:'Переведено',count:'Заполнено вопросов',saved:'Ответы сохраняются в текущем сеансе на этом устройстве.',note:'В файл входят только заполненные вопросы. Непереведённые ответы включаются на исходном языке.',review:'Проверьте и при необходимости исправьте перевод.',stale:'Ответ изменён. Переведите его заново.',error:'Не удалось перевести. Ответ сохранён. Проверьте локальную модель и повторите.',storage:'Не удалось сохранить. Скачайте файл Word до закрытия страницы.',native:'Перевод на устройстве',web:'Просмотр в браузере · перевод на Mac',import:'Импорт модели',language:'Язык ответа'};
 const ar: typeof ko = {title:'طلب اللجوء',intro:'اختر سؤالاً واكتب إجابتك. ستُترجم كلماتك إلى الكورية.',download:'تنزيل الطلب',back:'رجوع',source:'إجابتك',result:'الترجمة الكورية',translate:'ترجمة إلى الكورية',translating:'جارٍ الترجمة…',empty:'لم يُكتب',written:'قيد الكتابة',done:'مترجم',count:'الأسئلة المجاب عنها',saved:'تُحفظ الإجابات في الجلسة الحالية على هذا الجهاز.',note:'يتضمن التنزيل الأسئلة المجاب عنها فقط. تُدرج الإجابات غير المترجمة بلغتها الأصلية.',review:'راجع الترجمة وعدّلها عند الحاجة.',stale:'تغيّرت إجابتك. يرجى ترجمتها مجدداً.',error:'تعذرت الترجمة. إجابتك محفوظة. تحقق من النموذج المحلي وحاول مجدداً.',storage:'تعذر الحفظ. نزّل ملف Word قبل إغلاق الصفحة.',native:'ترجمة على هذا الجهاز',web:'معاينة المتصفح · ترجمة على Mac',import:'استيراد النموذج',language:'لغة الإجابة'};
 const fa: typeof ko = {title:'درخواست پناهندگی',intro:'یک سؤال انتخاب کنید و پاسخ دهید. متن شما به کره‌ای ترجمه می‌شود.',download:'دانلود درخواست',back:'بازگشت',source:'پاسخ شما',result:'ترجمه کره‌ای',translate:'ترجمه به کره‌ای',translating:'در حال ترجمه…',empty:'نوشته نشده',written:'در حال نوشتن',done:'ترجمه شده',count:'سؤال‌های پاسخ داده شده',saved:'پاسخ‌ها در نشست فعلی روی این دستگاه ذخیره می‌شوند.',note:'فقط سؤال‌های پاسخ داده شده دانلود می‌شوند. پاسخ‌های ترجمه نشده به زبان اصلی درج می‌شوند.',review:'ترجمه را بررسی و در صورت نیاز ویرایش کنید.',stale:'پاسخ تغییر کرده است. دوباره ترجمه کنید.',error:'ترجمه انجام نشد. پاسخ حفظ شده است. مدل محلی را بررسی و دوباره تلاش کنید.',storage:'ذخیره نشد. قبل از بستن صفحه فایل Word را دانلود کنید.',native:'ترجمه روی این دستگاه',web:'پیش‌نمایش مرورگر · ترجمه روی Mac',import:'وارد کردن مدل',language:'زبان پاسخ'};
-export const applicationCopy = (language: string) => ({ko,en,fr,ru,ar,fa}[language] ?? en);
+export const applicationCopy = (language: string) => {
+ const base=({ko,en,fr,ru,ar,fa}[language]??en);
+ const intro=({fr:'Commencez par les questions utiles. Traduisez vos réponses en coréen ou en anglais.',ru:'Начните с нужных вопросов. Переведите ответы на корейский или английский.',ar:'ابدأ بالأسئلة التي تحتاجها. ترجم إجاباتك إلى الكورية أو الإنجليزية.',fa:'از سؤال‌های مورد نیاز شروع کنید. پاسخ‌ها را به کره‌ای یا انگلیسی ترجمه کنید.'} as Record<string,string>)[language]??base.intro;
+ return {...base,intro};
+};
 
 export function translationFailure(error: unknown, language: string, fallback: string): string {
  const message = error instanceof Error ? error.message : '';
  if (!message.startsWith('UNTRANSLATED_ANSWER')) return fallback;
  const id = message.split(':')[1];
  const copy = ({
-  ko:'한국어로 번역되지 않은 답변입니다. 원문을 확인하고 다시 번역해 주세요.',
-  en:'This answer was not translated into Korean. Check the original and translate again.',
-  ru:'Ответ не переведён на корейский. Проверьте исходный текст и повторите перевод.',
-  fr:'Cette réponse n’a pas été traduite en coréen. Vérifiez le texte original et réessayez.',
-  ar:'لم تُترجم هذه الإجابة إلى الكورية. راجع النص الأصلي وأعد الترجمة.',
-  fa:'این پاسخ به کره‌ای ترجمه نشده است. متن اصلی را بررسی و دوباره ترجمه کنید.',
- } as Record<string,string>)[language] ?? 'This answer was not translated into Korean. Check the original and translate again.';
+  ko:'번역이 완료되지 않았습니다. 원문을 확인하고 다시 번역해 주세요.',
+  en:'Translation is incomplete. Check the original and translate again.',
+  ru:'Перевод не завершён. Проверьте исходный текст и повторите перевод.',
+  fr:'Traduction incomplète. Vérifiez le texte original et réessayez.',
+  ar:'الترجمة غير مكتملة. راجع النص الأصلي وأعد الترجمة.',
+  fa:'ترجمه کامل نشده است. متن اصلی را بررسی و دوباره ترجمه کنید.',
+ } as Record<string,string>)[language] ?? 'Translation is incomplete. Check the original and translate again.';
  return `${id ? `${id} · ` : ''}${copy}`;
 }
 
