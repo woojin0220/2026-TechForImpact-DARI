@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { platformClient } from './client';
 import { platformApi, type PlatformApi } from './api';
@@ -15,6 +15,7 @@ export type AuthState =
   | { status: 'signedIn'; session: Session; account: Account };
 
 type AuthValue = { state: AuthState; api: PlatformApi | null; refresh: () => Promise<void>;
+  entryRevision?: number;
   enterSupervisor?: (language: string) => Promise<void>; exitSupervisor?: () => void; communityOverride?: CommunityApi };
 const AuthContext = createContext<AuthValue>({ state: { status: 'unconfigured' }, api: null, refresh: async () => {} });
 const TEST_ACCOUNT_KEY = 'dari.dev.supervisor.active.v1';
@@ -27,30 +28,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>(client ? { status: 'loading' } : { status: 'unconfigured' });
   const [sandbox, setSandbox] = useState<DevSupervisorSandbox | null>(null);
   const [testAccount, setTestAccount] = useState<Account | null>(null);
+  const [entryRevision,setEntryRevision]=useState(0);
+  const sessionOwner=useRef<string|null|undefined>(undefined);
   const exitSupervisor = useCallback(() => {
     try { sessionStorage.removeItem(TEST_ACCOUNT_KEY); } catch { /* Memory-only exit still works. */ }
     setSandbox(null); setTestAccount(null);
   }, []);
-  const enterSupervisor = useCallback(async (language: string) => {
+  const enterSupervisor = useCallback(async (language: string, restoring=false) => {
     if (!import.meta.env.DEV || !['signedOut', 'unconfigured'].includes(state.status)) return;
     // This module is excluded from production builds; it never manufactures a Supabase session.
     const { createDevSupervisor } = await import('./devSupervisor');
     const next = createDevSupervisor({ development: import.meta.env.DEV, language, storage: sessionStorage, onExit: exitSupervisor });
     sessionStorage.setItem(TEST_ACCOUNT_KEY, language);
+    if(!restoring)setEntryRevision(previous=>previous+1);
     setTestAccount(next.account()); setSandbox(next);
   }, [state.status, exitSupervisor]);
   useEffect(() => {
     if (!import.meta.env.DEV || sandbox || !['signedOut', 'unconfigured'].includes(state.status)) return;
     let language: string | null = null;
     try { language = sessionStorage.getItem(TEST_ACCOUNT_KEY); } catch { return; }
-    if (language) void enterSupervisor(language).catch(exitSupervisor);
+    if (language) void enterSupervisor(language,true).catch(exitSupervisor);
   }, [state.status, sandbox, enterSupervisor, exitSupervisor]);
 
   useEffect(() => {
     if (!client) return;
     let active = true;
-    client.auth.getSession().then(({ data }) => { if (active) setSession(data.session); });
-    const { data } = client.auth.onAuthStateChange((_event, next) => { if (active) setSession(next); });
+    client.auth.getSession().then(({ data }) => { if (active) {if(sessionOwner.current===undefined)sessionOwner.current=data.session?.user.id??null;setSession(data.session);} });
+    const { data } = client.auth.onAuthStateChange((event, next) => { if (active) {if(event==='SIGNED_IN'&&sessionOwner.current===null&&next)setEntryRevision(previous=>previous+1);sessionOwner.current=next?.user.id??null;setSession(next);} });
     return () => { active = false; data.subscription.unsubscribe(); };
   }, [client]);
 
@@ -71,11 +75,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [load, session, sandbox]);
   const value = useMemo<AuthValue>(() => ({
     state: sandbox && testAccount ? { status: 'development', account: testAccount } : state,
-    api: sandbox ? sandbox.platform : api, refresh,
+    api: sandbox ? sandbox.platform : api, refresh,entryRevision,
     enterSupervisor: import.meta.env.DEV && !sandbox && ['signedOut', 'unconfigured'].includes(state.status) ? enterSupervisor : undefined,
     exitSupervisor: sandbox ? exitSupervisor : undefined,
     communityOverride: sandbox?.community,
-  }), [state, api, refresh, sandbox, testAccount, enterSupervisor, exitSupervisor]);
+  }), [state, api, refresh, sandbox, testAccount, enterSupervisor, exitSupervisor,entryRevision]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

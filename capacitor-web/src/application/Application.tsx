@@ -27,8 +27,8 @@ import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 
 const NarrativeWorkspace=lazy(()=>import('./NarrativeWorkspace').then(module=>({default:module.NarrativeWorkspace})));
 const guestRepository=sessionDraftRepository({userId:null});
-export default function Application({gate, headerAccessory, repository=guestRepository}: {gate?: ReactNode; headerAccessory?: ReactNode; repository?: ApplicationDraftRepository}) {
- const {language,setLanguage,answers,setAnswers,loaded,storageError}=useDraft(repository);
+export default function Application({gate, headerAccessory, repository=guestRepository,initialLanguage}: {gate?: ReactNode; headerAccessory?: ReactNode; repository?: ApplicationDraftRepository;initialLanguage?:string}) {
+ const {language,setLanguage,answers,setAnswers,loaded,storageError}=useDraft(repository,initialLanguage);
  const [conversation,setConversation]=useState(false);
  const [groupId,setGroupId] = useState<string|null>(null);
  const [selected,setSelected] = useState<string|null>(null);
