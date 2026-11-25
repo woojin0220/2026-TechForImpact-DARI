@@ -3,6 +3,9 @@ import { localizedLabel } from '../form/localize.ts';
 import { inputCopy } from './inputGuidance.ts';
 import { guidanceStageCopy,persecutionPrompts } from './guidanceStageCopy.ts';
 
+/** Printed narrative requirements that need acknowledgement; tables and free statements open directly. */
+export const requiresGuidance=(question:Question)=>['14.2','14.3','14.4','14.5','14.6','14.9','14.13','14.15'].includes(question.id)&&question.fields.some(field=>field.type==='long');
+
 export function guidanceItems(question:Question,language:string):string[]{
  return guidanceGroups(question,language).content;
 }

@@ -1,9 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {questions,saveAnswers,loadAnswers} from '../src/application/model.ts';
-import {guidanceItems,guidanceKey,guidanceGroups} from '../src/application/questionGuidance.ts';
+import {guidanceItems,guidanceKey,guidanceGroups,requiresGuidance} from '../src/application/questionGuidance.ts';
 import {makeSentenceParts,sentenceText,splitSentence,mergeSentence,reconcileSentenceParts} from '../src/application/sentenceDraft.ts';
 const q=questions.find(q=>q.id==='14.2');
+test('only specified detailed narrative requirements gate entry; identity, tables and free statements do not',()=>{
+ for(const id of ['1.2','2','4','8','7.9','9.7','14.7','14.8','14.18','15'])assert.equal(requiresGuidance(questions.find(q=>q.id===id)),false,id);
+ for(const id of ['14.2','14.3','14.4','14.5','14.6','14.9'])assert.equal(requiresGuidance(questions.find(q=>q.id===id)),true,id);
+});
 
 test('printed content prompts are distinct from response rules and app advice; changes invalidate acknowledgement',()=>{
  const groups=guidanceGroups(q,'ko');

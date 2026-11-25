@@ -11,13 +11,13 @@ import { guidanceFlowCopy } from './guidanceFlowCopy';
 import { guidanceStageCopy } from './guidanceStageCopy';
 
 type Stage='question'|'explain'|'check'|'language';
-export function QuestionIntro({question,language,sourceLanguage,targetLanguage,acknowledged,section=false,settings=false,onFinish}:{question:Question;language:string;sourceLanguage:string;targetLanguage:TranslationLanguage;acknowledged:boolean;section?:boolean;settings?:boolean;onFinish:(source:string,target:TranslationLanguage,key:string)=>void}){
+export function QuestionIntro({question,language,sourceLanguage,targetLanguage,acknowledged,section=false,settings=false,confirmationRequired=true,onFinish}:{question:Question;language:string;sourceLanguage:string;targetLanguage:TranslationLanguage;acknowledged:boolean;section?:boolean;settings?:boolean;confirmationRequired?:boolean;onFinish:(source:string,target:TranslationLanguage,key:string)=>void}){
  const c=focusCopy(language),d=designCopy(language),flow=guidanceFlowCopy(language),s=guidanceStageCopy(language),groups=guidanceGroups(question,language),items=groups.content,key=guidanceKey(question,language);
- const [stage,setStage]=useState<Stage>(settings&&acknowledged?'language':'question');
+ const [stage,setStage]=useState<Stage>(settings?'language':'question');
  const [leaving,setLeaving]=useState(false);
  const [checked,setChecked]=useState<string[]>(acknowledged?items:[]),[revealed,setRevealed]=useState(acknowledged?items.length:1),[source,setSource]=useState(sourceLanguage),[target,setTarget]=useState(targetLanguage);
  const rows=useRef<(HTMLLabelElement|null)[]>([]),heading=useRef<HTMLHeadingElement>(null),transitionTimer=useRef<number|undefined>(undefined),follow=useRef(false);
- const ready=items.every(item=>checked.includes(item));
+ const ready=!confirmationRequired||items.every(item=>checked.includes(item));
  const title=section||question.fields[0].type==='table'?localizedLabel(language,question.sectionKo,question.sectionEn):localizedLabel(language,question.fields[0].ko,question.fields[0].en);
  const move=useCallback((next:Stage,focus=true)=>{
   window.clearTimeout(transitionTimer.current);setLeaving(true);
@@ -51,7 +51,7 @@ export function QuestionIntro({question,language,sourceLanguage,targetLanguage,a
    {stage==='language'&&<div className="intro-languages"><div><span>{c.source}</span><SelectMenu label={c.source} value={source} disabled={leaving} onChange={setSource} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/></div><div><span>{c.target}</span><SelectMenu label={c.target} value={target} disabled={leaving} onChange={v=>setTarget(v as TranslationLanguage)} options={[{value:'ko',label:d.ko},{value:'en',label:d.en}]}/></div></div>}
   </div>
   <div className="intro-actions stage-actions">
-   {stage!=='question'&&<Button variant="quiet" className="stage-back" disabled={leaving} onClick={()=>move(stage==='language'?'check':stage==='check'?'explain':'question')}>{c.previous}</Button>}
+   {stage!=='question'&&!(settings&&!confirmationRequired&&stage==='language')&&<Button variant="quiet" className="stage-back" disabled={leaving} onClick={()=>move(stage==='language'?'check':stage==='check'?'explain':'question')}>{c.previous}</Button>}
    <Button variant="primary" disabled={leaving||(stage==='check'&&!ready)||(stage==='language'&&!ready)} onClick={()=>stage==='language'?onFinish(source,target,key):move(stage==='question'?'explain':stage==='explain'?'check':'language')}>{stage==='language'?c.start:stage==='check'?s.language:s.next}<span aria-hidden="true">→</span></Button>
   </div>
  </section>;
