@@ -6,8 +6,8 @@
   root.dataset.dariCalendarReady = 'true';
   // The host guide delegates actions on document; calendar controls own their actions.
   root.addEventListener('click', function (event) { event.stopPropagation(); });
-  var STORAGE_KEY = 'dari.scheduler.calendar.v1';
-  var VIEW_KEY = 'dari.scheduler.calendar.view.v1';
+  var STORAGE_KEY = window.DariProcedureScope.key('dari.scheduler.calendar.v1');
+  var VIEW_KEY = window.DariProcedureScope.key('dari.scheduler.calendar.view.v1');
   var DEFAULT_ZONE = 'Asia/Seoul';
   var ZONES = [
     ['Asia/Seoul', 'kr'], ['Asia/Tokyo', 'jp'], ['America/New_York', 'usEast'],

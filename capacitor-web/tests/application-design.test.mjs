@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {questions,isCurrent} from '../src/application/model.ts';
+import {reviewVersion,questions,isCurrent} from '../src/application/model.ts';
 import {serializeFields,visibleField} from '../src/application/structuredAnswer.ts';
 import {sentences} from '../src/application/sentences.ts';
 import {prepareDownload} from '../src/application/prepareDownload.ts';
@@ -31,20 +31,18 @@ test('changing translation target invalidates the result even when the source is
  assert.equal(isCurrent(a,'14.2'),true);assert.equal(isCurrent({...a,targetLanguage:'ko'},'14.2'),false);assert.equal(isCurrent({...a,language:'fr'},'14.2'),false);
  assert.equal(translationProblem(a.source,'ko',a.source,'14.2','en'),'UNTRANSLATED_ANSWER');
 });
-test('download uses the chosen target and preserves completed user corrections on retry',async()=>{
- const a={source:'Je ne sais pas qui étaient ces hommes.',language:'fr',korean:'',translatedSource:'',targetLanguage:'en'};let args;
- const translated='I do not know who those men were.';
- const ready=await prepareDownload({'9.7':a},async(...input)=>{args=input;return translated},()=>{},()=>{});
- assert.equal(args[3],'en');assert.equal(ready['9.7'].korean,translated);assert.equal(isCurrent(ready['9.7'],'9.7'),true);
- const edited={...ready['9.7'],korean:'I cannot identify those men.'};
- const retry=await prepareDownload({'9.7':edited},async()=>{throw Error('Completed edit must not be overwritten')},()=>{},()=>{});
- assert.equal(retry['9.7'].korean,edited.korean);
+test('download requires chosen-language review and preserves completed user corrections',async()=>{
+ const a={source:'Je ne sais pas qui étaient ces hommes.',language:'fr',korean:'I do not know who those men were.',translatedSource:'Je ne sais pas qui étaient ces hommes.',targetLanguage:'en',translatedTarget:'en'};
+ await assert.rejects(prepareDownload({'9.7':a}),/REVIEW_REQUIRED/);
+ a.reviewed=reviewVersion(a);const ready=await prepareDownload({'9.7':a});assert.equal(ready['9.7'].korean,a.korean);
+ const edited={...a,korean:'I cannot identify those men.'};await assert.rejects(prepareDownload({'9.7':edited}),/REVIEW_REQUIRED/);
+ edited.reviewed=reviewVersion(edited);assert.equal((await prepareDownload({'9.7':edited}))['9.7'].korean,edited.korean);
 });
 
 test('English review text exports to the original Word form without display-only sentence numbers',()=>{
  const text='I am not certain who those men were.';
  const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2019-word.docx',import.meta.url)));
- const files=unzipSync(applicationDocx({'9.7':{source:text,language:'en',korean:text,translatedSource:text,targetLanguage:'en',translatedTarget:'en'}},template));
+ const files=unzipSync(applicationDocx({'9.7':(()=>{const a={source:text,language:'en',korean:text,translatedSource:text,targetLanguage:'en',translatedTarget:'en'};return {...a,reviewed:reviewVersion(a)};})()},template));
  const xml=strFromU8(files['word/document.xml']);assert.ok(xml.includes(text));assert.ok(!xml.includes('sentence-list'));
 });
 
