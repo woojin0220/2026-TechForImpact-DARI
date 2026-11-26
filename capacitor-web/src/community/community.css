@@ -310,3 +310,15 @@ main.account-main:has(.community-home),.tab-root:has(>.dev-guest-banner) main.ac
 .community .attachment-toolbar svg{width:21px;height:21px;stroke-width:1.5}
 .tour-compose-preview .compose-body{min-height:220px;height:220px}
 @media(max-height:720px){.tour-compose-preview .compose-body{height:140px;min-height:140px}}
+
+/* A one-time, quiet community greeting before the walkthrough. */
+.community-welcome{position:relative;min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 64px);display:flex;flex-direction:column;justify-content:center;padding:0 4px 72px;transition:opacity .22s ease,transform .22s ease}
+.tab-root:has(>.dev-guest-banner) .community-welcome{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 108px)}
+.community-welcome h1{font-family:system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:34px;font-weight:700;letter-spacing:-.8px;line-height:1.35;margin:0 0 22px}
+.community-welcome p{font-size:17px;font-weight:400;line-height:1.8;color:#646970;margin:0;white-space:pre-line;overflow-wrap:anywhere}
+.community-welcome-skip{position:absolute;inset-inline-end:4px;bottom:20px;font-size:13px;color:#6b6f75;min-height:44px;padding:10px 4px}
+.community-welcome-skip span{display:inline-block;margin-inline-start:8px}
+[dir=rtl] .community-welcome-skip span{transform:scaleX(-1)}
+.community-welcome.leaving{opacity:0;transform:translateY(-12px)}
+@media(prefers-reduced-motion:no-preference){.community-welcome h1{animation:community-welcome-rise .45s cubic-bezier(.2,.7,.2,1) both}.community-welcome p{animation:community-welcome-rise .45s .16s cubic-bezier(.2,.7,.2,1) both}@keyframes community-welcome-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}}
+@media(prefers-reduced-motion:reduce){.community-welcome{transition:none}.community-welcome.leaving{transform:none}}

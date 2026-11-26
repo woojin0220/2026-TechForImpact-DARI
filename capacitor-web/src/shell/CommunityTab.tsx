@@ -10,6 +10,7 @@ import { CommunityHome, PostComposer, PostDetail } from '../community/CommunityS
 import type { BoardId } from '../community/model';
 import type { Translator } from '../community/translation';
 import { deviceTranslator } from '../community/translationEngine';
+import {CommunityWelcome,needsCommunityWelcome} from '../community/CommunityWelcome';
 import {MyActivity} from '../community/MyActivity';
 import type {PostSummary} from '../community/model';
 import {usePersonal} from '../community/usePersonal';
@@ -31,6 +32,7 @@ type View = { kind: 'list' } | { kind: 'post'; id: string } | { kind: 'write' } 
 function CommunityRoutes({ account, language, onOpenProfile }: { account: Account; language: string; onOpenProfile: () => void }) {
   const { api: platformApi, communityOverride } = useAuth();
   const api = useMemo(() => { if (communityOverride) return communityOverride; const client = platformClient(); return client ? communityApi(client) : null; }, [communityOverride]);
+  const [welcome,setWelcome]=useState(()=>needsCommunityWelcome(account.profile.user_id));
   const [view, setView] = useState<View>({ kind: 'list' });
   const [board, setBoard] = useState<BoardId>('qna');
   const [discovery, setDiscovery] = useState({search:'',unanswered:false});
@@ -42,6 +44,7 @@ function CommunityRoutes({ account, language, onOpenProfile }: { account: Accoun
   const copy = communityCopyFor(language);
   const accountCopy = accountCopyFor(language);
   if (!api || !platformApi) return null;
+  if(welcome)return <CommunityWelcome owner={account.profile.user_id} language={language} onDone={()=>setWelcome(false)}/>;
   const shared = { copy, accountCopy, api, account, language, translator };
   function go(next: View) { setView(next); window.scrollTo(0, 0); }
   const warning=personal.savedError?<p className="account-error" role="alert">{ec.savedError}</p>:null;
