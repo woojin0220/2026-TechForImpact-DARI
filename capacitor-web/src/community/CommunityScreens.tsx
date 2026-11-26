@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
+import {refreshCopy} from './refreshCopy';
+import {readCommentDraft,writeCommentDraft} from './commentDraft';
+import {CommunityTour} from './CommunityTour';
 import { discoveryCopy } from './discoveryCopy';
 import { normalizeSearch } from './discovery';
 import {experienceCopy} from './experienceCopy';
@@ -10,7 +13,7 @@ import { canVerifyBadges, type Account, type BadgeType } from '../platform/accou
 import type { AccountCopy } from '../platform/accountCopy';
 import type { CommunityApi } from './api';
 import { pageSize } from './api';
-import type { CommunityCopy } from './copy';
+import {communityCopyFor, type CommunityCopy} from './copy';
 import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 import { languageName, needsTranslation, type Translator } from './translation';
 import { boardIds, detectSensitive, excerpt, isValidBody, isValidTitle, relativeTime, reportReasons, writableBoards, type Author, type BoardId, type CommentItem, type PostSummary, type ReportReason } from './model';
@@ -22,17 +25,15 @@ type Translated = { text: string; state: 'original' | 'translating' | 'translate
 /** Translates `text` from `source` into the reader's language when a device translator is available. */
 function useTranslated(translator: Translator | null | undefined, text: string, source: string, target: string): Translated {
   const wanted = Boolean(translator) && needsTranslation(source, target) && Boolean(text.trim());
-  const [result, setResult] = useState<Translated>({ text, state: wanted ? 'translating' : 'original' });
-  useEffect(() => {
-    if (!wanted || !translator) { setResult({ text, state: 'original' }); return; }
-    let live = true;
-    setResult({ text, state: 'translating' });
-    translator.translate(text, source, target).then(
-      translated => { if (live) setResult({ text: translated, state: 'translated' }); },
-      () => { if (live) setResult({ text, state: 'failed' }); });
-    return () => { live = false; };
-  }, [translator, wanted, text, source, target]);
-  return result;
+  const key=JSON.stringify([text,source,target,Boolean(translator)]);
+  const [result,setResult]=useState<Translated & {key:string}>({key,text,state:wanted?'translating':'original'});
+  useEffect(()=>{
+    if(!wanted||!translator){setResult({key,text,state:'original'});return;}
+    let live=true;setResult({key,text,state:'translating'});
+    translator.translate(text,source,target).then(translated=>{if(live)setResult({key,text:translated,state:'translated'});},()=>{if(live)setResult({key,text,state:'failed'});});
+    return()=>{live=false;};
+  },[translator,wanted,text,source,target,key]);
+  return result.key===key?result:{text,state:wanted?'translating':'original'};
 }
 
 const boardKey = (board: BoardId) => `board_${board}` as const;
@@ -73,35 +74,39 @@ function Stats({ copy, comments, helpful, helped }: { copy: CommunityCopy; comme
   </span>;
 }
 
-function PostCardText({ post, translator, language }: { post: PostSummary; translator?: Translator | null; language: string }) {
-  const fast = translator?.fast ? translator : null;
+export function PostCardText({ post, translator, language,bodyOverride,bodyLanguage }: { post: PostSummary; translator?: Translator | null; language: string;bodyOverride?:string;bodyLanguage?:string }) {
+  const element=useRef<HTMLSpanElement>(null),[visible,setVisible]=useState(false);
+  useEffect(()=>{if(!element.current)return;const observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){setVisible(true);observer.disconnect();}},{rootMargin:'80px'});observer.observe(element.current);return()=>observer.disconnect();},[]);
+  const fast = visible?translator:null;
+  const tc=communityCopyFor(language);
   const title = useTranslated(fast, post.title, post.language, language);
-  const body = useTranslated(fast, excerpt(post.body, 160), post.language, language);
-  return <>
+  const body = useTranslated(fast, excerpt(bodyOverride??post.body, 160), bodyLanguage??post.language, language);
+  return <span ref={element} className="post-card-text">
     <strong className="post-title" dir="auto">{title.state === 'translated' && <Icon.globe />}{title.text}</strong>
     <span className="post-excerpt" dir="auto">{body.text}</span>
-  </>;
+    {(needsTranslation(post.language,language)||needsTranslation(bodyLanguage??post.language,language))&&<small className="feed-translation" role="status">{title.state==='translating'||body.state==='translating'?tc.translating:(title.state==='failed'||body.state==='failed')?tc.translateFailed:(title.state==='translated'||body.state==='translated')?tc.translatedMark+' · '+languageName(language,language):refreshCopy(language).original+' · '+languageName(post.language,language)}</small>}
+  </span>;
 }
 
 const noSavedPosts:string[]=[];
-export function CommunityHome({ copy, accountCopy, api, account, language, translator, board, onBoard, onOpenPost, onWrite, onAccount, initialDiscovery, onDiscoveryChange,savedOnly=false,savedIds=noSavedPosts,onSavedOnly,draft,onDiscardDraft }: Shared & {
+export function CommunityHome({ copy, accountCopy, api, account, language, translator, board, onBoard, onOpenPost, onWrite, onAccount, initialDiscovery, onDiscoveryChange,savedOnly=false,savedIds=noSavedPosts,onSavedOnly,draft,onDiscardDraft,onActivity }: Shared & {
   board: BoardId; onBoard: (board: BoardId) => void; onOpenPost: (id: string) => void; onWrite: () => void; onAccount: () => void;
   initialDiscovery?: {search:string;unanswered:boolean}; onDiscoveryChange?: (value:{search:string;unanswered:boolean})=>void;
-  savedOnly?:boolean;savedIds?:string[];onSavedOnly?:(value:boolean)=>void;draft?:CommunityDraft|null;onDiscardDraft?:()=>void;
+  savedOnly?:boolean;savedIds?:string[];onSavedOnly?:(value:boolean)=>void;draft?:CommunityDraft|null;onDiscardDraft?:()=>void;onActivity?:()=>void;
 }) {
   const [posts, setPosts] = useState<PostSummary[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [hasMore, setHasMore] = useState(false);
   const [input, setInput] = useState(initialDiscovery?.search ?? '');
   const [search, setSearch] = useState(initialDiscovery?.search ?? '');
-  const [unanswered, setUnanswered] = useState(initialDiscovery?.unanswered ?? false);
+  const unanswered=false;
   useEffect(() => { onDiscoveryChange?.({search,unanswered}); },[search,unanswered,onDiscoveryChange]);
   const [morePending, setMorePending] = useState(false);
   const [moreError, setMoreError] = useState(false);
   const request = useRef(0), paging = useRef(false);
   const d = discoveryCopy(language);
   const ec=experienceCopy(language);
-  const filtered = !!search || (!savedOnly&&board === 'qna' && unanswered);
+  const filtered = !!search;
   const load = useCallback(async (before?: string) => {
     if (before && paging.current) return;
     const ticket = ++request.current;
@@ -118,25 +123,27 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
     finally { if (ticket === request.current) { paging.current = false; setMorePending(false); } }
   }, [api, board, search, unanswered,savedOnly,savedIds]);
   useEffect(() => { void load(); return () => { request.current++; paging.current = false; }; }, [load]);
+  const rc=refreshCopy(language);
+  const [tour,setTour]=useState(()=>{try{return !savedOnly&&!localStorage.getItem(`dari.community.tour.v1.${account.profile.user_id}`);}catch{return !savedOnly;}});
   return <section className="community community-home">
-    <ScreenHeader className="community-topbar" title={savedOnly?ec.saved:copy.title} leading={savedOnly&&<BackButton label={copy.back} onClick={()=>onSavedOnly?.(false)}/>} actions={<div className="community-top-actions">{!savedOnly&&onSavedOnly&&<button type="button" className="saved-entry" aria-label={ec.saved} onClick={()=>onSavedOnly(true)}><Icon.bookmark/><span>{ec.saved}</span></button>}<button type="button" className="avatar-button" aria-label={accountCopy.myAccount} onClick={onAccount}><Avatar name={account.profile.nickname} /></button></div>} />
+    <div className="community-fixed-head">
+    <ScreenHeader className="community-topbar" title={savedOnly?ec.saved:copy.title} leading={savedOnly&&<BackButton label={copy.back} onClick={()=>onSavedOnly?.(false)}/>} actions={<div className="community-top-actions">{!savedOnly&&<button type="button" className="community-tour-entry" aria-label={rc.tour} onClick={()=>setTour(true)}>?</button>}{!savedOnly&&onActivity&&<button type="button" className="saved-entry activity-entry" aria-label={rc.activity} onClick={onActivity}><Icon.comment/><span>{rc.activity}</span></button>}{!savedOnly&&onSavedOnly&&<button type="button" className="saved-entry" aria-label={ec.saved} onClick={()=>onSavedOnly(true)}><Icon.bookmark/><span>{ec.saved}</span></button>}<button type="button" className="avatar-button" aria-label={accountCopy.myAccount} onClick={onAccount}><Avatar name={account.profile.nickname} /></button></div>} />
     {!savedOnly&&<div className="board-tabs" role="tablist" aria-label={copy.board}>
       {boardIds.map(item => <button key={item} type="button" role="tab" aria-selected={board === item} onClick={() => onBoard(item)}>{copy[boardKey(item)]}</button>)}
     </div>}
-    <p className="safety-note home-safety"><Icon.shield /><span>{savedOnly?ec.savedNote:copy.intro}</span></p>
+
     {!savedOnly&&draft&&(draft.title.trim()||draft.body.trim())&&<aside className="community-draft-banner"><button type="button" className="resume-draft" onClick={onWrite}><span>{ec.draft}</span><strong dir="auto">{draft.title.trim()||excerpt(draft.body,65)}</strong><span>{ec.resume} →</span></button><button type="button" className="discard-draft" aria-label={ec.discard} onClick={onDiscardDraft}><Icon.close/></button></aside>}
     <form className="community-search" role="search" onSubmit={event => { event.preventDefault(); setSearch(normalizeSearch(input)); }}>
       <label className="sr-only" htmlFor="community-search">{d.search}</label>
       <input id="community-search" type="search" maxLength={80} dir="auto" placeholder={d.placeholder} value={input} onChange={event => { setInput(event.target.value); if (!event.target.value) setSearch(''); }}/>
       <button type="submit">{d.submit}</button>
     </form>
-    <div className="community-feed-tools">
-      <span>{search ? d.results : savedOnly?ec.saved:d.latest}</span>
-      {!savedOnly&&board === 'qna' && <button type="button" aria-pressed={unanswered} onClick={() => setUnanswered(value => !value)}>{d.unanswered}</button>}
+    {!translator&&<small className="feed-translation translation-unavailable">{rc.unavailable}</small>}
     </div>
+    <div className="community-feed-scroll" tabIndex={0} aria-label={copy.title}>
     {status === 'loading' && <ul className="post-list" aria-busy="true" aria-label={copy.loading}>{[0, 1, 2].map(key => <li key={key} className="post-skeleton" />)}</ul>}
     {status === 'error' && <div className="community-state"><p>{copy.loadFailed}</p><button type="button" className="secondary" onClick={() => void load()}>{copy.retry}</button></div>}
-    {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{filtered ? d.noResults : savedOnly?ec.savedEmpty:copy.empty}</p>{filtered && <button type="button" className="secondary" onClick={() => { setInput(''); setSearch(''); setUnanswered(false); }}>{d.reset}</button>}</div>}
+    {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{filtered ? d.noResults : savedOnly?ec.savedEmpty:copy.empty}</p>{filtered && <button type="button" className="secondary" onClick={() => { setInput(''); setSearch(''); }}>{d.reset}</button>}</div>}
     {status === 'ready' && posts.length > 0 && <ul className="post-list">
       {posts.map(post => <li key={post.id}><button type="button" className={`post-card${post.board_id === 'notice' ? ' notice' : ''}`} onClick={() => onOpenPost(post.id)}>
         {savedOnly&&post.board_id!=='notice'&&<span className="feed-board-label">{copy[boardKey(post.board_id)]}</span>}
@@ -150,6 +157,8 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
     </ul>}
     {moreError && <p className="account-error" role="alert">{d.moreFailed}</p>}
     {status === 'ready' && hasMore && <button type="button" className="secondary load-more" disabled={morePending} onClick={() => void load(posts.at(-1)?.created_at)}>{morePending ? copy.loading : moreError ? copy.retry : copy.loadMore}</button>}
+    </div>
+    {!savedOnly&&tour&&<CommunityTour language={language} owner={account.profile.user_id} onClose={()=>setTour(false)}/>}
     {!savedOnly&&writableBoards(canVerifyBadges(account.roles)).includes(board) && <button type="button" className="write-button" onClick={onWrite}><Icon.pencil /><span>{copy.write}</span></button>}
   </section>;
 }
@@ -190,12 +199,17 @@ function CommentText({ comment, copy, translator, language }: { comment: Comment
   </>;
 }
 
-export function PostDetail({ copy, accountCopy, api, account, language, translator, postId, onBack,saved=false,onToggleSaved }: Shared & { postId: string; onBack: () => void;saved?:boolean;onToggleSaved?:()=>void }) {
+export function PostDetail({ copy, accountCopy, api, account, language, translator, postId, onBack,saved=false,onToggleSaved,onEdit }: Shared & { postId: string; onBack: () => void;saved?:boolean;onToggleSaved?:()=>void;onEdit?:(post:PostSummary)=>void }) {
   const ec=experienceCopy(language);
   const me = account.profile.user_id;
   const [post, setPost] = useState<PostSummary | null | undefined>(undefined);
   const [comments, setComments] = useState<CommentItem[]>([]);
-  const [draft, setDraft] = useState('');
+  const [initialComment]=useState(()=>{try{return {body:readCommentDraft(sessionStorage,me,postId),error:false};}catch{return {body:'',error:true};}});
+  const [draft,setDraft]=useState(initialComment.body);
+  const [draftError,setDraftError]=useState(initialComment.error);
+  const [draftBlocked,setDraftBlocked]=useState(initialComment.error);
+  const sendingComment=useRef(false);
+  function updateComment(value:string){setDraft(value);if(draftBlocked){setDraftError(true);return;}try{writeCommentDraft(sessionStorage,me,postId,value);setDraftError(false);}catch{setDraftError(true);}}
   const [reporting, setReporting] = useState<Target | null>(null);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -218,9 +232,10 @@ export function PostDetail({ copy, accountCopy, api, account, language, translat
   }
   async function sendComment(event: FormEvent) {
     event.preventDefault();
-    if (!isValidBody(draft, 2000)) return;
+    if (sendingComment.current || !isValidBody(draft, 2000)) return;
     if (detectSensitive(draft).length && !window.confirm(copy.sensitiveWarning)) return;
-    if (await act(() => api.createComment(me, postId, draft, language))) { setDraft(''); await load(); }
+    sendingComment.current=true;
+    try {if (await act(() => api.createComment(me, postId, draft, language))) {setDraft('');try{writeCommentDraft(sessionStorage,me,postId,'');setDraftError(false);setDraftBlocked(false);}catch{setDraftError(true);}await load();}}finally{sendingComment.current=false;}
   }
   async function toggleHelpful() {
     if (!post) return;
@@ -235,7 +250,7 @@ export function PostDetail({ copy, accountCopy, api, account, language, translat
     if (await act(() => api.block(me, authorId), copy.blockDone)) await load();
   }
   function Actions({ target }: { target: Target }) {
-    if (target.authorId === me) return <div className="item-actions"><button type="button" className="quiet" disabled={pending} onClick={() => void remove(target)}>{copy.delete}</button></div>;
+    if (target.authorId === me) return <div className="item-actions">{target.type==='post'&&post&&onEdit&&<button type="button" className="quiet" disabled={pending} onClick={()=>onEdit(post)}>{refreshCopy(language).edit}</button>}<button type="button" className="quiet" disabled={pending} onClick={() => void remove(target)}>{copy.delete}</button></div>;
     return <div className="item-actions">
       <button type="button" className="quiet" disabled={pending} onClick={() => { setReporting(target); setNotice(''); }}>{copy.report}</button>
       <button type="button" className="quiet" disabled={pending} onClick={() => void block(target.authorId)}>{copy.block}</button>
@@ -278,16 +293,17 @@ export function PostDetail({ copy, accountCopy, api, account, language, translat
           </div>
         </li>)}</ul>
       </section>
+      {(draft||draftError)&&<p className={draftError?'account-error':'draft-status'} role="status">{draftError?ec.draftError:refreshCopy(language).commentDraft}</p>}
       <form className="comment-form" onSubmit={sendComment}>
         <label className="sr-only" htmlFor="comment-input">{copy.commentLabel}</label>
-        <textarea id="comment-input" rows={1} maxLength={2000} dir="auto" placeholder={copy.commentLabel} value={draft} onChange={event => setDraft(event.target.value)} />
+        <textarea id="comment-input" disabled={pending} rows={1} maxLength={2000} dir="auto" placeholder={copy.commentLabel} value={draft} onChange={event => updateComment(event.target.value)} />
         <button className="send-button" aria-label={copy.commentSend} disabled={pending || !draft.trim()}><Icon.send /></button>
       </form>
     </>}
   </section>;
 }
 
-export function PostComposer({ copy, api, account, language, initialBoard, onDone, onCancel,draft,draftError=false,onDraft }: Shared & { initialBoard: BoardId; onDone: (id: string,posted?:CommunityDraft) => void; onCancel: () => void;draft?:CommunityDraft|null;draftError?:boolean;onDraft?:(value:CommunityDraft)=>void }) {
+export function PostComposer({ copy, api, account, language, initialBoard, onDone, onCancel,draft,draftError=false,onDraft,editPost }: Shared & { initialBoard: BoardId; onDone: (id: string,posted?:CommunityDraft) => void; onCancel: () => void;draft?:CommunityDraft|null;draftError?:boolean;onDraft?:(value:CommunityDraft)=>void;editPost?:PostSummary }) {
   const boards = writableBoards(canVerifyBadges(account.roles));
   const ec=experienceCopy(language);
   const preferredBoard=draft?.board??initialBoard;
@@ -309,7 +325,7 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
     if (!isValidBody(body)) { setError(copy.errorBody); return; }
     if (needsConfirm) { setConfirmed(`${title}\n${body}`); return; }
     sending.current=true;setPending(true); setError('');
-    try { onDone(await api.createPost(account.profile.user_id, { board, title, body, language:writingLanguage }),{version:1,board,title,body,language:writingLanguage}); }
+    try { const input={board,title,body,language:writingLanguage};onDone(editPost?await api.updatePost(account.profile.user_id,editPost.id,input):await api.createPost(account.profile.user_id,input),editPost?undefined:{version:1,board,title,body,language:writingLanguage}); }
     catch { setError(copy.errorGeneric); }
     finally{sending.current=false;setPending(false);}
   }
@@ -317,13 +333,13 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
   return <section className="community community-compose">
     <header className="detail-bar">
       <BackButton className="community-back" label={copy.back} disabled={pending} onClick={onCancel} />
-      <h1>{copy.composeTitle}</h1>
-      <Button type="submit" variant={ready?'primary':'secondary'} form="compose-form" className={`publish-button${ready ? ' ready' : ''}`} disabled={pending}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : copy.publish}</Button>
+      <h1>{editPost?refreshCopy(language).edit:copy.composeTitle}</h1>
+      <Button type="submit" variant={ready?'primary':'secondary'} form="compose-form" className={`publish-button${ready ? ' ready' : ''}`} disabled={pending}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : editPost?refreshCopy(language).saveEdit:copy.publish}</Button>
     </header>
     <form id="compose-form" className="compose-form" onSubmit={submit}>
-      <fieldset className="board-picker"><legend>{copy.board}</legend>
+      {!editPost&&<fieldset className="board-picker"><legend>{copy.board}</legend>
         {boards.map(item => <label key={item}><input type="radio" name="board" disabled={pending} checked={board === item} onChange={() => setBoard(item)} /><span>{copy[boardKey(item)]}</span></label>)}
-      </fieldset>
+      </fieldset>}
       <div className="compose-language"><span>{ec.writingLanguage}</span><SelectMenu label={ec.writingLanguage} value={writingLanguage} onChange={setWritingLanguage} disabled={pending} options={intakeLanguages.map(item=>({value:item.code,label:item.name}))}/></div>
       <label className="compose-field"><span className="sr-only">{copy.postTitle}</span><input className="compose-title" lang={writingLanguage} disabled={pending} maxLength={100} dir="auto" placeholder={copy.postTitle} value={title} onChange={event => setTitle(event.target.value)} /></label>
       <label className="compose-field"><span className="sr-only">{copy.postBody}</span><textarea className="compose-body" lang={writingLanguage} disabled={pending} rows={10} maxLength={5000} dir="auto" placeholder={copy.postBody} value={body} onChange={event => setBody(event.target.value)} /></label>

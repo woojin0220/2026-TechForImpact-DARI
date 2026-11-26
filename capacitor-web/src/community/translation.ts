@@ -4,7 +4,7 @@
  * on-device model when one has been imported. With neither, posts show as written.
  */
 export type TranslationEngine = {
-  /** Fast engines (ML Kit) can translate whole lists; slow ones only the open post. */
+  /** Fast engines (ML Kit) can translate whole lists; slow ones are serialized, including visible feed previews. */
   fast: boolean;
   translate(text: string, source: string, target: string): Promise<string>;
 };
@@ -23,6 +23,8 @@ export function needsTranslation(source: string | null | undefined, target: stri
 /** Wraps an engine with a cache and de-duplication of identical in-flight requests. */
 export function createTranslator(engine: TranslationEngine, limit = 300): Translator {
   const cache = new Map<string, Promise<string>>();
+  let active=0;const waiting:(()=>void)[]=[];
+  async function run(text:string,source:string,target:string){if(active >= (engine.fast?2:1))await new Promise<void>(resolve=>waiting.push(resolve));else active++;try{return await engine.translate(text,source,target);}finally{const next=waiting.shift();if(next)next();else active--;}}
   return {
     fast: engine.fast,
     translate(text, source, target) {
@@ -31,7 +33,7 @@ export function createTranslator(engine: TranslationEngine, limit = 300): Transl
       const key = `${source}\u0000${target}\u0000${trimmed}`;
       const hit = cache.get(key);
       if (hit) return hit;
-      const job = engine.translate(trimmed, source, target).then(result => {
+      const job = run(trimmed, source, target).then(result => {
         const clean = cleanModelOutput(result);
         if (!clean) throw new Error('empty translation');
         return clean;

@@ -1,0 +1,3 @@
+export const commentDraftKey=(owner:string,post:string)=>`dari.community.comment.v1.${encodeURIComponent(owner)}.${encodeURIComponent(post)}`;
+export function readCommentDraft(store:Pick<Storage,'getItem'>,owner:string,post:string){const value=store.getItem(commentDraftKey(owner,post));if(value===null)return '';const data=JSON.parse(value);if(data.version!==1||typeof data.body!=='string'||data.body.length>2000)throw Error('Invalid draft');return data.body as string;}
+export function writeCommentDraft(store:Pick<Storage,'setItem'|'removeItem'>,owner:string,post:string,body:string){const key=commentDraftKey(owner,post);if(!body.trim())store.removeItem(key);else store.setItem(key,JSON.stringify({version:1,body}));}

@@ -70,11 +70,14 @@ const compiled = await build({
 const mod = { exports: {} };
 new Function('require', 'module', 'exports', compiled.outputFiles[0].text)(require, mod, mod.exports);
 
-test('home shows board tabs, the safety reminder and a write button', () => {
+test('home shows boards and a first-visit tour without persistent intro or unanswered tools', () => {
   const html = mod.exports.home('ko');
   for (const label of ['Q&amp;A', '생활정보', '공지사항']) assert.ok(html.includes(`>${label}</button>`), label);
   assert.match(html, /aria-selected="true"[^>]*>Q&amp;A/);
-  assert.match(html, /이름, 연락처, 사건 내용은 올리지 마세요/);
+  assert.doesNotMatch(html, /class="safety-note home-safety"/);
+  assert.doesNotMatch(html, /community-feed-tools/);
+  assert.match(html, /사용 안내/);
+  assert.match(html, /community-feed-scroll/);
   assert.match(html, /글쓰기/);
   assert.match(html, /내 정보/);
 });

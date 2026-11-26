@@ -21,6 +21,24 @@ export function communityApi(client: SupabaseClient) {
       if (options.unanswered && board === 'qna') query = query.eq('comment_count', 0);
       return await check(query) as unknown as PostSummary[];
     },
+    async updatePost(authorId:string,id:string,input:{title:string;body:string;language:string}) {
+      const row=await check(client.from('posts').update({title:input.title.trim(),body:input.body.trim(),language:input.language}).eq('id',id).eq('author_id',authorId).eq('status','visible').select('id').single());
+      return (row as {id:string}).id;
+    },
+    async listActivity(authorId:string,kind:'posts'|'replies',before?:string):Promise<{posts:(PostSummary & {my_reply?:string;my_reply_language?:string;activity_at?:string})[];next?:string}> {
+      if(kind==='posts') {
+        let query=client.from('post_feed').select(feedColumns).eq('author_id',authorId).eq('status','visible').order('created_at',{ascending:false}).limit(pageSize);
+        if(before)query=query.lt('created_at',before);
+        const posts=await check(query) as unknown as PostSummary[];
+        return {posts,next:posts.length===pageSize?posts.at(-1)?.created_at:undefined};
+      }
+      let query=client.from('comment_feed').select(commentColumns).eq('author_id',authorId).eq('status','visible').order('created_at',{ascending:false}).limit(pageSize);
+      if(before)query=query.lt('created_at',before);
+      const comments=await check(query) as unknown as CommentItem[];
+      const ids=[...new Set(comments.map(item=>item.post_id))];
+      const parents=ids.length?await check(client.from('post_feed').select(feedColumns).eq('status','visible').in('id',ids)) as unknown as PostSummary[]:[];
+      return {posts:comments.flatMap(comment=>{const post=parents.find(item=>item.id===comment.post_id);return post?[{...post,my_reply:comment.body,my_reply_language:comment.language,activity_at:comment.created_at}]:[];}),next:comments.length===pageSize?comments.at(-1)?.created_at:undefined};
+    },
     async getPost(id: string): Promise<PostSummary | null> {
       return await check(client.from('post_feed').select(feedColumns).eq('id', id).neq('status', 'deleted').maybeSingle()) as unknown as PostSummary | null;
     },

@@ -65,6 +65,17 @@ export function createDevSupervisor({ development, language, storage, onExit }: 
   });
   const community: CommunityApi = {
     async listPosts(board, before, options = {}) { return state.posts.filter(post => visible(post) && post.board_id === board && (!before || post.created_at < before) && matchesSearch(post.title, post.body, options.search)).map(summary).filter(post => !options.unanswered || board !== 'qna' || post.comment_count === 0).sort((a,b) => b.created_at.localeCompare(a.created_at)).slice(0,20); },
+    async updatePost(authorId,id,input) {
+      actor(authorId);if(!isValidTitle(input.title)||!isValidBody(input.body))throw new Error('Invalid post');
+      write(next=>{const post=next.posts.find(item=>item.id===id&&item.author_id===authorId&&visible(item));if(!post)throw new Error('Not your post');post.title=input.title.trim();post.body=input.body.trim();post.language=input.language;});return id;
+    },
+    async listActivity(authorId,kind,before) {
+      actor(authorId);
+      const rows=kind==='posts'?state.posts.filter(post=>post.author_id===authorId&&visible(post)).map(summary):state.comments.filter(item=>item.author_id===authorId&&item.status==='visible').flatMap(comment=>{const post=state.posts.find(item=>item.id===comment.post_id&&visible(item));return post?[{...summary(post),my_reply:comment.body,my_reply_language:comment.language,activity_at:comment.created_at}]:[];});
+      const time=(item:PostSummary & {activity_at?:string})=>item.activity_at??item.created_at;
+      const posts=rows.filter(item=>!before||time(item)<before).sort((a,b)=>time(b).localeCompare(time(a))).slice(0,20);
+      return {posts,next:posts.length===20?time(posts[posts.length-1]):undefined};
+    },
     async getPost(id) { const post = state.posts.find(item => item.id === id && visible(item)); return post ? summary(post) : null; },
     async listSavedPosts(ids,options={}) { return state.posts.filter(post=>ids.includes(post.id)&&visible(post)&&matchesSearch(post.title,post.body,options.search)).sort((a,b)=>b.created_at.localeCompare(a.created_at)).slice(0,200).map(summary); },
     async listComments(postId) { return clone(state.comments.filter(item => item.post_id === postId && item.status === 'visible' && !state.blocked.includes(item.author_id))).map(item => ({ ...item, author_nickname: item.author_id === SUPERVISOR_ID ? state.account.profile.nickname : item.author_nickname })); },
