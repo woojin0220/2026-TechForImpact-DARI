@@ -288,3 +288,16 @@ main.account-main:has(.community-home),.tab-root:has(>.dev-guest-banner) main.ac
  @keyframes composer-enter-rtl{from{opacity:.35;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
  @keyframes composer-page-enter-rtl{from{opacity:.45;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
 }
+
+/* Border-free walkthrough accents and consistent writing typography. */
+.community{--community-writing-font:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",system-ui,sans-serif}
+.community-compose .compose-title,.community-compose .compose-body{font-family:var(--community-writing-font);font-style:normal;letter-spacing:normal;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+.community-compose .compose-title{font-size:18px;font-weight:600;line-height:1.55}
+.community-compose .compose-body{font-size:16px;font-weight:400;line-height:1.75}
+.community-compose .compose-title::placeholder{font-weight:500}
+.tour-compose-preview[data-tour-field=title] .compose-title,.tour-compose-preview[data-tour-field=body] .compose-body{background:#f3f5f7;box-shadow:0 0 0 5px #f3f5f7;border-radius:8px;outline:0;border-color:transparent}
+.community-home .tour-sample-post{background:#f3f5f7!important;border:0!important;border-radius:12px;padding:18px 16px;margin-block:12px;box-shadow:none}
+.tour-sample-post .post-title,.tour-sample-post p{font-family:var(--community-writing-font);font-style:normal;letter-spacing:normal}
+.tour-sample-post .post-title{font-size:16px;font-weight:600;line-height:1.55}
+.tour-sample-post p{font-size:14px;font-weight:400;line-height:1.75}
+@media(prefers-reduced-motion:no-preference){.tour-compose-preview .compose-title,.tour-compose-preview .compose-body{transition:background-color .2s ease,box-shadow .2s ease}}
