@@ -143,7 +143,7 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
 
     </div>
     <div className="community-feed-scroll" tabIndex={0} aria-label={copy.title}>
-    {tourSample&&<article className="tour-sample-post post-card"><small>{tourCopy(language)[18]}</small><strong className="post-title">{tourCopy(language)[20]}</strong><p>{tourCopy(language)[21]}</p><span className="post-meta">{account.profile.nickname}</span></article>}
+    {tourSample&&<article className="tour-sample-post post-card"><strong className="post-title">{tourCopy(language)[20]}</strong><p>{tourCopy(language)[21]}</p><span className="post-meta">{account.profile.nickname}</span></article>}
     {status === 'loading' && <ul className="post-list" aria-busy="true" aria-label={copy.loading}>{[0, 1, 2].map(key => <li key={key} className="post-skeleton" />)}</ul>}
     {status === 'error' && <div className="community-state"><p>{copy.loadFailed}</p><button type="button" className="secondary" onClick={() => void load()}>{copy.retry}</button></div>}
     {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{filtered ? d.noResults : savedOnly?ec.savedEmpty:copy.empty}</p>{filtered && <button type="button" className="secondary" onClick={() => { setInput(''); setSearch(''); }}>{d.reset}</button>}</div>}
@@ -316,7 +316,7 @@ export function PostComposer({ copy, accountCopy, translator, api, account, lang
   const [board, setBoard] = useState<BoardId>(boards.includes(preferredBoard) ? preferredBoard : boards[0]);
   const [title, setTitle] = useState(draft?.title??'');
   const [body, setBody] = useState(draft?.body??'');
-  useEffect(()=>{if(!demo&&bodyInput.current){bodyInput.current.style.height='0px';bodyInput.current.style.height=`${Math.max(200,bodyInput.current.scrollHeight)}px`;}},[body,demo]);
+  useEffect(()=>{if(!demo&&bodyInput.current){bodyInput.current.style.height='0px';bodyInput.current.style.height=`${Math.max(260,bodyInput.current.scrollHeight)}px`;}},[body,demo]);
   const writingLanguage=editPost?.language??language;
   const [composeTour,setComposeTour]=useState(()=>{try{return !demo&&!editPost&&!localStorage.getItem(tourKey(account.profile.user_id,'compose'));}catch{return !demo&&!editPost;}});
   useEffect(()=>{if(demo){setTitle(demo.title);setBody(demo.body);setBoard('qna');}},[demo?.title,demo?.body]);

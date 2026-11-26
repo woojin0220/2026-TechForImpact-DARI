@@ -295,9 +295,18 @@ main.account-main:has(.community-home),.tab-root:has(>.dev-guest-banner) main.ac
 .community-compose .compose-title{font-size:18px;font-weight:600;line-height:1.55}
 .community-compose .compose-body{font-size:16px;font-weight:400;line-height:1.75}
 .community-compose .compose-title::placeholder{font-weight:500}
-.tour-compose-preview[data-tour-field=title] .compose-title,.tour-compose-preview[data-tour-field=body] .compose-body{background:#f3f5f7;box-shadow:0 0 0 5px #f3f5f7;border-radius:8px;outline:0;border-color:transparent}
-.community-home .tour-sample-post{background:#f3f5f7!important;border:0!important;border-radius:12px;padding:18px 16px;margin-block:12px;box-shadow:none}
+.tour-compose-preview[data-tour-field=title] .compose-title,.tour-compose-preview[data-tour-field=body] .compose-body{background:#fff;box-shadow:none;outline:0}
+.community-home .tour-sample-post{background:#fff!important;border:0!important;border-radius:12px;padding:18px 16px;margin-block:12px;box-shadow:none}
 .tour-sample-post .post-title,.tour-sample-post p{font-family:var(--community-writing-font);font-style:normal;letter-spacing:normal}
 .tour-sample-post .post-title{font-size:16px;font-weight:600;line-height:1.55}
 .tour-sample-post p{font-size:14px;font-weight:400;line-height:1.75}
 @media(prefers-reduced-motion:no-preference){.tour-compose-preview .compose-title,.tour-compose-preview .compose-body{transition:background-color .2s ease,box-shadow .2s ease}}
+
+/* More room for writing; the posting notice closes the page rather than floating. */
+.community-compose{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 64px - var(--community-sticky-top,0px))}
+.community-compose .compose-body{min-height:260px}
+.community-compose .compose-rules{margin-top:auto}
+.attachment-toolbar button{color:#62666c}
+.community .attachment-toolbar svg{width:21px;height:21px;stroke-width:1.5}
+.tour-compose-preview .compose-body{min-height:220px;height:220px}
+@media(max-height:720px){.tour-compose-preview .compose-body{height:140px;min-height:140px}}
