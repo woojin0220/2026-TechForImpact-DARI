@@ -43,7 +43,7 @@ export function ProcedureGuide({ language, ownerScope='guest', onBack, headerAcc
   }
 
   return <main className="procedure-view" aria-label={copy.title} lang={language} dir={direction}>
-    <ScreenHeader className="procedure-toolbar" title={tabsCopyFor(language).schedulerTitle} actions={headerAccessory} />
+    <ScreenHeader variant="tab" className="procedure-toolbar" title={tabsCopyFor(language).schedulerTitle} actions={headerAccessory} />
     {loadFailed && <div className="procedure-load-error" role="alert">
       <p>{copy.loadError}</p>
       <a href={standaloneSrc} target="_blank" rel="noopener noreferrer">{copy.openSeparately}</a>
