@@ -271,3 +271,20 @@ main.account-main:has(.community-home),.tab-root:has(>.dev-guest-banner) main.ac
 .community-compose .compose-body{resize:none}
 
 .community .composer-header .publish-button{border:0;box-shadow:none;border-radius:0}
+
+/* Readable guidance and an explicit, short entry into the editor. */
+.compose-rules{border-color:#dca8a8;background:#faf7f7}
+.compose-rules h2{font-size:13px;color:#8b3030;font-weight:750}
+.compose-rules ul{font-size:13px;color:#444441;line-height:1.75}
+.compose-fields{gap:12px;margin:6px 0 10px}
+@media(prefers-reduced-motion:no-preference){
+ .community-compose{animation:composer-enter .28s cubic-bezier(.2,.7,.2,1) both}
+ .tour-compose-preview{animation:composer-page-enter .3s cubic-bezier(.2,.7,.2,1) both}
+ .tour-compose-preview .community-compose{animation:none}
+ @keyframes composer-enter{from{opacity:.35;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+ @keyframes composer-page-enter{from{opacity:.45;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+ [dir=rtl] .community-compose{animation-name:composer-enter-rtl}
+ [dir=rtl] .tour-compose-preview{animation-name:composer-page-enter-rtl}
+ @keyframes composer-enter-rtl{from{opacity:.35;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
+ @keyframes composer-page-enter-rtl{from{opacity:.45;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
+}
