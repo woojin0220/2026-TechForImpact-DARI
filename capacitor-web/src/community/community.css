@@ -1,5 +1,5 @@
 /* Community: monochrome like the rest of DARI, with soft cards, avatars and icon actions. */
-.community{--soft:#f5f5f4;--muted:#6b6b6b;--card-line:#ececec;display:grid;gap:16px;padding-bottom:88px}
+.community{--soft:#f5f5f4;--muted:#6b6b6b;--card-line:#ececec;--community-sticky-top:0px;display:grid;gap:16px;padding-bottom:88px}
 .community svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .community h1{margin:0}
 
@@ -131,3 +131,32 @@
 .translation-note{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted)}
 .translation-note svg{width:13px;height:13px}
 .translation-note .quiet{min-height:24px;padding:0;margin-inline-start:4px;font-size:11.5px;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* Read, return and resume: compact controls within the shared DARI layout. */
+.community-top-actions{display:flex;align-items:center;gap:10px;min-width:0}
+.community-topbar{flex-wrap:wrap}
+.tab-root:has(>.dev-guest-banner) .community{--community-sticky-top:44px}
+.community .detail-bar,.community .board-tabs{top:var(--community-sticky-top)}
+.community-topbar h1{flex:1;min-width:0}
+.community-topbar .dari-screen-leading{flex-basis:100%}
+@media(max-width:360px){.saved-entry span{display:none}}
+.saved-entry{display:inline-flex;align-items:center;gap:6px;border:0;background:var(--soft);border-radius:12px;padding:8px 10px;min-height:40px;font-size:12px;line-height:1.4}
+.saved-entry svg{width:17px;height:17px}
+.home-safety{background:none;border-radius:0;padding:0;color:var(--muted);font-size:12px}
+.community-draft-banner{display:flex;align-items:center;gap:8px;background:#f6f6f4;border-radius:16px;padding:14px;min-width:0}
+.resume-draft{display:grid;gap:5px;border:0;background:none;flex:1;text-align:start;padding:0;min-width:0}
+.resume-draft>span{font-size:12px;color:var(--muted)}
+.resume-draft>strong{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.resume-draft>span:last-child{font-weight:650;color:var(--ink)}
+.discard-draft{display:grid;place-items:center;width:40px;min-height:40px;flex:none;border:0;background:none;border-radius:50%;padding:8px;color:var(--muted)}
+.bookmark-button{display:inline-flex;align-items:center;gap:6px;min-height:42px;border:1px solid var(--card-line);border-radius:999px;padding:8px 12px;background:#fff;font-size:13px}
+.bookmark-button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bookmark-button[aria-pressed=true] svg{fill:currentColor}
+.post-language,.draft-status,.draft-note,.feed-board-label{font-size:12px;color:var(--muted);line-height:1.7;margin:0}
+.compose-language{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0;font-size:12px;color:var(--muted)}
+.compose-language .select-menu{color:var(--ink);font-size:13px;max-width:60%}
+.compose-language .select-menu summary{min-height:40px}
+.draft-status{margin-top:8px}
+.draft-note{margin-bottom:10px}
+.community .community-topbar h1{font-size:24px;overflow-wrap:anywhere}
+.saved-entry:focus-visible,.resume-draft:focus-visible,.discard-draft:focus-visible,.bookmark-button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}

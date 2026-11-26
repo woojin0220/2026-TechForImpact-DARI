@@ -24,6 +24,12 @@ export function communityApi(client: SupabaseClient) {
     async getPost(id: string): Promise<PostSummary | null> {
       return await check(client.from('post_feed').select(feedColumns).eq('id', id).neq('status', 'deleted').maybeSingle()) as unknown as PostSummary | null;
     },
+    async listSavedPosts(ids:string[],options:FeedOptions={}):Promise<PostSummary[]> {
+      if(!ids.length)return [];
+      let query=client.from('post_feed').select(feedColumns).eq('status','visible').in('id',ids.slice(0,200)).order('created_at',{ascending:false}).limit(200);
+      if(normalizeSearch(options.search))query=query.or(searchFilter(options.search!));
+      return await check(query) as unknown as PostSummary[];
+    },
     async listComments(postId: string): Promise<CommentItem[]> {
       return await check(client.from('comment_feed').select(commentColumns).eq('post_id', postId).eq('status', 'visible').order('created_at', { ascending: true }).limit(200)) as unknown as CommentItem[];
     },

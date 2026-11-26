@@ -32,6 +32,11 @@ function seed(language: string): Snapshot {
   });
   return { version: 1, account, posts: [
     post('sample-question', 'qna', '[샘플] 신청서 작성 경험을 나눠요', '커뮤니티 기능 확인용 가상 게시글입니다. 댓글, 공감, 신고와 차단을 시험할 수 있어요.'),
+    post('sample-language-help', 'qna', '[샘플] 신청서 질문이 어려울 때 어떻게 준비하셨나요?', '기능 확인을 위한 가상 질문입니다. 문항의 뜻을 이해하거나 번역을 확인했던 방법을 공유하는 글의 예시예요.'),
+    post('sample-preparation', 'qna', '[샘플] 준비할 일을 어떻게 정리하시나요?', '실제 절차 안내가 아닌 테스트용 글입니다. 날짜와 준비할 일을 관리하는 경험을 묻는 상황을 보여줍니다.'),
+    {...post('sample-english', 'qna', '[DEMO] How do you review a translation?', 'This is a fictional post for testing. What helps you compare your own words with a translated answer?'),language:'en'},
+    {...post('sample-arabic', 'life', '[DEMO] أين أجد دروس اللغة؟', 'هذا منشور افتراضي لاختبار التطبيق، وليس إعلانًا أو نصيحة رسمية.'),language:'ar'},
+    post('sample-local-life', 'life', '[샘플] 한국어를 공부할 때 도움이 된 방법', '커뮤니티 화면을 확인하기 위한 가상 글입니다. 생활 경험이나 공부 방법을 나누는 상황을 보여줍니다.'),
     post('sample-life', 'life', '[샘플] 생활 정보를 나눠요', '실제 안내가 아닌 테스트용 게시글입니다. 개인정보를 입력하지 말아 주세요.'),
     { ...post('sample-notice', 'notice', '[샘플 공지] Supervisor 테스트 공간', '여기에 작성한 글과 댓글은 이 브라우저 탭의 테스트 데이터에만 저장됩니다.'), author_id: SUPERVISOR_ID, author_nickname: 'Supervisor', author_is_supporter: true },
   ], comments: [{ ...author, id: 'sample-comment', post_id: 'sample-question', body: '이 댓글도 기능 확인을 위한 가상 데이터예요.', language: 'ko', status: 'visible', created_at: now }],
@@ -45,7 +50,7 @@ export function createDevSupervisor({ development, language, storage, onExit }: 
     const saved = JSON.parse(storage.getItem(SUPERVISOR_DATA_KEY) ?? 'null') as Snapshot | null;
     if (saved?.version === 1 && saved.account?.profile.user_id === SUPERVISOR_ID && Array.isArray(saved.posts) && Array.isArray(saved.comments) && Array.isArray(saved.blocked) && Array.isArray(saved.helpful) && Array.isArray(saved.reports)) {
       // Persisted test input can never grant a different identity or arbitrary account roles.
-      state = { ...saved, account: { ...seed(language).account, profile: { ...seed(language).account.profile, nickname: saved.account.profile.nickname, preferred_language: language }, badges: saved.account.badges ?? [] } };
+      state = { ...saved, posts:[...saved.posts,...state.posts.filter(post=>!saved.posts.some(item=>item.id===post.id))], account: { ...seed(language).account, profile: { ...seed(language).account.profile, nickname: saved.account.profile.nickname, preferred_language: language }, badges: saved.account.badges ?? [] } };
     }
   } catch { /* Malformed demonstration data cannot affect real application storage. */ }
   const clone = <T,>(value: T): T => structuredClone(value);
@@ -61,6 +66,7 @@ export function createDevSupervisor({ development, language, storage, onExit }: 
   const community: CommunityApi = {
     async listPosts(board, before, options = {}) { return state.posts.filter(post => visible(post) && post.board_id === board && (!before || post.created_at < before) && matchesSearch(post.title, post.body, options.search)).map(summary).filter(post => !options.unanswered || board !== 'qna' || post.comment_count === 0).sort((a,b) => b.created_at.localeCompare(a.created_at)).slice(0,20); },
     async getPost(id) { const post = state.posts.find(item => item.id === id && visible(item)); return post ? summary(post) : null; },
+    async listSavedPosts(ids,options={}) { return state.posts.filter(post=>ids.includes(post.id)&&visible(post)&&matchesSearch(post.title,post.body,options.search)).sort((a,b)=>b.created_at.localeCompare(a.created_at)).slice(0,200).map(summary); },
     async listComments(postId) { return clone(state.comments.filter(item => item.post_id === postId && item.status === 'visible' && !state.blocked.includes(item.author_id))).map(item => ({ ...item, author_nickname: item.author_id === SUPERVISOR_ID ? state.account.profile.nickname : item.author_nickname })); },
     async createPost(authorId, input) {
       actor(authorId); if (!boardIds.includes(input.board) || !isValidTitle(input.title) || !isValidBody(input.body)) throw new Error('Invalid test post');
