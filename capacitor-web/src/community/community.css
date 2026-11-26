@@ -322,3 +322,18 @@ main.account-main:has(.community-home),.tab-root:has(>.dev-guest-banner) main.ac
 .community-welcome.leaving{opacity:0;transform:translateY(-12px)}
 @media(prefers-reduced-motion:no-preference){.community-welcome h1{animation:community-welcome-rise .45s cubic-bezier(.2,.7,.2,1) both}.community-welcome p{animation:community-welcome-rise .45s .16s cubic-bezier(.2,.7,.2,1) both}@keyframes community-welcome-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}}
 @media(prefers-reduced-motion:reduce){.community-welcome{transition:none}.community-welcome.leaving{transform:none}}
+
+/* A stronger first impression through type hierarchy and staggered motion. */
+.community-welcome-brand{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.16em;color:#73777d;margin-bottom:20px}
+.community-welcome-brand span{width:6px;height:6px;background:#ed641e;border-radius:50%}
+.community-welcome h1{font-size:clamp(36px,9.5vw,42px);font-weight:750;letter-spacing:-1.1px;margin-bottom:28px}
+.community-welcome p.community-welcome-message{font-size:clamp(21px,5.8vw,25px);font-weight:600;color:#272a2f;line-height:1.55;letter-spacing:-.35px;margin:0 0 18px}
+.community-welcome p.community-welcome-description{font-size:14px;line-height:1.8;color:#73777d;margin:0;letter-spacing:0}
+@media(prefers-reduced-motion:no-preference){
+ .community-welcome-brand{animation:community-welcome-rise .4s ease-out both}
+ .community-welcome h1{animation:community-welcome-title .6s .08s cubic-bezier(.18,.8,.2,1) both}
+ .community-welcome p.community-welcome-message{animation:community-welcome-rise .5s .26s cubic-bezier(.2,.7,.2,1) both}
+ .community-welcome p.community-welcome-description{animation:community-welcome-rise .5s .46s cubic-bezier(.2,.7,.2,1) both}
+ @keyframes community-welcome-title{from{opacity:0;transform:translateY(28px);letter-spacing:.5px}to{opacity:1;transform:translateY(0);letter-spacing:-1.1px}}
+}
+@media(prefers-reduced-motion:reduce){.community-welcome-brand,.community-welcome h1,.community-welcome p{animation:none}}
