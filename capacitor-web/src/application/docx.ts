@@ -1,7 +1,7 @@
 import { strToU8, strFromU8, unzipSync, zipSync } from 'fflate';
 import { placements, type Box } from '../export/placements.ts';
 import { statementSlots } from '../export/statement.ts';
-import { isCurrent, writtenAnswers, type Answers } from './model.ts';
+import { isCurrent, isReviewed, writtenAnswers, type Answers } from './model.ts';
 
 export const wordTemplatePath = 'forms/refugee-application-2019-word.docx';
 const xml = (s: string) => s.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -37,6 +37,7 @@ export function applicationDocx(answers: Answers, template: Uint8Array): Uint8Ar
  const add=(page:number,content:string)=>pages.set(page,[...(pages.get(page)??[]),content]);
  for(const {question:q,answer:a} of entries){
   if(!isCurrent(a,q.id))throw new Error(`Translation required: ${q.id}`);
+  if(!isReviewed(a,q.id))throw new Error(`Review required: ${q.id}`);
   const text=a.korean.trim();
   // Oaths, consent, signatures and officer fields are preserved for manual completion.
   if(q.id.startsWith('16.')){annexes.push({id:q.id,title:q.fields[0].ko,text,number:annexes.length+1});continue;}

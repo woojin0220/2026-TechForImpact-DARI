@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { unzipSync, strFromU8 } from 'fflate';
-import { questions, questionGroups, isQuickQuestion, isCurrent, writtenAnswers, loadAnswers, saveAnswers } from '../src/application/model.ts';
+import { reviewVersion, questions, questionGroups, isQuickQuestion, isCurrent, writtenAnswers, loadAnswers, saveAnswers } from '../src/application/model.ts';
 import { applicationDocx, wrapAnswer } from '../src/application/docx.ts';
 import { statementSlots } from '../src/export/statement.ts';
 const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2019-word.docx',import.meta.url)));
-const answer=(source,korean=source)=>({source,korean,language:'en',translatedSource:source});
+const answer=(source,korean=source)=>{const a={source,korean,language:'en',translatedSource:source};return {...a,reviewed:reviewVersion(a)};};
 test('numbered questions group follow-ups, with every question in a large-number group',()=>{
  assert.equal(new Set(questions.map(q=>q.id)).size,questions.length);
  assert.ok(questions.find(q=>q.id==='14.1').fields.some(f=>f.id==='14.1-detail'));

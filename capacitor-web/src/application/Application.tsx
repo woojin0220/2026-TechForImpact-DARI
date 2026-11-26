@@ -19,8 +19,13 @@ import { workspaceCopy, subsectionLabel } from './workspaceCopy';
 import { designCopy } from './designCopy';
 import { serializeFields, type FieldValues } from './structuredAnswer';
 import { QuestionIntro } from './QuestionIntro';
-import { guidanceKey } from './questionGuidance';
+import { guidanceKey,requiresGuidance } from './questionGuidance';
+import { FormPreview } from './FormPreview';
+import { previewCopy } from './previewCopy';
 import { focusCopy } from './focusCopy';
+import { isReviewed,reviewVersion } from './model';
+import { pendingReviews } from './prepareDownload';
+import { reviewCopy } from './reviewCopy';
 import type { SentencePart } from './sentenceDraft';
 import './application.css';
 import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
@@ -33,6 +38,8 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  const [groupId,setGroupId] = useState<string|null>(null);
  const [selected,setSelected] = useState<string|null>(null);
  const [review,setReview]=useState(false);
+ const [preview,setPreview]=useState(false);
+ const previewScroll=useRef(0);
  const [setup,setSetup]=useState<'guide'|'language'|null>(null);
  const [preferred,setPreferred]=useState<{language:string;target:TranslationLanguage}|null>(null);
  const selectedRef=useRef(selected);
@@ -40,7 +47,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  const scrollPositions=useRef<Record<string,number>>({});
  const [busyId,setBusyId] = useState<string|null>(null);
  const [exporting,setExporting] = useState(false);
- const [progress,setProgress] = useState({done:0,total:0});
+ const [showExportReview,setShowExportReview] = useState(false);
  const busy = busyId !== null || exporting;
  const [error,setError] = useState('');
  const [importing,setImporting] = useState(false);
@@ -50,6 +57,8 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  const f=focusCopy(language);
  const dc = downloadCopy(language);
  const wc = workspaceCopy(language);
+ const rc=reviewCopy(language),pending=pendingReviews(answers);
+ function confirmAnswer(id:string,checked:boolean){setAnswers(previous=>{const a=previous[id];if(!a||!isCurrent(a,id))return previous;return {...previous,[id]:{...a,reviewed:checked?reviewVersion(a):undefined}};});}
  const native = Capacitor.isNativePlatform();
  useEffect(() => { if (language) { document.documentElement.lang=language; document.documentElement.dir=['ar','fa'].includes(language)?'rtl':'ltr'; } },[language]);
  const group = questionGroups.find(g => g.id===groupId);
@@ -63,7 +72,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  const introQuestion=question??sectionQuestion;
  const introAnswer=question?answer:quickQuestions[0]?answers[quickQuestions[0].id]:undefined;
  const acknowledged=!!introQuestion&&(question?introAnswer?.guideKey:introAnswer?.sectionGuideKey)===guidanceKey(introQuestion,language);
- const showingIntro=!!introQuestion&&(!acknowledged||!!setup);
+ const showingIntro=!!introQuestion&&((!!question&&requiresGuidance(question)&&!acknowledged)||!!setup);
  useEffect(() => { main.current?.focus({preventScroll:true});window.scrollTo(0,showingIntro?0:scrollPositions.current[selected?`${selected}:${review?'review':'write'}`:groupId?`group:${groupId}`:'root']??0); },[selected,groupId,review,setup,showingIntro]);
  const entries = writtenAnswers(answers);
  const label = (ko:string,en:string) => localizedLabel(language,ko,en);
@@ -111,9 +120,10 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  }
  async function exportApplication() {
   if(busy || !entries.length) return;
-  setExporting(true);setError('');setProgress({done:0,total:0});
+  if(pending.length){setShowExportReview(true);return;}
+  setExporting(true);setError('');setShowExportReview(false);
   try {
-   const ready=await prepareDownload(answers,translateAnswer,setAnswers,(done,total)=>setProgress({done,total}));
+   const ready=await prepareDownload(answers);
    await downloadApplication(ready);
   } catch (error) { setError(translationFailure(error,language,dc.error)); } finally { setExporting(false); }
  }
@@ -124,14 +134,17 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  if(!loaded)return null;
  if(!language) return <><LanguageEntry texts={appTexts('en')} status={null} locked={false} onSelect={setLanguage}/>{storageError&&<p role="alert" className="application-warning">{c.storage}</p>}</>;
  if(gate) return <div className="application-page">{gate}</div>;
+ if(preview)return <FormPreview answers={answers} language={language} selected={selected} onBack={()=>{setPreview(false);requestAnimationFrame(()=>window.scrollTo(0,previewScroll.current));}} onEdit={id=>{const q=questions.find(q=>q.id===id);if(!q)return;setPreview(false);setSetup(null);setReview(false);setGroupId(id.split('.')[0]);setSelected(isQuickQuestion(q)?null:id);}}/>;
  if(conversation && question) return <Suspense fallback={<p role="status">{wc.title}…</p>}><NarrativeWorkspace scope={repository.scope} language={answer.language} identityValues={Object.entries(answers).filter(([id])=>['1.2','1.3','1.4','1.5','1.9','1.10','1.11','1.12'].includes(id)).map(([,a])=>a.source)} onBack={()=>setConversation(false)}/></Suspense>;
  return <div className={`application-page${group || question ? ' application-writing' : ''}${question&&!showingIntro&&!review?' application-focused':''}${showingIntro?' application-onboarding':''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
   <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question)&&<BackButton className="application-back" label={review?d.edit:c.back} disabled={exporting} onClick={goBack}/>} actions={<div className="application-tools">{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
   <main id="main" tabIndex={-1} ref={main} className="application-main">
    {storageError && <p role="alert" className="application-warning">{c.storage}</p>}
    {error && <p role="alert" className="application-warning">{error}</p>}
-   {showingIntro&&introQuestion?<QuestionIntro key={`${introQuestion.id}:${guidanceKey(introQuestion,language)}:${setup??'entry'}`} question={introQuestion} section={!question} language={language} sourceLanguage={introAnswer?.language??defaults.language} targetLanguage={introAnswer?.targetLanguage??defaults.target} acknowledged={acknowledged} settings={setup==='language'} onFinish={finishIntro}/>:!question ? <>
-    <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <Button variant="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{exporting?`${c.translating} ${progress.done} / ${progress.total}`:c.download} <span aria-hidden="true">↓</span></Button>}</div>
+   {showExportReview&&pending.length>0&&<section className="export-review-list" aria-labelledby="export-review-title"><h2 id="export-review-title">{rc.exportTitle}</h2><ul>{pending.map(item=><li key={item.id}><button type="button" onClick={()=>{const q=questions.find(q=>q.id===item.id)!;setGroupId(item.id.split('.')[0]);setSetup(null);setSelected(isQuickQuestion(q)?null:item.id);setReview(!isQuickQuestion(q)&&isCurrent(answers[item.id],item.id));setShowExportReview(false);if(isQuickQuestion(q))requestAnimationFrame(()=>document.getElementById(`question-${item.id}`)?.scrollIntoView({block:'center'}));}}><span dir="ltr">{item.id}</span><span>{rc[item.reason]}</span><span aria-hidden="true">›</span></button></li>)}</ul></section>}
+   {showingIntro&&introQuestion?<QuestionIntro key={`${introQuestion.id}:${guidanceKey(introQuestion,language)}:${setup??'entry'}`} question={introQuestion} section={!question} language={language} sourceLanguage={introAnswer?.language??defaults.language} targetLanguage={introAnswer?.targetLanguage??defaults.target} acknowledged={acknowledged} settings={setup==='language'} confirmationRequired={requiresGuidance(introQuestion)} onFinish={finishIntro}/>:!question ? <>
+    <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <Button variant="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{c.download} <span aria-hidden="true">↓</span></Button>}</div>
+    <Button className="form-preview-trigger" onClick={()=>{previewScroll.current=window.scrollY;setPreview(true);}}>{previewCopy(language).title} ↗</Button>
     {group&&sectionQuestion&&<div className="focus-tools"><button type="button" onClick={()=>setSetup('guide')}>{f.guide}</button><button type="button" disabled={busy} onClick={()=>setSetup('language')}>{f.settings}</button></div>}
     {!group && <ol className="question-list">{!group ? questionGroups.map(g=>{
      const count=g.questions.filter(q=>answers[q.id]?.source.trim()).length;
@@ -141,8 +154,8 @@ export default function Application({gate, headerAccessory, repository=guestRepo
      const count=section.questions.filter(q=>answers[q.id]?.source.trim()).length;
      const items=<ol className="question-list">{section.questions.map(q=>{
      const a=answers[q.id];
-     if (isQuickQuestion(q)) return <li key={q.id}><QuickAnswer question={q} answer={a} language={language} busy={exporting||busyId===q.id} blocked={busy} onChange={(source,korean)=>changeAnswer(q.id,source,korean)} onFields={values=>updateFields(values,q.id)} onTranslate={()=>void translate(q.id)} onKorean={korean=>setAnswers(prev=>({...prev,[q.id]:{...prev[q.id],korean}}))}/></li>;
-     return <li key={q.id}><button className="question-card" disabled={exporting} onClick={()=>openQuestion(q.id)}><span className="question-number" dir="ltr">{q.id}</span><span className="question-label">{label(q.fields[0].ko,q.fields[0].en)}</span><span className={`question-state ${a?.source.trim()?'has-answer':''}`}>{a?.source.trim()?(isCurrent(a,q.id)?c.done:c.written):c.empty}</span><span aria-hidden="true">›</span></button></li>;
+     if (isQuickQuestion(q)) return <li key={q.id}><QuickAnswer question={q} answer={a} language={language} busy={exporting||busyId===q.id} blocked={busy} onConfirm={checked=>confirmAnswer(q.id,checked)} onChange={(source,korean)=>changeAnswer(q.id,source,korean)} onFields={values=>updateFields(values,q.id)} onTranslate={()=>void translate(q.id)} onKorean={korean=>setAnswers(prev=>({...prev,[q.id]:{...prev[q.id],korean}}))}/></li>;
+     return <li key={q.id}><button className="question-card" disabled={exporting} onClick={()=>openQuestion(q.id)}><span className="question-number" dir="ltr">{q.id}</span><span className="question-label">{label(q.fields[0].ko,q.fields[0].en)}</span><span className={`question-state ${a?.source.trim()?'has-answer':''}`}>{a?.source.trim()?(isReviewed(a,q.id)?rc.confirmed:isCurrent(a,q.id)?rc.pending:c.written):c.empty}</span><span aria-hidden="true">›</span></button></li>;
 
      })}</ol>;
      return sections.length===1 || section.questions.length===1 ? <div key={section.id}>{items}</div> : <details className="question-section" key={`${group.id}-${section.id}`} open={index===0}>
@@ -155,9 +168,10 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     {!wholeTable&&<p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>}
     <header className={`writing-question${wholeTable?' section-question':''}${review?' review-question':''}`}><h2 id="writing-question-title">{wholeTable?label(question.sectionKo,question.sectionEn):<><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</>}</h2>
     </header>
+    <button className="question-preview-trigger" type="button" onClick={()=>{previewScroll.current=window.scrollY;setPreview(true);}}>{previewCopy(language).title} ↗</button>
     <AnswerEditor key={question.id} question={question} answer={answer} language={language} busy={busy} review={review} onFields={updateFields} onSentence={updateSentence} onGuidance={()=>{remember();setSetup('guide');}} onSettings={()=>{remember();setSetup('language');}}
      onTranslate={()=>void translate()} onKorean={korean=>setAnswers(prev=>({...prev,[question.id]:{...prev[question.id],korean}}))}
-     onEdit={()=>{remember();setReview(false);}} onSave={leaveQuestion}/>
+     onConfirm={checked=>confirmAnswer(question.id,checked)} onEdit={()=>{remember();setReview(false);}} onSave={leaveQuestion}/>
     {!review&&supportsConversation(question)&&<details className="conversation-option"><summary>{wc.entry}</summary><button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry}<span aria-hidden="true">›</span></button></details>}
     {native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}
 

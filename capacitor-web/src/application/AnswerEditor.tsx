@@ -10,9 +10,11 @@ import { focusCopy } from './focusCopy';
 import { SentenceEditor } from './SentenceEditor';
 import type { SentencePart } from './sentenceDraft';
 import { WritingGuide } from './WritingGuide';
+import { isReviewed } from './model';
+import { ReviewConfirmation } from './ReviewConfirmation';
 
-type Props={question:Question;answer:Answer;language:string;busy:boolean;review:boolean;onFields:(values:FieldValues)=>void;onSentence:(field:string,text:string,parts:SentencePart[],structured:boolean)=>void;onGuidance:()=>void;onSettings:()=>void;onTranslate:()=>void;onKorean:(text:string)=>void;onEdit:()=>void;onSave:()=>void};
-export function AnswerEditor({question,answer,language,busy,review,onFields,onSentence,onGuidance,onSettings,onTranslate,onKorean,onEdit,onSave}:Props) {
+type Props={question:Question;answer:Answer;language:string;busy:boolean;review:boolean;onFields:(values:FieldValues)=>void;onSentence:(field:string,text:string,parts:SentencePart[],structured:boolean)=>void;onGuidance:()=>void;onSettings:()=>void;onTranslate:()=>void;onKorean:(text:string)=>void;onEdit:()=>void;onSave:()=>void;onConfirm:(checked:boolean)=>void};
+export function AnswerEditor({question,answer,language,busy,review,onFields,onSentence,onGuidance,onSettings,onTranslate,onKorean,onEdit,onSave,onConfirm}:Props) {
  const c=applicationCopy(language),d=designCopy(language),f=focusCopy(language),target=answer.targetLanguage??'ko';
  const [numbered,setNumbered]=useState(false);
  const structured=(question.fields.length>1||question.fields[0].type==='table')&&(!answer.source||!!answer.fieldValues);
@@ -35,8 +37,9 @@ export function AnswerEditor({question,answer,language,busy,review,onFields,onSe
     {!current&&<p className="application-note" role="status">{answer.korean?d.stale:d.empty}</p>}
     {numbered?<ol className="sentence-list" lang={shownTarget} dir="ltr">{sentences(answer.korean,shownTarget).map((sentence,i)=><li key={i}>{sentence}</li>)}</ol>:<textarea ref={resultRef} id="answer-korean" aria-label={shownTarget==='en'?d.resultEn:d.resultKo} lang={shownTarget} dir="ltr" value={answer.korean} disabled={busy||!editable} onChange={e=>onKorean(e.target.value)}/>}
    </section>
-   <details className="original-answer"><summary>{d.original}</summary><p dir="auto" lang={answer.language}>{answer.source}</p></details>
-   <div className="review-actions"><Button onClick={onEdit} disabled={busy}>{d.edit}</Button><Button variant="primary" onClick={onSave} disabled={busy||!current}>{d.save}</Button></div>
+   <details className="original-answer" open><summary>{d.original} · {answer.language.toUpperCase()}</summary><p dir="auto" lang={answer.language}>{answer.source}</p></details>
+   <ReviewConfirmation answer={answer} id={question.id} language={language} disabled={busy} onChange={onConfirm}/>
+   <div className="review-actions"><Button onClick={onEdit} disabled={busy}>{d.edit}</Button><Button variant="primary" onClick={onSave} disabled={busy||!isReviewed(answer,question.id)}>{d.save}</Button></div>
   </>}
  </div>;
 }

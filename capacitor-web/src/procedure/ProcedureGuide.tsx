@@ -4,17 +4,17 @@ import './procedure.css';
 import { ScreenHeader } from '../ui/ScreenControls';
 import { tabsCopyFor } from '../shell/tabsCopy';
 
-type Props = { language: string; onBack: () => void; headerAccessory?: ReactNode };
+type Props = { language: string; ownerScope?: string; onBack: () => void; headerAccessory?: ReactNode };
 
 /** Same-origin bundled guide. The frame never receives the applicant's writing session. */
-export function ProcedureGuide({ language, onBack, headerAccessory }: Props) {
+export function ProcedureGuide({ language, ownerScope='guest', onBack, headerAccessory }: Props) {
   const copy = procedureCopyFor(language);
   const frame = useRef<HTMLIFrameElement>(null);
   const [height, setHeight] = useState<number>();
   const [loadFailed, setLoadFailed] = useState(false);
   const locale = ['ko', 'en', 'fr', 'ru', 'ar', 'fa'].includes(language) ? language : 'en';
-  const src = `${import.meta.env.BASE_URL}procedure-guide.html?embedded=1&lang=${locale}`;
-  const standaloneSrc = `${import.meta.env.BASE_URL}procedure-guide.html?lang=${locale}`;
+  const src = `${import.meta.env.BASE_URL}procedure-guide.html?embedded=1&lang=${locale}&ownerScope=${encodeURIComponent(ownerScope)}`;
+  const standaloneSrc = `${import.meta.env.BASE_URL}procedure-guide.html?lang=${locale}&ownerScope=${encodeURIComponent(ownerScope)}`;
   const direction = locale === 'ar' || locale === 'fa' ? 'rtl' : 'ltr';
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export function ProcedureGuide({ language, onBack, headerAccessory }: Props) {
       <p>{copy.loadError}</p>
       <a href={standaloneSrc} target="_blank" rel="noopener noreferrer">{copy.openSeparately}</a>
     </div>}
-    <iframe ref={frame} className="procedure-frame" src={src} title={copy.title}
+    <iframe key={ownerScope} ref={frame} className="procedure-frame" src={src} title={copy.title}
       dir={direction} lang={locale} style={height ? { height } : undefined}
       hidden={loadFailed} onLoad={checkLoadedDocument} onError={() => setLoadFailed(true)} />
   </main>;

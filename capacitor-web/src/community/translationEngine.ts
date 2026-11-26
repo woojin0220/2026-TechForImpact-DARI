@@ -8,6 +8,7 @@ let pending: Promise<Translator | null> | null = null;
 /** Picks the best translator this device has, once per app session. */
 export function deviceTranslator(): Promise<Translator | null> {
   pending ??= detect().catch(() => null);
+  void pending.then(found=>{if(!found)pending=null;});
   return pending;
 }
 
@@ -20,7 +21,7 @@ async function detect(): Promise<Translator | null> {
     });
   }
   const status = await getIntakeRuntimeStatus();
-  if (!status.available || !status.modelReady) return null;
+  if (!status.available || !status.modelReady || status.mode === 'hybrid') return null;
   return createTranslator({
     fast: false,
     translate: (text, source, target) => {

@@ -39,8 +39,18 @@ export type Question = typeof questions[number];
 export const isQuickQuestion = (question: Question) => question.fields.every(f => f.type !== 'long' && f.type !== 'table');
 export type TranslationLanguage='ko'|'en';
 /** `korean` is the legacy storage key for the reviewed translation; targetLanguage declares its requested language. */
-export type Answer = { source: string; language: string; korean: string; translatedSource: string; targetLanguage?:TranslationLanguage; translatedTarget?:TranslationLanguage; translatedLanguage?:string; fieldValues?:FieldValues; guideKey?:string; sectionGuideKey?:string; sentenceDrafts?:SentenceDrafts };
+export type Answer = { source: string; language: string; korean: string; translatedSource: string; targetLanguage?:TranslationLanguage; translatedTarget?:TranslationLanguage; translatedLanguage?:string; fieldValues?:FieldValues; guideKey?:string; sectionGuideKey?:string; sentenceDrafts?:SentenceDrafts; reviewed?:string };
 export type Answers = Record<string, Answer>;
+/** The exact content/languages acknowledged by the user; not an accuracy guarantee. */
+export const reviewVersion=(a:Answer)=>JSON.stringify([a.source,a.korean,a.language,a.targetLanguage??'ko',a.translatedSource,a.translatedTarget??'ko',a.translatedLanguage??a.language]);
+export const isReviewed=(a:Answer,id?:string)=>typeof a.reviewed==='string'&&isCurrent(a,id)&&a.reviewed===reviewVersion(a);
+export function invalidateChangedReviews(previous:Answers,next:Answers):Answers {
+ return Object.fromEntries(Object.entries(next).map(([id,a])=>{
+  if(previous[id]===a)return [id,a];
+  if(previous[id]&&reviewVersion(previous[id])!==reviewVersion(a)){const {reviewed,...rest}=a;return [id,rest];}
+  return [id,a];
+ }));
+}
 export const isCurrent = (answer: Answer, questionId?: string) => !!answer.source.trim() && answer.source === answer.translatedSource && (answer.translatedTarget??'ko')===(answer.targetLanguage??'ko') && (!answer.translatedLanguage||answer.translatedLanguage===answer.language) && !translationProblem(answer.source, answer.language, answer.korean, questionId,answer.targetLanguage);
 export function writtenAnswers(answers: Answers) {
   return questions.flatMap(question => answers[question.id]?.source.trim() ? [{ question, answer: answers[question.id] }] : []);
@@ -57,6 +67,7 @@ export function loadAnswers(key = ANSWERS_KEY): { language: string; answers: Ans
       const a = saved.answers[q.id];
       if (a && ['source','language','korean','translatedSource'].every(k => typeof a[k] === 'string')) {
        const restored:Answer={...a};
+       if(typeof restored.reviewed!=='string')delete restored.reviewed;
        if(restored.targetLanguage!=='ko'&&restored.targetLanguage!=='en')delete restored.targetLanguage;
        if(restored.translatedTarget!=='ko'&&restored.translatedTarget!=='en')delete restored.translatedTarget;
        if(typeof restored.translatedLanguage!=='string')delete restored.translatedLanguage;

@@ -1,5 +1,5 @@
 /* Community: monochrome like the rest of DARI, with soft cards, avatars and icon actions. */
-.community{--soft:#f5f5f4;--muted:#6b6b6b;--card-line:#ececec;display:grid;gap:16px;padding-bottom:88px}
+.community{--soft:#f5f5f4;--muted:#6b6b6b;--card-line:#ececec;--community-sticky-top:0px;display:grid;gap:16px;padding-bottom:88px}
 .community svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .community h1{margin:0}
 
@@ -16,12 +16,24 @@
 .safety-note svg{width:18px;height:18px;margin-top:1px}
 
 /* Post cards */
-.post-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.post-card{display:grid;gap:8px;width:100%;text-align:start;border:1px solid var(--card-line);border-radius:18px;background:#fff;padding:16px 16px 14px;box-shadow:0 1px 2px #0000000a;transition:border-color .15s,box-shadow .15s}
-.post-card:hover,.post-card:active{border-color:#cfcfcf;box-shadow:0 4px 14px #0000000f}
+.post-list{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.post-card{display:grid;gap:8px;width:100%;text-align:start;border:0;border-bottom:1px solid var(--card-line);border-radius:0;background:#fff;padding:20px 0;box-shadow:none;transition:background .15s}
+.post-card:hover,.post-card:active{background:#fafafa;box-shadow:none}
 .post-card.notice{background:var(--soft);border-color:transparent}
-.post-title{font-size:16px;line-height:1.45;font-weight:700;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.post-excerpt{font-size:13.5px;line-height:1.65;color:#4a4a4a;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-card.notice{padding:16px;border-radius:14px;margin-block:6px}
+.feed-notice-label{font-size:11px;font-weight:650;color:var(--muted)}
+.community-search{display:flex;align-items:center;gap:8px;background:#f5f5f4;border:1px solid transparent;border-radius:14px;padding:4px 6px 4px 14px;min-width:0}
+.community-search:focus-within{border-color:#878787}
+.community-search input{flex:1;min-width:0;width:0;border:0;background:transparent;box-shadow:none;padding:8px 0;font-size:14px;min-height:40px;outline:none}
+.community-search button{flex:none;min-height:40px;border:0;background:transparent;padding:8px 12px;font-size:13px;font-weight:650}
+.community-feed-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;font-size:12px;color:var(--muted)}
+.community-feed-tools button{border:1px solid var(--card-line);background:#fff;border-radius:999px;padding:8px 12px;min-height:40px;font-size:12px;line-height:1.4}
+.community-feed-tools button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}
+.community-search button:focus-visible,.community-feed-tools button:focus-visible,.post-card:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.post-foot{flex-wrap:wrap}
+@media(prefers-reduced-motion:reduce){.post-skeleton{animation:none}.post-card{transition:none}}
+.post-title{font-size:16px;line-height:1.45;font-weight:700;overflow-wrap:anywhere;display:block;max-height:2.9em;overflow:hidden}
+.post-excerpt{font-size:13.5px;line-height:1.65;color:#4a4a4a;overflow-wrap:anywhere;display:block;max-height:3.3em;overflow:hidden}
 .post-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
 .post-byline{display:flex;align-items:center;gap:8px;min-width:0}
 .post-byline.large{gap:10px}
@@ -119,3 +131,209 @@
 .translation-note{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted)}
 .translation-note svg{width:13px;height:13px}
 .translation-note .quiet{min-height:24px;padding:0;margin-inline-start:4px;font-size:11.5px;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* Read, return and resume: compact controls within the shared DARI layout. */
+.community-top-actions{display:flex;align-items:center;gap:10px;min-width:0}
+.community-topbar{flex-wrap:wrap}
+.tab-root:has(>.dev-guest-banner) .community{--community-sticky-top:44px}
+.community .detail-bar,.community .board-tabs{top:var(--community-sticky-top)}
+.community-topbar h1{flex:1;min-width:0}
+.community-topbar .dari-screen-leading{flex-basis:100%}
+@media(max-width:360px){.saved-entry span{display:none}}
+.saved-entry{display:inline-flex;align-items:center;gap:6px;border:0;background:var(--soft);border-radius:12px;padding:8px 10px;min-height:40px;font-size:12px;line-height:1.4}
+.saved-entry svg{width:17px;height:17px}
+.home-safety{background:none;border-radius:0;padding:0;color:var(--muted);font-size:12px}
+.community-draft-banner{display:flex;align-items:center;gap:8px;background:#f6f6f4;border-radius:16px;padding:14px;min-width:0}
+.resume-draft{display:grid;gap:5px;border:0;background:none;flex:1;text-align:start;padding:0;min-width:0}
+.resume-draft>span{font-size:12px;color:var(--muted)}
+.resume-draft>strong{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.resume-draft>span:last-child{font-weight:650;color:var(--ink)}
+.discard-draft{display:grid;place-items:center;width:40px;min-height:40px;flex:none;border:0;background:none;border-radius:50%;padding:8px;color:var(--muted)}
+.bookmark-button{display:inline-flex;align-items:center;gap:6px;min-height:42px;border:1px solid var(--card-line);border-radius:999px;padding:8px 12px;background:#fff;font-size:13px}
+.bookmark-button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bookmark-button[aria-pressed=true] svg{fill:currentColor}
+.post-language,.draft-status,.draft-note,.feed-board-label{font-size:12px;color:var(--muted);line-height:1.7;margin:0}
+.compose-language{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0;font-size:12px;color:var(--muted)}
+.compose-language .select-menu{color:var(--ink);font-size:13px;max-width:60%}
+.compose-language .select-menu summary{min-height:40px}
+.draft-status{margin-top:8px}
+.draft-note{margin-bottom:10px}
+.community .community-topbar h1{font-size:24px;overflow-wrap:anywhere}
+.saved-entry:focus-visible,.resume-draft:focus-visible,.discard-draft:focus-visible,.bookmark-button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* Community browsing: stable navigation, a single scrolling results surface. */
+main.account-main:has(.community-home){height:calc(100dvh - var(--dari-tabbar-height,60px));min-height:0;padding:20px 20px 0;overflow:hidden}
+.tab-root:has(>.dev-guest-banner) main.account-main:has(.community-home){height:calc(100dvh - var(--dari-tabbar-height,60px) - 44px)}
+.community.community-home{height:100%;min-height:0;display:flex;flex-direction:column;gap:0;padding-bottom:0}
+.community-fixed-head{flex:none;background:#fff;display:grid;gap:14px;padding-bottom:16px;border-bottom:1px solid #dededc;z-index:6;box-shadow:0 5px 12px -10px #0005}
+.community-fixed-head .board-tabs{position:static;margin:0;padding:0}
+.community-feed-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;margin-inline:-20px;padding:0 20px 96px;scroll-padding-block:16px}
+.community-feed-scroll:focus-visible{outline:2px solid #888;outline-offset:-2px}
+.community-home .post-list{display:block}
+.community-home .post-list>li{border-bottom:1px solid #dededc}
+.community-home .post-card{border:0;padding-block:22px}
+.community-home .community-top-actions{gap:6px}
+.community-home .saved-entry{padding:8px;min-width:38px}
+.community-home .saved-entry span{display:none}
+.community-tour-entry{width:32px;min-height:32px;border:1px solid #e2e2df;background:#fff;border-radius:50%;font-size:14px;color:#666;padding:0}
+.community-search{border:1px solid transparent;background:#f3f3f2;border-radius:14px;padding:4px 8px 4px 14px;min-width:0;margin:0}
+.community .community-search input,.community .community-search input:focus,.community .community-search input:focus-visible{min-width:0;width:100%;border:0;outline:0!important;box-shadow:none!important;background:transparent;border-radius:0;font-size:14px}
+.community-search:focus-within{border-color:#888;box-shadow:0 0 0 2px #17171712}
+.community-search button{flex:none;background:none;border:0;font-size:13px;font-weight:650;padding:8px;min-height:40px}
+.feed-translation{display:block;color:#777;font-size:11px;line-height:1.5}
+.translation-unavailable{font-size:11px;margin-top:-6px}
+.activity-tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #e5e5e5}
+.activity-tabs button{border:0;border-radius:0;background:none;font-size:14px;min-height:44px;color:#777}
+.activity-tabs button[aria-selected=true]{color:#171717;border-bottom:2px solid #171717;font-weight:650}
+.activity-reply{display:grid;gap:5px;font-size:13px;line-height:1.7;background:#f5f5f4;padding:12px;border-radius:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+.post-card>time{font-size:11px;color:#777}
+.community-tour{border:0;background:transparent;padding:0;width:min(440px,calc(100vw - 40px));max-width:calc(100vw - 40px);margin:auto auto max(96px,env(safe-area-inset-bottom));overflow:visible;color:#171717}
+.community-tour::backdrop{background:#17171780}
+.tour-panel{background:#fff;border-radius:22px;padding:24px;box-shadow:0 12px 44px #0002}
+.tour-panel small{font-size:12px;color:#777}
+.tour-panel h2{font-size:20px;line-height:1.5;margin:10px 0}
+.tour-panel p{font-size:14px;line-height:1.8;margin:0 0 20px}
+.tour-panel>div{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.tour-panel button{font-size:14px;min-height:44px;border-radius:12px;padding:10px 18px}
+.tour-spotlight{position:fixed;pointer-events:none;border:2px solid #fff;border-radius:14px;box-shadow:0 0 0 3px #ffffff40}
+@media(prefers-reduced-motion:no-preference){.tour-panel{animation:community-appear .2s ease-out}@keyframes community-appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+
+.post-card-text{display:grid;gap:8px;min-width:0}
+/* Natural page scrolling: header and search leave with the content. */
+main.account-main:has(.community-home),.tab-root:has(>.dev-guest-banner) main.account-main:has(.community-home){height:auto;min-height:calc(100dvh - var(--dari-tabbar-height,60px));overflow:visible;padding:20px 20px 32px}
+.community.community-home{height:auto;display:grid;gap:0;padding-bottom:88px}
+.community-fixed-head{position:static}
+.community-feed-scroll{overflow:visible;min-height:0;margin:0;padding:0;overscroll-behavior:auto}
+.community .community-fixed-head .board-tabs{position:static}
+.compose-privacy{margin-top:12px;padding:16px;border:1px solid #d5d5d2;border-inline-start:3px solid #454541;background:#f4f4f2;font-size:13px;line-height:1.8;color:#333;font-weight:550}
+.contextual-tour.community-tour{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;border-radius:0;overflow:hidden;outline:none;background:transparent;box-shadow:none}
+.contextual-tour::backdrop{background:transparent}
+.tour-mask{position:fixed;inset:0;pointer-events:none;z-index:2}
+.contextual-tour .tour-panel{position:fixed;box-sizing:border-box;z-index:3;padding:18px 20px;border-radius:18px;max-height:calc(100dvh - 32px);overflow-y:auto}
+.contextual-tour .tour-panel h2{font-size:18px;margin:8px 0;line-height:1.45}
+.contextual-tour .tour-panel p{font-size:13px;line-height:1.7;margin:0 0 14px}
+.contextual-tour .tour-panel button{font-size:13px;padding:8px 12px;min-height:40px;white-space:normal}
+.contextual-tour .tour-panel>div{gap:6px;flex-wrap:wrap}
+.tour-previous{margin-inline-start:auto}
+.tour-compose-preview{position:fixed;inset:0 max(0px,calc((100vw - 560px)/2)) 60px;display:block;background:white;overflow-y:auto;padding:24px 24px 80px;z-index:1;box-sizing:border-box}
+.tab-root:has(>.dev-guest-banner) .tour-compose-preview{top:44px}
+.tour-compose-preview .detail-bar{position:static;margin:0 0 10px}
+.tour-compose-preview .compose-body{min-height:160px;height:180px}
+.tour-fields{display:grid;gap:4px}
+.tour-example-label,.tour-sample-post>small{font-size:11px;line-height:1.5;color:#666}
+.tour-sample-post{background:#fafaf8!important;border-bottom:1px solid #ddd!important;border-radius:0;scroll-margin-top:20px}
+.tour-sample-post p{font-size:14px;line-height:1.7;margin:0}
+
+.community svg.tour-mask{width:100vw;height:100dvh;stroke:none;fill:none}
+
+.tour-compose-preview{padding-bottom:calc(60vh + 80px)}
+@media(max-height:720px){.tour-compose-preview .compose-body{height:128px;min-height:128px}.tour-compose-preview .compose-title{font-size:18px}}
+
+/* Quiet writing canvas, with tools and posting guidance at the foot of the form. */
+.community-compose{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 100px);padding-bottom:20px;gap:0;display:flex;flex-direction:column}
+.community-compose .composer-header{position:static;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:8px;margin:0 -8px 16px;padding:0 0 14px;background:#fff;border-bottom:1px solid #ededeb}
+.composer-header h1{font-size:17px;font-weight:700;text-align:center;line-height:1.45}
+.composer-header .compose-close{display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:10px;background:none;border:0;border-radius:10px}
+.compose-close svg{width:23px;height:23px}
+.community-compose .publish-button{font-size:14px;background:none!important;border-radius:8px;padding:8px 10px;color:#171717!important;min-height:40px;font-weight:700}
+.community-compose .publish-button:disabled{color:#b9b9b6!important;opacity:1}
+.community-compose .compose-form{flex:1;display:flex;flex-direction:column;gap:0}
+.community-compose .board-picker{gap:8px;padding:0 0 8px}
+.community-compose .board-picker span{font-size:12px;padding:7px 12px}
+.compose-fields{display:grid;gap:0}
+.community-compose .compose-title{font-size:20px;line-height:1.5;padding:18px 0 20px;font-weight:700;border-bottom:1px solid #e8e8e5}
+.community-compose .compose-title::placeholder{color:#a0a09d;font-weight:650;opacity:1}
+.community-compose .compose-body{font-size:15px;line-height:1.8;padding:22px 0;min-height:200px;resize:vertical}
+.community-compose .compose-body::placeholder{color:#a0a09d;opacity:1}
+.compose-attachments{margin:0 0 20px}
+.attachment-toolbar{display:flex;gap:8px;border-top:1px solid #eee;padding-top:6px}
+.attachment-toolbar button{display:grid;place-items:center;width:44px;height:44px;padding:10px;border:0;background:none;border-radius:10px}
+.attachment-toolbar button:hover{background:#f4f4f2}
+.attachment-toolbar svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.attachment-previews{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+.attachment-previews li{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #e5e5e2;border-radius:12px}
+.attachment-previews img{width:48px;height:48px;object-fit:cover;border-radius:6px;flex:none}
+.attachment-previews span{min-width:0;flex:1;overflow-wrap:anywhere;font-size:12px;line-height:1.5}
+.attachment-previews small{display:block;color:#777;font-size:11px}
+.attachment-previews button{background:none;border:0;font-size:22px;width:36px;min-height:36px;padding:0}
+.attachment-note{font-size:12px;line-height:1.65;color:#777;margin:8px 0}
+.compose-rules{margin-top:auto;padding:16px;background:#f8f8f7;border:1px solid #ecc5c5;border-radius:12px}
+.compose-rules h2{margin:0 0 10px;font-size:12px;font-weight:700;color:#a23e3e}
+.compose-rules ul{margin:0;padding-inline-start:16px;display:grid;gap:7px;font-size:12px;color:#737370;line-height:1.7;list-style:disc}
+.tour-compose-preview .community-compose{min-height:calc(100dvh - 160px)}
+.tour-compose-preview .composer-header{margin-top:0}
+.tour-compose-preview .compose-rules{margin-top:24px}
+.tour-compose-preview .compose-body{height:160px;min-height:160px}
+.contextual-tour .tour-panel{width:min(340px,calc(100vw - 32px));border:1px solid #eeeeeb}
+@media(max-height:720px){.tour-compose-preview .compose-body{height:100px;min-height:100px}.tour-compose-preview .compose-title{font-size:18px;padding:12px 0}}
+
+.community-compose .publish-button{border:0;box-shadow:none}
+.community-compose .compose-body{resize:none}
+
+.community .composer-header .publish-button{border:0;box-shadow:none;border-radius:0}
+
+/* Readable guidance and an explicit, short entry into the editor. */
+.compose-rules{border-color:#dca8a8;background:#faf7f7}
+.compose-rules h2{font-size:13px;color:#8b3030;font-weight:750}
+.compose-rules ul{font-size:13px;color:#444441;line-height:1.75}
+.compose-fields{gap:12px;margin:6px 0 10px}
+@media(prefers-reduced-motion:no-preference){
+ .community-compose{animation:composer-enter .28s cubic-bezier(.2,.7,.2,1) both}
+ .tour-compose-preview{animation:composer-page-enter .3s cubic-bezier(.2,.7,.2,1) both}
+ .tour-compose-preview .community-compose{animation:none}
+ @keyframes composer-enter{from{opacity:.35;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+ @keyframes composer-page-enter{from{opacity:.45;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+ [dir=rtl] .community-compose{animation-name:composer-enter-rtl}
+ [dir=rtl] .tour-compose-preview{animation-name:composer-page-enter-rtl}
+ @keyframes composer-enter-rtl{from{opacity:.35;transform:translateX(-14px)}to{opacity:1;transform:translateX(0)}}
+ @keyframes composer-page-enter-rtl{from{opacity:.45;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
+}
+
+/* Border-free walkthrough accents and consistent writing typography. */
+.community{--community-writing-font:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic","Segoe UI",system-ui,sans-serif}
+.community-compose .compose-title,.community-compose .compose-body{font-family:var(--community-writing-font);font-style:normal;letter-spacing:normal;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+.community-compose .compose-title{font-size:18px;font-weight:600;line-height:1.55}
+.community-compose .compose-body{font-size:16px;font-weight:400;line-height:1.75}
+.community-compose .compose-title::placeholder{font-weight:500}
+.tour-compose-preview[data-tour-field=title] .compose-title,.tour-compose-preview[data-tour-field=body] .compose-body{background:#fff;box-shadow:none;outline:0}
+.community-home .tour-sample-post{background:#fff!important;border:0!important;border-radius:12px;padding:18px 16px;margin-block:12px;box-shadow:none}
+.tour-sample-post .post-title,.tour-sample-post p{font-family:var(--community-writing-font);font-style:normal;letter-spacing:normal}
+.tour-sample-post .post-title{font-size:16px;font-weight:600;line-height:1.55}
+.tour-sample-post p{font-size:14px;font-weight:400;line-height:1.75}
+@media(prefers-reduced-motion:no-preference){.tour-compose-preview .compose-title,.tour-compose-preview .compose-body{transition:background-color .2s ease,box-shadow .2s ease}}
+
+/* More room for writing; the posting notice closes the page rather than floating. */
+.community-compose{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 64px - var(--community-sticky-top,0px))}
+.community-compose .compose-body{min-height:260px}
+.community-compose .compose-rules{margin-top:auto}
+.attachment-toolbar button{color:#62666c}
+.community .attachment-toolbar svg{width:21px;height:21px;stroke-width:1.5}
+.tour-compose-preview .compose-body{min-height:220px;height:220px}
+@media(max-height:720px){.tour-compose-preview .compose-body{height:140px;min-height:140px}}
+
+/* A one-time, quiet community greeting before the walkthrough. */
+.community-welcome{position:relative;min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 64px);display:flex;flex-direction:column;justify-content:center;padding:0 4px 72px;transition:opacity .22s ease,transform .22s ease}
+.tab-root:has(>.dev-guest-banner) .community-welcome{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 108px)}
+.community-welcome h1{font-family:system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:34px;font-weight:700;letter-spacing:-.8px;line-height:1.35;margin:0 0 22px}
+.community-welcome p{font-size:17px;font-weight:400;line-height:1.8;color:#646970;margin:0;white-space:pre-line;overflow-wrap:anywhere}
+.community-welcome-skip{position:absolute;inset-inline-end:4px;bottom:20px;font-size:13px;color:#6b6f75;min-height:44px;padding:10px 4px}
+.community-welcome-skip span{display:inline-block;margin-inline-start:8px}
+[dir=rtl] .community-welcome-skip span{transform:scaleX(-1)}
+.community-welcome.leaving{opacity:0;transform:translateY(-12px)}
+@media(prefers-reduced-motion:no-preference){.community-welcome h1{animation:community-welcome-rise .45s cubic-bezier(.2,.7,.2,1) both}.community-welcome p{animation:community-welcome-rise .45s .16s cubic-bezier(.2,.7,.2,1) both}@keyframes community-welcome-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}}
+@media(prefers-reduced-motion:reduce){.community-welcome{transition:none}.community-welcome.leaving{transform:none}}
+
+/* A stronger first impression through type hierarchy and staggered motion. */
+.community-welcome-brand{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.16em;color:#73777d;margin-bottom:20px}
+.community-welcome-brand span{width:6px;height:6px;background:#ed641e;border-radius:50%}
+.community-welcome h1{font-size:clamp(36px,9.5vw,42px);font-weight:750;letter-spacing:-1.1px;margin-bottom:28px}
+.community-welcome p.community-welcome-message{font-size:clamp(21px,5.8vw,25px);font-weight:600;color:#272a2f;line-height:1.55;letter-spacing:-.35px;margin:0 0 18px}
+.community-welcome p.community-welcome-description{font-size:14px;line-height:1.8;color:#73777d;margin:0;letter-spacing:0}
+@media(prefers-reduced-motion:no-preference){
+ .community-welcome-brand{animation:community-welcome-rise .4s ease-out both}
+ .community-welcome h1{animation:community-welcome-title .6s .08s cubic-bezier(.18,.8,.2,1) both}
+ .community-welcome p.community-welcome-message{animation:community-welcome-rise .5s .26s cubic-bezier(.2,.7,.2,1) both}
+ .community-welcome p.community-welcome-description{animation:community-welcome-rise .5s .46s cubic-bezier(.2,.7,.2,1) both}
+ @keyframes community-welcome-title{from{opacity:0;transform:translateY(28px);letter-spacing:.5px}to{opacity:1;transform:translateY(0);letter-spacing:-1.1px}}
+}
+@media(prefers-reduced-motion:reduce){.community-welcome-brand,.community-welcome h1,.community-welcome p{animation:none}}

@@ -1,23 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {prepareDownload} from '../src/application/prepareDownload.ts';
-const a=(source,korean='',translatedSource='',language='en')=>({source,korean,translatedSource,language});
-test('download translates pending and stale answers, keeps manual edits, skips blanks and handles Korean locally',async()=>{
- const answers={'1.2':a('name','직접 수정','name'),'1.9':a('new','old translation','old'),'1.4':a('pending'),'1.5':a('  '),'1.8':a('교사','','','ko')};
- const calls=[],updates=[],progress=[];
- const ready=await prepareDownload(answers,async(text,lang)=>{calls.push([text,lang]);return '번역 '+text},x=>updates.push(x),(done,total)=>progress.push([done,total]));
- assert.deepEqual(calls,[['pending','en'],['new','en']]);
- assert.equal(ready['1.2'].korean,'직접 수정'); assert.equal(ready['1.8'].korean,'교사');
- assert.equal(ready['1.9'].translatedSource,'new'); assert.equal(answers['1.9'].translatedSource,'old');
- assert.equal(updates.length,3); assert.deepEqual(progress.at(-1),[3,3]);
+import {reviewVersion} from '../src/application/model.ts';
+test('download never fills pending or stale translations, including same-language values',async()=>{
+ for(const a of [{source:'text',language:'en',korean:'',translatedSource:''},{source:'교사',language:'ko',korean:'',translatedSource:''}]){
+  let calls=0;await assert.rejects(prepareDownload({'1.8':a},()=>{calls++}),/REVIEW_REQUIRED/);assert.equal(calls,0);assert.equal(a.korean,'');
+ }
 });
-test('failure saves completed translations and retry translates only unfinished answers',async()=>{
- const answers={'1.8':a('first'),'1.9':a('second')};let saved=answers;
- await assert.rejects(prepareDownload(answers,async text=>{if(text==='second')throw Error('offline');return '첫째'},x=>saved=x,()=>{}));
- assert.equal(saved['1.8'].korean,'첫째');assert.equal(saved['1.9'].korean,'');
- const calls=[];await prepareDownload(saved,async text=>{calls.push(text);return '둘째'},()=>{},()=>{});
- assert.deepEqual(calls,['second']);
+test('confirmed edits are preserved in an independent download snapshot',async()=>{
+ const a={source:'teacher',language:'en',korean:'교사',translatedSource:'teacher'};a.reviewed=reviewVersion(a);
+ const answers={'1.8':a};const result=await prepareDownload(answers);assert.deepEqual(result,answers);result['1.8'].korean='changed';assert.equal(a.korean,'교사');
 });
-test('empty model output prevents exporting an unfinished translation',async()=>{
- await assert.rejects(prepareDownload({'15':a('answer')},async()=>'',()=>{},()=>{}));
+test('a blank translation is blocked even with a stored review marker',async()=>{
+ const a={source:'answer',language:'en',korean:'',translatedSource:'answer'};a.reviewed=reviewVersion(a);await assert.rejects(prepareDownload({'15':a}),/REVIEW_REQUIRED/);
 });
