@@ -441,3 +441,13 @@
 .export-review-list ul{list-style:none;padding:0;margin:0}
 .export-review-list button{display:flex;gap:12px;width:100%;text-align:start;background:none;border:0;border-bottom:1px solid #eee;padding:12px 0;font-size:14px}
 .export-review-list button span:last-child{margin-inline-start:auto}
+/* First-visit greeting and a document-only original form. */
+.application-page.application-welcome{padding:20px 24px 0}
+.application-welcome .community-welcome{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 64px)}
+.tab-root:has(>.dev-guest-banner) .application-welcome .community-welcome{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 108px)}
+.original-form-pages{display:flex;flex-direction:column;gap:12px;margin:18px -24px;width:calc(100% + 48px);padding:0;background:#f1f1ef;overflow:hidden}
+.original-form-pages img{display:block;flex:none;width:100%;max-width:none;height:auto;background:#fff;border:0;border-radius:0;box-shadow:none;object-fit:contain}
+.original-form-pages .original-page-unavailable{min-height:120px;object-fit:contain;color:#666;font-size:13px}
+.preview-original{min-width:0}
+.preview-original>.application-note{margin-top:16px}
+.original-form-pages{width:min(100vw,880px);margin:18px calc((100% - min(100vw,880px))/2)}

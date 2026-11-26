@@ -29,11 +29,16 @@ import { reviewCopy } from './reviewCopy';
 import type { SentencePart } from './sentenceDraft';
 import './application.css';
 import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
+import {CommunityWelcome,needsCommunityWelcome} from '../community/CommunityWelcome';
+import {applicationEntryCopy} from './entryCopy';
+import '../community/community.css';
 
 const NarrativeWorkspace=lazy(()=>import('./NarrativeWorkspace').then(module=>({default:module.NarrativeWorkspace})));
 const guestRepository=sessionDraftRepository({userId:null});
 export default function Application({gate, headerAccessory, repository=guestRepository,initialLanguage}: {gate?: ReactNode; headerAccessory?: ReactNode; repository?: ApplicationDraftRepository;initialLanguage?:string}) {
  const {language,setLanguage,answers,setAnswers,loaded,storageError}=useDraft(repository,initialLanguage);
+ const [welcome,setWelcome]=useState(()=>needsCommunityWelcome(repository.scope,'application'));
+ useEffect(()=>setWelcome(needsCommunityWelcome(repository.scope,'application')),[repository.scope]);
  const [conversation,setConversation]=useState(false);
  const [groupId,setGroupId] = useState<string|null>(null);
  const [selected,setSelected] = useState<string|null>(null);
@@ -134,6 +139,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  if(!loaded)return null;
  if(!language) return <><LanguageEntry texts={appTexts('en')} status={null} locked={false} onSelect={setLanguage}/>{storageError&&<p role="alert" className="application-warning">{c.storage}</p>}</>;
  if(gate) return <div className="application-page">{gate}</div>;
+ if(welcome)return <div className="application-page application-welcome" dir={['ar','fa'].includes(language)?'rtl':'ltr'}><CommunityWelcome key={repository.scope} section="application" owner={repository.scope} language={language} title={c.title} messages={applicationEntryCopy(language)} onDone={()=>setWelcome(false)}/></div>;
  if(preview)return <FormPreview answers={answers} language={language} selected={selected} onBack={()=>{setPreview(false);requestAnimationFrame(()=>window.scrollTo(0,previewScroll.current));}} onEdit={id=>{const q=questions.find(q=>q.id===id);if(!q)return;setPreview(false);setSetup(null);setReview(false);setGroupId(id.split('.')[0]);setSelected(isQuickQuestion(q)?null:id);}}/>;
  if(conversation && question) return <Suspense fallback={<p role="status">{wc.title}…</p>}><NarrativeWorkspace scope={repository.scope} language={answer.language} identityValues={Object.entries(answers).filter(([id])=>['1.2','1.3','1.4','1.5','1.9','1.10','1.11','1.12'].includes(id)).map(([,a])=>a.source)} onBack={()=>setConversation(false)}/></Suspense>;
  return <div className={`application-page${group || question ? ' application-writing' : ''}${question&&!showingIntro&&!review?' application-focused':''}${showingIntro?' application-onboarding':''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
