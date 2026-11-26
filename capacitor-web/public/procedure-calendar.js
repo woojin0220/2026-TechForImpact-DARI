@@ -225,7 +225,7 @@
       if (raw === null) return;
       var value = JSON.parse(raw);
       if (!validState(value)) throw new Error('Invalid calendar data');
-      state = {timezone:value.timezone,events:value.events.map(function (event) { return {id:event.id,title:event.title,start:event.start,note:event.note}; })};
+      state = {timezone:value.timezone,events:value.events.map(function (event) { return {id:event.id,title:event.title,start:event.start,note:event.note,place:typeof event.place==='string'?event.place.slice(0,240):''}; })};
     } catch (error) { warningKey = 'loadError'; loadBlocked = true; }
   }
   function persist() {
@@ -291,6 +291,8 @@
     elements.clockDate.textContent = displayDate(dateKey(p),{year:'numeric',month:'short',day:'numeric'}) + ' · ' + offsetLabel(now);
     if (lastToday!==dateKey(p)) { lastToday=dateKey(p); renderGrid(); }
   }
+  var compact=document.documentElement.classList.contains('dari-embedded');
+  function homeText(index){var copies=window.DariSchedulerHomeCopy;return (copies[lang]||copies.en)[index];}
   function build() {
     root.replaceChildren();
     root.lang = lang;
@@ -298,7 +300,7 @@
     var panel = el('div','dari-cal-panel');
     var header = el('div','dari-cal-header');
     var intro = el('div','dari-cal-intro');
-    intro.append(el('p','dari-cal-eyebrow',t('eyebrow')),el('h2','',t('title')),el('p','dari-cal-description',t('description')));
+    if(compact)intro.append(el('h2','',homeText(5)));else intro.append(el('p','dari-cal-eyebrow',t('eyebrow')),el('h2','',t('title')),el('p','dari-cal-description',t('description')));
     var add = button(t('add'),'dari-cal-btn-primary',function () { openForm(null); });
     add.id='dari-cal-add'; elements.add=add; intro.append(add);
     var reference = el('div','dari-cal-reference');
@@ -319,22 +321,26 @@
     elements.clock=el('time','dari-cal-clock'); elements.clock.id='dari-cal-clock';
     elements.clockDate=el('div','dari-cal-clock-date'); elements.clockDate.id='dari-cal-clock-date';
     reference.append(label,select,el('p','dari-cal-clock-label',t('currentTime')),elements.clock,elements.clockDate);
-    header.append(intro,reference); panel.append(header);
+    header.append(intro);if(!compact)header.append(reference);panel.append(header);
+    if(compact){elements.upcoming=el('div','scheduler-upcoming');panel.append(elements.upcoming);}
+    var calendarHost=panel;
+    if(compact){calendarHost=el('details','scheduler-calendar');calendarHost.append(el('summary','',homeText(11)));panel.append(calendarHost);elements.browse=calendarHost;}
     var nav=el('div','dari-cal-month-nav');
     elements.monthTitle=el('h3','dari-cal-month-title'); elements.monthTitle.id='dari-cal-month'; elements.monthTitle.setAttribute('aria-live','polite');
     var actions=el('div','dari-cal-nav-actions');
     var previous=button(root.dir==='rtl'?'›':'‹','dari-cal-arrow',function(){changeMonth(-1);}); previous.id='dari-cal-prev'; previous.setAttribute('aria-label',t('prev'));
     var today=button(t('today'),'dari-cal-btn-small',function(){selectedDay=localDateKey(Date.now());month=selectedDay.slice(0,7);persistView();renderGrid();renderAgenda();updateMessages();}); today.id='dari-cal-today';
     var next=button(root.dir==='rtl'?'‹':'›','dari-cal-arrow',function(){changeMonth(1);}); next.id='dari-cal-next'; next.setAttribute('aria-label',t('next'));
-    actions.append(previous,today,next); nav.append(elements.monthTitle,actions); panel.append(nav);
+    actions.append(previous,today,next); nav.append(elements.monthTitle,actions); calendarHost.append(nav);
     elements.grid=el('div','dari-cal-grid'); elements.grid.id='dari-cal-grid'; elements.grid.setAttribute('aria-labelledby','dari-cal-month');
-    panel.append(elements.grid);
-    elements.agenda=el('div','dari-cal-agenda'); elements.agenda.id='dari-cal-agenda'; panel.append(elements.agenda);
-    elements.form=el('form','dari-cal-form'); elements.form.id='dari-cal-form'; elements.form.noValidate=true; elements.form.addEventListener('submit',submitForm); panel.append(elements.form);
+    calendarHost.append(elements.grid);
+    elements.agenda=el('div','dari-cal-agenda'); elements.agenda.id='dari-cal-agenda'; calendarHost.append(elements.agenda);
+    if(compact){var settings=el('details','scheduler-settings');settings.append(el('summary','',homeText(8)),reference);calendarHost.append(settings);}
+    elements.form=el('form','dari-cal-form'); elements.form.id='dari-cal-form'; elements.form.noValidate=true; elements.form.addEventListener('submit',submitForm); panel.append(elements.form);if(compact){var formDialog=el('dialog','scheduler-dialog scheduler-form-dialog');formDialog.setAttribute('aria-label',t('newTitle'));formDialog.append(elements.form);panel.append(formDialog);elements.formDialog=formDialog;formDialog.addEventListener('cancel',function(){formState=null;renderForm();});}
     elements.formError=el('p','dari-cal-message dari-cal-error'); elements.formError.id='dari-cal-form-error'; elements.formError.setAttribute('role','alert'); elements.formError.hidden=true;
     elements.warning=el('div','dari-cal-message'); elements.warning.id='dari-cal-warning'; elements.warning.setAttribute('role','status'); panel.append(elements.warning);
     elements.status=el('p','dari-cal-message'); elements.status.id='dari-cal-status'; elements.status.setAttribute('role','status'); panel.append(elements.status);
-    panel.append(el('p','dari-cal-footer',t('footer'))); root.append(panel);
+    if(!compact)panel.append(el('p','dari-cal-footer',t('footer')));root.append(panel);
     renderGrid(); renderAgenda(); renderForm(); updateClock(); updateMessages();
   }
   function changeMonth(direction) {
@@ -367,9 +373,27 @@
       })(shiftDay(start,index));
     }
   }
+  function renderUpcoming(){
+    if(!elements.upcoming)return;elements.upcoming.replaceChildren();
+    var events=state.events.filter(function(event){return new Date(event.start).getTime()>=Date.now();}).sort(function(a,b){return a.start.localeCompare(b.start);}).slice(0,2);
+    if(!events.length){elements.upcoming.append(el('p','scheduler-empty',homeText(6)));return;}
+    events.forEach(function(event,index){
+      var row=button('','scheduler-appointment',function(){openForm(event);});
+      if(index===0)row.classList.add('is-next');
+      var time=partsAt(event.start,state.timezone),key=localDateKey(event.start),date=el('span','scheduler-date');
+      date.append(el('small','scheduler-date-month',displayDate(key,{month:'short'})),el('b','',new Intl.NumberFormat(lang).format(Number(key.slice(-2)))),el('small','scheduler-date-weekday',displayDate(key,{weekday:'short'})));
+      var zoneLabel=new Intl.DateTimeFormat(lang,{timeZone:state.timezone,timeZoneName:'short'}).formatToParts(new Date(event.start)).find(function(part){return part.type==='timeZoneName';}).value;
+      var content=el('span','scheduler-appointment-content');var titleNode=el('strong','',event.title);titleNode.title=event.title;content.append(titleNode,el('small','scheduler-appointment-time',pad(time.hour)+':'+pad(time.minute)+' · '+zoneLabel));
+      function detailLine(className,value,path){var line=el('span',className);var icon=document.createElementNS('http://www.w3.org/2000/svg','svg');icon.setAttribute('viewBox','0 0 24 24');icon.setAttribute('aria-hidden','true');var shape=document.createElementNS(icon.namespaceURI,'path');shape.setAttribute('d',path);shape.setAttribute('fill','none');shape.setAttribute('stroke','currentColor');shape.setAttribute('stroke-width','1.6');shape.setAttribute('stroke-linecap','round');shape.setAttribute('stroke-linejoin','round');icon.append(shape);line.append(icon,el('span','',value));return line;}
+      if(event.place)content.append(detailLine('scheduler-appointment-place',event.place,'M12 21s7-6 7-12a7 7 0 1 0-14 0c0 6 7 12 7 12Z M12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6'));
+      if(event.note)content.append(detailLine('scheduler-appointment-note',event.note,'M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z M9 8h6 M9 12h6 M9 16h4'));
+      var placeNode=content.querySelector('.scheduler-appointment-place');if(placeNode)placeNode.setAttribute('aria-label',homeText(14)+': '+event.place);var noteNode=content.querySelector('.scheduler-appointment-note');if(noteNode)noteNode.setAttribute('aria-label',t('note')+': '+event.note);var arrow=el('span','scheduler-appointment-arrow','›');arrow.setAttribute('aria-hidden','true');row.append(date,content,arrow);elements.upcoming.append(row);
+    });
+  }
   function renderAgenda() {
+    renderUpcoming();
     elements.agenda.replaceChildren();
-    var events=state.events.filter(function(event){return localDateKey(event.start)===selectedDay;}).sort(function(a,b){return a.start.localeCompare(b.start)||a.title.localeCompare(b.title);});
+    var events=state.events.filter(function(event){return compact||localDateKey(event.start)===selectedDay;}).sort(function(a,b){return a.start.localeCompare(b.start)||a.title.localeCompare(b.title);});
     var heading=el('div','dari-cal-agenda-heading');
     heading.append(el('h3','dari-cal-agenda-title',displayDate(selectedDay,{month:'long',day:'numeric',weekday:'long'})),el('span','dari-cal-count',t('count',{n:events.length})));
     elements.agenda.append(heading);
@@ -378,9 +402,9 @@
     events.forEach(function(event){
       var item=el('li','dari-cal-event'); item.dataset.eventId=event.id;
       var p=partsAt(event.start,state.timezone);
-      var eventTime=el('time','dari-cal-event-time',pad(p.hour)+':'+pad(p.minute));eventTime.dateTime=event.start;
+      var eventTime=el('time','dari-cal-event-time',(compact?displayDate(localDateKey(event.start),{month:'short',day:'numeric'})+' · ':'')+pad(p.hour)+':'+pad(p.minute));eventTime.dateTime=event.start;
       var body=el('div','dari-cal-event-body');body.append(el('p','dari-cal-event-title',event.title));
-      if(event.note)body.append(el('p','dari-cal-event-note',event.note));
+      if(event.place)body.append(el('p','dari-cal-event-note',event.place));if(event.note)body.append(el('p','dari-cal-event-note',event.note));
       if(deleteId===event.id){
         var confirmation=el('div','dari-cal-delete-confirm');confirmation.append(el('span','',t('confirmDelete')));
         var yes=button(t('confirm'),'dari-cal-btn-small dari-cal-btn-primary',function(){state.events=state.events.filter(function(entry){return entry.id!==event.id;});if(formState&&formState.id===event.id){formState=null;renderForm();}deleteId=null;statusKey=persist()?'deleted':'';renderGrid();renderAgenda();updateMessages();});
@@ -395,20 +419,21 @@
   }
   function openForm(event) {
     formErrorKey='';statusKey='';deleteId=null;
-    if(event){var p=partsAt(event.start,state.timezone);formState={id:event.id,title:event.title,date:dateKey(p),time:pad(p.hour)+':'+pad(p.minute),note:event.note,resolvedStart:event.start};}
-    else formState={id:null,title:'',date:selectedDay,time:'09:00',note:''};
+    if(event){var p=partsAt(event.start,state.timezone);formState={id:event.id,title:event.title,date:dateKey(p),time:pad(p.hour)+':'+pad(p.minute),note:event.note,place:event.place||'',resolvedStart:event.start};}
+    else formState={id:null,title:'',date:selectedDay,time:'09:00',note:'',place:''};
     renderAgenda();renderForm();updateMessages();
     var title=elements.form.querySelector('#dari-cal-title');if(title)title.focus({preventScroll:true});
-    elements.form.scrollIntoView({block:'nearest',behavior:'smooth'});
+    if(!compact)elements.form.scrollIntoView({block:'nearest',behavior:'smooth'});
   }
   function field(labelText,name,type) {
     var wrap=el('div','dari-cal-field');var label=el('label','',labelText);label.htmlFor='dari-cal-'+name;
     var input=el(type==='textarea'?'textarea':'input');input.id='dari-cal-'+name;input.name=name;
     if(type!=='textarea')input.type=type;
     input.value=formState[name]||'';
-    if(name!=='note')input.required=true;
+    if(name!=='note'&&name!=='place')input.required=true;
     if(name==='title'){input.maxLength=120;input.placeholder=t('titlePlaceholder');}
-    if(name==='note'){input.maxLength=2000;input.placeholder=t('notePlaceholder');input.rows=3;}
+    if(name==='place'){input.maxLength=240;input.placeholder=homeText(27);}
+    if(name==='note'){input.maxLength=2000;input.placeholder=compact?homeText(22):t('notePlaceholder');input.rows=3;}
     if(name==='date'){input.min='1900-01-01';input.max='2100-12-31';}
     if(name==='time')input.step='60';
     input.addEventListener('input',function(){if(formState)formState[name]=input.value;});
@@ -416,10 +441,12 @@
   }
   function renderForm() {
     elements.form.replaceChildren();elements.form.hidden=!formState;
-    if(!formState)return;
+    if(!formState){if(elements.formDialog&&elements.formDialog.open)elements.formDialog.close();return;}
+    if(elements.formDialog&&!elements.formDialog.open){positionEmbeddedDialog(elements.formDialog);elements.formDialog.showModal();}
     elements.form.append(el('h3','dari-cal-form-heading',t(formState.id?'editTitle':'newTitle')),el('p','dari-cal-form-hint',t('formHint',{zone:zoneLabel()})));
+    if(compact){var types=el('div','scheduler-event-types');var typeLabel=el('p','scheduler-label',homeText(13));elements.form.append(typeLabel,types);[16,17,18,19,20].forEach(function(index){var choice=button(homeText(index),'',function(){formState.title=homeText(index);elements.form.querySelector('#dari-cal-title').value=formState.title;types.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b===choice));});});choice.setAttribute('aria-pressed',String(formState.title===homeText(index)));types.append(choice);});}
     elements.form.append(field(t('eventTitle'),'title','text'));
-    var row=el('div','dari-cal-field-row');row.append(field(t('date'),'date','date'),field(t('time'),'time','time'));elements.form.append(row,field(t('note'),'note','textarea'));
+    var row=el('div','dari-cal-field-row');row.append(field(t('date'),'date','date'),field(t('time'),'time','time'));elements.form.append(row);if(compact)elements.form.append(field(homeText(14),'place','text'));elements.form.append(field(compact?homeText(15):t('note'),'note','textarea'));
     elements.form.append(elements.formError);
     var actions=el('div','dari-cal-form-actions');var save=button(t(formState.id?'update':'save'),'dari-cal-btn-primary');save.type='submit';save.id='dari-cal-save';
     actions.append(save,button(t('cancel'),'',function(){formState=null;formErrorKey='';renderForm();updateMessages();elements.add&&elements.add.focus();}));elements.form.append(actions);
@@ -435,7 +462,7 @@
     var result=resolveDraftInstant(state.timezone);
     if(result.error){formErrorKey=result.error;updateMessages();return;}
     var id=formState.id || (window.crypto&&typeof window.crypto.randomUUID==='function'?window.crypto.randomUUID():'event-'+Date.now()+'-'+Math.random().toString(36).slice(2));
-    var entry={id:id,title:title.slice(0,120),start:result.instant,note:formState.note.trim().slice(0,2000)};
+    var place=compact?elements.form.elements.namedItem('place').value.trim().slice(0,240):(formState.place||'');var entry={id:id,title:title.slice(0,120),start:result.instant,note:formState.note.trim().slice(0,2000),place:place};
     var index=state.events.findIndex(function(value){return value.id===id;});
     if(index===-1)state.events.push(entry);else state.events[index]=entry;
     selectedDay=formState.date;month=selectedDay.slice(0,7);formState=null;deleteId=null;var eventSaved=persist();var viewSaved=persistView();statusKey=eventSaved&&viewSaved?'saved':'';

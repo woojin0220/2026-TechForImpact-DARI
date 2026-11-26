@@ -43,7 +43,8 @@ test('the scheduler keeps the real guide and profile action without a redundant 
     assert.match(html, /procedure-guide\.html\?embedded=1&amp;lang=/);
     assert.match(html, /class="dari-screen-actions"/);
     assert.match(html, /aria-label="profile-test"/);
-    assert.equal((html.match(/<button/g) ?? []).length, 1);
+    assert.match(html, /scheduler-tour-entry/);
+    assert.equal((html.match(/<button/g) ?? []).length, 2);
     assert.ok(html.includes(`dir="${['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'}"`));
   }
 });
