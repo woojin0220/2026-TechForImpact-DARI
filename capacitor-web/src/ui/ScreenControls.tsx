@@ -1,3 +1,4 @@
+import './TabHeader.css';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'quiet' };
@@ -15,8 +16,8 @@ export function BackButton({label,className='',...props}:Omit<ButtonProps,'child
 }
 
 /** Main screen title and trailing controls; callers own page navigation and content. */
-export function ScreenHeader({title,actions,leading,className='',titleClassName=''}:{title:string;actions?:ReactNode;leading?:ReactNode;className?:string;titleClassName?:string}) {
- return <header className={`dari-screen-header ${className}`}>
+export function ScreenHeader({title,actions,leading,className='',titleClassName='',variant}:{title:string;variant?:'tab';actions?:ReactNode;leading?:ReactNode;className?:string;titleClassName?:string}) {
+ return <header className={`dari-screen-header ${variant==='tab'?'dari-tab-header ':''}${className}`}>
   {leading&&<div className="dari-screen-leading">{leading}</div>}
   <h1 className={titleClassName}>{title}</h1>
   {actions&&<div className="dari-screen-actions">{actions}</div>}

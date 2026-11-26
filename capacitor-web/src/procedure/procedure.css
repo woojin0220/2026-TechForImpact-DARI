@@ -11,3 +11,11 @@
 .procedure-load-error p{margin:0 0 8px}
 .procedure-load-error a{color:#171717;text-underline-offset:3px}
 @media(max-width:700px){.procedure-toolbar{padding:12px 20px;gap:12px}.procedure-toolbar strong{font-size:14px;min-width:0;overflow-wrap:anywhere}.procedure-toolbar-actions{flex:none}.procedure-toolbar .secondary{font-size:11px;padding:9px 12px;max-width:130px;white-space:normal}.procedure-language-note{padding:10px 20px 0;font-size:11px}.procedure-load-error{margin:18px 20px}}
+.procedure-risk-footer{position:fixed;left:50%;transform:translateX(-50%);bottom:var(--dari-tabbar-height,60px);width:min(100%,560px);margin:0;padding:10px 20px 10px 34px;background:#fff;color:#737373;font-size:10px;line-height:1.65;z-index:19;box-sizing:border-box;border-top:1px solid #f1f1ef;list-style:decimal}
+.procedure-risk-footer li{padding-inline-start:2px;margin:1px 0}
+[dir=rtl] .procedure-risk-footer{padding-inline-start:34px;padding-inline-end:20px}
+.tab-root main.procedure-view.procedure-welcome{max-width:560px;margin:0 auto;padding:20px 24px 0}
+.procedure-welcome .community-welcome{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 64px)}
+.tab-root:has(>.dev-guest-banner) .procedure-welcome .community-welcome{min-height:calc(100dvh - var(--dari-tabbar-height,60px) - 108px)}
+.procedure-header-actions{display:flex;align-items:center;gap:12px}
+.procedure-header-actions .scheduler-tour-entry{width:32px;height:32px;min-height:32px;border:1px solid #e5e5e2;border-radius:50%;padding:0;background:#fff;font-size:14px;color:#666}
