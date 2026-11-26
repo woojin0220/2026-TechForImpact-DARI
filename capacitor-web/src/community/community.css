@@ -199,3 +199,32 @@ main.account-main:has(.community-home){height:calc(100dvh - var(--dari-tabbar-he
 @media(prefers-reduced-motion:no-preference){.tour-panel{animation:community-appear .2s ease-out}@keyframes community-appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
 
 .post-card-text{display:grid;gap:8px;min-width:0}
+/* Natural page scrolling: header and search leave with the content. */
+main.account-main:has(.community-home),.tab-root:has(>.dev-guest-banner) main.account-main:has(.community-home){height:auto;min-height:calc(100dvh - var(--dari-tabbar-height,60px));overflow:visible;padding:20px 20px 32px}
+.community.community-home{height:auto;display:grid;gap:0;padding-bottom:88px}
+.community-fixed-head{position:static}
+.community-feed-scroll{overflow:visible;min-height:0;margin:0;padding:0;overscroll-behavior:auto}
+.community .community-fixed-head .board-tabs{position:static}
+.compose-privacy{margin-top:12px;padding:16px;border:1px solid #d5d5d2;border-inline-start:3px solid #454541;background:#f4f4f2;font-size:13px;line-height:1.8;color:#333;font-weight:550}
+.contextual-tour.community-tour{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;border-radius:0;overflow:hidden;outline:none;background:transparent;box-shadow:none}
+.contextual-tour::backdrop{background:transparent}
+.tour-mask{position:fixed;inset:0;pointer-events:none;z-index:2}
+.contextual-tour .tour-panel{position:fixed;box-sizing:border-box;z-index:3;padding:18px 20px;border-radius:18px;max-height:calc(100dvh - 32px);overflow-y:auto}
+.contextual-tour .tour-panel h2{font-size:18px;margin:8px 0;line-height:1.45}
+.contextual-tour .tour-panel p{font-size:13px;line-height:1.7;margin:0 0 14px}
+.contextual-tour .tour-panel button{font-size:13px;padding:8px 12px;min-height:40px;white-space:normal}
+.contextual-tour .tour-panel>div{gap:6px;flex-wrap:wrap}
+.tour-previous{margin-inline-start:auto}
+.tour-compose-preview{position:fixed;inset:0 max(0px,calc((100vw - 560px)/2)) 60px;display:block;background:white;overflow-y:auto;padding:24px 24px 80px;z-index:1;box-sizing:border-box}
+.tab-root:has(>.dev-guest-banner) .tour-compose-preview{top:44px}
+.tour-compose-preview .detail-bar{position:static;margin:0 0 10px}
+.tour-compose-preview .compose-body{min-height:160px;height:180px}
+.tour-fields{display:grid;gap:4px}
+.tour-example-label,.tour-sample-post>small{font-size:11px;line-height:1.5;color:#666}
+.tour-sample-post{background:#fafaf8!important;border-bottom:1px solid #ddd!important;border-radius:0;scroll-margin-top:20px}
+.tour-sample-post p{font-size:14px;line-height:1.7;margin:0}
+
+.community svg.tour-mask{width:100vw;height:100dvh;stroke:none;fill:none}
+
+.tour-compose-preview{padding-bottom:calc(60vh + 80px)}
+@media(max-height:720px){.tour-compose-preview .compose-body{height:128px;min-height:128px}.tour-compose-preview .compose-title{font-size:18px}}

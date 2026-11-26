@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import {refreshCopy} from './refreshCopy';
 import {readCommentDraft,writeCommentDraft} from './commentDraft';
+import {tourCopy,tourKey} from './tourCopy';
 import {CommunityTour} from './CommunityTour';
 import { discoveryCopy } from './discoveryCopy';
 import { normalizeSearch } from './discovery';
 import {experienceCopy} from './experienceCopy';
 import type {CommunityDraft} from './personal';
-import {intakeLanguages} from '../intakeCopy';
-import {SelectMenu} from '../ui/SelectMenu';
 import { MemberBadge } from '../platform/AccountScreens';
 import { canVerifyBadges, type Account, type BadgeType } from '../platform/account';
 import type { AccountCopy } from '../platform/accountCopy';
@@ -124,7 +123,8 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
   }, [api, board, search, unanswered,savedOnly,savedIds]);
   useEffect(() => { void load(); return () => { request.current++; paging.current = false; }; }, [load]);
   const rc=refreshCopy(language);
-  const [tour,setTour]=useState(()=>{try{return !savedOnly&&!localStorage.getItem(`dari.community.tour.v1.${account.profile.user_id}`);}catch{return !savedOnly;}});
+  const [tour,setTour]=useState(()=>{try{return !savedOnly&&!localStorage.getItem(tourKey(account.profile.user_id,'home'));}catch{return !savedOnly;}});
+  const [tourSample,setTourSample]=useState(false);
   return <section className="community community-home">
     <div className="community-fixed-head">
     <ScreenHeader className="community-topbar" title={savedOnly?ec.saved:copy.title} leading={savedOnly&&<BackButton label={copy.back} onClick={()=>onSavedOnly?.(false)}/>} actions={<div className="community-top-actions">{!savedOnly&&<button type="button" className="community-tour-entry" aria-label={rc.tour} onClick={()=>setTour(true)}>?</button>}{!savedOnly&&onActivity&&<button type="button" className="saved-entry activity-entry" aria-label={rc.activity} onClick={onActivity}><Icon.comment/><span>{rc.activity}</span></button>}{!savedOnly&&onSavedOnly&&<button type="button" className="saved-entry" aria-label={ec.saved} onClick={()=>onSavedOnly(true)}><Icon.bookmark/><span>{ec.saved}</span></button>}<button type="button" className="avatar-button" aria-label={accountCopy.myAccount} onClick={onAccount}><Avatar name={account.profile.nickname} /></button></div>} />
@@ -138,9 +138,10 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
       <input id="community-search" type="search" maxLength={80} dir="auto" placeholder={d.placeholder} value={input} onChange={event => { setInput(event.target.value); if (!event.target.value) setSearch(''); }}/>
       <button type="submit">{d.submit}</button>
     </form>
-    {!translator&&<small className="feed-translation translation-unavailable">{rc.unavailable}</small>}
+
     </div>
     <div className="community-feed-scroll" tabIndex={0} aria-label={copy.title}>
+    {tourSample&&<article className="tour-sample-post post-card"><small>{tourCopy(language)[18]}</small><strong className="post-title">{tourCopy(language)[20]}</strong><p>{tourCopy(language)[21]}</p><span className="post-meta">{account.profile.nickname}</span></article>}
     {status === 'loading' && <ul className="post-list" aria-busy="true" aria-label={copy.loading}>{[0, 1, 2].map(key => <li key={key} className="post-skeleton" />)}</ul>}
     {status === 'error' && <div className="community-state"><p>{copy.loadFailed}</p><button type="button" className="secondary" onClick={() => void load()}>{copy.retry}</button></div>}
     {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{filtered ? d.noResults : savedOnly?ec.savedEmpty:copy.empty}</p>{filtered && <button type="button" className="secondary" onClick={() => { setInput(''); setSearch(''); }}>{d.reset}</button>}</div>}
@@ -158,7 +159,7 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
     {moreError && <p className="account-error" role="alert">{d.moreFailed}</p>}
     {status === 'ready' && hasMore && <button type="button" className="secondary load-more" disabled={morePending} onClick={() => void load(posts.at(-1)?.created_at)}>{morePending ? copy.loading : moreError ? copy.retry : copy.loadMore}</button>}
     </div>
-    {!savedOnly&&tour&&<CommunityTour language={language} owner={account.profile.user_id} onClose={()=>setTour(false)}/>}
+    {!savedOnly&&tour&&<CommunityTour language={language} owner={account.profile.user_id} copy={copy} onSample={setTourSample} onClose={()=>{setTour(false);setTourSample(false);}}/>}
     {!savedOnly&&writableBoards(canVerifyBadges(account.roles)).includes(board) && <button type="button" className="write-button" onClick={onWrite}><Icon.pencil /><span>{copy.write}</span></button>}
   </section>;
 }
@@ -310,7 +311,8 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
   const [board, setBoard] = useState<BoardId>(boards.includes(preferredBoard) ? preferredBoard : boards[0]);
   const [title, setTitle] = useState(draft?.title??'');
   const [body, setBody] = useState(draft?.body??'');
-  const [writingLanguage,setWritingLanguage]=useState(draft?.language??language);
+  const writingLanguage=editPost?.language??language;
+  const [composeTour,setComposeTour]=useState(()=>{try{return !editPost&&!localStorage.getItem(tourKey(account.profile.user_id,'compose'));}catch{return !editPost;}});
   useEffect(()=>{onDraft?.({version:1,board,title,body,language:writingLanguage});},[board,title,body,writingLanguage,onDraft]);
   const sending=useRef(false);
   const [error, setError] = useState('');
@@ -340,14 +342,14 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
       {!editPost&&<fieldset className="board-picker"><legend>{copy.board}</legend>
         {boards.map(item => <label key={item}><input type="radio" name="board" disabled={pending} checked={board === item} onChange={() => setBoard(item)} /><span>{copy[boardKey(item)]}</span></label>)}
       </fieldset>}
-      <div className="compose-language"><span>{ec.writingLanguage}</span><SelectMenu label={ec.writingLanguage} value={writingLanguage} onChange={setWritingLanguage} disabled={pending} options={intakeLanguages.map(item=>({value:item.code,label:item.name}))}/></div>
+
       <label className="compose-field"><span className="sr-only">{copy.postTitle}</span><input className="compose-title" lang={writingLanguage} disabled={pending} maxLength={100} dir="auto" placeholder={copy.postTitle} value={title} onChange={event => setTitle(event.target.value)} /></label>
-      <label className="compose-field"><span className="sr-only">{copy.postBody}</span><textarea className="compose-body" lang={writingLanguage} disabled={pending} rows={10} maxLength={5000} dir="auto" placeholder={copy.postBody} value={body} onChange={event => setBody(event.target.value)} /></label>
+      <label className="compose-field"><span className="sr-only">{copy.postBody}</span><textarea className="compose-body" lang={writingLanguage} disabled={pending} rows={10} maxLength={5000} dir="auto" placeholder={tourCopy(language)[19]} value={body} onChange={event => setBody(event.target.value)} /></label>
       {sensitive.length > 0 && <p className="compose-warning" role="alert">{copy.sensitiveWarning}</p>}
       {error && <p className="account-error" role="alert">{error}</p>}
-      {onDraft&&<p className={draftError?'account-error':'draft-status'} role="status">{draftError?ec.draftError:ec.draftStatus}</p>}
-      {onDraft&&<p className="draft-note">{ec.draftNote}</p>}
-      <p className="safety-note"><Icon.shield /><span>{copy.composeNote}</span></p>
+      {onDraft&&draftError&&<p className="account-error" role="alert">{ec.draftError}</p>}
+      <p className="safety-note compose-privacy"><Icon.shield /><span>{copy.composeNote}</span></p>
     </form>
+    {composeTour&&<CommunityTour language={language} owner={account.profile.user_id} copy={copy} mode="compose" onClose={()=>setComposeTour(false)}/>}
   </section>;
 }
