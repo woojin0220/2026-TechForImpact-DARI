@@ -29,6 +29,7 @@ function CommunityRoutes({ account, language, onOpenProfile }: { account: Accoun
   const api = useMemo(() => { if (communityOverride) return communityOverride; const client = platformClient(); return client ? communityApi(client) : null; }, [communityOverride]);
   const [view, setView] = useState<View>({ kind: 'list' });
   const [board, setBoard] = useState<BoardId>('qna');
+  const [discovery, setDiscovery] = useState({search:'',unanswered:false});
   const [translator, setTranslator] = useState<Translator | null>(null);
   useEffect(() => { if (communityOverride) { setTranslator(null); return; } let live = true; void deviceTranslator().then(found => { if (live) setTranslator(found); }); return () => { live = false; }; }, [communityOverride]);
   const copy = communityCopyFor(language);
@@ -38,5 +39,5 @@ function CommunityRoutes({ account, language, onOpenProfile }: { account: Accoun
   function go(next: View) { setView(next); window.scrollTo(0, 0); }
   if (view.kind === 'post') return <PostDetail {...shared} postId={view.id} onBack={() => go({ kind: 'list' })} />;
   if (view.kind === 'write') return <PostComposer {...shared} initialBoard={board} onCancel={() => go({ kind: 'list' })} onDone={id => go({ kind: 'post', id })} />;
-  return <CommunityHome {...shared} board={board} onBoard={setBoard} onOpenPost={id => go({ kind: 'post', id })} onWrite={() => go({ kind: 'write' })} onAccount={onOpenProfile} />;
+  return <CommunityHome {...shared} board={board} onBoard={setBoard} onOpenPost={id => go({ kind: 'post', id })} onWrite={() => go({ kind: 'write' })} onAccount={onOpenProfile} initialDiscovery={discovery} onDiscoveryChange={setDiscovery} />;
 }

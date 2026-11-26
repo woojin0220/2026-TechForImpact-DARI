@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
+import { discoveryCopy } from './discoveryCopy';
+import { normalizeSearch } from './discovery';
 import { MemberBadge } from '../platform/AccountScreens';
 import { canVerifyBadges, type Account, type BadgeType } from '../platform/account';
 import type { AccountCopy } from '../platform/accountCopy';
@@ -76,33 +78,59 @@ function PostCardText({ post, translator, language }: { post: PostSummary; trans
   </>;
 }
 
-export function CommunityHome({ copy, accountCopy, api, account, language, translator, board, onBoard, onOpenPost, onWrite, onAccount }: Shared & {
+export function CommunityHome({ copy, accountCopy, api, account, language, translator, board, onBoard, onOpenPost, onWrite, onAccount, initialDiscovery, onDiscoveryChange }: Shared & {
   board: BoardId; onBoard: (board: BoardId) => void; onOpenPost: (id: string) => void; onWrite: () => void; onAccount: () => void;
+  initialDiscovery?: {search:string;unanswered:boolean}; onDiscoveryChange?: (value:{search:string;unanswered:boolean})=>void;
 }) {
   const [posts, setPosts] = useState<PostSummary[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [hasMore, setHasMore] = useState(false);
+  const [input, setInput] = useState(initialDiscovery?.search ?? '');
+  const [search, setSearch] = useState(initialDiscovery?.search ?? '');
+  const [unanswered, setUnanswered] = useState(initialDiscovery?.unanswered ?? false);
+  useEffect(() => { onDiscoveryChange?.({search,unanswered}); },[search,unanswered,onDiscoveryChange]);
+  const [morePending, setMorePending] = useState(false);
+  const [moreError, setMoreError] = useState(false);
+  const request = useRef(0), paging = useRef(false);
+  const d = discoveryCopy(language);
+  const filtered = !!search || (board === 'qna' && unanswered);
   const load = useCallback(async (before?: string) => {
-    if (!before) setStatus('loading');
+    if (before && paging.current) return;
+    const ticket = ++request.current;
+    paging.current = !!before;
+    setMorePending(!!before); setMoreError(false);
+    if (!before) { setStatus('loading'); setPosts([]); }
     try {
-      const page = await api.listPosts(board, before);
-      setPosts(current => before ? [...current, ...page] : page);
+      const page = await api.listPosts(board, before, { search, unanswered });
+      if (ticket !== request.current) return;
+      setPosts(current => before ? [...current, ...page.filter(post => !current.some(item => item.id === post.id))] : page);
       setHasMore(page.length === pageSize);
       setStatus('ready');
-    } catch { setStatus('error'); }
-  }, [api, board]);
-  useEffect(() => { void load(); }, [load]);
+    } catch { if (ticket === request.current) { if (before) setMoreError(true); else setStatus('error'); } }
+    finally { if (ticket === request.current) { paging.current = false; setMorePending(false); } }
+  }, [api, board, search, unanswered]);
+  useEffect(() => { void load(); return () => { request.current++; paging.current = false; }; }, [load]);
   return <section className="community community-home">
     <ScreenHeader className="community-topbar" title={copy.title} actions={<button type="button" className="avatar-button" aria-label={accountCopy.myAccount} onClick={onAccount}><Avatar name={account.profile.nickname} /></button>} />
     <div className="board-tabs" role="tablist" aria-label={copy.board}>
       {boardIds.map(item => <button key={item} type="button" role="tab" aria-selected={board === item} onClick={() => onBoard(item)}>{copy[boardKey(item)]}</button>)}
     </div>
     <p className="safety-note"><Icon.shield /><span>{copy.intro}</span></p>
+    <form className="community-search" role="search" onSubmit={event => { event.preventDefault(); setSearch(normalizeSearch(input)); }}>
+      <label className="sr-only" htmlFor="community-search">{d.search}</label>
+      <input id="community-search" type="search" maxLength={80} dir="auto" placeholder={d.placeholder} value={input} onChange={event => { setInput(event.target.value); if (!event.target.value) setSearch(''); }}/>
+      <button type="submit">{d.submit}</button>
+    </form>
+    <div className="community-feed-tools">
+      <span>{search ? d.results : d.latest}</span>
+      {board === 'qna' && <button type="button" aria-pressed={unanswered} onClick={() => setUnanswered(value => !value)}>{d.unanswered}</button>}
+    </div>
     {status === 'loading' && <ul className="post-list" aria-busy="true" aria-label={copy.loading}>{[0, 1, 2].map(key => <li key={key} className="post-skeleton" />)}</ul>}
     {status === 'error' && <div className="community-state"><p>{copy.loadFailed}</p><button type="button" className="secondary" onClick={() => void load()}>{copy.retry}</button></div>}
-    {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{copy.empty}</p></div>}
+    {status === 'ready' && !posts.length && <div className="community-state"><Icon.comment /><p>{filtered ? d.noResults : copy.empty}</p>{filtered && <button type="button" className="secondary" onClick={() => { setInput(''); setSearch(''); setUnanswered(false); }}>{d.reset}</button>}</div>}
     {status === 'ready' && posts.length > 0 && <ul className="post-list">
       {posts.map(post => <li key={post.id}><button type="button" className={`post-card${post.board_id === 'notice' ? ' notice' : ''}`} onClick={() => onOpenPost(post.id)}>
+        {post.board_id === 'notice' && <span className="feed-notice-label">{d.notice}</span>}
         <PostCardText post={post} translator={translator} language={language} />
         <span className="post-foot">
           <span className="post-byline"><Avatar name={post.author_nickname} supporter={post.author_is_supporter} size="small" /><AuthorLine item={post} copy={copy} accountCopy={accountCopy} language={language} /></span>
@@ -110,7 +138,8 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
         </span>
       </button></li>)}
     </ul>}
-    {status === 'ready' && hasMore && <button type="button" className="secondary load-more" onClick={() => void load(posts.at(-1)?.created_at)}>{copy.loadMore}</button>}
+    {moreError && <p className="account-error" role="alert">{d.moreFailed}</p>}
+    {status === 'ready' && hasMore && <button type="button" className="secondary load-more" disabled={morePending} onClick={() => void load(posts.at(-1)?.created_at)}>{morePending ? copy.loading : moreError ? copy.retry : copy.loadMore}</button>}
     {writableBoards(canVerifyBadges(account.roles)).includes(board) && <button type="button" className="write-button" onClick={onWrite}><Icon.pencil /><span>{copy.write}</span></button>}
   </section>;
 }

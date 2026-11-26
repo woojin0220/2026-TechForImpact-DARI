@@ -1,6 +1,7 @@
 import { consentDocuments, consentVersions, type Account } from './account.ts';
 import type { PlatformApi } from './api';
 import type { CommunityApi } from '../community/api';
+import { matchesSearch } from '../community/discovery.ts';
 import { boardIds, isValidBody, isValidTitle, type CommentItem, type PostSummary, type ReportReason } from '../community/model.ts';
 
 /** No Supabase client, session token, credentials or network access in this adapter. */
@@ -58,7 +59,7 @@ export function createDevSupervisor({ development, language, storage, onExit }: 
     helped_by_me: state.helpful.includes(post.id), helpful_count: state.helpful.includes(post.id) ? 1 : 0,
   });
   const community: CommunityApi = {
-    async listPosts(board, before) { return state.posts.filter(post => visible(post) && post.board_id === board && (!before || post.created_at < before)).sort((a,b) => b.created_at.localeCompare(a.created_at)).slice(0,20).map(summary); },
+    async listPosts(board, before, options = {}) { return state.posts.filter(post => visible(post) && post.board_id === board && (!before || post.created_at < before) && matchesSearch(post.title, post.body, options.search)).map(summary).filter(post => !options.unanswered || board !== 'qna' || post.comment_count === 0).sort((a,b) => b.created_at.localeCompare(a.created_at)).slice(0,20); },
     async getPost(id) { const post = state.posts.find(item => item.id === id && visible(item)); return post ? summary(post) : null; },
     async listComments(postId) { return clone(state.comments.filter(item => item.post_id === postId && item.status === 'visible' && !state.blocked.includes(item.author_id))).map(item => ({ ...item, author_nickname: item.author_id === SUPERVISOR_ID ? state.account.profile.nickname : item.author_nickname })); },
     async createPost(authorId, input) {
