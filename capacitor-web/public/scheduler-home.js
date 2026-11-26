@@ -5,12 +5,13 @@
  var experience=window.DariSchedulerTourCopy[I18N.language]||window.DariSchedulerTourCopy.en;
  var home=document.getElementById('view-home'),calendar=document.getElementById('dari-calendar-root');
  var stage=document.createElement('section');stage.className='scheduler-current';
+ var stageHeading=document.createElement('h2');stageHeading.className='scheduler-section-title';stageHeading.textContent=c[0];
  var tasks=document.createElement('section');tasks.className='scheduler-tasks';
  var process=document.createElement('dialog');process.className='scheduler-process scheduler-dialog';process.id='scheduler-process-dialog';
  var summary=document.createElement('h2');summary.textContent=c[4];summary.id='scheduler-process-title';process.setAttribute('aria-labelledby',summary.id);var close=document.createElement('button');close.type='button';close.className='scheduler-dialog-close';close.textContent='×';close.setAttribute('aria-label',document.querySelector('[data-close=locateDialog]').textContent);close.onclick=function(){process.close();};process.append(close,summary);
  var overview=home.querySelector('.overview-title');if(overview)overview.hidden=true;
  ['.flow-card','#stageDetail','.home-notes'].forEach(function(selector){var el=home.querySelector(selector);if(el)process.append(el);});
- home.append(stage,calendar,tasks,process);
+ home.append(stageHeading,stage,calendar,tasks,process);
  var info=document.createElement('ol');info.className='scheduler-footnote';
  (window.DariSchedulerRiskCopy[I18N.language]||window.DariSchedulerRiskCopy.en).forEach(function(text){var item=document.createElement('li');item.textContent=text;info.append(item);});home.append(info);
  info.hidden=true;
@@ -20,9 +21,14 @@
  var footer=document.querySelector('.content>footer.footer');if(footer)footer.hidden=true;
  var storage=document.getElementById('storageStatus');if(storage){function placeStorage(){storage.hidden=!storage.classList.contains('is-error');}new MutationObserver(placeStorage).observe(storage,{attributes:true,attributeFilter:['class']});placeStorage();}
  var trigger=document.createElement('button');trigger.className='scheduler-process-trigger';trigger.type='button';trigger.textContent=experience.labels[6]+' ›';trigger.addEventListener('click',function(){openProcess(position().stage||'prepare');});
- stage.before(trigger);tasks.hidden=true;
+ tasks.hidden=true;
  var locate=document.getElementById('locateDialog');locate.querySelectorAll('p.small-note').forEach(function(el){el.hidden=true;});
  document.getElementById('questionHelp').hidden=false;
+ var locationSettings=document.createElement('details');locationSettings.className='scheduler-location-settings';var locationSummary=document.createElement('summary');locationSummary.textContent=experience.labels[5];locationSettings.append(locationSummary,locate);calendar.after(locationSettings);
+ function openInlineLocation(){if(locate.open)return;locate.classList.add('is-inline');draft=[];questionIndex=0;renderQuestion();locate.show();document.getElementById('questionTitle').focus({preventScroll:true});}
+ locationSettings.addEventListener('toggle',function(){if(locationSettings.open)openInlineLocation();else if(locate.open)locate.close();});
+ locate.addEventListener('close',function(){var wasInline=locate.classList.contains('is-inline');locate.classList.remove('is-inline');if(wasInline){locationSettings.open=false;locationSummary.focus({preventScroll:true});}});
+ window.DariOpenLocationSetup=function(){locationSettings.open=true;setTimeout(function(){locationSummary.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});},160);};
 
  ['documents','institutions','guide'].forEach(function(key,index){var view=document.getElementById('view-'+key),intro=view.querySelector('.intro');if(intro){var eyebrow=intro.querySelector('.eyebrow');if(eyebrow)eyebrow.hidden=true;var text=intro.querySelector('p');if(text)text.textContent=c[24+index];var chip=intro.querySelector('.chip');if(chip)chip.hidden=true;}});
  document.querySelectorAll('[data-go=review],.nav .review').forEach(function(el){el.hidden=true;});
@@ -37,9 +43,9 @@
  function openProcess(key){viewed=key;detailOpen=true;outcomesOpen=key==='decision';renderRoadmap();renderDetail();saveView();if(!process.open){positionEmbeddedDialog(process);process.showModal();}else process.scrollTop=0;}
  function draw(){
   var focused=document.activeElement&&document.activeElement.id,p=position();
-  stage.replaceChildren();var label=document.createElement('p');label.className='scheduler-label';label.textContent=c[0];
-  var row=document.createElement('div');row.className='scheduler-current-row';var title=document.createElement('h2');title.textContent=p.stage?stageData[p.stage].name:c[1];
-  var edit=document.createElement('button');edit.type='button';edit.className='scheduler-stage-edit';edit.textContent=experience.labels[5];edit.addEventListener('click',startLocate);row.append(title);var head=document.createElement('div');head.className='scheduler-current-heading';head.append(label,edit);stage.before(trigger);stage.append(head,row);
+  stage.replaceChildren();
+  var row=document.createElement('div');row.className='scheduler-current-row';var title=document.createElement('h3');title.className='scheduler-stage-name';title.textContent=p.stage?stageData[p.stage].name:c[1];
+  row.append(title,trigger);stage.append(row);
   var rail=document.createElement('ol');rail.className='scheduler-stage-rail';var labels=['m096','m184','m116','m126','m136'];
   stageOrder.forEach(function(key,index){var li=document.createElement('li');var button=document.createElement('button');button.type='button';button.className='scheduler-rail-step';if(key===p.stage){button.classList.add('is-active');button.setAttribute('aria-current','step');}var dot=document.createElement('span');dot.className='scheduler-rail-dot';dot.textContent=String(index+1);var name=document.createElement('span');name.textContent=I18N.t(labels[index]);button.append(dot,name);button.addEventListener('click',function(){openProcess(key);});li.append(button);rail.append(li);});stage.append(rail);
   tasks.hidden=true;tasks.replaceChildren();if(p.stage){var heading=document.createElement('h2');heading.textContent=c[3];var head=document.createElement('div');head.className='scheduler-task-heading';var count=document.createElement('span');var done=stageData[p.stage].tasks.filter(function(task){return state.checks[task[0]]===true;}).length;count.textContent=done+' / '+stageData[p.stage].tasks.length;count.setAttribute('aria-label',c[9]+' '+count.textContent);head.append(heading,count);var progress=document.createElement('progress');progress.max=stageData[p.stage].tasks.length;progress.value=done;progress.setAttribute('aria-label',c[9]);tasks.append(head,progress);

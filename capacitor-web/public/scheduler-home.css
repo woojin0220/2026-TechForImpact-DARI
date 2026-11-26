@@ -259,3 +259,22 @@
 .scheduler-stage-rail li:not(:last-child)::after{top:14px}
 .scheduler-list-number{font-size:.9em;font-weight:650;color:#777;font-variant-numeric:tabular-nums;white-space:nowrap}
 @media(max-width:370px){.scheduler-stage-rail .scheduler-rail-step{font-size:10px}.scheduler-current-heading .scheduler-stage-edit{padding-inline:10px;font-size:11px}}
+/* The process diagram is the primary content; settings live below appointments. */
+.scheduler-section-title{font-size:18px;font-weight:650;line-height:1.5;margin:0 0 14px;letter-spacing:-.3px}
+.dari-embedded .scheduler-current{padding:16px 16px 22px;min-height:0;margin-bottom:24px}
+.scheduler-current-row{align-items:center;gap:12px}
+.scheduler-current-row .scheduler-stage-name{font-size:16px;font-weight:600;line-height:1.5;margin:0;min-width:0;overflow-wrap:anywhere;letter-spacing:-.2px}
+.dari-embedded .scheduler-current .scheduler-process-trigger{margin:0;min-height:36px;padding:8px 10px;background:#fff;border:1px solid #e8e8e4;border-radius:10px;font-size:11px;flex:none}
+.scheduler-stage-rail{margin-top:26px}
+.scheduler-stage-rail .scheduler-rail-step{min-height:76px;gap:12px;font-size:12px;line-height:1.5}
+.scheduler-stage-rail .scheduler-rail-dot{width:40px;height:40px;font-size:14px;font-weight:650}
+.scheduler-stage-rail li:not(:last-child)::after{top:19px;inset-inline-start:calc(50% + 22px);width:calc(100% - 44px)}
+.scheduler-stage-rail .scheduler-rail-step.is-active .scheduler-rail-dot{box-shadow:0 0 0 4px #fbe6da}
+.scheduler-location-settings{margin:0;border-top:0;border-bottom:1px solid #ececea;background:#fff}
+.scheduler-location-settings>summary{min-height:44px;cursor:pointer;padding:12px 0;font-size:13px;line-height:1.6;color:#666}
+.dari-embedded #locateDialog.is-inline{position:static!important;inset:auto!important;display:block;width:100%;max-width:none;max-height:none!important;height:auto;margin:0!important;padding:18px 0 8px!important;box-shadow:none;border:0;border-radius:0;background:#fff;transform:none;overflow:visible}
+#locateDialog.is-inline:not([open]){display:none!important}
+#locateDialog.is-inline .question-title{font-size:19px;line-height:1.6;margin:16px 0}
+#locateDialog.is-inline .fact-progress{margin:10px 0 18px}
+#locateDialog.is-inline .dialog-actions{margin-bottom:0}
+@media(max-width:370px){.scheduler-section-title{font-size:17px}.scheduler-current-row .scheduler-stage-name{font-size:15px}.scheduler-stage-rail .scheduler-rail-dot{width:36px;height:36px;font-size:13px}.scheduler-stage-rail .scheduler-rail-step{font-size:10px;gap:11px;min-height:68px}.scheduler-stage-rail li:not(:last-child)::after{top:17px;inset-inline-start:calc(50% + 20px);width:calc(100% - 40px)}.dari-embedded .scheduler-current .scheduler-process-trigger{font-size:10px;padding-inline:8px}}
