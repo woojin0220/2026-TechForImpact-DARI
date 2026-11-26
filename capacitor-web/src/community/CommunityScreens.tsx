@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import {refreshCopy} from './refreshCopy';
 import {readCommentDraft,writeCommentDraft} from './commentDraft';
+import {composerCopy} from './composerCopy';
+import {ComposerAttachments} from './ComposerAttachments';
 import {tourCopy,tourKey} from './tourCopy';
 import {CommunityTour} from './CommunityTour';
 import { discoveryCopy } from './discoveryCopy';
@@ -17,7 +19,7 @@ import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 import { languageName, needsTranslation, type Translator } from './translation';
 import { boardIds, detectSensitive, excerpt, isValidBody, isValidTitle, relativeTime, reportReasons, writableBoards, type Author, type BoardId, type CommentItem, type PostSummary, type ReportReason } from './model';
 
-type Shared = { copy: CommunityCopy; accountCopy: AccountCopy; api: CommunityApi; account: Account; language: string; translator?: Translator | null };
+export type Shared = { copy: CommunityCopy; accountCopy: AccountCopy; api: CommunityApi; account: Account; language: string; translator?: Translator | null };
 
 type Translated = { text: string; state: 'original' | 'translating' | 'translated' | 'failed' };
 
@@ -159,7 +161,7 @@ export function CommunityHome({ copy, accountCopy, api, account, language, trans
     {moreError && <p className="account-error" role="alert">{d.moreFailed}</p>}
     {status === 'ready' && hasMore && <button type="button" className="secondary load-more" disabled={morePending} onClick={() => void load(posts.at(-1)?.created_at)}>{morePending ? copy.loading : moreError ? copy.retry : copy.loadMore}</button>}
     </div>
-    {!savedOnly&&tour&&<CommunityTour language={language} owner={account.profile.user_id} copy={copy} onSample={setTourSample} onClose={()=>{setTour(false);setTourSample(false);}}/>}
+    {!savedOnly&&tour&&<CommunityTour language={language} owner={account.profile.user_id} copy={copy} shared={{copy,accountCopy,api,account,language,translator}} onSample={setTourSample} onClose={()=>{setTour(false);setTourSample(false);}}/>}
     {!savedOnly&&writableBoards(canVerifyBadges(account.roles)).includes(board) && <button type="button" className="write-button" onClick={onWrite}><Icon.pencil /><span>{copy.write}</span></button>}
   </section>;
 }
@@ -304,16 +306,21 @@ export function PostDetail({ copy, accountCopy, api, account, language, translat
   </section>;
 }
 
-export function PostComposer({ copy, api, account, language, initialBoard, onDone, onCancel,draft,draftError=false,onDraft,editPost }: Shared & { initialBoard: BoardId; onDone: (id: string,posted?:CommunityDraft) => void; onCancel: () => void;draft?:CommunityDraft|null;draftError?:boolean;onDraft?:(value:CommunityDraft)=>void;editPost?:PostSummary }) {
+export function PostComposer({ copy, accountCopy, translator, api, account, language, initialBoard, onDone, onCancel,draft,draftError=false,onDraft,editPost,demo }: Shared & { initialBoard: BoardId; onDone: (id: string,posted?:CommunityDraft) => void; onCancel: () => void;draft?:CommunityDraft|null;draftError?:boolean;onDraft?:(value:CommunityDraft)=>void;editPost?:PostSummary;demo?:{title:string;body:string} }) {
   const boards = writableBoards(canVerifyBadges(account.roles));
+  const cc=composerCopy(language);
+  const [hasAttachments,setHasAttachments]=useState(false);
+  const bodyInput=useRef<HTMLTextAreaElement>(null);
   const ec=experienceCopy(language);
   const preferredBoard=draft?.board??initialBoard;
   const [board, setBoard] = useState<BoardId>(boards.includes(preferredBoard) ? preferredBoard : boards[0]);
   const [title, setTitle] = useState(draft?.title??'');
   const [body, setBody] = useState(draft?.body??'');
+  useEffect(()=>{if(!demo&&bodyInput.current){bodyInput.current.style.height='0px';bodyInput.current.style.height=`${Math.max(200,bodyInput.current.scrollHeight)}px`;}},[body,demo]);
   const writingLanguage=editPost?.language??language;
-  const [composeTour,setComposeTour]=useState(()=>{try{return !editPost&&!localStorage.getItem(tourKey(account.profile.user_id,'compose'));}catch{return !editPost;}});
-  useEffect(()=>{onDraft?.({version:1,board,title,body,language:writingLanguage});},[board,title,body,writingLanguage,onDraft]);
+  const [composeTour,setComposeTour]=useState(()=>{try{return !demo&&!editPost&&!localStorage.getItem(tourKey(account.profile.user_id,'compose'));}catch{return !demo&&!editPost;}});
+  useEffect(()=>{if(demo){setTitle(demo.title);setBody(demo.body);setBoard('qna');}},[demo?.title,demo?.body]);
+  useEffect(()=>{if(demo)return;onDraft?.({version:1,board,title,body,language:writingLanguage});},[board,title,body,writingLanguage,onDraft]);
   const sending=useRef(false);
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
@@ -322,7 +329,7 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
   const needsConfirm = sensitive.length > 0 && confirmed !== `${title}\n${body}`;
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if(sending.current)return;
+    if(sending.current||demo||hasAttachments)return;
     if (!isValidTitle(title)) { setError(copy.errorTitle); return; }
     if (!isValidBody(body)) { setError(copy.errorBody); return; }
     if (needsConfirm) { setConfirmed(`${title}\n${body}`); return; }
@@ -333,23 +340,26 @@ export function PostComposer({ copy, api, account, language, initialBoard, onDon
   }
   const ready = isValidTitle(title) && isValidBody(body);
   return <section className="community community-compose">
-    <header className="detail-bar">
-      <BackButton className="community-back" label={copy.back} disabled={pending} onClick={onCancel} />
-      <h1>{editPost?refreshCopy(language).edit:copy.composeTitle}</h1>
-      <Button type="submit" variant={ready?'primary':'secondary'} form="compose-form" className={`publish-button${ready ? ' ready' : ''}`} disabled={pending}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : editPost?refreshCopy(language).saveEdit:copy.publish}</Button>
+    <header className="detail-bar composer-header">
+      <button type="button" className="community-back compose-close" aria-label={copy.back} disabled={pending} onClick={onCancel}><Icon.close/></button>
+      <h1>{editPost?refreshCopy(language).edit:cc[0]}</h1>
+      <Button type="submit" variant={ready?'primary':'secondary'} form={demo?'demo-compose-form':'compose-form'} className={`publish-button${ready ? ' ready' : ''}`} disabled={pending||!ready||hasAttachments}>{confirmed === `${title}\n${body}` && sensitive.length ? copy.publishAnyway : editPost?refreshCopy(language).saveEdit:copy.publish}</Button>
     </header>
-    <form id="compose-form" className="compose-form" onSubmit={submit}>
+    <form id={demo?'demo-compose-form':'compose-form'} className="compose-form" onSubmit={submit}>
       {!editPost&&<fieldset className="board-picker"><legend>{copy.board}</legend>
         {boards.map(item => <label key={item}><input type="radio" name="board" disabled={pending} checked={board === item} onChange={() => setBoard(item)} /><span>{copy[boardKey(item)]}</span></label>)}
       </fieldset>}
 
-      <label className="compose-field"><span className="sr-only">{copy.postTitle}</span><input className="compose-title" lang={writingLanguage} disabled={pending} maxLength={100} dir="auto" placeholder={copy.postTitle} value={title} onChange={event => setTitle(event.target.value)} /></label>
-      <label className="compose-field"><span className="sr-only">{copy.postBody}</span><textarea className="compose-body" lang={writingLanguage} disabled={pending} rows={10} maxLength={5000} dir="auto" placeholder={tourCopy(language)[19]} value={body} onChange={event => setBody(event.target.value)} /></label>
+      <div className="compose-fields tour-fields">
+      <label className="compose-field"><span className="sr-only">{copy.postTitle}</span><input className="compose-title" lang={writingLanguage} disabled={pending} maxLength={100} dir="auto" placeholder={cc[1]} value={title} onChange={event => setTitle(event.target.value)} /></label>
+      <label className="compose-field"><span className="sr-only">{copy.postBody}</span><textarea ref={bodyInput} className="compose-body" lang={writingLanguage} disabled={pending} rows={10} maxLength={5000} dir="auto" placeholder={cc[2]} value={body} onChange={event => setBody(event.target.value)} /></label>
+      </div>
+      <ComposerAttachments language={language} disabled={pending||!!demo} onChange={setHasAttachments}/>
       {sensitive.length > 0 && <p className="compose-warning" role="alert">{copy.sensitiveWarning}</p>}
       {error && <p className="account-error" role="alert">{error}</p>}
       {onDraft&&draftError&&<p className="account-error" role="alert">{ec.draftError}</p>}
-      <p className="safety-note compose-privacy"><Icon.shield /><span>{copy.composeNote}</span></p>
+      <aside className="compose-rules"><h2>{cc[3]}</h2><ul>{[cc[4],cc[5],cc[6]].map(text=><li key={text}>{text}</li>)}</ul></aside>
     </form>
-    {composeTour&&<CommunityTour language={language} owner={account.profile.user_id} copy={copy} mode="compose" onClose={()=>setComposeTour(false)}/>}
+    {composeTour&&<CommunityTour language={language} owner={account.profile.user_id} copy={copy} shared={{copy,accountCopy,api,account,language,translator}} mode="compose" onClose={()=>setComposeTour(false)}/>}
   </section>;
 }

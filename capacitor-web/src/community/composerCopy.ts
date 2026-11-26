@@ -1,0 +1,87 @@
+const copies:Record<string,string[]>={
+  "ko": [
+    "글쓰기",
+    "제목을 입력해 주세요.",
+    "이곳에 내용을 작성하세요.",
+    "게시 전 확인",
+    "다른 회원에게 닉네임 공개",
+    "이름·연락처·주소·사건번호 기재 금지",
+    "본인·타인의 신원을 알 수 있는 사건 내용 공개 주의",
+    "사진 첨부",
+    "파일 첨부",
+    "첨부 삭제",
+    "첨부 미리보기 · 업로드 미지원. 파일을 삭제하면 글을 등록할 수 있어요.",
+    "사진(JPG·PNG·WebP), PDF·TXT 파일만 각 10MB, 최대 3개까지 선택할 수 있어요."
+  ],
+  "en": [
+    "Write a post",
+    "Enter a title.",
+    "Write your content here.",
+    "Before posting",
+    "Your nickname is visible to members",
+    "Do not include names, contact details, addresses or case numbers",
+    "Avoid details that identify you or another person",
+    "Add photo",
+    "Add file",
+    "Remove attachment",
+    "Attachment preview only · upload unavailable. Remove files to publish your text.",
+    "Choose up to 3 JPG, PNG, WebP, PDF or TXT files, each up to 10 MB."
+  ],
+  "fr": [
+    "Écrire",
+    "Saisissez un titre.",
+    "Rédigez votre contenu ici.",
+    "Avant de publier",
+    "Votre pseudonyme est visible",
+    "Pas de noms, coordonnées, adresses ou numéros de dossier",
+    "Évitez les détails permettant d’identifier une personne",
+    "Ajouter une photo",
+    "Ajouter un fichier",
+    "Retirer",
+    "Aperçu uniquement · envoi indisponible. Retirez les fichiers pour publier le texte.",
+    "3 fichiers JPG, PNG, WebP, PDF ou TXT maximum, de 10 Mo chacun."
+  ],
+  "ru": [
+    "Написать",
+    "Введите заголовок.",
+    "Напишите здесь текст.",
+    "Перед публикацией",
+    "Другие участники увидят ваш ник",
+    "Не указывайте имена, контакты, адреса и номера дел",
+    "Не раскрывайте детали, позволяющие узнать человека",
+    "Добавить фото",
+    "Добавить файл",
+    "Удалить вложение",
+    "Только предпросмотр · загрузка недоступна. Удалите файлы для публикации текста.",
+    "До 3 файлов JPG, PNG, WebP, PDF или TXT, до 10 МБ каждый."
+  ],
+  "ar": [
+    "كتابة منشور",
+    "أدخل عنواناً.",
+    "اكتب محتوى المنشور هنا.",
+    "قبل النشر",
+    "اسمك المستعار ظاهر للأعضاء",
+    "لا تكتب الأسماء أو بيانات الاتصال أو العناوين أو أرقام القضايا",
+    "تجنب التفاصيل التي تكشف هويتك أو هوية الآخرين",
+    "إضافة صورة",
+    "إضافة ملف",
+    "حذف المرفق",
+    "معاينة فقط · الرفع غير متاح. احذف الملفات لنشر النص.",
+    "اختر حتى 3 ملفات JPG أو PNG أو WebP أو PDF أو TXT، بحد 10 ميغابايت لكل ملف."
+  ],
+  "fa": [
+    "نوشتن",
+    "عنوان را وارد کنید.",
+    "متن خود را اینجا بنویسید.",
+    "پیش از انتشار",
+    "نام مستعار شما برای اعضا نمایش داده می‌شود",
+    "نام، اطلاعات تماس، نشانی یا شماره پرونده ننویسید",
+    "جزئیات شناسایی خود یا دیگران را منتشر نکنید",
+    "افزودن عکس",
+    "افزودن فایل",
+    "حذف پیوست",
+    "فقط پیش‌نمایش · بارگذاری فعال نیست. برای انتشار متن، فایل‌ها را حذف کنید.",
+    "حداکثر ۳ فایل JPG، PNG، WebP، PDF یا TXT، هرکدام تا ۱۰ مگابایت."
+  ]
+};
+export const composerCopy=(language:string)=>copies[language]??copies.en;
