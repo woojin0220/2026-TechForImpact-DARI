@@ -48,7 +48,7 @@ cd capacitor-web
 bash scripts/prepare-feedback-ios.sh
 ```
 
-Node.js 22 이상, 최신 Xcode, CocoaPods가 필요합니다. 스크립트가 `npm ci → build:feedback → cap sync ios → pod install`을 순서대로 실행합니다.
+Node.js 22 이상, 최신 Xcode, CocoaPods, Git LFS가 필요합니다. 스크립트가 `npm ci → build:feedback → cap sync ios → pod install`을 순서대로 실행합니다.
 
 1. `ios/App/App.xcworkspace` 열기. `App.xcodeproj`만 열면 CocoaPods의 ML Kit 연결이 누락됩니다.
 2. App 타깃의 Signing & Capabilities에서 사용할 Apple 팀 선택. 기존 식별자 사용 권한이 없다면 체험용 고유 Bundle Identifier 설정.
@@ -91,3 +91,34 @@ Android 물리 기기와 iPhone 실기기는 아직 확인하지 않았습니다
 - Filesystem: https://capacitorjs.com/docs/apis/filesystem
 - Share: https://capacitorjs.com/docs/apis/share
 - TestFlight: https://developer.apple.com/testflight/
+
+
+## Mac 검증 · 2026-11-27
+
+- 기준 커밋: `b28de43`, `feat/mobile-mlkit`.
+- Xcode 26.3 / iPhoneOS SDK 26.2, CocoaPods 1.17.0에서 확인.
+- `npm ci`, `npm run build:feedback`, 전체 테스트 341개, `cap sync ios` 통과.
+- ML Kit CocoaPods 설치 완료. App.xcworkspace와 Podfile.lock을 생성했습니다.
+- Debug 설정에 Pods xcconfig include를 추가해 CocoaPods 통합 경고를 해결했습니다.
+- 준비 스크립트는 기본 경로가 Command Line Tools인 경우 설치된 Xcode를 해당 프로세스에서만 선택합니다.
+- 실제 iPhone 대상 `Release` arm64 빌드 성공 (`CODE_SIGNING_ALLOWED=NO`). Swift ML Kit 플러그인 컴파일과 네이티브 링크까지 확인한 것으로, 설치/실행 검증과는 다릅니다.
+- 범용 시뮬레이터 빌드는 기존 LiteRT 바이너리의 x86_64 부재로 링크 실패했습니다. iPhone arm64 Release 빌드는 성공했습니다.
+- 기존 LiteRT Swift 패키지의 체크아웃에 Git LFS가 필요합니다. 검증 명령에는 `GIT_LFS_SKIP_SMUDGE=1`을 적용했습니다. 이는 Swift 타깃이 사용하지 않는 prebuilt 폴더의 타 플랫폼 바이너리 다운로드만 생략하며, Swift 패키지가 사용하는 XCFramework는 정상 다운로드·체크섬 검증되었습니다.
+
+아래 검증 명령은 서명된 IPA나 TestFlight 배포본을 만들지 않습니다.
+
+```bash
+cd capacitor-web
+PATH="/opt/homebrew/bin:$PATH" \
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer \
+GIT_LFS_SKIP_SMUDGE=1 \
+xcodebuild -workspace ios/App/App.xcworkspace -scheme App \
+  -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+  CODE_SIGNING_ALLOWED=NO build
+```
+
+### 미완료
+
+연결된 iPhone Air는 확인했지만, 유효한 코드 서명 인증서가 없고 배포할 팀이 지정되지 않았습니다. App Store Connect도 로그인되지 않았습니다. 따라서 실기기 설치·최초/오프라인 번역·PDF/HWP 저장·서명 Archive·TestFlight 업로드·외부 베타 심사는 아직 검증/완료하지 않았습니다.
+
+TestFlight 배포는 Apple Developer Program 가입 팀이 필요합니다. 기본 연회비는 US$99(지역별 결제 금액 표시)이고, 기존 가입 팀의 권한을 부여받으면 별도 개인 가입은 필요하지 않습니다. 무료 Apple 계정의 Xcode 개인 기기 테스트와 TestFlight 배포를 구분합니다.

@@ -7,10 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
- DAB30003A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */; };
- DAB30001A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */; };
-        DAA20001A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */; };
-        DAA20003A1B2C3D4E5F60708 /* LiteRTLM in Frameworks */ = {isa = PBXBuildFile; productRef = DAA20004A1B2C3D4E5F60708 /* LiteRTLM */; };
+		0732A27EC02776ED685A839E /* Pods_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B90B8321963F26DA56AC1F4F /* Pods_App.framework */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		4D22ABE92AF431CB00220026 /* CapApp-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 4D22ABE82AF431CB00220026 /* CapApp-SPM */; };
 		50379B232058CBB4000EE86E /* capacitor.config.json in Resources */ = {isa = PBXBuildFile; fileRef = 50379B222058CBB4000EE86E /* capacitor.config.json */; };
@@ -21,13 +18,16 @@
 		50B271D11FEDC1A000F3C39B /* public in Resources */ = {isa = PBXBuildFile; fileRef = 50B271D01FEDC1A000F3C39B /* public */; };
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
 		DAA10003A1B2C3D4E5F60708 /* DariBridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA10004A1B2C3D4E5F60708 /* DariBridgeViewController.swift */; };
+		DAA20001A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */; };
+		DAA20003A1B2C3D4E5F60708 /* LiteRTLM in Frameworks */ = {isa = PBXBuildFile; productRef = DAA20004A1B2C3D4E5F60708 /* LiteRTLM */; };
+		DAB30001A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */; };
+		DAB30003A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
- DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
- DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlKitTranslationPlugin.swift; sourceTree = "<group>"; };
-        DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceLlmPlugin.swift; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
+		46292570F9C9C277AF8133B5 /* Pods-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.debug.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.debug.xcconfig"; sourceTree = "<group>"; };
+		4F0328860800EA15789BC317 /* Pods-App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App.release.xcconfig"; path = "Target Support Files/Pods-App/Pods-App.release.xcconfig"; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
 		504EC3041FED79650016851F /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		504EC3071FED79650016851F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -37,8 +37,12 @@
 		504EC3131FED79650016851F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B271D01FEDC1A000F3C39B /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		9582B6822FE993A50072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		DAA10004A1B2C3D4E5F60708 /* DariBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DariBridgeViewController.swift; sourceTree = "<group>"; };
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
+		B90B8321963F26DA56AC1F4F /* Pods_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAA10004A1B2C3D4E5F60708 /* DariBridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DariBridgeViewController.swift; sourceTree = "<group>"; };
+		DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceLlmPlugin.swift; sourceTree = "<group>"; };
+		DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlKitTranslationPlugin.swift; sourceTree = "<group>"; };
+		DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,19 +51,40 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D22ABE92AF431CB00220026 /* CapApp-SPM in Frameworks */,
-                DAA20003A1B2C3D4E5F60708 /* LiteRTLM in Frameworks */,
+				DAA20003A1B2C3D4E5F60708 /* LiteRTLM in Frameworks */,
+				0732A27EC02776ED685A839E /* Pods_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C636329F1A2567FD1C215B9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				46292570F9C9C277AF8133B5 /* Pods-App.debug.xcconfig */,
+				4F0328860800EA15789BC317 /* Pods-App.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		2132B19F4DFCFCD1CA227F25 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B90B8321963F26DA56AC1F4F /* Pods_App.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		504EC2FB1FED79650016851F = {
 			isa = PBXGroup;
 			children = (
 				958DCC722DB07C7200EA8C5F /* debug.xcconfig */,
 				504EC3061FED79650016851F /* App */,
 				504EC3051FED79650016851F /* Products */,
+				1C636329F1A2567FD1C215B9 /* Pods */,
+				2132B19F4DFCFCD1CA227F25 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,9 +101,9 @@
 			children = (
 				9582B6822FE993A50072D4E8 /* SceneDelegate.swift */,
 				DAA10004A1B2C3D4E5F60708 /* DariBridgeViewController.swift */,
-                DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */,
-                DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */,
-                DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */,
+				DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */,
+				DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */,
+				DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
@@ -98,9 +123,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 504EC3161FED79650016851F /* Build configuration list for PBXNativeTarget "App" */;
 			buildPhases = (
+				2F0FF2F80676488D7C9DAA08 /* [CP] Check Pods Manifest.lock */,
 				504EC3001FED79650016851F /* Sources */,
 				504EC3011FED79650016851F /* Frameworks */,
 				504EC3021FED79650016851F /* Resources */,
+				0CDAB432B43FA844CFCEF2ED /* [CP] Embed Pods Frameworks */,
+				29E7DE72C1C3830C86049155 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -109,7 +137,7 @@
 			name = App;
 			packageProductDependencies = (
 				4D22ABE82AF431CB00220026 /* CapApp-SPM */,
-                DAA20004A1B2C3D4E5F60708 /* LiteRTLM */,
+				DAA20004A1B2C3D4E5F60708 /* LiteRTLM */,
 			);
 			productName = App;
 			productReference = 504EC3041FED79650016851F /* App.app */;
@@ -142,7 +170,7 @@
 			mainGroup = 504EC2FB1FED79650016851F;
 			packageReferences = (
 				D4C12C0A2AAA248700AAC8A2 /* XCLocalSwiftPackageReference "CapApp-SPM" */,
-                DAA20005A1B2C3D4E5F60708 /* XCRemoteSwiftPackageReference "LiteRT-LM" */,
+				DAA20005A1B2C3D4E5F60708 /* XCRemoteSwiftPackageReference "LiteRT-LM" */,
 			);
 			productRefGroup = 504EC3051FED79650016851F /* Products */;
 			projectDirPath = "";
@@ -159,7 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */,
-                DAB30003A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy in Resources */,
+				DAB30003A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy in Resources */,
 				50B271D11FEDC1A000F3C39B /* public in Resources */,
 				504EC30F1FED79650016851F /* Assets.xcassets in Resources */,
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
@@ -170,6 +198,79 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0CDAB432B43FA844CFCEF2ED /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-App/Pods-App-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App/Pods-App-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		29E7DE72C1C3830C86049155 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-App/Pods-App-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/MLKitTranslate/MLKitTranslate_resource.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MLKitTranslate_resource.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App/Pods-App-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2F0FF2F80676488D7C9DAA08 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-App-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		504EC3001FED79650016851F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -178,8 +279,8 @@
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
 				DAA10003A1B2C3D4E5F60708 /* DariBridgeViewController.swift in Sources */,
-                DAA20001A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift in Sources */,
-                DAB30001A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift in Sources */,
+				DAA20001A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift in Sources */,
+				DAB30001A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +441,7 @@
 		};
 		504EC3181FED79650016851F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4F0328860800EA15789BC317 /* Pods-App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
@@ -390,25 +492,29 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		DAA20005A1B2C3D4E5F60708 /* XCRemoteSwiftPackageReference "LiteRT-LM" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google-ai-edge/LiteRT-LM";
+			requirement = {
+				kind = exactVersion;
+				version = 0.17.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-        DAA20004A1B2C3D4E5F60708 /* LiteRTLM */ = {
-            isa = XCSwiftPackageProductDependency;
-            package = DAA20005A1B2C3D4E5F60708 /* XCRemoteSwiftPackageReference "LiteRT-LM" */;
-            productName = LiteRTLM;
-        };
 		4D22ABE82AF431CB00220026 /* CapApp-SPM */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D4C12C0A2AAA248700AAC8A2 /* XCLocalSwiftPackageReference "CapApp-SPM" */;
 			productName = "CapApp-SPM";
 		};
+		DAA20004A1B2C3D4E5F60708 /* LiteRTLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DAA20005A1B2C3D4E5F60708 /* XCRemoteSwiftPackageReference "LiteRT-LM" */;
+			productName = LiteRTLM;
+		};
 /* End XCSwiftPackageProductDependency section */
-/* Begin XCRemoteSwiftPackageReference section */
-        DAA20005A1B2C3D4E5F60708 /* XCRemoteSwiftPackageReference "LiteRT-LM" */ = {
-            isa = XCRemoteSwiftPackageReference;
-            repositoryURL = "https://github.com/google-ai-edge/LiteRT-LM";
-            requirement = { kind = exactVersion; version = 0.17.1; };
-        };
-/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 504EC2FC1FED79650016851F /* Project object */;
 }
