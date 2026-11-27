@@ -334,7 +334,7 @@ export function PostComposer({ copy, accountCopy, translator, api, account, lang
     if (!isValidBody(body)) { setError(copy.errorBody); return; }
     if (needsConfirm) { setConfirmed(`${title}\n${body}`); return; }
     sending.current=true;setPending(true); setError('');
-    try { const input={board,title,body,language:writingLanguage};onDone(editPost?await api.updatePost(account.profile.user_id,editPost.id,input):await api.createPost(account.profile.user_id,input),editPost?undefined:{version:1,board,title,body,language:writingLanguage}); }
+    try { const input={board,title,body,language:writingLanguage};onDone(editPost?await api.updatePost(account.profile.user_id,editPost.id,input):await api.createPost(account.profile.user_id,input),{version:1,board,title,body,language:writingLanguage}); }
     catch { setError(copy.errorGeneric); }
     finally{sending.current=false;setPending(false);}
   }

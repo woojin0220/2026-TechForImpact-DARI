@@ -34,7 +34,7 @@ test('old storage preserves text and stays unreviewed; an explicit review surviv
 test('download and Word encoder refuse unreviewed content without calling a model or mutating input',async()=>{
  const a=ready(),answers={'9.7':a};let calls=0;
  await assert.rejects(prepareDownload(answers,()=>{calls++}),/REVIEW_REQUIRED/);assert.equal(calls,0);assert.equal(a.reviewed,undefined);
- const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2019-word.docx',import.meta.url)));
+ const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2024-word.docx',import.meta.url)));
  assert.throws(()=>applicationDocx(answers,template),/Review required/);
  assert.deepEqual(pendingReviews(answers),[{id:'9.7',reason:'review'}]);assert.deepEqual(pendingReviews({'9.7':{...a,source:'new'}}),[{id:'9.7',reason:'translation'}]);
  a.reviewed=reviewVersion(a);const result=await prepareDownload(answers);assert.deepEqual(result,answers);assert.notEqual(result,answers);assert.ok(applicationDocx(result,template).length>0);

@@ -41,7 +41,7 @@ test('download requires chosen-language review and preserves completed user corr
 
 test('English review text exports to the original Word form without display-only sentence numbers',()=>{
  const text='I am not certain who those men were.';
- const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2019-word.docx',import.meta.url)));
+ const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2024-word.docx',import.meta.url)));
  const files=unzipSync(applicationDocx({'9.7':(()=>{const a={source:text,language:'en',korean:text,translatedSource:text,targetLanguage:'en',translatedTarget:'en'};return {...a,reviewed:reviewVersion(a)};})()},template));
  const xml=strFromU8(files['word/document.xml']);assert.ok(xml.includes(text));assert.ok(!xml.includes('sentence-list'));
 });

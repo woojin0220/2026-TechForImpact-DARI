@@ -4,8 +4,8 @@ import { readFileSync } from 'node:fs';
 import { unzipSync, strFromU8 } from 'fflate';
 import { reviewVersion, questions, questionGroups, isQuickQuestion, isCurrent, writtenAnswers, loadAnswers, saveAnswers } from '../src/application/model.ts';
 import { applicationDocx, wrapAnswer } from '../src/application/docx.ts';
-import { statementSlots } from '../src/export/statement.ts';
-const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2019-word.docx',import.meta.url)));
+import { statementSlots } from '../src/application/form2024.ts';
+const template=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2024-word.docx',import.meta.url)));
 const answer=(source,korean=source)=>{const a={source,korean,language:'en',translatedSource:source};return {...a,reviewed:reviewVersion(a)};};
 test('numbered questions group follow-ups, with every question in a large-number group',()=>{
  assert.equal(new Set(questions.map(q=>q.id)).size,questions.length);
@@ -22,6 +22,18 @@ test('Word preserves every original form page and image, fills only written answ
  assert.ok(!xml.includes('answer-1.3')&&!xml.includes('DARI_PAGE_'));
  assert.equal((xml.match(/id="form-page-/g)||[]).length,22);
  assert.throws(()=>applicationDocx({},template));
+});
+
+test('download rejects the old revision and preserves long answers without filling handwritten declarations',()=>{
+ const old=new Uint8Array(readFileSync(new URL('../public/forms/refugee-application-2019-word.docx',import.meta.url)));
+ assert.throws(()=>applicationDocx({'1.2':answer('Name')},old),/Wrong official form revision/);
+ const text='첫 문장입니다. 확실하지 않은 기억은 확실하지 않다고 적습니다. '.repeat(240)+'마지막 내용도 보존합니다.';
+ const files=unzipSync(applicationDocx({'14.2':answer(text),'16.1':answer('서약 초안')},template));
+ const xml=strFromU8(files['word/document.xml']);
+ assert.equal(JSON.parse(strFromU8(files['dari/form.json'])).revision,'2024-12-03');
+ assert.ok(xml.includes(text)&&xml.includes('별지 1 참조'));
+ assert.ok(xml.includes('w:line="340"')&&xml.includes('<w:widowControl/>'));
+ assert.ok(!xml.includes('id="answer-16.'));
 });
 test('stale or untranslated answers cannot be exported and current manual edits are retained',()=>{
  assert.throws(()=>applicationDocx({'1.2':{...answer('old','이전 번역'),source:'new'}},template),/Translation required/);

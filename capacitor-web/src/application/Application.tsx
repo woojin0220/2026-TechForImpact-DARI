@@ -9,7 +9,9 @@ import { questions, questionGroups, sectionsForGroup, supportsConversation, isQu
 import { sessionDraftRepository, type ApplicationDraftRepository } from './repository';
 import { useDraft } from './useDraft';
 import { translateAnswer } from './translate';
-import { downloadApplication } from './docx';
+import { downloadApplicationFile,type ApplicationFileFormat } from './download';
+import {DownloadScreen} from './DownloadScreen';
+import {applicationDownloadCopy} from './downloadCopy';
 import { prepareDownload } from './prepareDownload';
 import { applicationCopy, downloadCopy, translationFailure } from './copy';
 import { QuickAnswer } from './QuickAnswer';
@@ -29,25 +31,44 @@ import { reviewCopy } from './reviewCopy';
 import type { SentencePart } from './sentenceDraft';
 import './application.css';
 import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
+import {CommunityWelcome,needsCommunityWelcome} from '../community/CommunityWelcome';
+import {applicationEntryCopy} from './entryCopy';
+import {homeCopy,applicationCategories} from './homeCopy';
+import {ApplicationTour} from './ApplicationTour';
+import {applicationTourKey,needsApplicationTour,finishApplicationTour,type ApplicationTourMode} from './tour';
+import {refreshCopy} from '../community/refreshCopy';
+import '../community/community.css';
 
 const NarrativeWorkspace=lazy(()=>import('./NarrativeWorkspace').then(module=>({default:module.NarrativeWorkspace})));
 const guestRepository=sessionDraftRepository({userId:null});
-export default function Application({gate, headerAccessory, repository=guestRepository,initialLanguage}: {gate?: ReactNode; headerAccessory?: ReactNode; repository?: ApplicationDraftRepository;initialLanguage?:string}) {
+export default function Application({gate, headerAccessory, repository=guestRepository,initialLanguage,active=true}: {gate?: ReactNode; headerAccessory?: ReactNode; repository?: ApplicationDraftRepository;initialLanguage?:string;active?:boolean}) {
  const {language,setLanguage,answers,setAnswers,loaded,storageError}=useDraft(repository,initialLanguage);
+ const [welcome,setWelcome]=useState(()=>needsCommunityWelcome(repository.scope,'application'));
+ useEffect(()=>setWelcome(needsCommunityWelcome(repository.scope,'application')),[repository.scope]);
  const [conversation,setConversation]=useState(false);
  const [groupId,setGroupId] = useState<string|null>(null);
+ const [categoryId,setCategoryId]=useState<string|null>(null);
+ const [dismissedTours,setDismissedTours]=useState<string[]>([]);
+ const [replayTour,setReplayTour]=useState<ApplicationTourMode|null>(null);
+ const category=applicationCategories.find(item=>item.id===categoryId);
+ const hc=homeCopy(language);
  const [selected,setSelected] = useState<string|null>(null);
  const [review,setReview]=useState(false);
  const [preview,setPreview]=useState(false);
+ const [previewOriginalPage,setPreviewOriginalPage]=useState<number|undefined>();
  const previewScroll=useRef(0);
  const [setup,setSetup]=useState<'guide'|'language'|null>(null);
  const [preferred,setPreferred]=useState<{language:string;target:TranslationLanguage}|null>(null);
  const selectedRef=useRef(selected);
  selectedRef.current=selected;
+ const activeRef=useRef(active);
+ activeRef.current=active;
  const scrollPositions=useRef<Record<string,number>>({});
  const [busyId,setBusyId] = useState<string|null>(null);
  const [exporting,setExporting] = useState(false);
- const [showExportReview,setShowExportReview] = useState(false);
+ const [downloadOpen,setDownloadOpen]=useState(false);
+ const [pendingExportId,setPendingExportId]=useState<string|null>(null);
+ const [exportFormat,setExportFormat]=useState<ApplicationFileFormat>('pdf');
  const busy = busyId !== null || exporting;
  const [error,setError] = useState('');
  const [importing,setImporting] = useState(false);
@@ -73,7 +94,11 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  const introAnswer=question?answer:quickQuestions[0]?answers[quickQuestions[0].id]:undefined;
  const acknowledged=!!introQuestion&&(question?introAnswer?.guideKey:introAnswer?.sectionGuideKey)===guidanceKey(introQuestion,language);
  const showingIntro=!!introQuestion&&((!!question&&requiresGuidance(question)&&!acknowledged)||!!setup);
- useEffect(() => { main.current?.focus({preventScroll:true});window.scrollTo(0,showingIntro?0:scrollPositions.current[selected?`${selected}:${review?'review':'write'}`:groupId?`group:${groupId}`:'root']??0); },[selected,groupId,review,setup,showingIntro]);
+ const tourMode:ApplicationTourMode|null=showingIntro?null:question?(review?'review':'write'):group&&quickQuestions.length?'quick':!group&&!category?'home':null;
+ const tourKey=tourMode?applicationTourKey(repository.scope,tourMode):'';
+ const showTour=active&&!pendingExportId&&!!tourMode&&(replayTour===tourMode||(!dismissedTours.includes(tourKey)&&needsApplicationTour(repository.scope,tourMode)));
+ function closeTour(){if(!tourMode)return;finishApplicationTour(repository.scope,tourMode);setDismissedTours(previous=>[...previous,tourKey]);setReplayTour(null);}
+ useEffect(() => { if(!active)return;main.current?.focus({preventScroll:true});window.scrollTo(0,showingIntro?0:scrollPositions.current[selected?`${selected}:${review?'review':'write'}`:groupId?`group:${groupId}`:'root']??0); },[active,selected,groupId,categoryId,review,setup,showingIntro]);
  const entries = writtenAnswers(answers);
  const label = (ko:string,en:string) => localizedLabel(language,ko,en);
  function changeAnswer(id: string, source: string, korean?: string) {
@@ -100,6 +125,8 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  function openQuestion(id:string){remember();setSetup(null);setReview(false);setSelected(id);setError('');}
  function leaveQuestion(){remember();setSetup(null);setReview(false);setSelected(null);if(group?.questions.length===1)setGroupId(null);}
  function goBack() {
+  if(pendingExportId){returnToDownload();return;}
+  if(!group&&!question&&categoryId){setCategoryId(null);window.scrollTo(0,0);return;}
   if(showingIntro&&setup&&acknowledged){setSetup(null);return;}
   if(showingIntro){if(question)leaveQuestion();else{setSetup(null);setGroupId(null);}return;}
   if(review){remember();setReview(false);return;}
@@ -110,23 +137,26 @@ export default function Application({gate, headerAccessory, repository=guestRepo
   const snapshot=id ? answers[id] : undefined;
   if(!id || busy || !snapshot?.source.trim()) return;
   if(isCurrent(snapshot,id)&&selectedRef.current===id){scrollPositions.current[`${id}:write`]=window.scrollY;scrollPositions.current[`${id}:review`]=0;setReview(true);return;}
+  if(activeRef.current)scrollPositions.current[`${id}:write`]=window.scrollY;
   setBusyId(id);setError('');
   try {
    const target=snapshot.targetLanguage??'ko';
    const korean=await translateAnswer(snapshot.source,snapshot.language,id,target);
    setAnswers(prev => ({...prev,[id]:{...prev[id],korean,translatedSource:snapshot.source,translatedTarget:target,translatedLanguage:snapshot.language}}));
-   if(selectedRef.current===id){scrollPositions.current[`${id}:write`]=window.scrollY;scrollPositions.current[`${id}:review`]=0;setReview(true);}
+   if(selectedRef.current===id){if(activeRef.current)scrollPositions.current[`${id}:write`]=window.scrollY;scrollPositions.current[`${id}:review`]=0;setReview(true);}
   } catch (error) { setError(translationFailure(error,language,c.error)); } finally { setBusyId(null); }
  }
- async function exportApplication() {
+ async function exportApplication(format:ApplicationFileFormat) {
   if(busy || !entries.length) return;
-  if(pending.length){setShowExportReview(true);return;}
-  setExporting(true);setError('');setShowExportReview(false);
+  if(pending.length){setDownloadOpen(true);return;}
+  setExporting(true);setError('');
   try {
    const ready=await prepareDownload(answers);
-   await downloadApplication(ready);
+   await downloadApplicationFile(ready,format);
   } catch (error) { setError(translationFailure(error,language,dc.error)); } finally { setExporting(false); }
  }
+ function returnToDownload(){setPendingExportId(null);setSelected(null);setGroupId(null);setCategoryId(null);setSetup(null);setReview(false);setError('');setDownloadOpen(true);window.scrollTo(0,0);}
+ function openDownloadQuestion(id:string){const q=questions.find(q=>q.id===id);if(!q)return;setPendingExportId(id);setDownloadOpen(false);setSetup(null);setReview(!isQuickQuestion(q)&&isCurrent(answers[id],id));setCategoryId(applicationCategories.find(c=>Number(id.split('.')[0])>=c.from&&Number(id.split('.')[0])<=c.to)?.id??null);setGroupId(id.split('.')[0]);setSelected(isQuickQuestion(q)?null:id);setError('');if(isQuickQuestion(q))requestAnimationFrame(()=>{const target=document.getElementById(`question-${id}`);for(let node=target?.parentElement;node;node=node.parentElement)if(node instanceof HTMLDetailsElement)node.open=true;target?.scrollIntoView({block:'center'});});}
  async function importModel() {
   setImporting(true);setError('');
   try { await onDeviceLlm.importModel(); } catch { setError(c.error); } finally { setImporting(false); }
@@ -134,27 +164,34 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  if(!loaded)return null;
  if(!language) return <><LanguageEntry texts={appTexts('en')} status={null} locked={false} onSelect={setLanguage}/>{storageError&&<p role="alert" className="application-warning">{c.storage}</p>}</>;
  if(gate) return <div className="application-page">{gate}</div>;
- if(preview)return <FormPreview answers={answers} language={language} selected={selected} onBack={()=>{setPreview(false);requestAnimationFrame(()=>window.scrollTo(0,previewScroll.current));}} onEdit={id=>{const q=questions.find(q=>q.id===id);if(!q)return;setPreview(false);setSetup(null);setReview(false);setGroupId(id.split('.')[0]);setSelected(isQuickQuestion(q)?null:id);}}/>;
+ if(welcome)return <div className="application-page application-welcome" dir={['ar','fa'].includes(language)?'rtl':'ltr'}>{active&&<CommunityWelcome key={repository.scope} section="application" owner={repository.scope} language={language} title={c.title} messages={applicationEntryCopy(language)} onDone={()=>setWelcome(false)}/>}</div>;
+ if(downloadOpen)return <DownloadScreen active={active} answers={answers} language={language} format={exportFormat} onFormat={setExportFormat} onFix={openDownloadQuestion} onDownload={()=>void exportApplication(exportFormat)} onBack={()=>{setDownloadOpen(false);setError('');}} busy={busy} error={error} headerAccessory={headerAccessory}/>;
+ if(preview)return <FormPreview answers={answers} language={language} selected={selected} initialOriginalPage={previewOriginalPage} onBack={()=>{setPreview(false);requestAnimationFrame(()=>window.scrollTo(0,previewScroll.current));}} onEdit={id=>{const q=questions.find(q=>q.id===id);if(!q)return;setPreview(false);setSetup(null);setReview(false);setCategoryId(applicationCategories.find(c=>Number(id.split('.')[0])>=c.from&&Number(id.split('.')[0])<=c.to)?.id??null);setGroupId(id.split('.')[0]);setSelected(isQuickQuestion(q)?null:id);}}/>;
  if(conversation && question) return <Suspense fallback={<p role="status">{wc.title}…</p>}><NarrativeWorkspace scope={repository.scope} language={answer.language} identityValues={Object.entries(answers).filter(([id])=>['1.2','1.3','1.4','1.5','1.9','1.10','1.11','1.12'].includes(id)).map(([,a])=>a.source)} onBack={()=>setConversation(false)}/></Suspense>;
  return <div className={`application-page${group || question ? ' application-writing' : ''}${question&&!showingIntro&&!review?' application-focused':''}${showingIntro?' application-onboarding':''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
-  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question)&&<BackButton className="application-back" label={review?d.edit:c.back} disabled={exporting} onClick={goBack}/>} actions={<div className="application-tools">{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
+  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question||category)&&<BackButton className="application-back" label={pendingExportId?applicationDownloadCopy(language)[15]:review?d.edit:c.back} disabled={exporting} onClick={goBack}/>} actions={<div className="application-tools">{tourMode&&<button type="button" className="community-tour-entry" aria-label={refreshCopy(language).tour} onClick={()=>setReplayTour(tourMode)}>?</button>}{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
   <main id="main" tabIndex={-1} ref={main} className="application-main">
    {storageError && <p role="alert" className="application-warning">{c.storage}</p>}
    {error && <p role="alert" className="application-warning">{error}</p>}
-   {showExportReview&&pending.length>0&&<section className="export-review-list" aria-labelledby="export-review-title"><h2 id="export-review-title">{rc.exportTitle}</h2><ul>{pending.map(item=><li key={item.id}><button type="button" onClick={()=>{const q=questions.find(q=>q.id===item.id)!;setGroupId(item.id.split('.')[0]);setSetup(null);setSelected(isQuickQuestion(q)?null:item.id);setReview(!isQuickQuestion(q)&&isCurrent(answers[item.id],item.id));setShowExportReview(false);if(isQuickQuestion(q))requestAnimationFrame(()=>document.getElementById(`question-${item.id}`)?.scrollIntoView({block:'center'}));}}><span dir="ltr">{item.id}</span><span>{rc[item.reason]}</span><span aria-hidden="true">›</span></button></li>)}</ul></section>}
-   {showingIntro&&introQuestion?<QuestionIntro key={`${introQuestion.id}:${guidanceKey(introQuestion,language)}:${setup??'entry'}`} question={introQuestion} section={!question} language={language} sourceLanguage={introAnswer?.language??defaults.language} targetLanguage={introAnswer?.targetLanguage??defaults.target} acknowledged={acknowledged} settings={setup==='language'} confirmationRequired={requiresGuidance(introQuestion)} onFinish={finishIntro}/>:!question ? <>
-    <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <Button variant="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{c.download} <span aria-hidden="true">↓</span></Button>}</div>
-    <Button className="form-preview-trigger" onClick={()=>{previewScroll.current=window.scrollY;setPreview(true);}}>{previewCopy(language).title} ↗</Button>
+   {showingIntro&&introQuestion?<QuestionIntro key={`${introQuestion.id}:${guidanceKey(introQuestion,language)}:${setup??'entry'}`} active={active} question={introQuestion} section={!question} language={language} sourceLanguage={introAnswer?.language??defaults.language} targetLanguage={introAnswer?.targetLanguage??defaults.target} acknowledged={acknowledged} settings={setup==='language'} confirmationRequired={requiresGuidance(introQuestion)} onFinish={finishIntro}/>:!question ? <>
+    <div className="application-heading"><div>{group?<h2 className="application-section-title">{label(group.ko,group.en)}</h2>:<><h2 className="application-home-title">{category?hc[category.title]:hc[0]}</h2><p>{category?hc[category.description]:hc[1]}</p></>}</div></div>
+    <Button className="form-preview-trigger" onClick={()=>{previewScroll.current=window.scrollY;setPreviewOriginalPage(undefined);setPreview(true);}}>{previewCopy(language).title} ↗</Button>
     {group&&sectionQuestion&&<div className="focus-tools"><button type="button" onClick={()=>setSetup('guide')}>{f.guide}</button><button type="button" disabled={busy} onClick={()=>setSetup('language')}>{f.settings}</button></div>}
-    {!group && <ol className="question-list">{!group ? questionGroups.map(g=>{
+    {!group&&!category&&<>
+     {entries.length>0&&<Button className="application-resume" onClick={()=>{const q=entries.at(-1)!.question;setCategoryId(applicationCategories.find(item=>Number(q.id.split('.')[0])>=item.from&&Number(q.id.split('.')[0])<=item.to)!.id);setGroupId(q.id.split('.')[0]);setSelected(isQuickQuestion(q)?null:q.id);setReview(false);setSetup(null);}}>{hc[8]} &#8594;</Button>}
+     <ol className="application-category-list">{applicationCategories.map(item=><li key={item.id}><button type="button" onClick={()=>setCategoryId(item.id)}><span className="category-range" dir="ltr">{item.from}-{item.to}</span><span><strong>{hc[item.title]}</strong><small>{hc[item.description]}</small></span><span aria-hidden="true">&#8250;</span></button></li>)}</ol>
+    </>}
+    {!group&&category?.id==='reasons'&&<details className="application-section13"><summary><span dir="ltr">13</span><strong>{hc[9]}</strong></summary><p>{hc[12]}</p><p>{hc[10]}</p><p>{hc[11]}</p><Button variant="quiet" onClick={()=>{previewScroll.current=window.scrollY;setPreviewOriginalPage(11);setPreview(true);}}>{previewCopy(language).original} &#8594;</Button></details>}
+    {!group&&category&&<ol className="question-list">{!group ? questionGroups.filter(g=>Number(g.id)>=category.from&&Number(g.id)<=category.to).map(g=>{
      const count=g.questions.filter(q=>answers[q.id]?.source.trim()).length;
      return <li key={g.id}><button className="question-card" disabled={exporting} onClick={()=>{remember();setSetup(null);setGroupId(g.id);setReview(false);if(g.questions.length===1 && !isQuickQuestion(g.questions[0])) setSelected(g.questions[0].id);setError('');}}><span className="question-number" dir="ltr">{g.id}</span><span className="question-label">{label(g.ko,g.en).replace(/^\d+\.\s*/, '')}</span><span className={`question-state ${count?'has-answer':''}`}>{count} / {g.questions.length}</span><span aria-hidden="true">›</span></button></li>;
     }) : null}</ol>}
+    {!group&&!category&&<section className="application-output"><Button variant="primary" aria-live="polite" disabled={!entries.length||busy} onClick={()=>{setDownloadOpen(true);setError('');window.scrollTo(0,0);}}>{hc[13]} &#8594;</Button><p>PDF · HWP</p></section>}
     {group && <div className="question-sections">{sectionsForGroup(group.id).map((section,index,sections)=>{
      const count=section.questions.filter(q=>answers[q.id]?.source.trim()).length;
      const items=<ol className="question-list">{section.questions.map(q=>{
      const a=answers[q.id];
-     if (isQuickQuestion(q)) return <li key={q.id}><QuickAnswer question={q} answer={a} language={language} busy={exporting||busyId===q.id} blocked={busy} onConfirm={checked=>confirmAnswer(q.id,checked)} onChange={(source,korean)=>changeAnswer(q.id,source,korean)} onFields={values=>updateFields(values,q.id)} onTranslate={()=>void translate(q.id)} onKorean={korean=>setAnswers(prev=>({...prev,[q.id]:{...prev[q.id],korean}}))}/></li>;
+     if (isQuickQuestion(q)) return <li key={q.id}><QuickAnswer question={q} answer={a} language={language} busy={exporting||busyId===q.id} blocked={busy} onConfirm={checked=>{confirmAnswer(q.id,checked);if(checked&&pendingExportId===q.id)returnToDownload();}} onChange={(source,korean)=>changeAnswer(q.id,source,korean)} onFields={values=>updateFields(values,q.id)} onTranslate={()=>void translate(q.id)} onKorean={korean=>setAnswers(prev=>({...prev,[q.id]:{...prev[q.id],korean}}))}/></li>;
      return <li key={q.id}><button className="question-card" disabled={exporting} onClick={()=>openQuestion(q.id)}><span className="question-number" dir="ltr">{q.id}</span><span className="question-label">{label(q.fields[0].ko,q.fields[0].en)}</span><span className={`question-state ${a?.source.trim()?'has-answer':''}`}>{a?.source.trim()?(isReviewed(a,q.id)?rc.confirmed:isCurrent(a,q.id)?rc.pending:c.written):c.empty}</span><span aria-hidden="true">›</span></button></li>;
 
      })}</ol>;
@@ -168,14 +205,15 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     {!wholeTable&&<p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>}
     <header className={`writing-question${wholeTable?' section-question':''}${review?' review-question':''}`}><h2 id="writing-question-title">{wholeTable?label(question.sectionKo,question.sectionEn):<><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</>}</h2>
     </header>
-    <button className="question-preview-trigger" type="button" onClick={()=>{previewScroll.current=window.scrollY;setPreview(true);}}>{previewCopy(language).title} ↗</button>
+    <button className="question-preview-trigger" type="button" onClick={()=>{previewScroll.current=window.scrollY;setPreviewOriginalPage(undefined);setPreview(true);}}>{previewCopy(language).title} ↗</button>
     <AnswerEditor key={question.id} question={question} answer={answer} language={language} busy={busy} review={review} onFields={updateFields} onSentence={updateSentence} onGuidance={()=>{remember();setSetup('guide');}} onSettings={()=>{remember();setSetup('language');}}
      onTranslate={()=>void translate()} onKorean={korean=>setAnswers(prev=>({...prev,[question.id]:{...prev[question.id],korean}}))}
-     onConfirm={checked=>confirmAnswer(question.id,checked)} onEdit={()=>{remember();setReview(false);}} onSave={leaveQuestion}/>
+     onConfirm={checked=>confirmAnswer(question.id,checked)} onEdit={()=>{remember();setReview(false);}} onSave={()=>pendingExportId===question.id?returnToDownload():leaveQuestion()}/>
     {!review&&supportsConversation(question)&&<details className="conversation-option"><summary>{wc.entry}</summary><button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry}<span aria-hidden="true">›</span></button></details>}
     {native&&<Button variant="secondary" disabled={busy||importing} onClick={()=>void importModel()}>{c.import}</Button>}
 
    </>}
   </main>
+  {showTour&&tourMode&&<ApplicationTour key={`${repository.scope}:${tourMode}`} language={language} mode={tourMode} onClose={closeTour}/>}
  </div>;
 }

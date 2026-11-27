@@ -5,7 +5,7 @@ const ru:typeof ko={explain:'Указания бланка\nв {n} пункта�
 const ar:typeof ko={explain:'نظّمنا إرشادات النموذج\nفي {n} نقاط',answer:'طريقة الإجابة',ifYes:'إذا أجبت بنعم، اشرح بالتفصيل ما ينطبق عليك.',contents:'ما يجب تضمينه',support:'مساعدة DARI في الكتابة',question:'عرض السؤال مجدداً',next:'متابعة',language:'اختيار اللغتين',pause:'إيقاف الانتقال التلقائي مؤقتاً',play:'استئناف الانتقال التلقائي',method:'ضع علامة بعد قراءة كل نقطة وفهمها.',finish:'بعد مراجعة جميع النقاط، اختر اللغتين.'};
 const fa:typeof ko={explain:'راهنمای فرم را\nدر {n} مورد تنظیم کردیم',answer:'روش پاسخ دادن',ifYes:'اگر پاسخ بله است، موارد مرتبط را با جزئیات توضیح دهید.',contents:'موارد مورد نیاز',support:'راهنمای نوشتن DARI',question:'نمایش دوباره سؤال',next:'ادامه',language:'انتخاب زبان‌ها',pause:'توقف موقت انتقال خودکار',play:'ادامه انتقال خودکار',method:'پس از خواندن و فهمیدن هر مورد، آن را علامت بزنید.',finish:'پس از بررسی همه موارد، زبان‌ها را انتخاب کنید.'};
 const readable={
- ko:{explain:'작성할 내용 {n}가지를\n먼저 확인해 주세요.',sourceNote:'신청서의 작성 안내를 항목별로 정리했어요.'},
+ ko:{explain:'작성할 내용 {n}가지를\n먼저 확인해 주세요.',sourceNote:'신청서에서 제시한 작성 안내입니다.'},
  en:{explain:'Please check these {n} points\nbefore writing.',sourceNote:'These points are based on the application form’s guidance.'},
  fr:{explain:'Vérifiez ces {n} points\navant de rédiger.',sourceNote:'Ces points reprennent les consignes du formulaire.'},
  ru:{explain:'Проверьте {n} пунктов\nперед ответом.',sourceNote:'Эти пункты основаны на указаниях бланка.'},
