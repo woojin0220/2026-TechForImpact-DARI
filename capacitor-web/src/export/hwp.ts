@@ -42,7 +42,7 @@ function questionCell(all:HwpCell[],id:string) {
   const pattern=new RegExp('^\\s*'+id.replaceAll('.','\\.')+(id.includes('.')?'(?![\\d.])':'\\.\\s'));
   return all.find(cell=>cell.page===placements[id]?.page&&cell.paras.some(para=>pattern.test(para.text)));
 }
-function plainParagraph(template:HwpRecord,shape:number,text:string,level:number,last:boolean,pageBreak=false,cache?:Uint8Array):HwpRecord[] {
+export function plainParagraph(template:HwpRecord,shape:number,text:string,level:number,last:boolean,pageBreak=false,cache?:Uint8Array):HwpRecord[] {
   if(/[\x00-\x08\x0b\x0c\x0e-\x1f]/.test(text)) throw new Error('Unsupported control character in HWP answer. No content was removed.');
   const value=text.replace(/\r\n?/g,'\n').replace(/\t/g,'    ')+'\r';
   const header=template.data.slice();

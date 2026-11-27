@@ -11,7 +11,8 @@ import { guidanceFlowCopy } from './guidanceFlowCopy';
 import { guidanceStageCopy } from './guidanceStageCopy';
 
 type Stage='question'|'explain'|'check'|'language';
-export function QuestionIntro({question,language,sourceLanguage,targetLanguage,acknowledged,section=false,settings=false,confirmationRequired=true,onFinish}:{question:Question;language:string;sourceLanguage:string;targetLanguage:TranslationLanguage;acknowledged:boolean;section?:boolean;settings?:boolean;confirmationRequired?:boolean;onFinish:(source:string,target:TranslationLanguage,key:string)=>void}){
+export function QuestionIntro({question,language,sourceLanguage,targetLanguage,acknowledged,section=false,settings=false,confirmationRequired=true,active=true,onFinish}:{question:Question;language:string;sourceLanguage:string;targetLanguage:TranslationLanguage;acknowledged:boolean;section?:boolean;settings?:boolean;confirmationRequired?:boolean;active?:boolean;onFinish:(source:string,target:TranslationLanguage,key:string)=>void}){
+ const activeRef=useRef(active);activeRef.current=active;
  const c=focusCopy(language),d=designCopy(language),flow=guidanceFlowCopy(language),s=guidanceStageCopy(language),groups=guidanceGroups(question,language),items=groups.content,key=guidanceKey(question,language);
  const [stage,setStage]=useState<Stage>(settings?'language':'question');
  const [leaving,setLeaving]=useState(false);
@@ -21,13 +22,13 @@ export function QuestionIntro({question,language,sourceLanguage,targetLanguage,a
  const title=section||question.fields[0].type==='table'?localizedLabel(language,question.sectionKo,question.sectionEn):localizedLabel(language,question.fields[0].ko,question.fields[0].en);
  const move=useCallback((next:Stage,focus=true)=>{
   window.clearTimeout(transitionTimer.current);setLeaving(true);
-  transitionTimer.current=window.setTimeout(()=>{setStage(next);setLeaving(false);window.scrollTo(0,0);if(focus)requestAnimationFrame(()=>heading.current?.focus({preventScroll:true}));},window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:180);
+  transitionTimer.current=window.setTimeout(()=>{setStage(next);setLeaving(false);if(activeRef.current){window.scrollTo(0,0);if(focus)requestAnimationFrame(()=>{if(activeRef.current)heading.current?.focus({preventScroll:true});});}},window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:180);
  },[]);
  useEffect(()=>()=>window.clearTimeout(transitionTimer.current),[]);
  useEffect(()=>{
-  if(stage!=='check'||!follow.current||ready)return;follow.current=false;
+  if(!active||stage!=='check'||!follow.current||ready)return;follow.current=false;
   const frame=requestAnimationFrame(()=>{const next=rows.current[items.findIndex(item=>!checked.includes(item))];if(!next)return;const rect=next.getBoundingClientRect(),safeBottom=window.innerHeight-150;if(rect.bottom>safeBottom)window.scrollTo({top:Math.max(0,window.scrollY+rect.bottom-safeBottom),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});return ()=>cancelAnimationFrame(frame);
- },[checked,stage,ready,key]);
+ },[active,checked,stage,ready,key]);
  const stageTitle=stage==='question'?title:stage==='explain'?s.explain.replace('{n}',String(items.length)):stage==='check'?s.contents:c.languages;
  return <section className={`question-intro guidance-stage stage-${stage}${title.length>70?' long-question':''}${leaving?' stage-leaving':''}`} data-stage={stage} aria-labelledby="intro-question-title" aria-busy={leaving}>
   <div className="stage-topline"><span>{question.id.replace('section-','')}</span>{stage==='check'&&<span className="stage-count" dir="ltr" aria-live="polite">{checked.length} / {items.length}</span>}</div>

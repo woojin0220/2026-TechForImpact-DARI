@@ -24,7 +24,15 @@ const fa: typeof ko = {title:'درخواست پناهندگی',intro:'یک سؤ�
 export const applicationCopy = (language: string) => {
  const base=({ko,en,fr,ru,ar,fa}[language]??en);
  const intro=({fr:'Commencez par les questions utiles. Traduisez vos réponses en coréen ou en anglais.',ru:'Начните с нужных вопросов. Переведите ответы на корейский или английский.',ar:'ابدأ بالأسئلة التي تحتاجها. ترجم إجاباتك إلى الكورية أو الإنجليزية.',fa:'از سؤال‌های مورد نیاز شروع کنید. پاسخ‌ها را به کره‌ای یا انگلیسی ترجمه کنید.'} as Record<string,string>)[language]??base.intro;
- return {...base,intro};
+ const storage=({
+  ko:'답변을 저장하지 못했습니다. 이 화면을 닫거나 새로고침하지 말고, 작성한 내용을 복사해 따로 보관해 주세요.',
+  en:'Could not save your answers. Keep this page open without reloading, and copy your text somewhere safe.',
+  fr:'Vos réponses n’ont pas pu être enregistrées. Ne fermez ni ne rechargez la page. Copiez votre texte en lieu sûr.',
+  ru:'Не удалось сохранить ответы. Не закрывайте и не обновляйте страницу. Скопируйте текст в безопасное место.',
+  ar:'تعذر حفظ إجاباتك. لا تغلق الصفحة أو تعِد تحميلها، وانسخ النص إلى مكان آمن.',
+  fa:'ذخیره پاسخ‌ها ممکن نشد. صفحه را نبندید یا دوباره بارگذاری نکنید و متن را در جای امنی کپی کنید.',
+ } as Record<string,string>)[language]??'Could not save your answers. Keep this page open without reloading, and copy your text somewhere safe.';
+ return {...base,intro,storage};
 };
 
 export function translationFailure(error: unknown, language: string, fallback: string): string {
@@ -55,11 +63,11 @@ export function sectionIntro(language: string) {
 
 export function downloadCopy(language: string) {
  return ({
- ko:{progress:'미번역 답변을 번역하고 있습니다.',error:'번역을 완료하지 못해 다운로드를 중단했습니다. 입력 내용과 완료된 번역은 유지됩니다. 다시 다운로드해 주세요.'},
- en:{progress:'Translating answers before download.',error:'Download stopped because translation failed. Your answers and completed translations are kept. Try downloading again.'},
- fr:{progress:'Traduction des réponses avant téléchargement.',error:'Téléchargement interrompu : échec de traduction. Les réponses et traductions terminées sont conservées. Réessayez.'},
- ru:{progress:'Перевод ответов перед скачиванием.',error:'Скачивание остановлено из-за ошибки перевода. Ответы и готовые переводы сохранены. Повторите скачивание.'},
- ar:{progress:'جارٍ ترجمة الإجابات قبل التنزيل.',error:'توقف التنزيل لتعذر الترجمة. حُفظت إجاباتك والترجمات المكتملة. حاول التنزيل مجدداً.'},
- fa:{progress:'ترجمه پاسخ‌ها پیش از دانلود.',error:'دانلود به دلیل خطای ترجمه متوقف شد. پاسخ‌ها و ترجمه‌های کامل حفظ شده‌اند. دوباره دانلود کنید.'},
- } as Record<string,{progress:string;error:string}>)[language] ?? {progress:'Translating answers before download.',error:'Translation failed. Your answers are kept. Try downloading again.'};
+ ko:{progress:'작성본을 만들고 있습니다.',error:'작성본을 내려받지 못했습니다. 입력한 답변과 확인한 번역은 유지됩니다. 다시 시도해 주세요.'},
+ en:{progress:'Creating your document.',error:'The document could not be downloaded. Your answers and reviewed translations are kept. Please try again.'},
+ fr:{progress:'Création du document.',error:'Le document n’a pas pu être téléchargé. Vos réponses et traductions vérifiées sont conservées. Réessayez.'},
+ ru:{progress:'Создание документа.',error:'Не удалось скачать документ. Ответы и проверенные переводы сохранены. Повторите попытку.'},
+ ar:{progress:'جارٍ إنشاء المستند.',error:'تعذر تنزيل المستند. إجاباتك والترجمات التي راجعتها محفوظة. حاول مرة أخرى.'},
+ fa:{progress:'در حال ساخت سند.',error:'دریافت سند ممکن نشد. پاسخ‌ها و ترجمه‌های بررسی‌شده محفوظ هستند. دوباره تلاش کنید.'},
+ } as Record<string,{progress:string;error:string}>)[language] ?? {progress:'Creating your document.',error:'The document could not be downloaded. Your answers are kept. Please try again.'};
 }

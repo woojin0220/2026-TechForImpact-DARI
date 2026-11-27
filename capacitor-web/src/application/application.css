@@ -23,7 +23,6 @@
 .question-state.has-answer{background:var(--soft);padding:4px 8px;border-radius:999px;color:var(--ink)}
 .question-card>span:last-child{color:var(--muted)}
 .application-back{border:0;background:none;padding:0;min-height:44px;margin-bottom:4px;font-size:13px;color:var(--muted);text-align:start}
-.application-back:hover{text-decoration:underline;text-underline-offset:4px}
 .answer-columns{display:grid;gap:24px;margin-top:12px}
 .answer-title{min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:600;margin-bottom:8px}
 .answer-title select{width:auto;max-width:160px;font-size:13px}
@@ -157,7 +156,8 @@
 .application-header:has(.dari-screen-leading){display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:12px;margin-bottom:24px}
 .application-header .dari-screen-leading{grid-column:1/-1;min-width:0;display:flex;align-items:center;margin-block-start:-12px}
 .application-header .dari-screen-leading button.dari-back.dari-back{min-height:44px;padding:8px 10px 8px 0;margin:0;justify-content:flex-start;gap:5px;border-radius:10px;color:#4e5968;background:transparent;font-size:13px;font-weight:500}
-.application-header .dari-screen-leading .dari-back:hover:not(:disabled){background:var(--soft)}
+.application-page button.dari-back:hover:not(:disabled){background:transparent;filter:none;text-decoration:none}
+.application-page button.dari-back:active:not(:disabled){background:var(--soft)}
 .application-header .dari-screen-leading .dari-back svg{width:20px;height:20px;stroke-width:1.8}
 .application-header .dari-screen-leading .dari-back span{position:static;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal}
 .application-header:has(.dari-screen-leading)>h1{grid-column:1;min-width:0}
@@ -474,3 +474,27 @@
 .guidance-stage .stage-answer-method{padding:18px;border-radius:14px;text-align:start;margin-top:22px}
 .guidance-stage .stage-answer-method p{font-size:14px;line-height:1.85;margin:10px 0 0}
 .guidance-stage .stage-answer-method h3{margin:0 0 12px;font-size:12px;font-weight:500}
+.application-tour svg.tour-mask{width:100vw;height:100dvh;stroke:none}
+.application-tour .tour-panel :is(h2,p){word-break:keep-all;overflow-wrap:anywhere;text-wrap:pretty}
+.download-main{display:grid;gap:22px;min-width:0}
+.download-status h2{font-size:20px;line-height:1.5;margin:0 0 8px;font-weight:700;word-break:keep-all}
+.download-status p{margin:0;font-size:13px;line-height:1.8;color:#6b7684;word-break:keep-all}
+.download-pending-list{list-style:none;display:grid;gap:10px;margin:0;padding:0}
+.download-pending-list button{display:grid;grid-template-columns:36px minmax(0,1fr);gap:7px 10px;width:100%;border:1px solid #e5e8eb;border-radius:16px;background:#fff;padding:16px;text-align:start;font-family:inherit}
+.download-question-id{font-size:13px;font-weight:600;color:#6b7684;line-height:1.7}
+.download-question-title{font-size:14px;line-height:1.65;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all}
+.download-pending-list small{grid-column:2;font-size:12px;color:#6b7684;line-height:1.8;word-break:keep-all}
+.download-pending-list strong{grid-column:2;display:flex;align-items:center;justify-content:space-between;padding-top:5px;font-size:13px;color:#191f28;font-weight:600}
+.download-formats h2{font-size:14px;margin:0 0 10px;font-weight:600}
+.download-formats>div{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.download-formats button{display:grid;grid-template-columns:1fr 20px;gap:6px;border:1px solid #e5e8eb;background:#fff;border-radius:14px;padding:16px;text-align:start;font-family:inherit;min-width:0}
+.download-formats button[aria-pressed=true]{border-color:#191f28;background:#f7f8fa;box-shadow:inset 0 0 0 .5px #191f28}
+.download-formats strong{font-size:17px;font-weight:700;line-height:1.5}
+.download-formats span{grid-column:1/-1;font-size:12px;line-height:1.6;color:#6b7684;word-break:keep-all}
+.download-formats i{grid-column:2;grid-row:1;align-self:center;text-align:end;font-size:14px;font-style:normal;color:#191f28}
+.download-handwriting{display:flex;align-items:flex-start;gap:12px;padding:16px;background:#fff7f0;border:1px solid #f2d6c0;border-radius:14px}
+.download-pen{display:flex;flex:none;width:22px;height:22px;margin-top:1px;color:#bd521b}
+.download-pen svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.download-handwriting h2{font-size:14px;font-weight:700;color:#9b451c;margin:0 0 6px;line-height:1.6;word-break:keep-all}
+.download-handwriting p{font-size:12px;line-height:1.85;color:#785849;margin:0;word-break:keep-all}
+.application-page .download-file-button{width:100%;display:flex;justify-content:space-between;min-height:50px;font-size:14px}

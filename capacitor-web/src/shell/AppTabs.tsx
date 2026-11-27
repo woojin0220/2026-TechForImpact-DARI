@@ -54,7 +54,7 @@ function Shell() {
     {supervisor && <div className="dev-guest-banner" dir={['ar', 'fa'].includes(language) ? 'rtl' : 'ltr'} role="status">
       <span>{supervisorCopy.active}</span><button type="button" onClick={exitSupervisor}>{supervisorCopy.exit}</button>
     </div>}
-    <div className="tab-panel" hidden={!showApp || profileOpen}><App key={draftRepository.scope} repository={draftRepository} initialLanguage={userId?language:undefined} gate={gate} headerAccessory={userButton} /></div>
+    <div className="tab-panel" hidden={!showApp || profileOpen}><App key={draftRepository.scope} active={showApp&&!profileOpen} repository={draftRepository} initialLanguage={userId?language:undefined} gate={gate} headerAccessory={userButton} /></div>
     {!signingIn && profileOpen && <div className="tab-panel"><ProfilePanel copy={accountCopy} language={language} onClose={() => setProfileOpen(false)} /></div>}
     {!signingIn && !profileOpen && tab === 'scheduler' && <div className="tab-panel"><ProcedureGuide key={userId??'guest'} language={language} ownerScope={userId?`account:${userId}`:'guest'} onBack={returnToApplication} headerAccessory={userButton} /></div>}
     {!signingIn && !profileOpen && tab === 'community' && <div className="tab-panel"><CommunityTab copy={copy} language={language} onOpenProfile={openProfile} /></div>}
