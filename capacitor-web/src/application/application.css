@@ -498,3 +498,5 @@
 .download-handwriting h2{font-size:14px;font-weight:700;color:#9b451c;margin:0 0 6px;line-height:1.6;word-break:keep-all}
 .download-handwriting p{font-size:12px;line-height:1.85;color:#785849;margin:0;word-break:keep-all}
 .application-page .download-file-button{width:100%;display:flex;justify-content:space-between;min-height:50px;font-size:14px}
+
+.web-feedback-note{padding:14px 16px;margin:0 0 20px;background:#f5f6f7;border-radius:14px;font-size:13px;line-height:1.65;overflow-wrap:anywhere}.web-feedback-note strong{font-size:13px}.web-feedback-note p{margin:5px 0 10px;color:#626872}.web-feedback-note button{width:100%;font-size:14px}

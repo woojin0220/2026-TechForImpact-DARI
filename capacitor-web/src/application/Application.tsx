@@ -1,3 +1,5 @@
+import {webFeedbackBuild} from '../platform/feedbackBuild';
+import {WebFeedback,exampleSource} from './WebFeedback';
 import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Capacitor } from '@capacitor/core';
 import { intakeLanguages } from '../intakeCopy';
@@ -166,6 +168,11 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  return <div className={`application-page${group || question ? ' application-writing' : ''}${question&&!showingIntro&&!review?' application-focused':''}${showingIntro?' application-onboarding':''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
   <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question||category)&&<BackButton className="application-back" label={pendingExportId?applicationDownloadCopy(language)[15]:review?d.edit:c.back} disabled={exporting} onClick={goBack}/>} actions={<div className="application-tools">{tourMode&&<button type="button" className="community-tour-entry" aria-label={refreshCopy(language).tour} onClick={()=>setReplayTour(tourMode)}>?</button>}{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
   <main id="main" tabIndex={-1} ref={main} className="application-main">
+   {webFeedbackBuild&&<WebFeedback language={language} onExample={!group&&!question&&!category?()=>{
+    if(answers['14.2']?.source&&answers['14.2'].source!==exampleSource&&!window.confirm(language==='ko'?'14.2의 작성 내용을 가상 예시로 바꿀까요?':'Replace answer 14.2 with the fictional example?'))return;
+    setAnswers(prev=>({...prev,'14.2':{source:exampleSource,language:'en',targetLanguage:'ko',korean:'',translatedSource:''}}));
+    setCategoryId(applicationCategories.at(-1)!.id);setGroupId('14');setSelected('14.2');setReview(false);setSetup(null);setError('');
+   }:undefined}/>}
    {storageError && <p role="alert" className="application-warning">{c.storage}</p>}
    {error && <p role="alert" className="application-warning">{error}</p>}
    {showingIntro&&introQuestion?<QuestionIntro key={`${introQuestion.id}:${guidanceKey(introQuestion,language)}:${setup??'entry'}`} active={active} question={introQuestion} section={!question} language={language} sourceLanguage={introAnswer?.language??defaults.language} targetLanguage={introAnswer?.targetLanguage??defaults.target} acknowledged={acknowledged} settings={setup==='language'} confirmationRequired={requiresGuidance(introQuestion)} onFinish={finishIntro}/>:!question ? <>
@@ -203,7 +210,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     <AnswerEditor key={question.id} question={question} answer={answer} language={language} busy={busy} review={review} onFields={updateFields} onSentence={updateSentence} onGuidance={()=>{remember();setSetup('guide');}} onSettings={()=>{remember();setSetup('language');}}
      onTranslate={()=>void translate()} onKorean={korean=>setAnswers(prev=>({...prev,[question.id]:{...prev[question.id],korean}}))}
      onConfirm={checked=>confirmAnswer(question.id,checked)} onEdit={()=>{remember();setReview(false);}} onSave={()=>pendingExportId===question.id?returnToDownload():leaveQuestion()}/>
-    {!native&&!review&&supportsConversation(question)&&<details className="conversation-option"><summary>{wc.entry}</summary><button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry}<span aria-hidden="true">›</span></button></details>}
+    {!native&&!webFeedbackBuild&&!review&&supportsConversation(question)&&<details className="conversation-option"><summary>{wc.entry}</summary><button className="secondary conversation-entry" disabled={busy} onClick={()=>setConversation(true)}>{wc.entry}<span aria-hidden="true">›</span></button></details>}
 
    </>}
   </main>

@@ -1,4 +1,5 @@
 import { Capacitor } from '@capacitor/core';
+import { webFeedbackBuild } from '../platform/feedbackBuild';
 import { MlKitTranslation } from '../lib/mlKitTranslation';
 import { generateIntakeModel, getIntakeRuntimeStatus } from '../lib/intakeModel';
 import { createTranslator, translationPrompt, type Translator } from './translation';
@@ -13,6 +14,7 @@ export function deviceTranslator(): Promise<Translator | null> {
 }
 
 async function detect(): Promise<Translator | null> {
+  if(webFeedbackBuild)return null;
   if (Capacitor.isNativePlatform() && Capacitor.isPluginAvailable('MlKitTranslation')) {
     return createTranslator({
       fast: true,

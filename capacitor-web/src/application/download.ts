@@ -1,6 +1,7 @@
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import {webFeedbackBuild} from '../platform/feedbackBuild';
 import type {Answers} from './model.ts';
 const DocumentExport=registerPlugin<{save(options:{filename:string;uri:string}):Promise<{saved:boolean}>}>('DocumentExport');
 export type ApplicationFileFormat='pdf'|'hwp';
@@ -18,5 +19,5 @@ export async function downloadApplicationFile(answers:Answers,format:Application
   return;
  }
  const url=URL.createObjectURL(new Blob([bytes as BlobPart],{type:mime}));
- const anchor=document.createElement('a');anchor.href=url;anchor.download=`DARI-application.${format}`;document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+ const anchor=document.createElement('a');anchor.href=url;anchor.download=`DARI-${webFeedbackBuild?'UX-example':'application'}.${format}`;document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
 }

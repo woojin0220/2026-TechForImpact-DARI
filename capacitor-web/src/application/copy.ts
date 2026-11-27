@@ -45,6 +45,7 @@ export const applicationCopy = (language: string) => {
 
 export function translationFailure(error: unknown, language: string, fallback: string): string {
  const message = error instanceof Error ? error.message : '';
+ if(message==='WEB_FEEDBACK_ONLY')return language==='ko'?'웹 체험판에는 실제 번역이 연결되어 있지 않습니다. 첫 화면의 가상 예시를 사용하면 번역 확인·저장 과정을 볼 수 있습니다.':'Live translation is not connected in this UX demo. Use the fictional example on the application home screen to explore review and download.';
  if (!message.startsWith('UNTRANSLATED_ANSWER')) return fallback;
  const id = message.split(':')[1];
  const copy = ({

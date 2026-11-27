@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --experimental-strip-types scripts/build-translation-profiles.mjs && node scripts/build-procedure-i18n.mjs && vite",
+    "build:web-feedback": "npm run build -- --mode feedback-web",
     "build:feedback": "npm run build -- --mode feedback",
     "build": "node --experimental-strip-types scripts/build-translation-profiles.mjs && node scripts/build-procedure-i18n.mjs && tsc -b && vite build",
     "procedure:i18n": "node scripts/build-procedure-i18n.mjs",

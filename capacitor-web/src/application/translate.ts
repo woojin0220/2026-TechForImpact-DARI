@@ -1,4 +1,6 @@
 import { Capacitor } from '@capacitor/core';
+import { webFeedbackBuild } from '../platform/feedbackBuild';
+import { exampleTranslation } from './uxExample';
 import { translateOnDevice } from '../lib/nativeTranslation';
 import { preserveOriginal, requireTranslation } from './translationQuality';
 import type { TranslationLanguage } from './model';
@@ -9,6 +11,7 @@ export async function translateAnswer(text: string, language: string, questionId
     const result = await translateOnDevice(text, language, target);
     return requireTranslation(text, language, result, questionId, target);
   }
+  if(webFeedbackBuild)return exampleTranslation(text,language,questionId,target);
   // Explicit local translation endpoint: never goes through the hybrid/Gemini intake router.
   const host = window.location.hostname === 'localhost' ? 'localhost' : '127.0.0.1';
   const base = (import.meta.env.VITE_DARI_INTAKE_API_URL ?? `http://${host}:8765`).replace(/\/$/, '');
