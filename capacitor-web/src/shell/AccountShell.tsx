@@ -1,3 +1,5 @@
+import { feedbackBuild } from '../platform/feedbackBuild';
+import { FeedbackEntry } from '../platform/FeedbackEntry';
 import { AccountScreen, AuthGate } from '../platform/AccountScreens';
 import { useAuth, type AuthState } from '../platform/AuthContext';
 import { onboardingNeeds } from '../platform/account';
@@ -14,6 +16,7 @@ export function needsSignIn(state: AuthState) {
 
 /** Shown right after the language choice until the member has signed in and finished setting up. */
 export function SignInFront({ copy, language }: { copy: AccountCopy; language: string }) {
+  if (feedbackBuild) return <FeedbackEntry language={language} />;
   return <main className="account-main sign-in-front" tabIndex={-1}>
     <p className="front-brand" lang="en" dir="ltr">DARI</p>
     <AuthGate copy={copy} language={language} frontTitle={copy.frontTitle} frontIntro={copy.frontIntro}>{() => null}</AuthGate>

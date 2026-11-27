@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node --experimental-strip-types scripts/build-translation-profiles.mjs && node scripts/build-procedure-i18n.mjs && vite",
+    "build:feedback": "npm run build -- --mode feedback",
     "build": "node --experimental-strip-types scripts/build-translation-profiles.mjs && node scripts/build-procedure-i18n.mjs && tsc -b && vite build",
     "procedure:i18n": "node scripts/build-procedure-i18n.mjs",
     "test": "node --experimental-strip-types scripts/audit-arabic-i18n.mjs && node --experimental-strip-types --test tests/*.test.mjs",
@@ -17,7 +18,9 @@
   "dependencies": {
     "@capacitor/android": "^8.1.0",
     "@capacitor/core": "^8.1.0",
+    "@capacitor/filesystem": "^8.1.5",
     "@capacitor/ios": "^8.1.0",
+    "@capacitor/share": "^8.0.3",
     "@pdf-lib/fontkit": "^1.1.1",
     "@supabase/supabase-js": "^2.119.0",
     "cfb": "^1.2.2",

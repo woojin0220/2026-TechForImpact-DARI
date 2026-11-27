@@ -13,11 +13,15 @@ export function deviceTranslator(): Promise<Translator | null> {
 }
 
 async function detect(): Promise<Translator | null> {
-  if (Capacitor.getPlatform() === 'android' && Capacitor.isPluginAvailable('MlKitTranslation')) {
+  if (Capacitor.isNativePlatform() && Capacitor.isPluginAvailable('MlKitTranslation')) {
     return createTranslator({
       fast: true,
-      translate: async (text, sourceLanguage, targetLanguage) =>
-        (await MlKitTranslation.translate({ text, sourceLanguage, targetLanguage })).translation,
+      translate: async (text, sourceLanguage, targetLanguage) => {
+        // Keep the existing automatic feed translation, downloading missing models on Wi-Fi only.
+        // A visible feed must never silently start a cellular model download.
+        await MlKitTranslation.prepare({ sourceLanguage, targetLanguage, allowCellular: false });
+        return (await MlKitTranslation.translate({ text, sourceLanguage, targetLanguage })).translation;
+      },
     });
   }
   const status = await getIntakeRuntimeStatus();

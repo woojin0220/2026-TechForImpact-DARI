@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+ DAB30003A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */; };
+ DAB30001A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */; };
         DAA20001A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */; };
         DAA20003A1B2C3D4E5F60708 /* LiteRTLM in Frameworks */ = {isa = PBXBuildFile; productRef = DAA20004A1B2C3D4E5F60708 /* LiteRTLM */; };
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+ DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+ DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MlKitTranslationPlugin.swift; sourceTree = "<group>"; };
         DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceLlmPlugin.swift; sourceTree = "<group>"; };
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		50379B222058CBB4000EE86E /* capacitor.config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = capacitor.config.json; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 				9582B6822FE993A50072D4E8 /* SceneDelegate.swift */,
 				DAA10004A1B2C3D4E5F60708 /* DariBridgeViewController.swift */,
                 DAA20002A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift */,
+                DAB30002A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift */,
+                DAB30004A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
@@ -153,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				504EC3121FED79650016851F /* LaunchScreen.storyboard in Resources */,
+                DAB30003A1B2C3D4E5F60708 /* PrivacyInfo.xcprivacy in Resources */,
 				50B271D11FEDC1A000F3C39B /* public in Resources */,
 				504EC30F1FED79650016851F /* Assets.xcassets in Resources */,
 				50379B232058CBB4000EE86E /* capacitor.config.json in Resources */,
@@ -172,6 +179,7 @@
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
 				DAA10003A1B2C3D4E5F60708 /* DariBridgeViewController.swift in Sources */,
                 DAA20001A1B2C3D4E5F60708 /* OnDeviceLlmPlugin.swift in Sources */,
+                DAB30001A1B2C3D4E5F60708 /* MlKitTranslationPlugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,7 +254,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -297,7 +305,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -315,7 +323,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = App/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -338,7 +346,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = App/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

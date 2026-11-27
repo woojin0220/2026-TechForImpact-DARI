@@ -10,7 +10,7 @@ android {
     namespace = "org.dari.app"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "org.dari.app"
+        applicationId ((project.findProperty("dariFeedback") ?: "false").toBoolean() ? "org.dari.app.feedback" : "org.dari.app")
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

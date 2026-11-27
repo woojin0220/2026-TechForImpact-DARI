@@ -32,7 +32,15 @@ export const applicationCopy = (language: string) => {
   ar:'تعذر حفظ إجاباتك. لا تغلق الصفحة أو تعِد تحميلها، وانسخ النص إلى مكان آمن.',
   fa:'ذخیره پاسخ‌ها ممکن نشد. صفحه را نبندید یا دوباره بارگذاری نکنید و متن را در جای امنی کپی کنید.',
  } as Record<string,string>)[language]??'Could not save your answers. Keep this page open without reloading, and copy your text somewhere safe.';
- return {...base,intro,storage};
+ const error=({
+  ko:'번역하지 못했습니다. 답변은 유지됩니다. 첫 번역이라면 인터넷 연결을 확인하고 다시 시도해 주세요.',
+  en:'Translation failed. Your answer is kept. For your first translation, check your internet connection and try again.',
+  fr:'Échec de traduction. Votre réponse est conservée. Pour la première traduction, vérifiez votre connexion puis réessayez.',
+  ru:'Не удалось перевести. Ответ сохранён. При первом переводе проверьте интернет и повторите.',
+  ar:'تعذرت الترجمة. إجابتك محفوظة. عند الترجمة لأول مرة، تحقق من اتصال الإنترنت وحاول مجددًا.',
+  fa:'ترجمه انجام نشد. پاسخ شما حفظ شده است. برای نخستین ترجمه اتصال اینترنت را بررسی و دوباره تلاش کنید.',
+ } as Record<string,string>)[language]??base.error;
+ return {...base,intro,storage,error};
 };
 
 export function translationFailure(error: unknown, language: string, fallback: string): string {

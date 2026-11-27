@@ -1,3 +1,4 @@
+import { localTestEntryEnabled } from '../platform/feedbackBuild';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import App from '../application/Application';
 import { sessionDraftRepository } from '../application/repository';
@@ -30,7 +31,7 @@ function Shell() {
   const supervisorCopy = devSupervisorCopyFor(language);
   const userId=state.status==='signedIn'?state.session.user.id:state.status==='development'?state.account.profile.user_id:null;
   const draftRepository=useMemo(()=>sessionDraftRepository({userId}),[userId]);
-  const signingIn = needsSignIn(state) || (import.meta.env.DEV && state.status === 'unconfigured');
+  const signingIn = needsSignIn(state) || (localTestEntryEnabled && state.status === 'unconfigured');
   const returnToApplication = useCallback(() => {
     setProfileOpen(false);
     setTab('application');

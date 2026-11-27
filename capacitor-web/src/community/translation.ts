@@ -1,7 +1,7 @@
 /**
  * On-device translation for community posts. Text never leaves the phone:
- * Android uses Google ML Kit's offline translator; other platforms use the
- * on-device model when one has been imported. With neither, posts show as written.
+ * Android and iPhone use Google ML Kit's offline translator; browser
+ * previews can use the local model when one is available. With neither, posts show as written.
  */
 export type TranslationEngine = {
   /** Fast engines (ML Kit) can translate whole lists; slow ones are serialized, including visible feed previews. */

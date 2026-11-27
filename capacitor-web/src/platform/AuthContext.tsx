@@ -1,3 +1,4 @@
+import { localTestEntryEnabled } from './feedbackBuild';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Session } from '@supabase/supabase-js';
 import { platformClient } from './client';
@@ -35,16 +36,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSandbox(null); setTestAccount(null);
   }, []);
   const enterSupervisor = useCallback(async (language: string, restoring=false) => {
-    if (!import.meta.env.DEV || !['signedOut', 'unconfigured'].includes(state.status)) return;
-    // This module is excluded from production builds; it never manufactures a Supabase session.
+    if (!localTestEntryEnabled || !['signedOut', 'unconfigured'].includes(state.status)) return;
+    // This local adapter is enabled only for development/feedback; it never manufactures a Supabase session.
     const { createDevSupervisor } = await import('./devSupervisor');
-    const next = createDevSupervisor({ development: import.meta.env.DEV, language, storage: sessionStorage, onExit: exitSupervisor });
+    const next = createDevSupervisor({ development: localTestEntryEnabled, language, storage: sessionStorage, onExit: exitSupervisor });
     sessionStorage.setItem(TEST_ACCOUNT_KEY, language);
     if(!restoring)setEntryRevision(previous=>previous+1);
     setTestAccount(next.account()); setSandbox(next);
   }, [state.status, exitSupervisor]);
   useEffect(() => {
-    if (!import.meta.env.DEV || sandbox || !['signedOut', 'unconfigured'].includes(state.status)) return;
+    if (!localTestEntryEnabled || sandbox || !['signedOut', 'unconfigured'].includes(state.status)) return;
     let language: string | null = null;
     try { language = sessionStorage.getItem(TEST_ACCOUNT_KEY); } catch { return; }
     if (language) void enterSupervisor(language,true).catch(exitSupervisor);
@@ -76,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthValue>(() => ({
     state: sandbox && testAccount ? { status: 'development', account: testAccount } : state,
     api: sandbox ? sandbox.platform : api, refresh,entryRevision,
-    enterSupervisor: import.meta.env.DEV && !sandbox && ['signedOut', 'unconfigured'].includes(state.status) ? enterSupervisor : undefined,
+    enterSupervisor: localTestEntryEnabled && !sandbox && ['signedOut', 'unconfigured'].includes(state.status) ? enterSupervisor : undefined,
     exitSupervisor: sandbox ? exitSupervisor : undefined,
     communityOverride: sandbox?.community,
   }), [state, api, refresh, sandbox, testAccount, enterSupervisor, exitSupervisor,entryRevision]);
