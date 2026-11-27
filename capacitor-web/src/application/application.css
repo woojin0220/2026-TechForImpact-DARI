@@ -451,3 +451,26 @@
 .preview-original{min-width:0}
 .preview-original>.application-note{margin-top:16px}
 .original-form-pages{width:min(100vw,880px);margin:18px calc((100% - min(100vw,880px))/2)}
+/* A short overview; official section numbers remain inside each category. */
+.application-home-title{font-size:22px;line-height:1.5;font-weight:650;margin:0 0 8px;word-break:keep-all;overflow-wrap:anywhere}
+.application-category-list{list-style:none;padding:0;margin:22px 0 24px;display:grid;gap:12px}
+.application-category-list button{display:grid;grid-template-columns:36px minmax(0,1fr) 12px;align-items:center;gap:14px;width:100%;text-align:start;min-height:108px;padding:20px 16px;border:1px solid #e8e8e5;background:#fff;border-radius:18px;color:#222}
+.application-category-list strong{display:block;font-size:17px;font-weight:650;line-height:1.5;margin-bottom:7px}
+.application-category-list small{display:block;font-size:12px;line-height:1.7;color:#777;font-weight:400}
+.category-range{font-size:11px;color:#777;font-weight:500}
+.application-category-list button>span:last-child{color:#999;font-size:20px}
+.application-page .application-resume{width:100%;background:#f7f7f4;margin-top:16px;font-size:14px}
+.application-output{border-top:1px solid #ececea;padding-top:20px;margin-top:28px}
+.application-output>button{width:100%}
+.application-output>p{font-size:11px;line-height:1.8;color:#777;margin-top:12px}
+.application-section13{padding:16px;border:1px solid #e9e9e5;border-radius:14px;margin:18px 0}
+.application-section13 summary{display:flex;gap:14px;align-items:center;cursor:pointer;font-size:14px}
+.application-section13 summary>span{font-size:12px;color:#777}
+.application-section13 p{font-size:13px;line-height:1.85;color:#666;margin:14px 0}
+/* Korean phrases wrap together rather than leaving one syllable on a new line. */
+.guidance-stage .stage-content h2,.guidance-stage .stage-content p,.guidance-stage .guidance-check-content{word-break:keep-all;overflow-wrap:anywhere;text-wrap:pretty}
+.guidance-stage.stage-explain .stage-explain-note{max-width:100%;width:100%;font-size:13px;line-height:1.85;margin:18px auto 26px;text-align:center;white-space:normal}
+.guidance-stage.stage-explain .stage-content{width:100%;max-width:480px;margin-inline:auto}
+.guidance-stage .stage-answer-method{padding:18px;border-radius:14px;text-align:start;margin-top:22px}
+.guidance-stage .stage-answer-method p{font-size:14px;line-height:1.85;margin:10px 0 0}
+.guidance-stage .stage-answer-method h3{margin:0 0 12px;font-size:12px;font-weight:500}

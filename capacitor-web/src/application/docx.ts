@@ -1,9 +1,9 @@
 import { strToU8, strFromU8, unzipSync, zipSync } from 'fflate';
-import { placements, type Box } from '../export/placements.ts';
-import { statementSlots } from '../export/statement.ts';
+import type { Box } from '../export/placements.ts';
+import { placements, statementSlots, formRevision } from './form2024.ts';
 import { isCurrent, isReviewed, writtenAnswers, type Answers } from './model.ts';
 
-export const wordTemplatePath = 'forms/refugee-application-2019-word.docx';
+export const wordTemplatePath = 'forms/refugee-application-2024-word.docx';
 const xml = (s: string) => s.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const sx=595.28/778, sy=841.89/1100;
 /** Conservative wrapping for the fixed original answer areas; overflow is never discarded. */
@@ -30,6 +30,7 @@ export function applicationDocx(answers: Answers, template: Uint8Array): Uint8Ar
  const entries=writtenAnswers(answers); if(!entries.length)throw new Error('No written answers');
  const files=unzipSync(template);
  if(!files['word/document.xml'])throw new Error('Missing official Word template');
+ if(!files['dari/form.json'] || JSON.parse(strFromU8(files['dari/form.json'])).revision!==formRevision)throw new Error('Wrong official form revision');
  let document=strFromU8(files['word/document.xml']);
  if(!document.includes('<!--DARI_PAGE_22-->')||!files['word/media/page-22.jpg'])throw new Error('Wrong official Word template');
  const pages=new Map<number,string[]>();
@@ -77,7 +78,7 @@ export function applicationDocx(answers: Answers, template: Uint8Array): Uint8Ar
  let appendix='';
  if(annexes.length){
   appendix='<w:p><w:pPr><w:pageBreakBefore/><w:keepNext/></w:pPr>'+run('추가 답변',12,true)+'</w:p>';
-  for(const a of annexes)appendix+=`<w:p><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="100"/></w:pPr>${run(`별지 ${a.number} · 문항 ${a.id} ${a.title}`,10,true)}</w:p><w:p><w:pPr><w:spacing w:after="160" w:line="260" w:lineRule="exact"/></w:pPr>${run(a.text,9)}</w:p>`;
+  for(const a of annexes)appendix+=`<w:p><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="120"/></w:pPr>${run(`별지 ${a.number} · 문항 ${a.id} ${a.title}`,11,true)}</w:p><w:p><w:pPr><w:widowControl/><w:spacing w:after="180" w:line="340" w:lineRule="exact"/></w:pPr>${run(a.text,11)}</w:p>`;
  }
  document=document.replace('<!--DARI_APPENDIX-->',appendix).replace('<w:pgMar w:top="0" w:bottom="0" w:left="0" w:right="0" w:header="0" w:footer="0"/>','<w:pgMar w:top="1000" w:bottom="1000" w:left="1000" w:right="1000" w:header="0" w:footer="0"/>');
  files['word/document.xml']=strToU8(document);

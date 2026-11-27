@@ -31,6 +31,7 @@ import './application.css';
 import { BackButton, Button, ScreenHeader } from '../ui/ScreenControls';
 import {CommunityWelcome,needsCommunityWelcome} from '../community/CommunityWelcome';
 import {applicationEntryCopy} from './entryCopy';
+import {homeCopy,applicationCategories} from './homeCopy';
 import '../community/community.css';
 
 const NarrativeWorkspace=lazy(()=>import('./NarrativeWorkspace').then(module=>({default:module.NarrativeWorkspace})));
@@ -41,9 +42,13 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  useEffect(()=>setWelcome(needsCommunityWelcome(repository.scope,'application')),[repository.scope]);
  const [conversation,setConversation]=useState(false);
  const [groupId,setGroupId] = useState<string|null>(null);
+ const [categoryId,setCategoryId]=useState<string|null>(null);
+ const category=applicationCategories.find(item=>item.id===categoryId);
+ const hc=homeCopy(language);
  const [selected,setSelected] = useState<string|null>(null);
  const [review,setReview]=useState(false);
  const [preview,setPreview]=useState(false);
+ const [previewOriginalPage,setPreviewOriginalPage]=useState<number|undefined>();
  const previewScroll=useRef(0);
  const [setup,setSetup]=useState<'guide'|'language'|null>(null);
  const [preferred,setPreferred]=useState<{language:string;target:TranslationLanguage}|null>(null);
@@ -78,7 +83,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  const introAnswer=question?answer:quickQuestions[0]?answers[quickQuestions[0].id]:undefined;
  const acknowledged=!!introQuestion&&(question?introAnswer?.guideKey:introAnswer?.sectionGuideKey)===guidanceKey(introQuestion,language);
  const showingIntro=!!introQuestion&&((!!question&&requiresGuidance(question)&&!acknowledged)||!!setup);
- useEffect(() => { main.current?.focus({preventScroll:true});window.scrollTo(0,showingIntro?0:scrollPositions.current[selected?`${selected}:${review?'review':'write'}`:groupId?`group:${groupId}`:'root']??0); },[selected,groupId,review,setup,showingIntro]);
+ useEffect(() => { main.current?.focus({preventScroll:true});window.scrollTo(0,showingIntro?0:scrollPositions.current[selected?`${selected}:${review?'review':'write'}`:groupId?`group:${groupId}`:'root']??0); },[selected,groupId,categoryId,review,setup,showingIntro]);
  const entries = writtenAnswers(answers);
  const label = (ko:string,en:string) => localizedLabel(language,ko,en);
  function changeAnswer(id: string, source: string, korean?: string) {
@@ -105,6 +110,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  function openQuestion(id:string){remember();setSetup(null);setReview(false);setSelected(id);setError('');}
  function leaveQuestion(){remember();setSetup(null);setReview(false);setSelected(null);if(group?.questions.length===1)setGroupId(null);}
  function goBack() {
+  if(!group&&!question&&categoryId){setCategoryId(null);window.scrollTo(0,0);return;}
   if(showingIntro&&setup&&acknowledged){setSetup(null);return;}
   if(showingIntro){if(question)leaveQuestion();else{setSetup(null);setGroupId(null);}return;}
   if(review){remember();setReview(false);return;}
@@ -140,22 +146,28 @@ export default function Application({gate, headerAccessory, repository=guestRepo
  if(!language) return <><LanguageEntry texts={appTexts('en')} status={null} locked={false} onSelect={setLanguage}/>{storageError&&<p role="alert" className="application-warning">{c.storage}</p>}</>;
  if(gate) return <div className="application-page">{gate}</div>;
  if(welcome)return <div className="application-page application-welcome" dir={['ar','fa'].includes(language)?'rtl':'ltr'}><CommunityWelcome key={repository.scope} section="application" owner={repository.scope} language={language} title={c.title} messages={applicationEntryCopy(language)} onDone={()=>setWelcome(false)}/></div>;
- if(preview)return <FormPreview answers={answers} language={language} selected={selected} onBack={()=>{setPreview(false);requestAnimationFrame(()=>window.scrollTo(0,previewScroll.current));}} onEdit={id=>{const q=questions.find(q=>q.id===id);if(!q)return;setPreview(false);setSetup(null);setReview(false);setGroupId(id.split('.')[0]);setSelected(isQuickQuestion(q)?null:id);}}/>;
+ if(preview)return <FormPreview answers={answers} language={language} selected={selected} initialOriginalPage={previewOriginalPage} onBack={()=>{setPreview(false);requestAnimationFrame(()=>window.scrollTo(0,previewScroll.current));}} onEdit={id=>{const q=questions.find(q=>q.id===id);if(!q)return;setPreview(false);setSetup(null);setReview(false);setCategoryId(applicationCategories.find(c=>Number(id.split('.')[0])>=c.from&&Number(id.split('.')[0])<=c.to)?.id??null);setGroupId(id.split('.')[0]);setSelected(isQuickQuestion(q)?null:id);}}/>;
  if(conversation && question) return <Suspense fallback={<p role="status">{wc.title}…</p>}><NarrativeWorkspace scope={repository.scope} language={answer.language} identityValues={Object.entries(answers).filter(([id])=>['1.2','1.3','1.4','1.5','1.9','1.10','1.11','1.12'].includes(id)).map(([,a])=>a.source)} onBack={()=>setConversation(false)}/></Suspense>;
  return <div className={`application-page${group || question ? ' application-writing' : ''}${question&&!showingIntro&&!review?' application-focused':''}${showingIntro?' application-onboarding':''}`} dir={['ar','fa'].includes(language)?'rtl':'ltr'}>
-  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question)&&<BackButton className="application-back" label={review?d.edit:c.back} disabled={exporting} onClick={goBack}/>} actions={<div className="application-tools">{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
+  <ScreenHeader className="application-header" titleClassName="application-brand" title={c.title} leading={(group||question||category)&&<BackButton className="application-back" label={review?d.edit:c.back} disabled={exporting} onClick={goBack}/>} actions={<div className="application-tools">{!question&&<SelectMenu label={c.language} value={language} disabled={busy} onChange={setLanguage} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))}/>} {headerAccessory}</div>} />
   <main id="main" tabIndex={-1} ref={main} className="application-main">
    {storageError && <p role="alert" className="application-warning">{c.storage}</p>}
    {error && <p role="alert" className="application-warning">{error}</p>}
    {showExportReview&&pending.length>0&&<section className="export-review-list" aria-labelledby="export-review-title"><h2 id="export-review-title">{rc.exportTitle}</h2><ul>{pending.map(item=><li key={item.id}><button type="button" onClick={()=>{const q=questions.find(q=>q.id===item.id)!;setGroupId(item.id.split('.')[0]);setSetup(null);setSelected(isQuickQuestion(q)?null:item.id);setReview(!isQuickQuestion(q)&&isCurrent(answers[item.id],item.id));setShowExportReview(false);if(isQuickQuestion(q))requestAnimationFrame(()=>document.getElementById(`question-${item.id}`)?.scrollIntoView({block:'center'}));}}><span dir="ltr">{item.id}</span><span>{rc[item.reason]}</span><span aria-hidden="true">›</span></button></li>)}</ul></section>}
    {showingIntro&&introQuestion?<QuestionIntro key={`${introQuestion.id}:${guidanceKey(introQuestion,language)}:${setup??'entry'}`} question={introQuestion} section={!question} language={language} sourceLanguage={introAnswer?.language??defaults.language} targetLanguage={introAnswer?.targetLanguage??defaults.target} acknowledged={acknowledged} settings={setup==='language'} confirmationRequired={requiresGuidance(introQuestion)} onFinish={finishIntro}/>:!question ? <>
-    <div className="application-heading"><div>{group ? <h2 className="application-section-title">{label(group.ko,group.en)}</h2> : <><p className="application-eyebrow">{c.count} <b>{entries.length} / {questions.length}</b></p><p>{c.intro}</p></>}</div>{!group && <Button variant="primary" aria-live="polite" disabled={!entries.length || busy} onClick={()=>void exportApplication()}>{c.download} <span aria-hidden="true">↓</span></Button>}</div>
-    <Button className="form-preview-trigger" onClick={()=>{previewScroll.current=window.scrollY;setPreview(true);}}>{previewCopy(language).title} ↗</Button>
+    <div className="application-heading"><div>{group?<h2 className="application-section-title">{label(group.ko,group.en)}</h2>:<><h2 className="application-home-title">{category?hc[category.title]:hc[0]}</h2><p>{category?hc[category.description]:hc[1]}</p></>}</div></div>
+    <Button className="form-preview-trigger" onClick={()=>{previewScroll.current=window.scrollY;setPreviewOriginalPage(undefined);setPreview(true);}}>{previewCopy(language).title} ↗</Button>
     {group&&sectionQuestion&&<div className="focus-tools"><button type="button" onClick={()=>setSetup('guide')}>{f.guide}</button><button type="button" disabled={busy} onClick={()=>setSetup('language')}>{f.settings}</button></div>}
-    {!group && <ol className="question-list">{!group ? questionGroups.map(g=>{
+    {!group&&!category&&<>
+     {entries.length>0&&<Button className="application-resume" onClick={()=>{const q=entries.at(-1)!.question;setCategoryId(applicationCategories.find(item=>Number(q.id.split('.')[0])>=item.from&&Number(q.id.split('.')[0])<=item.to)!.id);setGroupId(q.id.split('.')[0]);setSelected(isQuickQuestion(q)?null:q.id);setReview(false);setSetup(null);}}>{hc[8]} &#8594;</Button>}
+     <ol className="application-category-list">{applicationCategories.map(item=><li key={item.id}><button type="button" onClick={()=>setCategoryId(item.id)}><span className="category-range" dir="ltr">{item.from}-{item.to}</span><span><strong>{hc[item.title]}</strong><small>{hc[item.description]}</small></span><span aria-hidden="true">&#8250;</span></button></li>)}</ol>
+    </>}
+    {!group&&category?.id==='reasons'&&<details className="application-section13"><summary><span dir="ltr">13</span><strong>{hc[9]}</strong></summary><p>{hc[12]}</p><p>{hc[10]}</p><p>{hc[11]}</p><Button variant="quiet" onClick={()=>{previewScroll.current=window.scrollY;setPreviewOriginalPage(11);setPreview(true);}}>{previewCopy(language).original} &#8594;</Button></details>}
+    {!group&&category&&<ol className="question-list">{!group ? questionGroups.filter(g=>Number(g.id)>=category.from&&Number(g.id)<=category.to).map(g=>{
      const count=g.questions.filter(q=>answers[q.id]?.source.trim()).length;
      return <li key={g.id}><button className="question-card" disabled={exporting} onClick={()=>{remember();setSetup(null);setGroupId(g.id);setReview(false);if(g.questions.length===1 && !isQuickQuestion(g.questions[0])) setSelected(g.questions[0].id);setError('');}}><span className="question-number" dir="ltr">{g.id}</span><span className="question-label">{label(g.ko,g.en).replace(/^\d+\.\s*/, '')}</span><span className={`question-state ${count?'has-answer':''}`}>{count} / {g.questions.length}</span><span aria-hidden="true">›</span></button></li>;
     }) : null}</ol>}
+    {!group&&!category&&<section className="application-output"><Button variant="primary" aria-live="polite" disabled={!entries.length||busy} onClick={()=>void exportApplication()}>{hc[13]} &#8594;</Button><p>{hc[14]}</p></section>}
     {group && <div className="question-sections">{sectionsForGroup(group.id).map((section,index,sections)=>{
      const count=section.questions.filter(q=>answers[q.id]?.source.trim()).length;
      const items=<ol className="question-list">{section.questions.map(q=>{
@@ -174,7 +186,7 @@ export default function Application({gate, headerAccessory, repository=guestRepo
     {!wholeTable&&<p className="application-eyebrow">{label(question.sectionKo,question.sectionEn)}</p>}
     <header className={`writing-question${wholeTable?' section-question':''}${review?' review-question':''}`}><h2 id="writing-question-title">{wholeTable?label(question.sectionKo,question.sectionEn):<><span className="question-inline-number" dir="ltr">{question.id}.</span> {label(question.fields[0].ko,question.fields[0].en)}</>}</h2>
     </header>
-    <button className="question-preview-trigger" type="button" onClick={()=>{previewScroll.current=window.scrollY;setPreview(true);}}>{previewCopy(language).title} ↗</button>
+    <button className="question-preview-trigger" type="button" onClick={()=>{previewScroll.current=window.scrollY;setPreviewOriginalPage(undefined);setPreview(true);}}>{previewCopy(language).title} ↗</button>
     <AnswerEditor key={question.id} question={question} answer={answer} language={language} busy={busy} review={review} onFields={updateFields} onSentence={updateSentence} onGuidance={()=>{remember();setSetup('guide');}} onSettings={()=>{remember();setSetup('language');}}
      onTranslate={()=>void translate()} onKorean={korean=>setAnswers(prev=>({...prev,[question.id]:{...prev[question.id],korean}}))}
      onConfirm={checked=>confirmAnswer(question.id,checked)} onEdit={()=>{remember();setReview(false);}} onSave={leaveQuestion}/>

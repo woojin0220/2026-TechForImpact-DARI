@@ -10,8 +10,8 @@ import type { FieldValue } from './structuredAnswer';
 import { visibleField } from './structuredAnswer';
 import { OriginalForm } from './OriginalForm';
 
-export function FormPreview({answers,language,selected,onBack,onEdit}:{answers:Answers;language:string;selected?:string|null;onBack:()=>void;onEdit:(id:string)=>void}){
- const [locale,setLocale]=useState(language),[original,setOriginal]=useState(false),[answeredOnly,setAnsweredOnly]=useState(false),[groupId,setGroupId]=useState(selected?.split('.')[0]??'');
+export function FormPreview({answers,language,selected,initialOriginalPage,onBack,onEdit}:{answers:Answers;language:string;selected?:string|null;initialOriginalPage?:number;onBack:()=>void;onEdit:(id:string)=>void}){
+ const [locale,setLocale]=useState(language),[original,setOriginal]=useState(!!initialOriginalPage),[answeredOnly,setAnsweredOnly]=useState(false),[groupId,setGroupId]=useState(selected?.split('.')[0]??'');
  const c=previewCopy(locale),label=(ko:string,en:string)=>localizedLabel(locale,ko,en),pdf=`${import.meta.env.BASE_URL}forms/refugee-application-2024.pdf`;
  const fieldAnswer=(q:Question,fieldId:string,value:FieldValue)=>{
   const field=q.fields.find(f=>f.id===fieldId)!;
@@ -22,7 +22,7 @@ export function FormPreview({answers,language,selected,onBack,onEdit}:{answers:A
  return <div className="application-page form-preview" dir={['ar','fa'].includes(locale)?'rtl':'ltr'}>
   <ScreenHeader title={c.title} leading={<BackButton label={c.back} onClick={onBack}/>}/>
   <div className="preview-tabs" role="group" aria-label={c.title}><Button aria-pressed={!original} onClick={()=>setOriginal(false)}>{c.paper}</Button><Button aria-pressed={original} onClick={()=>setOriginal(true)}>{c.original}</Button></div>
-  {original?<section className="preview-original"><p>{c.originalNote}</p><a href={pdf} target="_blank" rel="noopener noreferrer">{c.source} ↗</a><OriginalForm label={c.revision}/><p className="application-note">{c.revision}</p></section>:<>
+  {original?<section className="preview-original"><p>{c.originalNote}</p><a href={pdf} target="_blank" rel="noopener noreferrer">{c.source} ↗</a><OriginalForm label={c.revision} initialPage={initialOriginalPage}/><p className="application-note">{c.revision}</p></section>:<>
    <p className="preview-note">{c.note}</p>
    <div className="preview-controls"><SelectMenu label={c.language} value={locale} options={intakeLanguages.map(l=>({value:l.code,label:l.name}))} onChange={setLocale}/><SelectMenu label={c.all} value={groupId} options={[{value:'',label:c.all},...questionGroups.map(g=>({value:g.id,label:label(g.ko,g.en)}))]} onChange={setGroupId}/></div>
    <label className="preview-filter"><input type="checkbox" checked={answeredOnly} onChange={e=>setAnsweredOnly(e.target.checked)}/>{c.draft}</label>
